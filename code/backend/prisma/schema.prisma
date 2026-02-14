@@ -88,6 +88,7 @@ model User {
   notification          Notification[]
   createdRoutes         Route[]             @relation("DriverRoutes")
   bookings              Booking[]           @relation("PassengerBookings")
+  auditLogs             AuditLog[]
 
   @@index([role])
   @@index([isActive])
