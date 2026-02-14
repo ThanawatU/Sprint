@@ -235,3 +235,64 @@ model AuditLog {
   @@index([entity])
   @@index([createdAt])
 }
+
+
+enum BlacklistType {
+  DRIVER
+  PASSENGER
+}
+
+enum BlacklistStatus {
+  ACTIVE 
+  LIFTED
+}
+
+enum EvidenceType {
+  VIDEO
+  IMAGE
+}
+
+model Blacklist {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete, Cascade)
+  
+  type            BlacklistType
+  reason          String
+  
+  status          BlacklistStatus @default(ACTIVE)
+  suspendedUntil  DateTime?
+
+  createdById     String
+  createBy        User               @relation("AdminBlacklist", fields: [createdById], references: [id])
+
+  createdAt       DateTime           @default(now())
+  liftedAt        DateTime?
+  liftedById      String?
+
+  evidences      BlacklistEvidence[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model BlacklistEvidence {
+  id            String            @id @default(cuid())
+
+  blacklistId   String
+  blacklist     Blacklist         @relation(field: [blacklistId], references: [id], onDelete Cascade)
+
+  type          EvidenceType
+  url           String
+
+  uploadedById  String?
+  uploadedBy    User?             @relation(fields: [uploadedById], references: [id])
+
+  createdAt     DateTime          @default(now())
+
+  @@index([blacklistId])
+  @@index([type])
+}
+
