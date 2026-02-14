@@ -22,6 +22,7 @@ const login = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid credentials");
     }
 
+    
     const token = signToken({ sub: user.id, role: user.role });
     const {
         password:_,
