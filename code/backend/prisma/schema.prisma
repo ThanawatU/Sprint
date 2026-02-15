@@ -248,9 +248,9 @@ model AuditLog {
   @@index([action])
   @@index([entity])
   @@index([createdAt])
+  @@index([expiresAt])
 }
 
-<<<<<<< HEAD
 model SystemLog {
   id          String    @id @default(cuid())
   level       LogLevel  @default(INFO)
@@ -284,8 +284,22 @@ model SystemLog {
   @@index([userId])
 }
 
-=======
->>>>>>> eb26713 (Modified and fixed format for User, Auditlog and Blacklist)
+model AccessLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  loginTime   DateTime @default(now())
+  logoutTime  DateTime?
+  ipAddress   String
+  userAgent   String?
+  sessionId   String?
+  
+  expiresAt   DateTime  // loginTime + 90 days
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([expiresAt])
 // Blacklist
 enum BlacklistType {
   DRIVER
@@ -344,4 +358,5 @@ model BlacklistEvidence {
 
   @@index([blacklistId])
   @@index([type])
+
 }
