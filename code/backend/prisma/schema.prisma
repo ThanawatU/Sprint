@@ -250,7 +250,6 @@ model AuditLog {
   @@index([createdAt])
 }
 
-<<<<<<< HEAD
 model SystemLog {
   id          String    @id @default(cuid())
   level       LogLevel  @default(INFO)
@@ -284,8 +283,6 @@ model SystemLog {
   @@index([userId])
 }
 
-=======
->>>>>>> eb26713 (Modified and fixed format for User, Auditlog and Blacklist)
 // Blacklist
 enum BlacklistType {
   DRIVER
