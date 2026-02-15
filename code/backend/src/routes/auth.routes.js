@@ -3,6 +3,8 @@ const authController = require('../controllers/auth.controller');
 const validate = require('../middlewares/validate');
 const { loginSchema, changePasswordSchema } = require('../validations/auth.validation');
 const { protect } = require('../middlewares/auth');
+const { prisma } = require("../utils/prisma"); // adjust path if needed
+
 
 const router = express.Router();
 
