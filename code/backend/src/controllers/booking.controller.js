@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const bookingService = require("../services/booking.service");
 const ApiError = require("../utils/ApiError");
+const { auditLog, getUserFromRequest } = require("../utils/auditLog");
 
 const adminListBookings = asyncHandler(async (req, res) => {
   const result = await bookingService.searchBookingsAdmin(req.query);
@@ -9,12 +10,34 @@ const adminListBookings = asyncHandler(async (req, res) => {
 
 const adminCreateBooking = asyncHandler(async (req, res) => {
   const booking = await bookingService.adminCreateBooking(req.body);
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_BOOKING',
+    entity: 'Booking',
+    entityId: booking.id,
+    req,
+    metadata: { routeId: booking.routeId, passengerId: booking.passengerId }
+  });
+
   res.status(201).json({ success: true, data: booking });
 });
 
 const adminUpdateBooking = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updated = await bookingService.adminUpdateBooking(id, req.body);
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_BOOKING',
+    entity: 'Booking',
+    entityId: id,
+    req,
+    metadata: { fields: Object.keys(req.body) }
+  });
+
   res.status(200).json({ success: true, data: updated });
 });
 
@@ -28,6 +51,17 @@ const createBooking = asyncHandler(async (req, res) => {
   };
 
   const booking = await bookingService.createBooking(payload, passengerId);
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_BOOKING',
+    entity: 'Booking',
+    entityId: booking.id,
+    req,
+    metadata: { routeId: payload.routeId, numberOfSeats: payload.numberOfSeats }
+  });
+
   res.status(201).json({ success: true, data: booking });
 });
 
@@ -72,6 +106,17 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
     status,
     driverId
   );
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_BOOKING_STATUS',
+    entity: 'Booking',
+    entityId: id,
+    req,
+    metadata: { status }
+  });
+
   res.status(200).json({ success: true, data: updated });
 });
 
@@ -81,6 +126,17 @@ const cancelBooking = asyncHandler(async (req, res) => {
   const { reason } = req.body;
 
   const cancelled = await bookingService.cancelBooking(id, passengerId, { reason });
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CANCEL_BOOKING',
+    entity: 'Booking',
+    entityId: id,
+    req,
+    metadata: { reason }
+  });
+
   res.status(200).json({ success: true, data: cancelled });
 });
 
@@ -88,12 +144,32 @@ const deleteBooking = asyncHandler(async (req, res) => {
   const userId = req.user.sub;
   const { id } = req.params;
   const deleted = await bookingService.deleteBooking(id, userId);
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_BOOKING',
+    entity: 'Booking',
+    entityId: id,
+    req
+  });
+
   res.status(200).json({ success: true, data: deleted });
 });
 
 const adminDeleteBooking = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const result = await bookingService.adminDeleteBooking(id);
+
+  // บันทึก Audit Log
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_BOOKING',
+    entity: 'Booking',
+    entityId: id,
+    req
+  });
+
   res.status(200).json({ success: true, data: result });
 });
 

@@ -3,6 +3,7 @@ const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 const notifService = require('../services/notification.service');
+const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 const adminListUsers = asyncHandler(async (req, res) => {
     const result = await userService.searchUsers(req.query);
@@ -90,6 +91,16 @@ const createUser = asyncHandler(async (req, res) => {
 
     await notifService.createNotificationByAdmin(notifPayload)
 
+    // บันทึก Audit Log
+    await auditLog({
+        ...getUserFromRequest(req),
+        action: 'CREATE_USER',
+        entity: 'User',
+        entityId: newUser.id,
+        req,
+        metadata: { email: newUser.email, username: newUser.username }
+    });
+
     res.status(201).json({
         success: true,
         message: "User created successfully. Please wait for verification.",
@@ -121,6 +132,17 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     }
 
     const updatedUser = await userService.updateUserProfile(req.user.sub, updateData);
+
+    // บันทึก Audit Log
+    await auditLog({
+        ...getUserFromRequest(req),
+        action: 'UPDATE_USER_PROFILE',
+        entity: 'User',
+        entityId: req.user.sub,
+        req,
+        metadata: { fields: Object.keys(updateData) }
+    });
+
     res.status(200).json({
         success: true,
         message: "Profile updated",
@@ -130,6 +152,17 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
 
 const adminUpdateUser = asyncHandler(async (req, res) => {
     const updatedUser = await userService.updateUserProfile(req.params.id, req.body);
+
+    // บันทึก Audit Log
+    await auditLog({
+        ...getUserFromRequest(req),
+        action: 'UPDATE_USER',
+        entity: 'User',
+        entityId: req.params.id,
+        req,
+        metadata: { fields: Object.keys(req.body) }
+    });
+
     res.status(200).json({
         success: true,
         message: "User updated by admin",
@@ -139,6 +172,17 @@ const adminUpdateUser = asyncHandler(async (req, res) => {
 
 const adminDeleteUser = asyncHandler(async (req, res) => {
     const deletedUser = await userService.deleteUser(req.params.id);
+
+    // บันทึก Audit Log
+    await auditLog({
+        ...getUserFromRequest(req),
+        action: 'DELETE_USER',
+        entity: 'User',
+        entityId: req.params.id,
+        req,
+        metadata: { deletedEmail: deletedUser.email }
+    });
+
     res.status(200).json({
         success: true,
         message: "User deleted successfully.",
@@ -194,6 +238,16 @@ const setUserStatus = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json({ success: true, message: "User status updated", data: updatedUser });
+
+    // บันทึก Audit Log
+    await auditLog({
+        ...getUserFromRequest(req),
+        action: 'UPDATE_USER_STATUS',
+        entity: 'User',
+        entityId: req.params.id,
+        req,
+        metadata: { isActive, isVerified }
+    });
 });
 
 module.exports = {
