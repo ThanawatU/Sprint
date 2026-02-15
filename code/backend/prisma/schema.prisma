@@ -89,10 +89,6 @@ model User {
   updatedAt               DateTime            @updatedAt
   passengerSuspendedUntil DateTime?
   driverSuspendedUntil    DateTime?
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 6b81dec (Modified and fixed format for User, Auditlog and Blacklist)
   driverVerification      DriverVerification?
   vehicles                Vehicle[]
   notification            Notification[]
@@ -106,17 +102,6 @@ model User {
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
 
   uploadedEvidences BlacklistEvidence[]
-<<<<<<< HEAD
-=======
-  driverVerification    DriverVerification?
-  vehicles              Vehicle[]
-  notification          Notification[]
-  createdRoutes         Route[]             @relation("DriverRoutes")
-  bookings              Booking[]           @relation("PassengerBookings")
-  auditLogs             AuditLog[]
->>>>>>> 7cab97d (Phakorn_2160: Implement system logging infrastructure for performance monitoring and error tracking)
-=======
->>>>>>> 6b81dec (Modified and fixed format for User, Auditlog and Blacklist)
 
   @@index([role])
   @@index([isActive])
@@ -263,71 +248,9 @@ model AuditLog {
   @@index([action])
   @@index([entity])
   @@index([createdAt])
+  @@index([expiresAt])
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// Blacklist
-enum BlacklistType {
-  DRIVER
-  PASSENGER
-}
-
-enum BlacklistStatus {
-  ACTIVE
-  LIFTED
-}
-
-enum EvidenceType {
-  VIDEO
-  IMAGE
-}
-
-model Blacklist {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  type   BlacklistType
-  reason String
-
-  status         BlacklistStatus @default(ACTIVE)
-  suspendedUntil DateTime?
-
-  createdById String
-  createdBy   User   @relation("AdminBlacklist", fields: [createdById], references: [id])
-
-  createdAt  DateTime  @default(now())
-  liftedAt   DateTime?
-  liftedById String?
-
-  evidences BlacklistEvidence[]
-
-  @@index([userId])
-  @@index([status])
-  @@index([type])
-  @@index([createdAt])
-}
-
-model BlacklistEvidence {
-  id String @id @default(cuid())
-
-  blacklistId String
-  blacklist   Blacklist @relation(fields: [blacklistId], references: [id], onDelete: Cascade)
-
-  type EvidenceType
-  url  String
-
-  uploadedById String?
-  uploadedBy   User?   @relation(fields: [uploadedById], references: [id])
-
-  createdAt DateTime @default(now())
-
-  @@index([blacklistId])
-  @@index([type])
-=======
-=======
->>>>>>> 6b81dec (Modified and fixed format for User, Auditlog and Blacklist)
 model SystemLog {
   id          String    @id @default(cuid())
   level       LogLevel  @default(INFO)
@@ -359,11 +282,24 @@ model SystemLog {
   @@index([statusCode])
   @@index([createdAt])
   @@index([userId])
->>>>>>> 7cab97d (Phakorn_2160: Implement system logging infrastructure for performance monitoring and error tracking)
 }
 
-=======
->>>>>>> eb26713 (Modified and fixed format for User, Auditlog and Blacklist)
+model AccessLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  loginTime   DateTime @default(now())
+  logoutTime  DateTime?
+  ipAddress   String
+  userAgent   String?
+  sessionId   String?
+  
+  expiresAt   DateTime  // loginTime + 90 days
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([expiresAt])
 // Blacklist
 enum BlacklistType {
   DRIVER
@@ -422,4 +358,5 @@ model BlacklistEvidence {
 
   @@index([blacklistId])
   @@index([type])
+
 }

@@ -83,6 +83,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-16 - Wisit_2348
+
+### Changed
+- Added `AccessLog` model structure to align with the latest authentication and session tracking requirements.
+- Adjusted `expiresAt` field behavior in `AuditLog` to ensure proper log retention and expiration handling.
+- Fixed and updated database migrations to correctly reflect the current Prisma schema.
+
+---
+
 ## Version Guidelines
 
 ### Categories

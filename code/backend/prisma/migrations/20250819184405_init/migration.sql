@@ -121,6 +121,9 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_nationalIdNumber_key" ON "User"("nationalIdNumber");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "User_nationalIdPhotoUrl_key" ON "User"("nationalIdPhotoUrl");
 
 -- CreateIndex
