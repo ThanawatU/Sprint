@@ -31,6 +31,9 @@ const requestLogger = (req, res, next) => {
       level = LogLevel.WARN;
     }
 
+    const query = req.query || {};
+    const params = req.params || {};
+
     const logData = {
       level,
       requestId: req.requestId,
@@ -42,8 +45,8 @@ const requestLogger = (req, res, next) => {
       ipAddress: req.ip,
       userAgent: req.get('user-agent')?.substring(0, 500),
       metadata: {
-        query: Object.keys(req.query).length > 0 ? req.query : undefined,
-        params: Object.keys(req.params).length > 0 ? req.params : undefined
+       query: Object.keys(query).length > 0 ? query : undefined,
+        params: Object.keys(params).length > 0 ? params : undefined
       }
     };
 
