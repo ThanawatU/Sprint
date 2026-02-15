@@ -105,6 +105,8 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Removed expiration date fields from auditLog, accessLog, and all related components.
 
+### Fixed
+- Bug fixes in requestLogger.js ,systemLog.service to connect database and backend
 
 ---
 
