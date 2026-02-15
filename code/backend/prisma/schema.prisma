@@ -236,11 +236,13 @@ model AuditLog {
   metadata   Json?    @db.Json
 
   createdAt  DateTime @default(now())
+  expiresAt  DateTime
 
   @@index([userId])
   @@index([action])
   @@index([entity])
   @@index([createdAt])
+  @@index([expiresAt])
 }
 
 model SystemLog {
@@ -274,4 +276,22 @@ model SystemLog {
   @@index([statusCode])
   @@index([createdAt])
   @@index([userId])
+}
+
+model AccessLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  
+  loginTime   DateTime @default(now())
+  logoutTime  DateTime?
+  ipAddress   String
+  userAgent   String?
+  sessionId   String?
+  
+  expiresAt   DateTime  // loginTime + 90 days
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([expiresAt])
 }
