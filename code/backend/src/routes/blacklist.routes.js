@@ -50,10 +50,6 @@ router.post(
     requireAdmin,
     validate({ body: addEvidenceSchema }),
     blacklistController.addEvidence
-<<<<<<< HEAD
 )
 
 module.exports = router;
-=======
-)
->>>>>>> 86d4c30 (Added blacklist.controller, admin.blacklist.routes and blacklist.routes)
