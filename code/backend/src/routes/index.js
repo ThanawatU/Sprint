@@ -7,6 +7,8 @@ const driverVerifRoutes = require('./driverVerification.routes');
 const bookingRoutes = require('./booking.routes');
 const notificationRoutes = require('./notification.routes')
 const mapRoutes = require('./maps.routes')
+const { prisma } = require("../utils/prisma"); // adjust path if needed
+
 
 const router = express.Router();
 
