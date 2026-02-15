@@ -1,9 +1,4 @@
-// POST   /admin/blacklists
-// GET    /admin/blacklists
-// GET    /admin/blacklists/:id
-// PATCH  /admin/blacklists/:id/lift
-// POST   /admin/blacklists/:id/evidence
-const { protect, requireAdmin } = require('../middlewares/auth');
+const { prisma } = require("../prisma");
 
 
 // Create Blacklist
