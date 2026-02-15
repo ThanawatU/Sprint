@@ -353,6 +353,7 @@ model SystemLog {
 >>>>>>> 7cab97d (Phakorn_2160: Implement system logging infrastructure for performance monitoring and error tracking)
 }
 
+// Blacklist
 enum BlacklistType {
   DRIVER
   PASSENGER

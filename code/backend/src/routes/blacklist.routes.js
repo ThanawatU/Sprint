@@ -1,7 +1,12 @@
 const express = require('express');
 const blacklistController = require('../controllers/blacklist.controller');
 const validate = require('../middlewares/validate');
+<<<<<<< HEAD
 const { protect, requireAdmin} = require('../middlewares/auth');
+=======
+const { protect } = require('../middlewares/auth');
+const requireAdmin = require('../middlewares/requireAdmin');
+>>>>>>> 86d4c30 (Added blacklist.controller, admin.blacklist.routes and blacklist.routes)
 
 const {
   createBlacklistSchema,
@@ -50,6 +55,10 @@ router.post(
     requireAdmin,
     validate({ body: addEvidenceSchema }),
     blacklistController.addEvidence
+<<<<<<< HEAD
 )
 
 module.exports = router;
+=======
+)
+>>>>>>> 86d4c30 (Added blacklist.controller, admin.blacklist.routes and blacklist.routes)
