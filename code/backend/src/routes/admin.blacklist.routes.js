@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { prisma } = require("../prisma");
 =======
 // POST   /admin/blacklists
@@ -8,6 +9,9 @@ const { prisma } = require("../prisma");
 // POST   /admin/blacklists/:id/evidence
 const { protect, requireAdmin } = require('../middlewares/auth');
 >>>>>>> 86d4c30 (Added blacklist.controller, admin.blacklist.routes and blacklist.routes)
+=======
+const { prisma } = require("../prisma");
+>>>>>>> 6b81dec (Modified and fixed format for User, Auditlog and Blacklist)
 
 
 // Create Blacklist
