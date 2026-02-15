@@ -39,10 +39,14 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Added `AuditLog` model to schema.prisma
+- Completed Blacklist API
+- Added Postman's Blacklist collection to test folder
 
 ### Changed
 
 - Modify auth.controller.js to audit users Login and Password change activity
+- Fixed Auditlog bug between User table and Auditlog table
+- Fixed Directory conflict for prisma
 
 ## Version Guidelines
 
