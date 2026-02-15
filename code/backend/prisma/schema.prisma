@@ -237,6 +237,7 @@ model AuditLog {
 }
 
 
+// Blacklist
 enum BlacklistType {
   DRIVER
   PASSENGER
