@@ -3,6 +3,7 @@ const verifService = require("../services/driverVerification.service");
 const ApiError = require("../utils/ApiError");
 const { uploadToCloudinary } = require("../utils/cloudinary");
 const notifService = require('../services/notification.service');
+const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 const adminListVerifications = asyncHandler(async (req, res) => {
   const result = await verifService.searchVerifications(req.query);
@@ -57,6 +58,19 @@ const createVerification = asyncHandler(async (req, res) => {
   };
 
   const newRec = await verifService.createVerification(payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'SUBMIT_VERIFICATION',
+    entity: 'DriverVerification',
+    entityId: newRec.id,
+    req,
+    metadata: {
+      licenseNumber: newRec.licenseNumber,
+      firstNameOnLicense: newRec.firstNameOnLicense,
+      lastNameOnLicense: newRec.lastNameOnLicense
+    }
+  });
 
   const notifPayload = {
     userId,
@@ -162,6 +176,25 @@ const updateVerificationStatus = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const updated = await verifService.updateVerificationStatus(id, status);
 
+  let auditAction = 'UPDATE_VERIFICATION';
+  if (status === 'APPROVED') {
+    auditAction = 'APPROVE_VERIFICATION';
+  } else if (status === 'REJECTED') {
+    auditAction = 'REJECT_VERIFICATION';
+  }
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: auditAction,
+    entity: 'DriverVerification',
+    entityId: id,
+    req,
+    metadata: {
+      status: status,
+      licenseNumber: updated.licenseNumber
+    }
+  });
+
   try {
     if (status === 'APPROVED') {
       await notifService.createNotificationByAdmin({
@@ -236,6 +269,20 @@ const adminCreateVerification = asyncHandler(async (req, res) => {
   if (payload.licenseExpiryDate) payload.licenseExpiryDate = new Date(payload.licenseExpiryDate);
 
   const created = await verifService.createVerificationByAdmin(payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'SUBMIT_VERIFICATION',
+    entity: 'DriverVerification',
+    entityId: created.id,
+    req,
+    metadata: {
+      licenseNumber: created.licenseNumber,
+      firstNameOnLicense: created.firstNameOnLicense,
+      lastNameOnLicense: created.lastNameOnLicense,
+      userId: created.userId
+    }
+  });
 
   res.status(201).json({
     success: true,

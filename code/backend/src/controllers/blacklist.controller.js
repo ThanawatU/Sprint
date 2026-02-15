@@ -1,4 +1,5 @@
 const { prisma } = require("../utils/prisma");
+const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 exports.createBlacklist = async (req, res) => {
   try {
@@ -17,6 +18,20 @@ exports.createBlacklist = async (req, res) => {
         reason,
         suspendedUntil,
         createdById: admin.id
+      }
+    });
+
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'ADD_TO_BLACKLIST',
+      entity: 'Blacklist',
+      entityId: blacklist.id,
+      req,
+      metadata: {
+        userId: userId,
+        type: type,
+        reason: reason,
+        suspendedUntil: suspendedUntil
       }
     });
 
@@ -68,6 +83,19 @@ exports.liftBlacklist = async (req, res) => {
       status: "LIFTED",
       liftedAt: new Date(),
       liftedById: req.user.id
+    }
+  });
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'REMOVE_FROM_BLACKLIST',
+    entity: 'Blacklist',
+    entityId: id,
+    req,
+    metadata: {
+      userId: updated.userId,
+      type: updated.type,
+      reason: updated.reason
     }
   });
 

@@ -10,6 +10,8 @@ const logAudit = async ({
   metadata
 }) => {
   try {
+    const createdAt = new Date();
+    
     await prisma.auditLog.create({
       data: {
         userId,
@@ -19,7 +21,8 @@ const logAudit = async ({
         entityId,
         ipAddress: req?.ip,
         userAgent: req?.headers["user-agent"],
-        metadata
+        metadata,
+        createdAt
       }
     });
   } catch (error) {

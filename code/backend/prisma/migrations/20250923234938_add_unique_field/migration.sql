@@ -20,9 +20,6 @@ CREATE INDEX "Route_createdAt_idx" ON "Route"("createdAt");
 CREATE INDEX "Route_departureTime_idx" ON "Route"("departureTime");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_nationalIdNumber_key" ON "User"("nationalIdNumber");
-
--- CreateIndex
 CREATE INDEX "Vehicle_userId_idx" ON "Vehicle"("userId");
 
 -- CreateIndex

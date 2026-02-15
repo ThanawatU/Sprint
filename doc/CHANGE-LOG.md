@@ -92,6 +92,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-16 - Wisit_2348
+
+### Added
+- Created utility modules for accessLog and auditLog.
+
+### Changed
+- Updated migration files to align with the auditLog schema (log retention not implemented yet).
+- Added audit log recording in the following controllers:auth.controller blacklist.controller booking.controller driverVerification.controller router.controller user.controller vehicle.controller
+- Added const createdAt = new Date(); in audit.service.
+
+### Removed
+- Removed expiration date fields from auditLog, accessLog, and all related components.
+
+
+---
+
 ## Version Guidelines
 
 ### Categories

@@ -8,22 +8,6 @@ CREATE TYPE "BlacklistStatus" AS ENUM ('ACTIVE', 'LIFTED');
 CREATE TYPE "EvidenceType" AS ENUM ('VIDEO', 'IMAGE');
 
 -- CreateTable
-CREATE TABLE "AuditLog" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT,
-    "role" "Role",
-    "action" TEXT NOT NULL,
-    "entity" TEXT,
-    "entityId" TEXT,
-    "ipAddress" TEXT,
-    "userAgent" TEXT,
-    "metadata" JSON,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "AuditLog_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Blacklist" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -52,18 +36,6 @@ CREATE TABLE "BlacklistEvidence" (
 );
 
 -- CreateIndex
-CREATE INDEX "AuditLog_userId_idx" ON "AuditLog"("userId");
-
--- CreateIndex
-CREATE INDEX "AuditLog_action_idx" ON "AuditLog"("action");
-
--- CreateIndex
-CREATE INDEX "AuditLog_entity_idx" ON "AuditLog"("entity");
-
--- CreateIndex
-CREATE INDEX "AuditLog_createdAt_idx" ON "AuditLog"("createdAt");
-
--- CreateIndex
 CREATE INDEX "Blacklist_userId_idx" ON "Blacklist"("userId");
 
 -- CreateIndex
@@ -80,9 +52,6 @@ CREATE INDEX "BlacklistEvidence_blacklistId_idx" ON "BlacklistEvidence"("blackli
 
 -- CreateIndex
 CREATE INDEX "BlacklistEvidence_type_idx" ON "BlacklistEvidence"("type");
-
--- AddForeignKey
-ALTER TABLE "AuditLog" ADD CONSTRAINT "AuditLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Blacklist" ADD CONSTRAINT "Blacklist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
