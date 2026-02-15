@@ -4,6 +4,7 @@ const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
 
+
 const login = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
 
@@ -107,4 +108,4 @@ const changePassword = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { login, changePassword };
+module.exports = { login, changePassword};
