@@ -22,35 +22,33 @@ router.post(
 
 // GET /api/blacklists
 router.get(
-  '/',
-  protect,
-  requireAdmin,
-  blacklistController.getBlacklists
-);
+    '/',
+    protect,
+    requireAdmin,
+    blacklistController.getBlacklists
+)
 
 // GET /api/blacklists/:id
 router.get(
-  '/:id',
-  protect,
-  requireAdmin,
-  blacklistController.getBlacklistById
-);
+    '/:id',
+    protect,
+    requireAdmin,
+    blacklistController.getBlacklists
+)
 
 // PATCH /api/blacklists/:id/lift
 router.patch(
-  '/:id/lift',
-  protect,
-  requireAdmin,
-  blacklistController.liftBlacklist
-);
+    '/:id/lift',
+    protect,
+    requireAdmin,
+    blacklistController.liftBlacklist
+)
 
 // POST /api/blacklists/:id/evidence
 router.post(
-  '/:id/evidence',
-  protect,
-  requireAdmin,
-  validate({ body: addEvidenceSchema }),
-  blacklistController.addEvidence
-);
-
-module.exports = router;
+    '/:id/evidence',
+    protect,
+    requireAdmin,
+    validate({ body: addEvidenceSchema }),
+    blacklistController.addEvidence
+)
