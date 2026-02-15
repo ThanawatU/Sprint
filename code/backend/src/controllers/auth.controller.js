@@ -3,7 +3,7 @@ const { signToken } = require("../utils/jwt");
 const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
-
+const { prisma } = require("../utils/prisma"); // adjust path if needed
 
 const login = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
