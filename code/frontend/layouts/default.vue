@@ -451,10 +451,14 @@ async function onBellClick() {
 async function fetchUserNotifications() {
     try {
         if (!token.value) return
-        loading.value = true
 
         const apiBase = useRuntimeConfig().public.apiBase || 'http://localhost:3000/api'
         const tk = useCookie('token')?.value || (process.client ? localStorage.getItem('token') : '')
+
+        // Guard: Don't attempt API call without a valid token
+        if (!tk) return
+
+        loading.value = true
 
         const res = await $fetch('/notifications', {
             baseURL: apiBase,

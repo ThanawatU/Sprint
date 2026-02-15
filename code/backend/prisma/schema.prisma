@@ -60,6 +60,12 @@ enum NotificationType {
   ROUTE
 }
 
+enum LogLevel {
+  INFO
+  WARN
+  ERROR
+}
+
 model User {
   id                    String   @id @default(cuid())
   username              String   @unique
@@ -235,4 +241,37 @@ model AuditLog {
   @@index([action])
   @@index([entity])
   @@index([createdAt])
+}
+
+model SystemLog {
+  id          String    @id @default(cuid())
+  level       LogLevel  @default(INFO)
+  requestId   String?   @db.VarChar(36)
+
+  // HTTP Request Info
+  method      String?   @db.VarChar(10)
+  path        String?   @db.VarChar(500)
+  statusCode  Int?
+  duration    Int?      // milliseconds
+
+  // Context
+  userId      String?
+  ipAddress   String?   @db.VarChar(45)
+  userAgent   String?   @db.VarChar(500)
+
+  // Error details (populated for ERROR level)
+  // JSON: { name, message, code?, stack? }
+  error       Json?     @db.Json
+
+  // Additional context
+  // JSON: { query?, params? }
+  metadata    Json?     @db.Json
+
+  createdAt   DateTime  @default(now())
+
+  @@index([level])
+  @@index([requestId])
+  @@index([statusCode])
+  @@index([createdAt])
+  @@index([userId])
 }

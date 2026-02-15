@@ -1,5 +1,6 @@
 const { Prisma } = require('@prisma/client');
 const ApiError = require('../utils/ApiError');
+const { logRequest } = require('../services/systemLog.service');
 
 const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV !== 'production') {
@@ -45,6 +46,25 @@ const errorHandler = (err, req, res, next) => {
     //สำหรับ Error 500 ทุกกรณี ให้ใช้ข้อความง่ายๆ เสมอ
     if (statusCode >= 500) {
         message = 'เกิดข้อผิดพลาดภายในระบบ กรุณาลองใหม่ภายหลัง';
+    }
+
+    if (req.requestId) {
+        logRequest({
+            level: 'ERROR',
+            requestId: req.requestId,
+            method: req.method,
+            path: req.originalUrl,
+            statusCode,
+            userId: req.user?.sub || null,
+            ipAddress: req.ip,
+            userAgent: req.get('user-agent')?.substring(0, 500),
+            error: {
+                name: err.name,
+                message: err.message,
+                code: err.code || null,
+                stack: process.env.NODE_ENV !== 'production' ? err.stack : null
+            }
+        });
     }
 
     if (!res.headersSent) {
