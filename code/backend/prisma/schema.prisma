@@ -35,22 +35,22 @@ enum BookingStatus {
 }
 
 enum CancelReason {
-  CHANGE_OF_PLAN               // เปลี่ยนแผน/มีธุระกะทันหัน
-  FOUND_ALTERNATIVE            // พบวิธีเดินทางอื่นแล้ว
-  DRIVER_DELAY                 // คนขับล่าช้าหรือเลื่อนเวลา
-  PRICE_ISSUE                  // ราคาหรือค่าใช้จ่ายไม่เหมาะสม
-  WRONG_LOCATION               // เลือกจุดรับ–ส่งผิด
-  DUPLICATE_OR_WRONG_DATE      // จองซ้ำหรือจองผิดวัน
-  SAFETY_CONCERN               // กังวลด้านความปลอดภัย
-  WEATHER_OR_FORCE_MAJEURE     // สภาพอากาศ/เหตุสุดวิสัย
-  COMMUNICATION_ISSUE          // สื่อสารไม่สะดวก/ติดต่อไม่ได้
+  CHANGE_OF_PLAN // เปลี่ยนแผน/มีธุระกะทันหัน
+  FOUND_ALTERNATIVE // พบวิธีเดินทางอื่นแล้ว
+  DRIVER_DELAY // คนขับล่าช้าหรือเลื่อนเวลา
+  PRICE_ISSUE // ราคาหรือค่าใช้จ่ายไม่เหมาะสม
+  WRONG_LOCATION // เลือกจุดรับ–ส่งผิด
+  DUPLICATE_OR_WRONG_DATE // จองซ้ำหรือจองผิดวัน
+  SAFETY_CONCERN // กังวลด้านความปลอดภัย
+  WEATHER_OR_FORCE_MAJEURE // สภาพอากาศ/เหตุสุดวิสัย
+  COMMUNICATION_ISSUE // สื่อสารไม่สะดวก/ติดต่อไม่ได้
 }
 
 enum LicenseType {
   PRIVATE_CAR_TEMPORARY // รถยนต์ส่วนบุคคลชั่วคราว (2 ปี)
-  PRIVATE_CAR          // รถยนต์ส่วนบุคคล (5 ปี)
-  PUBLIC_CAR           // รถยนต์สาธารณะ
-  LIFETIME             // ตลอดชีพ
+  PRIVATE_CAR // รถยนต์ส่วนบุคคล (5 ปี)
+  PUBLIC_CAR // รถยนต์สาธารณะ
+  LIFETIME // ตลอดชีพ
 }
 
 enum NotificationType {
@@ -61,33 +61,41 @@ enum NotificationType {
 }
 
 model User {
-  id                    String   @id @default(cuid())
-  username              String   @unique
-  email                 String   @unique
-  password              String
-  firstName             String?
-  lastName              String?
-  gender                String?
-  phoneNumber           String?
-  profilePicture        String?
-  nationalIdNumber      String?  @unique
-  nationalIdPhotoUrl    String?  @unique
-  nationalIdExpiryDate  DateTime?
-  selfiePhotoUrl        String?
-  role                  Role     @default(PASSENGER)
-  isVerified            Boolean  @default(false)
-  isActive              Boolean  @default(true)
-  otpCode               String?
-  lastLogin             DateTime?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id                      String              @id @default(cuid())
+  username                String              @unique
+  email                   String              @unique
+  password                String
+  firstName               String?
+  lastName                String?
+  gender                  String?
+  phoneNumber             String?
+  profilePicture          String?
+  nationalIdNumber        String?             @unique
+  nationalIdPhotoUrl      String?             @unique
+  nationalIdExpiryDate    DateTime?
+  selfiePhotoUrl          String?
+  role                    Role                @default(PASSENGER)
+  isVerified              Boolean             @default(false)
+  isActive                Boolean             @default(true)
+  otpCode                 String?
+  lastLogin               DateTime?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
   passengerSuspendedUntil DateTime?
   driverSuspendedUntil    DateTime?
-  driverVerification    DriverVerification?
-  vehicles              Vehicle[]
-  notification          Notification[]
-  createdRoutes         Route[]             @relation("DriverRoutes")
-  bookings              Booking[]           @relation("PassengerBookings")
+  driverVerification      DriverVerification?
+  vehicles                Vehicle[]
+  notification            Notification[]
+  createdRoutes           Route[]             @relation("DriverRoutes")
+  bookings                Booking[]           @relation("PassengerBookings")
+
+  // เพิ่มจาก User เดิม
+  auditLogs AuditLog[]
+
+  blacklists        Blacklist[]
+  createdBlacklists Blacklist[] @relation("AdminBlacklist")
+
+  uploadedEvidences BlacklistEvidence[]
 
   @@index([role])
   @@index([isActive])
@@ -96,20 +104,20 @@ model User {
 }
 
 model DriverVerification {
-  id                  String             @id @default(cuid())
-  userId              String             @unique
-  user                User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  licenseNumber       String             @unique
-  firstNameOnLicense  String
-  lastNameOnLicense   String
-  licenseIssueDate    DateTime
-  licenseExpiryDate   DateTime
-  licensePhotoUrl     String
-  selfiePhotoUrl      String
-  typeOnLicense       LicenseType
-  status              VerificationStatus @default(PENDING)
-  createdAt           DateTime           @default(now())
-  updatedAt           DateTime           @updatedAt
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseNumber      String             @unique
+  firstNameOnLicense String
+  lastNameOnLicense  String
+  licenseIssueDate   DateTime
+  licenseExpiryDate  DateTime
+  licensePhotoUrl    String
+  selfiePhotoUrl     String
+  typeOnLicense      LicenseType
+  status             VerificationStatus @default(PENDING)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 
   @@index([status])
   @@index([createdAt])
@@ -118,18 +126,18 @@ model DriverVerification {
 }
 
 model Notification {
-  id        String           @id @default(cuid())
-  userId    String
-  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  type      NotificationType @default(SYSTEM)
-  title     String
-  body      String
-  link      String?
-  metadata  Json?            @db.Json
+  type     NotificationType @default(SYSTEM)
+  title    String
+  body     String
+  link     String?
+  metadata Json?            @db.Json
 
-  readAt    DateTime?
-  createdAt DateTime         @default(now())
+  readAt          DateTime?
+  createdAt       DateTime  @default(now())
   adminReviewedAt DateTime?
 
   @@index([userId, createdAt])
@@ -138,21 +146,21 @@ model Notification {
 }
 
 model Vehicle {
-  id            String   @id @default(cuid())
-  userId        String
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  vehicleModel  String
-  licensePlate  String   @unique
-  vehicleType   String
-  color         String
-  seatCapacity  Int
-  amenities     String[]
-  photos        Json?    @db.Json
-  isDefault     Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vehicleModel String
+  licensePlate String   @unique
+  vehicleType  String
+  color        String
+  seatCapacity Int
+  amenities    String[]
+  photos       Json?    @db.Json
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  routes        Route[]
+  routes Route[]
 
   @@index([userId])
   @@index([createdAt])
@@ -174,20 +182,20 @@ model Route {
   conditions      String?
   status          RouteStatus @default(AVAILABLE)
   cancelledAt     DateTime?
-  cancelledBy     String?     // 'DRIVER' | 'ADMIN'
-  routePolyline String?
-  distanceMeters Int?
+  cancelledBy     String? // 'DRIVER' | 'ADMIN'
+  routePolyline   String?
+  distanceMeters  Int?
   durationSeconds Int?
   routeSummary    String?
   distance        String?
   duration        String?
-  waypoints       Json?        @db.Json
+  waypoints       Json?       @db.Json
   landmarks       Json?       @db.Json
   steps           Json?       @db.Json
   createdAt       DateTime    @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt       DateTime    @updatedAt
 
-  bookings        Booking[]
+  bookings Booking[]
 
   @@index([driverId])
   @@index([vehicleId])
@@ -205,7 +213,7 @@ model Booking {
   numberOfSeats   Int
   status          BookingStatus @default(PENDING)
   cancelledAt     DateTime?
-  cancelledBy     String?       // 'PASSENGER' | 'DRIVER' | 'ADMIN'
+  cancelledBy     String? // 'PASSENGER' | 'DRIVER' | 'ADMIN'
   cancelReason    CancelReason?
   pickupLocation  Json          @db.Json
   dropoffLocation Json          @db.Json
@@ -213,29 +221,28 @@ model Booking {
 }
 
 model AuditLog {
-  id         String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId     String?
-  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  role       Role?
-  action     String
-  entity     String?
-  entityId   String?
+  role     Role?
+  action   String
+  entity   String?
+  entityId String?
 
-  ipAddress  String?
-  userAgent  String?
+  ipAddress String?
+  userAgent String?
 
-  metadata   Json?    @db.Json
+  metadata Json? @db.Json
 
-  createdAt  DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId])
   @@index([action])
   @@index([entity])
   @@index([createdAt])
 }
-
 
 // Blacklist
 enum BlacklistType {
@@ -244,7 +251,7 @@ enum BlacklistType {
 }
 
 enum BlacklistStatus {
-  ACTIVE 
+  ACTIVE
   LIFTED
 }
 
@@ -254,24 +261,24 @@ enum EvidenceType {
 }
 
 model Blacklist {
-  id              String            @id @default(cuid())
-  userId          String
-  user            User              @relation(fields: [userId], references: [id], onDelete, Cascade)
-  
-  type            BlacklistType
-  reason          String
-  
-  status          BlacklistStatus @default(ACTIVE)
-  suspendedUntil  DateTime?
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdById     String
-  createBy        User               @relation("AdminBlacklist", fields: [createdById], references: [id])
+  type   BlacklistType
+  reason String
 
-  createdAt       DateTime           @default(now())
-  liftedAt        DateTime?
-  liftedById      String?
+  status         BlacklistStatus @default(ACTIVE)
+  suspendedUntil DateTime?
 
-  evidences      BlacklistEvidence[]
+  createdById String
+  createdBy   User   @relation("AdminBlacklist", fields: [createdById], references: [id])
+
+  createdAt  DateTime  @default(now())
+  liftedAt   DateTime?
+  liftedById String?
+
+  evidences BlacklistEvidence[]
 
   @@index([userId])
   @@index([status])
@@ -280,20 +287,19 @@ model Blacklist {
 }
 
 model BlacklistEvidence {
-  id            String            @id @default(cuid())
+  id String @id @default(cuid())
 
-  blacklistId   String
-  blacklist     Blacklist         @relation(field: [blacklistId], references: [id], onDelete Cascade)
+  blacklistId String
+  blacklist   Blacklist @relation(fields: [blacklistId], references: [id], onDelete: Cascade)
 
-  type          EvidenceType
-  url           String
+  type EvidenceType
+  url  String
 
-  uploadedById  String?
-  uploadedBy    User?             @relation(fields: [uploadedById], references: [id])
+  uploadedById String?
+  uploadedBy   User?   @relation(fields: [uploadedById], references: [id])
 
-  createdAt     DateTime          @default(now())
+  createdAt DateTime @default(now())
 
   @@index([blacklistId])
   @@index([type])
 }
-
