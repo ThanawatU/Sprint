@@ -1,8 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 const { prisma } = require("../utils/prisma"); // adjust path if needed
 =======
 const prisma = require("../utils/prisma");
 >>>>>>> 7cab97d (Phakorn_2160: Implement system logging infrastructure for performance monitoring and error tracking)
+=======
+const { prisma } = require("../utils/prisma"); // adjust path if needed
+>>>>>>> 323303d (Fixed directory conflict for prisma)
 
 const logAudit = async ({
   userId,
