@@ -1,8 +1,7 @@
 const express = require('express');
 const blacklistController = require('../controllers/blacklist.controller');
 const validate = require('../middlewares/validate');
-const { protect } = require('../middlewares/auth');
-const requireAdmin = require('../middlewares/requireAdmin');
+const { protect, requireAdmin} = require('../middlewares/auth');
 
 const {
   createBlacklistSchema,
@@ -52,3 +51,5 @@ router.post(
     validate({ body: addEvidenceSchema }),
     blacklistController.addEvidence
 )
+
+module.exports = router;

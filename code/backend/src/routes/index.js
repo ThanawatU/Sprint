@@ -21,4 +21,8 @@ router.use('/bookings', bookingRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/api/maps', mapRoutes);
 
+// เพิ่ม blacklist routes
+const blacklistRoutes = require('./blacklist.routes');
+router.use('/blacklists', blacklistRoutes);
+
 module.exports = router;

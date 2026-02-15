@@ -16,6 +16,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
             // Attach user to the request object
             req.user = {
+                id: decoded.sub,
                 sub: decoded.sub,
                 role: decoded.role,
             };

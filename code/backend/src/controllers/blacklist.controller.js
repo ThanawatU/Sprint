@@ -1,0 +1,107 @@
+const { prisma } = require("../utils/prisma");
+
+exports.createBlacklist = async (req, res) => {
+  try {
+    const { userId, type, reason, suspendedUntil } = req.body;
+
+    const admin = req.user; // from JWT middleware
+
+    if (admin.role !== "ADMIN") {
+      return res.status(403).json({ message: "Forbidden " + admin.role });
+    }
+
+    const blacklist = await prisma.blacklist.create({
+      data: {
+        userId,
+        type,
+        reason,
+        suspendedUntil,
+        createdById: admin.id
+      }
+    });
+
+    res.status(201).json(blacklist);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to blacklist user" });
+  }
+};
+
+exports.getBlacklists = async (req, res) => {
+  const records = await prisma.blacklist.findMany({
+    include: {
+      user: true,
+      evidences: true
+    },
+    orderBy: {
+      createdAt: "desc"
+    }
+  });
+
+  res.json(records);
+};
+
+exports.getBlacklistById = async (req, res) => {
+  const { id } = req.params;
+
+  const record = await prisma.blacklist.findUnique({
+    where: { id },
+    include: {
+      user: true,
+      evidences: true
+    }
+  });
+
+  if (!record) {
+    return res.status(404).json({ message: "Not found" });
+  }
+
+  res.json(record);
+};
+
+exports.liftBlacklist = async (req, res) => {
+  const { id } = req.params;
+
+  const updated = await prisma.blacklist.update({
+    where: { id },
+    data: {
+      status: "LIFTED",
+      liftedAt: new Date(),
+      liftedById: req.user.id
+    }
+  });
+
+  res.json(updated);
+};
+
+exports.checkBlacklist = async (userId) => {
+  const activeBlacklist = await prisma.blacklist.findFirst({
+    where: {
+      userId,
+      status: "ACTIVE",
+      OR: [
+        { suspendedUntil: null },
+        { suspendedUntil: { gt: new Date() } }
+      ]
+    }
+  });
+
+  return activeBlacklist;
+};
+
+exports.addEvidence = async (req, res) => {
+  const { id } = req.params;
+  const { type, url } = req.body;
+
+  const evidence = await prisma.blacklistEvidence.create({
+    data: {
+      blacklistId: id,
+      type,
+      url,
+      uploadedById: req.user.id
+    }
+  });
+
+  res.status(201).json(evidence);
+};
+

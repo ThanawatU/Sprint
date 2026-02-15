@@ -1,10 +1,14 @@
 const { z } = require("zod");
 
 const createBlacklistSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.string().min(10),
   type: z.enum(["DRIVER", "PASSENGER"]),
   reason: z.string().max(200),
-  suspendedUntil: z.date().optional()
+  suspendedUntil: z
+        .string()
+        .datetime()
+        .nullable()
+        .optional()
 });
 
 const addEvidenceSchema = z.object({
