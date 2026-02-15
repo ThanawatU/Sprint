@@ -368,11 +368,18 @@ function asTriBool(v) {
 
 
 async function fetchUsers(page = 1) {
+    const config = useRuntimeConfig()
+    const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
+    
+    // Guard: Don't attempt API call without a valid token
+    if (!token) {
+        loadError.value = 'กรุณาเข้าสู่ระบบก่อนใช้งาน'
+        return
+    }
+    
     isLoading.value = true
     loadError.value = ''
     try {
-        const config = useRuntimeConfig()
-        const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
 
         const { sortBy, sortOrder } = parseSort(filters.sort)
 

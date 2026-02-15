@@ -11,6 +11,7 @@ const routes = require('./src/routes');
 const { errorHandler } = require('./src/middlewares/errorHandler');
 const ApiError = require('./src/utils/ApiError')
 const { metricsMiddleware } = require('./src/middlewares/metrics');
+const { requestLogger } = require('./src/middlewares/requestLogger');
 const ensureAdmin = require('./src/bootstrap/ensureAdmin');
 
 const app = express();
@@ -43,6 +44,9 @@ app.use(express.json());
 
 //Metrics Middleware
 app.use(metricsMiddleware);
+
+//Request Logger Middleware
+app.use(requestLogger);
 
 // --- Routes ---
 // Health Check Route

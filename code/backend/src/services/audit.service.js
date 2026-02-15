@@ -1,4 +1,4 @@
-const { prisma } = require("../prisma"); // adjust path if needed
+const prisma = require("../utils/prisma");
 
 const logAudit = async ({
   userId,
