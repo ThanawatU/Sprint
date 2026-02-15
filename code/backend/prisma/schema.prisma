@@ -276,6 +276,7 @@ model SystemLog {
   @@index([userId])
 }
 
+// Blacklist
 enum BlacklistType {
   DRIVER
   PASSENGER
