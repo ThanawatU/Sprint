@@ -29,6 +29,7 @@ services:
     ports:
       - "${BACKEND_PORT:-3002}:3000"
     environment:
+      TZ: Asia/Bangkok
       PORT: 3000
       NODE_ENV: production
       DATABASE_URL: postgresql://${POSTGRES_USER:-pnnapp_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-pnnapp_db}?schema=public
