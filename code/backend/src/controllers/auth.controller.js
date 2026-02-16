@@ -3,6 +3,7 @@ const { signToken } = require("../utils/jwt");
 const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
+const { logLogin } = require('../utils/accessLog');
 const { prisma } = require("../utils/prisma"); // adjust path if needed
 
 const login = asyncHandler(async (req, res) => {
@@ -19,6 +20,8 @@ const login = asyncHandler(async (req, res) => {
 
     if (user && !user.isActive) {
         await logAudit({
+            userId: user.id,
+            role: user.role,
             action: 'LOGIN_ATTEMPT',
             entity: 'User',
             entityId: user.id,
@@ -31,6 +34,8 @@ const login = asyncHandler(async (req, res) => {
     const passwordIsValid = user ? await userService.comparePassword(user, password) : false;
     if (!user || !passwordIsValid) {
         await logAudit({
+            userId: user?.id,
+            role: user?.role,
             action: 'LOGIN_ATTEMPT',
             entity: 'User',
             entityId: user ? user.id : null,
@@ -61,16 +66,27 @@ const login = asyncHandler(async (req, res) => {
         ...safeUser
     } = user;
 
-    res.status(200).json({
-        success: true,
-        message: "Login successful",
-        data: { token, user: safeUser }
-    });
     await logAudit({
+        userId: user.id,
+        role: user.role,
         action: 'LOGIN_SUCCESS',
         entity: 'User',
         entityId: user.id,
         req
+    });
+
+    // บันทึก login ใน AccessLog
+    await logLogin({
+        userId: user.id,
+        ipAddress: req.ip,
+        userAgent: req.get('user-agent'),
+        sessionId: req.requestId
+    });
+
+    res.status(200).json({
+        success: true,
+        message: "Login successful",
+        data: { token, user: safeUser }
     });
 });
 
@@ -86,6 +102,8 @@ const changePassword = asyncHandler(async (req, res) => {
         }
 
         await logAudit({
+            userId: userId,
+            role: req.user.role,
             action: 'PASSWORD_CHANGE_FAILED',
             entity: 'User',
             entityId: userId,
@@ -95,17 +113,21 @@ const changePassword = asyncHandler(async (req, res) => {
         throw new ApiError(500, 'Could not update password.');
     }
 
+    await logAudit({
+        userId: userId,
+        role: req.user.role,
+        action: 'PASSWORD_CHANGED',
+        entity: 'User',
+        entityId: userId,
+        req
+    });
+
     res.status(200).json({
         success: true,
         message: "Password changed successfully",
         data: null
     });
-    await logAudit({
-            action: 'PASSWORD_CHANGED',
-            entity: 'User',
-            entityId: user.id,
-            req
-    });
+    
 });
 
 module.exports = { login, changePassword};

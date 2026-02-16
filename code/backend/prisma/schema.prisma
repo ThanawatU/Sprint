@@ -95,9 +95,10 @@ model User {
   createdRoutes           Route[]             @relation("DriverRoutes")
   bookings                Booking[]           @relation("PassengerBookings")
 
-  // เพิ่มจาก User เดิม
-  auditLogs AuditLog[]
-  accessLogs AccessLog[]
+  // Logging relations
+  auditLogs               AuditLog[]
+  accessLogs              AccessLog[]
+
   blacklists        Blacklist[]
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
 
@@ -249,7 +250,6 @@ model AuditLog {
   @@index([action])
   @@index([entity])
   @@index([createdAt])
-  @@index([expiresAt])
 }
 
 model SystemLog {
@@ -288,21 +288,18 @@ model SystemLog {
 model AccessLog {
   id          String   @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   loginTime   DateTime @default(now())
   logoutTime  DateTime?
   ipAddress   String
   userAgent   String?
   sessionId   String?
-  
-  expiresAt   DateTime  // loginTime + 90 days
+
   createdAt   DateTime  @default(now())
-  
+
   @@index([userId])
-  @@index([expiresAt])
 }
-// Blacklist
 enum BlacklistType {
   DRIVER
   PASSENGER

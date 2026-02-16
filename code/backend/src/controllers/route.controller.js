@@ -4,6 +4,7 @@ const vehicleService = require("../services/vehicle.service");
 const ApiError = require("../utils/ApiError");
 const verifService = require("../services/driverVerification.service");
 const { getDirections } = require("../utils/googleMaps");
+const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 const getAllRoutes = asyncHandler(async (req, res) => {
   const routes = await routeService.getAllRoutes();
@@ -125,6 +126,22 @@ const createRoute = asyncHandler(async (req, res) => {
   }
 
   const newRoute = await routeService.createRoute(payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_ROUTE',
+    entity: 'Route',
+    entityId: newRoute.id,
+    req,
+    metadata: {
+      routeSummary: newRoute.routeSummary,
+      startLocation: newRoute.startLocation,
+      endLocation: newRoute.endLocation,
+      departureTime: newRoute.departureTime,
+      vehicleId: newRoute.vehicleId
+    }
+  });
+
   res.status(201).json({
     success: true,
     message: "Route created successfully",
@@ -244,6 +261,18 @@ const updateRoute = asyncHandler(async (req, res) => {
   }
 
   const updated = await routeService.updateRoute(id, payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      updatedFields: Object.keys(payload)
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Route updated successfully",
@@ -263,6 +292,19 @@ const deleteRoute = asyncHandler(async (req, res) => {
     throw new ApiError(400, "ไม่สามารถลบเส้นทางที่ถูกยกเลิกได้");
   }
   const result = await routeService.deleteRoute(id);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      routeSummary: existing.routeSummary,
+      driverId: existing.driverId
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Route deleted successfully",
@@ -332,6 +374,23 @@ const adminCreateRoute = asyncHandler(async (req, res) => {
   }
 
   const newRoute = await routeService.createRoute(payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_ROUTE',
+    entity: 'Route',
+    entityId: newRoute.id,
+    req,
+    metadata: {
+      routeSummary: newRoute.routeSummary,
+      startLocation: newRoute.startLocation,
+      endLocation: newRoute.endLocation,
+      departureTime: newRoute.departureTime,
+      vehicleId: newRoute.vehicleId,
+      driverId: newRoute.driverId
+    }
+  });
+
   res.status(201).json({
     success: true,
     message: "Route (by admin) created successfully",
@@ -442,6 +501,18 @@ const adminUpdateRoute = asyncHandler(async (req, res) => {
   }
 
   const updated = await routeService.updateRoute(id, payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      updatedFields: Object.keys(payload)
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Route (by admin) updated successfully",
@@ -456,6 +527,19 @@ const adminDeleteRoute = asyncHandler(async (req, res) => {
   if (!existing) throw new ApiError(404, "Route not found");
 
   const result = await routeService.deleteRoute(id);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      routeSummary: existing.routeSummary,
+      driverId: existing.driverId
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Route (by admin) deleted successfully",
@@ -469,6 +553,18 @@ const cancelRoute = asyncHandler(async (req, res) => {
   const { reason } = req.body;
 
   const result = await routeService.cancelRoute(id, driverId, { reason });
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CANCEL_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      reason: reason || null
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Route cancelled successfully",
