@@ -3,6 +3,7 @@ const vehicleService = require("../services/vehicle.service");
 const ApiError = require("../utils/ApiError");
 const { uploadToCloudinary } = require('../utils/cloudinary');
 const userService = require("../services/user.service");
+const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 const listMyVehicles = asyncHandler(async (req, res) => {
   const ownerId = req.user.sub;
@@ -72,6 +73,20 @@ const createVehicle = asyncHandler(async (req, res) => {
   }
 
   const newVehicle = await vehicleService.createVehicle(payload, ownerId);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: newVehicle.id,
+    req,
+    metadata: {
+      vehicleName: newVehicle.vehicleName,
+      licensePlate: newVehicle.licensePlate,
+      type: newVehicle.type
+    }
+  });
+
   res.status(201).json({
     success: true,
     message: "Vehicle created successfully.",
@@ -95,6 +110,17 @@ const updateVehicle = asyncHandler(async (req, res) => {
 
   const updated = await vehicleService.updateVehicle(id, ownerId, payload)
 
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: id,
+    req,
+    metadata: {
+      updatedFields: Object.keys(payload)
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Vehicle updated successfully.",
@@ -107,6 +133,18 @@ const deleteVehicle = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const result = await vehicleService.deleteVehicle(id, ownerId);
 
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: id,
+    req,
+    metadata: {
+      vehicleName: result.vehicleName,
+      licensePlate: result.licensePlate
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Vehicle deleted successfully.",
@@ -118,6 +156,18 @@ const setDefaultVehicle = asyncHandler(async (req, res) => {
   const ownerId = req.user.sub;
   const { id } = req.params;
   const result = await vehicleService.setDefaultVehicle(id, ownerId);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'SET_DEFAULT_VEHICLE',
+    entity: 'Vehicle',
+    entityId: id,
+    req,
+    metadata: {
+      vehicleName: result.vehicleName,
+      licensePlate: result.licensePlate
+    }
+  });
 
   res.status(200).json({
     success: true,
@@ -161,6 +211,21 @@ const adminCreateVehicle = asyncHandler(async (req, res) => {
   }
 
   const newVehicle = await vehicleService.createVehicle(payload, userId);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'CREATE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: newVehicle.id,
+    req,
+    metadata: {
+      vehicleName: newVehicle.vehicleName,
+      licensePlate: newVehicle.licensePlate,
+      type: newVehicle.type,
+      userId: userId
+    }
+  });
+
   res.status(201).json({
     success: true,
     message: "Vehicle created successfully.",
@@ -184,6 +249,18 @@ const adminUpdateVehicle = asyncHandler(async (req, res) => {
   }
 
   const updated = await vehicleService.updateVehicleByAdmin(id, payload);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'UPDATE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: id,
+    req,
+    metadata: {
+      updatedFields: Object.keys(payload)
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Vehicle (by admin) updated successfully.",
@@ -194,6 +271,19 @@ const adminUpdateVehicle = asyncHandler(async (req, res) => {
 const adminDeleteVehicle = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const result = await vehicleService.deleteVehicleByAdmin(id);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'DELETE_VEHICLE',
+    entity: 'Vehicle',
+    entityId: id,
+    req,
+    metadata: {
+      vehicleName: result.vehicleName,
+      licensePlate: result.licensePlate
+    }
+  });
+
   res.status(200).json({
     success: true,
     message: "Vehicle (by admin) deleted successfully.",
