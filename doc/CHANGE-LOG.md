@@ -110,6 +110,16 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-16 - Phakorn_2160
+
+### Added
+- `src/services/blacklist.service.js` - Blacklist checking service with `checkBlacklistByIdentifiers()` and `checkBlacklistByUserId()` functions
+
+### Changed
+- `src/services/user.service.js` - Registration now checks if email, nationalIdNumber, or phoneNumber belongs to a blacklisted user before allowing account creation (returns 403 if blacklisted)
+
+---
+
 ## Version Guidelines
 
 ### Categories
