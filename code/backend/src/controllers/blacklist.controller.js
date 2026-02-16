@@ -1,8 +1,5 @@
 const { prisma } = require("../utils/prisma");
-<<<<<<< HEAD
-=======
 const { auditLog, getUserFromRequest } = require('../utils/auditLog');
->>>>>>> main
 
 exports.createBlacklist = async (req, res) => {
   try {
@@ -24,8 +21,6 @@ exports.createBlacklist = async (req, res) => {
       }
     });
 
-<<<<<<< HEAD
-=======
     await auditLog({
       ...getUserFromRequest(req),
       action: 'ADD_TO_BLACKLIST',
@@ -40,7 +35,6 @@ exports.createBlacklist = async (req, res) => {
       }
     });
 
->>>>>>> main
     res.status(201).json(blacklist);
   } catch (error) {
     console.error(error);
@@ -92,8 +86,6 @@ exports.liftBlacklist = async (req, res) => {
     }
   });
 
-<<<<<<< HEAD
-=======
   await auditLog({
     ...getUserFromRequest(req),
     action: 'REMOVE_FROM_BLACKLIST',
@@ -107,7 +99,6 @@ exports.liftBlacklist = async (req, res) => {
     }
   });
 
->>>>>>> main
   res.json(updated);
 };
 
@@ -141,4 +132,21 @@ exports.addEvidence = async (req, res) => {
 
   res.status(201).json(evidence);
 };
+
+exports.updateBlacklist = async (req, res) => {
+  const { id } = req.params;
+  const { reason, status, suspendedUntil } = req.body;
+
+  const updated = await prisma.blacklist.update({
+    where: { id },
+    data: {
+      reason,
+      status,
+      suspendedUntil
+    }
+  });
+
+  res.json(updated);
+};
+
 
