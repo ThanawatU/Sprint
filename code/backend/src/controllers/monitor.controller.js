@@ -2,7 +2,8 @@ const monitorService = require('../services/monitor.service');
 
 exports.getLogs = async (req, res) => {
   try {
-    const logs = await monitorService.fetchLatestLogs();
+    const { level } = req.query;
+    const logs = await monitorService.getLatestSystemLogs(level);
     res.json(logs);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch logs' });
@@ -11,7 +12,7 @@ exports.getLogs = async (req, res) => {
 
 exports.getSummary = async (req, res) => {
   try {
-    const summary = await monitorService.fetchSummary();
+    const summary = await monitorService.getSystemSummary();
     res.json(summary);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch summary' });

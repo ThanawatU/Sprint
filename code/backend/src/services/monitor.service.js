@@ -1,7 +1,11 @@
 const { prisma } = require("../utils/prisma");
 
-const getLatestSystemLogs = async (limit = 100) => {
+const getLatestSystemLogs = async (level, limit = 100) => {
+    const allowedLevels = ['INFO', 'WARN', 'ERROR'];
     const logs = await prisma.systemLog.findMany({
+        where: allowedLevels.includes(level)
+            ? { level }
+            : undefined,
         orderBy: { createdAt: "desc" },
         take: limit,
         select: {
@@ -11,7 +15,8 @@ const getLatestSystemLogs = async (limit = 100) => {
             path: true,
             statusCode: true,
             duration: true,
-            level: true
+            level: true,
+            userId: true
         }
     });
 
@@ -22,9 +27,11 @@ const getLatestSystemLogs = async (limit = 100) => {
         endpoint: log.path,
         statusCode: log.statusCode,
         responseTime: log.duration,
-        level: log.level
+        level: log.level,
+        userId: log.userId
     }));
 };
+
 
 
 const getSystemSummary = async () => {
@@ -40,22 +47,21 @@ const getSystemSummary = async () => {
     });
 
     const avgData = await prisma.systemLog.aggregate({
+        where: {
+            createdAt: { gte: fiveMinutesAgo }
+        },
         _avg: {
             duration: true
         }
     });
-
+    
     const avgResponse = avgData._avg.duration || 0;
-
-    const highError = errorCount > 10;
-    const highLatency = avgResponse > 2000;
-
     return {
         total,
         errorCount,
         avgResponse: Math.round(avgResponse),
-        highError,
-        highLatency
+        highError: errorCount > 10,
+        highLatency: avgResponse > 2000
     };
 };
 

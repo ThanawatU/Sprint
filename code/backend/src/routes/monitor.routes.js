@@ -3,17 +3,24 @@ const router = express.Router();
 const { prisma } = require('../utils/prisma');
 
 
-//Latest 100 System Logs
+// Latest 100 System Logs 
 router.get('/logs', async (req, res) => {
   try {
+    const { level } = req.query;
+
     const logs = await prisma.systemLog.findMany({
+      where: level === 'ALL' || !level
+        ? undefined
+        : { level },
       orderBy: { createdAt: 'desc' },
       take: 100
     });
+
     res.json(
       logs.map(log => ({
         id: log.id,
         createdAt: log.createdAt,
+        userId: log.userId,
         method: log.method,
         endpoint: log.path,
         statusCode: log.statusCode,
@@ -44,19 +51,19 @@ router.get('/logs/summary', async (req, res) => {
     });
 
     const avgData = await prisma.systemLog.aggregate({
-        where: {
-          createdAt: { gte: fiveMinutesAgo }
-        },
-         _avg: { duration: true }
+      where: {
+        createdAt: { gte: fiveMinutesAgo }
+      },
+      _avg: { duration: true }
     });
 
     const avgResponse = avgData._avg.duration || 0;
 
-   const ERROR_THRESHOLD = 10;
+    const ERROR_THRESHOLD = 10;
     const LATENCY_THRESHOLD = 2000;
 
-const highError = errorCount > ERROR_THRESHOLD;
-const highLatency = avgResponse > LATENCY_THRESHOLD;
+    const highError = errorCount > ERROR_THRESHOLD;
+    const highLatency = avgResponse > LATENCY_THRESHOLD;
 
     res.json({
       total,
