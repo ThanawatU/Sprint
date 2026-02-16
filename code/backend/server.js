@@ -15,6 +15,10 @@ const { requestLogger } = require('./src/middlewares/requestLogger');
 const ensureAdmin = require('./src/bootstrap/ensureAdmin');
 const { prisma } = require("./src/utils/prisma"); // adjust path if needed
 
+// Log Retention
+const cron = require('node-cron');
+const { cleanupOldLogs } = require('./src/services/logRetention.service');
+
 
 const app = express();
 promClient.collectDefaultMetrics();
@@ -89,7 +93,14 @@ const PORT = process.env.PORT || 3000;
     } catch (e) {
         console.error('Admin bootstrap failed:', e);
     }
-
+	
+	//Log Retention
+		// ตั้งเวลาทำงานทุกวันตอน 03:00 น.
+	cron.schedule('0 3 * * *', async () => { 
+		console.log('--- Log Retention Triggered ---'); // ใส่ log ไว้ดูว่ามันทำงานไหม
+		await cleanupOldLogs(); 
+	});
+	
     app.listen(PORT, () => {
         console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
     });

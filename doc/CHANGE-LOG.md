@@ -120,6 +120,26 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-17 - Nattaphat_0126
+
+### Added
+- **Log Retention System**:
+    - `src/services/logRetention.service.js` - Added `cleanupOldLogs` function to automatically delete SystemLog and AccessLog entries older than 90 days.
+- **Automated Testing (Robot Framework)**:
+    - `test/blacklist_test.robot` - Added test suite for **Blacklist Lifecycle** (Create -> Get All/By ID -> Lift -> Add Evidence) to verify admin operations.
+    - `test/auditlog_test.robot` - Added **Data Integrity Verification** test to ensure `AuditLog` correctly records userId, role, action, and request context (IP/UserAgent) upon Admin Login.
+    - `test/audit_log_test.robot` - Added comprehensive audit log test suite covering:
+        - Driver & Passenger Login.
+        - Vehicle Creation (Driver) with amenities validation.
+        - Route Creation & Booking Flow (Driver creates route -> Passenger books).
+
+### Changed
+- **Backend Server**:
+    - `server.js` - Integrated `node-cron` to schedule the **Log Retention** task to run daily at 03:00 AM (GMT+7).
+    - `package.json` - Added `node-cron` dependency to support scheduled tasks.
+
+---
+
 ## Version Guidelines
 
 ### Categories

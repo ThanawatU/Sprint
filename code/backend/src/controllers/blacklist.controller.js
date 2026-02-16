@@ -137,12 +137,18 @@ exports.updateBlacklist = async (req, res) => {
   const { id } = req.params;
   const { reason, status, suspendedUntil } = req.body;
 
+  let suspendedUntilValue = suspendedUntil;
+  if (suspendedUntil && suspendedUntil.length === 16) {
+    // ปลง suspendedUntil ให้เป็น ISO string
+    suspendedUntilValue = suspendedUntil + ':00.000Z';
+  }
+
   const updated = await prisma.blacklist.update({
     where: { id },
     data: {
       reason,
       status,
-      suspendedUntil
+      suspendedUntil: suspendedUntilValue
     }
   });
 
