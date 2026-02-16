@@ -1,6 +1,7 @@
 const { prisma } = require("../utils/prisma");
 const ApiError = require('../utils/ApiError');
 const bcrypt = require("bcrypt");
+const { checkBlacklistByIdentifiers } = require('./blacklist.service');
 const SALT_ROUNDS = 10;
 
 const searchUsers = async (opts = {}) => {
@@ -147,6 +148,16 @@ const createUser = async (data) => {
     if (existingUserByUsername) {
         throw new ApiError(409, "This username is already taken.");
     }
+
+    const blacklistRecord = await checkBlacklistByIdentifiers({
+        email: data.email,
+        nationalIdNumber: data.nationalIdNumber,
+        phoneNumber: data.phoneNumber
+    });
+    if (blacklistRecord) {
+        throw new ApiError(403, "ไม่สามารถสมัครสมาชิกได้ เนื่องจากข้อมูลนี้ถูกระงับการใช้งาน");
+    }
+
     const hashedPassword = await bcrypt.hash(data.password, SALT_ROUNDS);
 
     const createData = {
