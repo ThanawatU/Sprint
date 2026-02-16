@@ -163,7 +163,7 @@ async function fetchLogs() {
   const config = useRuntimeConfig()
 
   try {
-    logs.value = await $fetch('/admin/logs', {
+    logs.value = await $fetch('/monitor/logs', {
       baseURL: config.public.apiBase,
       headers: getAuthHeaders()
     })
@@ -176,7 +176,7 @@ async function fetchSummary() {
   const config = useRuntimeConfig()
 
   try {
-    summary.value = await $fetch('/admin/logs/summary', {
+    summary.value = await $fetch('/monitor/logs/summary', {
       baseURL: config.public.apiBase,
       headers: getAuthHeaders()
     })
