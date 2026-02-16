@@ -11,7 +11,7 @@
                 <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
                     <!-- Left: Title + Create Button -->
                     <div class="flex items-center gap-3">
-                        <h1 class="text-2xl font-semibold text-gray-800">User Management</h1>
+                        <h1 class="text-2xl font-semibold text-gray-800">Blacklist Management</h1>
                         <button @click="onCreateUser"
                             class="inline-flex items-center gap-2 px-3 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700">
                             <i class="fa-solid fa-plus"></i>
@@ -105,6 +105,25 @@
                     </div>
                 </div>
 
+                <!-- Advanced Filters -->
+                <div class="mb-4 bg-white border border-gray-300 rounded-lg shadow-sm">
+                    <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-[repeat(24,minmax(0,1fr))]">
+
+                        <!-- Start (3/24) -->
+                        <div class="lg:col-span-3">
+                            <div class="p-4 bg-white border border-gray-200 rounded-lg card w-full" data-v-02281a80="">
+                                <p class="text-2xl font-bold text-blue-600" data-v-02281a80="">Total Blacklist</p>
+                                <p class="text-sm text-gray-600" data-v-02281a80="">120</p>
+                            </div>
+                            <div class="p-4 bg-white border border-gray-200 rounded-lg card" data-v-02281a80="">
+                                <p class="text-2xl font-bold text-blue-600" data-v-02281a80="">Active Bans</p>
+                                <p class="text-sm text-gray-600" data-v-02281a80="">120</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
 
                 <!-- Card -->
                 <div class="bg-white border border-gray-300 rounded-lg shadow-sm">
@@ -125,16 +144,8 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ผู้ใช้
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">อีเมล
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        ชื่อผู้ใช้</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">บทบาท
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        ยืนยันตัวตน</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ชื่อผู้ใช้</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">บทบาท</th>
                                     <!-- เปลี่ยนคอลัมน์สถานะเป็นสวิตช์ -->
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">สถานะ
                                     </th>
@@ -142,6 +153,8 @@
                                         สร้างเมื่อ</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">การกระทำ
                                     </th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ถูกระงับจนกระทั่ง</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">รายละเอียด</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -161,7 +174,6 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 text-gray-700">{{ u.email }}</td>
                                     <td class="px-4 py-3 text-gray-700">{{ u.username }}</td>
                                     <td class="px-4 py-3">
                                         <span
@@ -402,7 +414,7 @@ async function fetchUsers(page = 1) {
         pagination.totalPages = Number(p.totalPages ?? Math.ceil(pagination.total / pagination.limit))
     } catch (err) {
         console.error(err)
-        loadError.value = err?.data?.message || 'ไม่สามารถโหลดข้อมูลได้'
+        // loadError.value = err?.data?.message || 'ไม่สามารถโหลดข้อมูลได้'
         toast.error('เกิดข้อผิดพลาด', loadError.value)
         users.value = []
     } finally {
