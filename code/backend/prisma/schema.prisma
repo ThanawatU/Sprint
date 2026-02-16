@@ -97,7 +97,7 @@ model User {
 
   // เพิ่มจาก User เดิม
   auditLogs AuditLog[]
-
+  accessLogs AccessLog[]
   blacklists        Blacklist[]
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
 
@@ -236,6 +236,7 @@ model AuditLog {
   action   String
   entity   String?
   entityId String?
+  expiresAt DateTime?
 
   ipAddress String?
   userAgent String?
@@ -300,6 +301,7 @@ model AccessLog {
   
   @@index([userId])
   @@index([expiresAt])
+}
 // Blacklist
 enum BlacklistType {
   DRIVER
