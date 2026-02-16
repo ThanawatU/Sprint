@@ -21,6 +21,10 @@ router.use('/bookings', bookingRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/api/maps', mapRoutes);
 
+//เพิ่ม monitor routes
+const monitorRoutes = require('./monitor.routes');
+router.use('/monitor', monitorRoutes);
+
 // เพิ่ม blacklist routes
 const blacklistRoutes = require('./blacklist.routes');
 router.use('/blacklists', blacklistRoutes);

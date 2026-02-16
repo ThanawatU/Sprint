@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Sprint
-=======
 # Pai Nam Nae - A Safe Ride Sharing App
 
 <!-- A safe ride-sharing application with a **Nuxt.js** frontend and **Express.js** backend, powered by **Prisma** ORM and **PostgreSQL**. -->
@@ -267,4 +264,3 @@ For questions or feedback, reach out to:
 **Email:**
 - [jonathandoillon2002@gmail.com](mailto:jonathandoillon2002@gmail.com)
 - [seth.s@kkumail.com](mailto:seth.s@kkumail.com)
->>>>>>> 60aa489 (Initial)
