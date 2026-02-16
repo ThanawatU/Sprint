@@ -27,7 +27,7 @@ router.get(
     blacklistController.getBlacklists
 )
 
-// GET /api/blacklists/:id/admin
+// GET /api/blacklists/:id
 router.get(
     '/admin/:id',
     protect,
@@ -52,12 +52,11 @@ router.post(
     blacklistController.addEvidence
 )
 
-// POST /api/blacklists/:id/edit
 router.put(
-  '/admin/:id/edit',
-  protect,
-  requireAdmin,
-  blacklistController.updateBlacklist
-);
+    '/admin/:id',
+    protect,
+    requireAdmin,
+    blacklistController.updateBlacklist
+)
 
 module.exports = router;
