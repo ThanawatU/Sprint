@@ -12,7 +12,7 @@ const router = express.Router();
 
 // POST /api/blacklists
 router.post(
-  '/',
+  '/admin',
   protect,
   requireAdmin,
   validate({ body: createBlacklistSchema }),
@@ -21,7 +21,7 @@ router.post(
 
 // GET /api/blacklists
 router.get(
-    '/',
+    '/admin',
     protect,
     requireAdmin,
     blacklistController.getBlacklists
@@ -29,15 +29,15 @@ router.get(
 
 // GET /api/blacklists/:id
 router.get(
-    '/:id',
+    '/admin/:id',
     protect,
     requireAdmin,
-    blacklistController.getBlacklists
+    blacklistController.getBlacklistById
 )
 
 // PATCH /api/blacklists/:id/lift
 router.patch(
-    '/:id/lift',
+    '/admin/:id/lift',
     protect,
     requireAdmin,
     blacklistController.liftBlacklist
@@ -45,7 +45,7 @@ router.patch(
 
 // POST /api/blacklists/:id/evidence
 router.post(
-    '/:id/evidence',
+    '/admin/:id/evidence',
     protect,
     requireAdmin,
     validate({ body: addEvidenceSchema }),
