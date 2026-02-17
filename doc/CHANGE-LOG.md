@@ -198,6 +198,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-17 - Wisit_2348
+
+### Added
+- AI Declaration
+- Sprint Backlog File
+
+---
+
 ## Version Guidelines
 
 ### Categories
