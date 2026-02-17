@@ -394,7 +394,7 @@ async function onToggleActive(user, nextActive) {
     const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
 
     try {
-        const res = await fetch(`${config.public.apiBase}/blacklists/admin/${user.id}/status`, {
+        const res = await fetch(`${config.public.apiBase}/users/admin/${user.id}/status`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',

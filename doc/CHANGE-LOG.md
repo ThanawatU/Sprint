@@ -140,6 +140,18 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-17 - Yodsanon_0215
+
+### Added
+- Added API base URL sanitization in the frontend to prevent duplicated paths (`//`) when calling backend endpoints.
+- Recreated Prisma migrations and initialized a clean database migration structure.
+
+### Fixed
+- Fixed duplicated Prisma migrations and database schema mismatch issues.
+- Resolved `P2022` error caused by missing `AuditLog.expiresAt` column in the database.
+
+---
+
 ## [1.0.0] - 2026-02-17 - Kanyapat_5037
 
 ### Added
