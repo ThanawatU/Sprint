@@ -1,53 +1,52 @@
-const monitorService = require('../services/monitor.service');
+const monitorService = require("../services/monitor.service");
 
 exports.getLogs = async (req, res) => {
   try {
     const {
-      level = 'ALL',
-      type = 'SystemLog',
+      level = "ALL",
+      type = "SystemLog",
       date,
-      startDate,
-      endDate
     } = req.query;
 
     const filters = {
       level,
       date,
-      startDate,
-      endDate
     };
 
     let logs;
 
     switch (type) {
-      case 'AuditLog':
+      case "AuditLog":
         logs = await monitorService.getLatestAuditLogs(filters);
         break;
 
-      case 'AccessLog':
+      case "AccessLog":
         logs = await monitorService.getLatestAccessLogs(filters);
         break;
 
+      case "SystemLog":
       default:
         logs = await monitorService.getLatestSystemLogs(filters);
+        break;
     }
 
-    res.json(logs);
-
+    return res.json(logs);
   } catch (error) {
-    console.error('getLogs controller error:', error);
-    res.status(500).json({ message: 'Failed to fetch logs' });
+    console.error("getLogs controller error:", error);
+    return res.status(500).json({
+      message: "Failed to fetch logs",
+    });
   }
 };
-
 
 exports.getSummary = async (req, res) => {
   try {
     const summary = await monitorService.getSystemSummary();
-    res.json(summary);
-
+    return res.json(summary);
   } catch (error) {
-    console.error('getSummary controller error:', error);
-    res.status(500).json({ message: 'Failed to fetch summary' });
+    console.error("getSummary controller error:", error);
+    return res.status(500).json({
+      message: "Failed to fetch summary",
+    });
   }
 };
