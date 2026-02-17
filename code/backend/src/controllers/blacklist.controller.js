@@ -3,42 +3,53 @@ const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 
 exports.createBlacklist = async (req, res) => {
   try {
-    const { userId, type, reason, suspendedUntil } = req.body;
+    const { userId, type, reason, suspendDays } = req.body;
 
-    const admin = req.user; // from JWT middleware
-
-    if (admin.role !== "ADMIN") {
-      return res.status(403).json({ message: "Forbidden " + admin.role });
+    const days = Number(suspendDays);
+    if (!days || days < 1) {
+      return res.status(400).json({ message: "Invalid suspendDays" });
     }
 
-    const blacklist = await prisma.blacklist.create({
-      data: {
-        userId,
-        type,
-        reason,
-        suspendedUntil,
-        createdById: admin.id
-      }
+    const adminId = req.user.id;
+
+    const bannedAt = new Date();
+    const liftedAt = new Date(bannedAt);
+    liftedAt.setDate(liftedAt.getDate() + days);
+
+    const result = await prisma.$transaction(async (tx) => {
+
+      const blacklist = await tx.blacklist.create({
+        data: {
+          type,
+          reason,
+          liftedAt,
+
+          user: {
+            connect: { id: userId }
+          },
+
+          createdBy: {
+            connect: { id: adminId }
+          }
+        }
+      });
+
+      await tx.user.update({
+        where: { id: userId },
+        data: { isActive: false }
+      });
+
+      return blacklist;
     });
 
-    await auditLog({
-      ...getUserFromRequest(req),
-      action: 'ADD_TO_BLACKLIST',
-      entity: 'Blacklist',
-      entityId: blacklist.id,
-      req,
-      metadata: {
-        userId: userId,
-        type: type,
-        reason: reason,
-        suspendedUntil: suspendedUntil
-      }
+    res.status(201).json({
+      message: "Blacklist created successfully",
+      data: result
     });
 
-    res.status(201).json(blacklist);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to blacklist user" });
+    res.status(500).json({ message: "Failed to create blacklist" });
   }
 };
 
@@ -137,10 +148,10 @@ exports.updateBlacklist = async (req, res) => {
   const { id } = req.params;
   const { reason, status, suspendedUntil } = req.body;
 
-  let suspendedUntilValue = suspendedUntil;
-  if (suspendedUntil && suspendedUntil.length === 16) {
-    // ปลง suspendedUntil ให้เป็น ISO string
-    suspendedUntilValue = suspendedUntil + ':00.000Z';
+  let suspendedUntilValue = null;
+
+  if (suspendedUntil) {
+    suspendedUntilValue = new Date(suspendedUntil);
   }
 
   const updated = await prisma.blacklist.update({
@@ -154,5 +165,4 @@ exports.updateBlacklist = async (req, res) => {
 
   res.json(updated);
 };
-
 
