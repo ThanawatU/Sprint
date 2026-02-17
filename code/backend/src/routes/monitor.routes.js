@@ -47,31 +47,39 @@ router.get("/logs", async (req, res) => {
           entity: log.entity,
           entityId: log.entityId,
           ipAddress: log.ipAddress,
+          userAgent: log.userAgent,
+          metadata: log.metadata,
         };
       }
 
       if (type === "AccessLog") {
         return {
           id: log.id,
+          createdAt: log.createdAt,
           userId: log.userId,
           loginTime: log.loginTime,
           logoutTime: log.logoutTime,
           ipAddress: log.ipAddress,
+          userAgent: log.userAgent,
           sessionId: log.sessionId,
-          createdAt: log.createdAt,
         };
       }
 
+      // SystemLog
       return {
         id: log.id,
         createdAt: log.createdAt,
         userId: log.userId,
         method: log.method,
-        endpoint: log.path,
+        path: log.path,
         statusCode: log.statusCode,
-        responseTime: log.duration,
+        duration: log.duration,
         level: log.level,
+        requestId: log.requestId,
         ipAddress: log.ipAddress,
+        userAgent: log.userAgent,
+        error: log.error,
+        metadata: log.metadata,
       };
     });
 
@@ -114,27 +122,6 @@ router.get("/logs/summary", async (req, res) => {
   } catch (error) {
     console.error("Fetch summary error:", error);
     res.status(500).json({ message: "Failed to fetch summary" });
-  }
-});
-
-//กราฟ
-router.get("/logs/trend", async (req, res) => {
-  try {
-    const result = await prisma.$queryRaw`
-      SELECT 
-        date_trunc('hour', "createdAt") AS hour,
-        level,
-        COUNT(*) AS count
-      FROM "SystemLog"
-      WHERE "createdAt" >= NOW() - INTERVAL '24 hours'
-      GROUP BY hour, level
-      ORDER BY hour ASC;
-    `;
-
-    res.json(result);
-  } catch (error) {
-    console.error("Trend error:", error);
-    res.status(500).json({ message: "Failed to fetch trend" });
   }
 });
 

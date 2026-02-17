@@ -5,10 +5,11 @@ const getLatestSystemLogs = async (filters = {}, limit = 100) => {
     const { level, date } = filters;
 
     const where = {};
+
     if (level && level !== "ALL") {
       where.level = level;
     }
-    
+
     if (date) {
       const start = new Date(`${date}T00:00:00.000+07:00`);
       const end = new Date(`${date}T23:59:59.999+07:00`);
@@ -34,26 +35,19 @@ const getLatestSystemLogs = async (filters = {}, limit = 100) => {
         userId: true,
         ipAddress: true,
         requestId: true,
+        userAgent: true,
+        error: true,
+        metadata: true,
       },
     });
 
-    return logs.map((log) => ({
-      id: log.id,
-      createdAt: log.createdAt,
-      method: log.method,
-      endpoint: log.path,
-      statusCode: log.statusCode,
-      responseTime: log.duration,
-      level: log.level,
-      userId: log.userId,
-      ipAddress: log.ipAddress,
-      requestId: log.requestId,
-    }));
+    return logs;
   } catch (error) {
     console.error("getLatestSystemLogs error:", error);
     throw error;
   }
 };
+
 
 
 const getSystemSummary = async () => {

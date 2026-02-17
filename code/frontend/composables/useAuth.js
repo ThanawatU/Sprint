@@ -49,11 +49,20 @@ export function useAuth() {
     return res
   }
 
-  const logout = () => {
-    token.value = null
-    user.value = null
-    return router.push('/')
+  const logout = async () => {
+  try {
+    await $api('/auth/logout', {
+      method: 'POST'
+    })
+  } catch (err) {
+    console.error('Logout error:', err)
   }
+
+  token.value = null
+  user.value = null
+  return router.push('/')
+}
+
 
   return { token, user, login, logout, register }
 }
