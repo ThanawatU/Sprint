@@ -64,20 +64,7 @@
                                         <div><b>Role:</b> {{ selectedUser.role }}</div>
                                     </div>
                                 </div>
-                                <!-- Type -->
-                                <div>
-                                    <label class="block mb-1 text-xs font-medium text-gray-600">Type <span class="text-red-500">*</span></label>
-                                    <div class="flex gap-6 items-center">
-                                        <label class="inline-flex items-center">
-                                            <input type="radio" v-model="form.type" value="DRIVER" class="form-radio text-blue-600" />
-                                            <span class="ml-2">Driver</span>
-                                        </label>
-                                        <label class="inline-flex items-center">
-                                            <input type="radio" v-model="form.type" value="PASSENGER" class="form-radio text-blue-600" />
-                                            <span class="ml-2">Passenger</span>
-                                        </label>
-                                    </div>
-                                </div>
+                        
                                 <!-- Reason -->
                                 <div>
                                     <label class="block mb-1 text-xs font-medium text-gray-600">Reason <span class="text-red-500">*</span></label>
@@ -86,13 +73,13 @@
                                 </div>
                                 <!-- Suspend Until -->
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-gray-600">Suspend Until</label>
-                                    <input v-model="form.suspendedUntil" type="datetime-local"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
+                                    <label class="block mb-1 text-xs font-medium text-gray-600">ระยะเวลาการแบน (วัน) <span class="text-red-500">*</span></label>
+                                    <input type="number" min="1" v-model.number="suspendDays" @input="onInputSuspendDays" placeholder="จำนวนวัน"
+                                        class="w-32 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" />
                                 </div>
                                 <!-- Upload Evidence -->
                                 <div>
-                                    <label class="block mb-1 text-xs font-medium text-gray-600">Upload Evidence</label>
+                                    <label class="block mb-1 text-xs font-medium text-gray-600">Upload Evidence <span class="text-red-500">*</span></label>
                                     <div class="flex items-center gap-3">
                                         <button type="button" @click="evidenceInput?.click()"
                                             class="px-3 py-2 bg-gray-100 border border-gray-300 rounded hover:bg-blue-50 text-sm">
@@ -143,7 +130,7 @@ const form = reactive({
     userId: '',
     type: '',
     reason: '',
-    suspendedUntil: '',
+    liftedAt: '',
     evidenceFile: null
 })
 
@@ -157,6 +144,72 @@ const selectedUser = ref(null)
 const lastUserLabel = ref('')
 const showUserList = computed(() => userQuery.value && (isSearchingUsers.value || userResults.value.length > 0))
 
+// ---------- SUSPEND DAYS ----------
+const suspendDays = ref('')
+const suspendOptions = [1, 3, 7, 30, 90]
+
+function onSelectSuspend(days) {
+    suspendDays.value = days
+    // คำนวณ liftedAt เป็น ISO string
+    const now = new Date()
+    now.setDate(now.getDate() + Number(days))
+    form.liftedAt = now.toISOString()
+}
+
+function onInputSuspendDays() {
+    if (!suspendDays.value || suspendDays.value < 1) {
+        form.liftedAt = ''
+        return
+    }
+    const now = new Date()
+    now.setDate(now.getDate() + Number(suspendDays.value))
+    form.liftedAt = now.toISOString()
+}
+
+// ---------- UPLOAD FILE TO CLOUDINARY ----------
+async function uploadToCloudinary(file) {
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', 'painamnae_unsigned')
+
+  const res = await fetch(
+    'https://api.cloudinary.com/v1_1/dryt5cwks/image/upload',
+    { method: 'POST', body: formData }
+  )
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    console.error(data)
+    throw new Error(data.error?.message || 'Upload failed')
+  }
+
+  return data.secure_url
+}
+
+
+async function saveEvidenceToDB(url) {
+  const config = useRuntimeConfig()
+  const token = useCookie('token')?.value
+
+  await $fetch(`/blacklists/admin/${blacklistId}/evidence`, {
+    method: 'POST',
+    baseURL: config.public.apiBase,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {})
+    },
+    body: {
+      type: 'IMAGE',
+      url
+    }
+  })
+
+  toast.success('บันทึกหลักฐานสำเร็จ')
+}
+
+
+
 // ---------- SELECT USER in SYSTEM ----------
 let userTimer = null
 async function onSearchUsers() {
@@ -169,7 +222,7 @@ async function onSearchUsers() {
             isSearchingUsers.value = true
             const config = useRuntimeConfig()
             const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
-            const res = await $fetch('/users/admin', {
+            const res = await $fetch('/users/admin', {  
                 baseURL: config.public.apiBase,
                 headers: { Accept: 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
                 query: { q, page: 1, limit: 10 }
@@ -268,51 +321,78 @@ onMounted(() => {
 })
 onUnmounted(() => { cleanupGlobalScripts() })
 
-// ---------- FILE PICKERS ----------
+// ---------- EVIDENCE FILE PICKERS ----------
 function onEvidenceFile(e) {
-    const f = e.target.files?.[0]
-    if (f) form.evidenceFile = f
+  const file = e.target.files?.[0]
+  if (!file) return
+  form.evidenceFile = file
 }
+
+
 
 // ---------- SUBMIT ----------
 async function handleSubmit() {
-    if (!form.userId || !form.type || !form.reason) {
-        toast.error('กรอกข้อมูลไม่ครบ', 'โปรดกรอกข้อมูลที่มี * ให้ครบถ้วน')
+    if (!form.userId) {
+        toast.error('กรุณาเลือกผู้ใช้ก่อน')
         return
     }
-    isSubmitting.value = true
-    try {
-        const fd = new FormData()
-        fd.append('userId', form.userId)
-        fd.append('type', form.type)
-        fd.append('reason', form.reason)
-        if (form.suspendedUntil) fd.append('suspendedUntil', form.suspendedUntil)
-        if (form.evidenceFile) fd.append('evidence', form.evidenceFile)
 
-        let token = ''
-        try { token = useCookie('token')?.value || '' } catch { }
-        if (process.client && !token) token = localStorage.getItem('token') || ''
-        let apiBase = useRuntimeConfig().public.apiBase || 'http://localhost:3000/api'
-        apiBase = apiBase.replace(/\/$/, '') // remove trailing slash if present
-        await fetch(`${apiBase}/blacklists`, {
+    if (!form.reason) {
+        toast.error('กรุณากรอกเหตุผล')
+        return
+    }
+
+    isSubmitting.value = true
+
+    try {
+        const config = useRuntimeConfig()
+        const token = useCookie('token')?.value
+
+        const blacklistRes = await $fetch('/blacklists/admin', {
+        method: 'POST',
+        baseURL: config.public.apiBase,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+        },
+        body: {
+            userId: form.userId,
+            type: selectedUser.value?.role || 'PASSENGER',
+            reason: form.reason,
+            suspendDays: suspendDays.value
+        }
+        })
+
+        const createdBlacklist = blacklistRes.data || blacklistRes
+        const blacklistId = createdBlacklist.id
+
+        if (form.evidenceFile) {
+        const imageUrl = await uploadToCloudinary(form.evidenceFile)
+
+        await $fetch(`blacklists/admin/${blacklistId}/evidence`, {
             method: 'POST',
+            baseURL: config.public.apiBase,
             headers: {
-                Accept: 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
             },
-            body: fd
-            })
-        let body
-        try { body = await result.json() } catch { body = null }
-        if (!result.ok) throw new Error(body?.message || 'สร้าง Blacklist ไม่สำเร็จ')
-        toast.success('สำเร็จ', body?.message || 'เพิ่ม Blacklist สำเร็จ')
+            body: {
+            type: 'IMAGE',
+            url: imageUrl
+            }
+        })
+        }
+
+        toast.success('เพิ่ม Blacklist สำเร็จ')
         navigateTo('/admin/blacklists')
+
     } catch (err) {
-        toast.error('เกิดข้อผิดพลาด', err?.message || 'เพิ่ม Blacklist ไม่สำเร็จ')
+        toast.error('เกิดข้อผิดพลาด', err?.message || 'ไม่สำเร็จ')
     } finally {
         isSubmitting.value = false
     }
-}
+    }
+
 </script>
 
 

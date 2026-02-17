@@ -127,9 +127,8 @@
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ชื่อ-นามสกุล</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">บทบาท</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">เหตุผล</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">สถานะการแบน</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">สถานะการใช้งาน</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">วันที่แบน</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">วันที่สร้าง</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">วันที่ปลดแบน</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">จัดการ</th>
                                 </tr>
@@ -169,21 +168,20 @@
                                     </td>
                                     <!-- สถานะการแบน -->
                                     <td class="px-4 py-3">
-                                    <span
-                                        class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
-                                        :class="b.status === 'ACTIVE'
-                                        ? 'bg-red-100 text-red-700'
-                                        : 'bg-green-100 text-green-700'"
-                                    >
-                                        {{ b.status }}
-                                    </span>
+                                        <div class="flex items-center">
+                                            <label class="inline-flex items-center cursor-pointer select-none switch">
+                                                <input type="checkbox" class="switch-input" :checked="b.user.isActive"
+                                                    :disabled="isLoading || togglingIds.has(b.user.id)"
+                                                    @change="onToggleActive(b.user, $event.target.checked)" />
+                                                <span class="switch-slider"></span>
+                                            </label>
+                                            <span class="ml-2 text-sm "
+                                                :class="b.user.isActive ? 'text-green-700' : 'text-gray-500'">
+                                                {{ b.user.isActive ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <!-- วันที่แบน -->
-                                    <td class="px-4 py-3 text-gray-700">
-                                        {{ b.suspendedUntil ? formatDate(b.suspendedUntil) : '-' }}
-                                        <div v-if="b.suspendedUntil" class="text-xs text-gray-400 mt-1">{{ dayjs(b.suspendedUntil).format('HH:mm:ss') }}</div>
-                                    </td>
-                                    <!-- วันที่สร้าง blacklist -->
                                     <td class="px-4 py-3 text-gray-700">
                                         {{ b.createdAt ? formatDate(b.createdAt) : '-' }}
                                         <div v-if="b.createdAt" class="text-xs text-gray-400 mt-1">{{ dayjs(b.createdAt).format('HH:mm:ss') }}</div>
@@ -401,7 +399,7 @@ async function onToggleActive(user, nextActive) {
     const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
 
     try {
-        const res = await fetch(`${config.public.apiBase}/blacklists/${user.id}/status`, {
+        const res = await fetch(`${config.public.apiBase}/blacklists/admin/${user.id}/status`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -479,7 +477,7 @@ async function confirmDelete() {
 async function deleteUser(id) {
     const config = useRuntimeConfig()
     const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
-    const res = await fetch(`${config.public.apiBase}/blacklists/${id}`, {
+    const res = await fetch(`${config.public.apiBase}/blacklists/admin/${id}`, {
         method: 'DELETE',
         headers: {
             Accept: 'application/json',
@@ -613,7 +611,7 @@ async function fetchBlacklists(page = 1) {
     const config = useRuntimeConfig()
     const token = useCookie('token').value
 
-    const res = await $fetch('/blacklists/', {
+    const res = await $fetch('/blacklists/admin', {
       baseURL: config.public.apiBase,
       headers: {
         Accept: 'application/json',
