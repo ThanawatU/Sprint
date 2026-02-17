@@ -6,7 +6,6 @@ const routeRoutes   = require('./route.routes');
 const driverVerifRoutes = require('./driverVerification.routes');
 const bookingRoutes = require('./booking.routes');
 const notificationRoutes = require('./notification.routes')
-const blacklistRoutes = require('./blacklist.routes');
 const mapRoutes = require('./maps.routes')
 const monitorRoutes = require('./monitor.routes');
 const { prisma } = require("../utils/prisma"); // adjust path if needed

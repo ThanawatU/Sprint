@@ -81,6 +81,13 @@ const login = asyncHandler(async (req, res) => {
         sessionId: req.requestId
     });
 
+    res.cookie('token', token, {
+        httpOnly: true,
+        secure: false,        
+        sameSite: 'none',    // อนุญาต cross-site
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+    
     res.status(200).json({
         success: true,
         message: "Login successful",
