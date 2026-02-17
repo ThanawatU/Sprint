@@ -52,4 +52,11 @@ router.post(
     blacklistController.addEvidence
 )
 
+router.put(
+    '/admin/:id',
+    protect,
+    requireAdmin,
+    blacklistController.updateBlacklist
+)
+
 module.exports = router;

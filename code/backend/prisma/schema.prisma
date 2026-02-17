@@ -357,5 +357,9 @@ model BlacklistEvidence {
 
   @@index([blacklistId])
   @@index([type])
+<<<<<<< HEAD
+}
+=======
 
 }
+>>>>>>> main

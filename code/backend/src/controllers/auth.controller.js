@@ -88,6 +88,12 @@ const login = asyncHandler(async (req, res) => {
         message: "Login successful",
         data: { token, user: safeUser }
     });
+    await logAudit({
+        action: 'LOGIN_SUCCESS',
+        entity: 'User',
+        entityId: user.id,
+        req
+    });
 });
 
 const changePassword = asyncHandler(async (req, res) => {
