@@ -70,12 +70,27 @@ const searchUsers = async (opts = {}) => {
 };
 
 const getUserByEmail = async (email) => {
-    return await prisma.user.findUnique({ where: { email } })
+    return await prisma.user.findFirst({
+        where: {
+            email: {
+                equals: email,
+                mode: 'insensitive'
+            }
+        }
+    });
 }
 
 const getUserByUsername = async (username) => {
-    return await prisma.user.findUnique({ where: { username } })
+    return await prisma.user.findFirst({
+        where: {
+            username: {
+                equals: username,
+                mode: 'insensitive'
+            }
+        }
+    });
 }
+
 
 const comparePassword = async (user, plainPassword) => {
     return bcrypt.compare(plainPassword, user.password);

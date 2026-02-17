@@ -237,6 +237,7 @@ model AuditLog {
   action   String
   entity   String?
   entityId String?
+  expiresAt DateTime?
 
   ipAddress String?
   userAgent String?
@@ -356,5 +357,4 @@ model BlacklistEvidence {
 
   @@index([blacklistId])
   @@index([type])
-
 }

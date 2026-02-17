@@ -349,8 +349,8 @@ const prevStep = () => {
 };
 
 // ===== Helpers (same behavior as admin create) =====
-const apiBase = useRuntimeConfig().public.apiBase || 'http://localhost:3000/api';
-
+const apiBaseRaw = useRuntimeConfig().public.apiBase || 'http://localhost:3000/api';
+const apiBase = apiBaseRaw.replace(/\/+$/, '');
 async function postForm(url, formData, token = '') {
   const res = await fetch(url, {
     method: 'POST',
