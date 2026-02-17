@@ -35,61 +35,56 @@
                 <div class="mb-4 bg-white border border-gray-300 rounded-lg shadow-sm">
                     <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-[repeat(24,minmax(0,1fr))]">
 
-                        <!-- Start (3/24) -->
+                        <!-- Gender -->
                         <div class="lg:col-span-3">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">จุดเริ่มต้น</label>
-                            <input v-model="filters.startName" type="text"
-                                placeholder="ชื่อสถานที่เริ่มต้น (ใช้ key: name)"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
-                        </div>
-
-                        <!-- End (3/24) -->
-                        <div class="lg:col-span-3">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">ปลายทาง</label>
-                            <input v-model="filters.endName" type="text" placeholder="ชื่อปลายทาง (ใช้ key: name)"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
-                        </div>
-
-                        <!-- status (3/24) -->
-                        <div class="lg:col-span-3">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">สถานะ</label>
-                            <select v-model="filters.status"
+                            <label class="block mb-1 text-xs font-medium text-gray-600">เพศ</label>
+                            <select v-model="filters.gender"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
                                 <option value="">ทั้งหมด</option>
-                                <option value="AVAILABLE">AVAILABLE</option>
-                                <option value="FULL">FULL</option>
+                                <option value="MALE">ชาย</option>
+                                <option value="FEMALE">หญิง</option>
                             </select>
                         </div>
 
-                        <!-- Departure From (4/24) -->
-                        <div class="lg:col-span-4">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">ออกเดินทางตั้งแต่
-                                (YYYY-MM-DD)</label>
-                            <input v-model="filters.departureFrom" type="date"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
-                        </div>
-
-                        <!-- Departure To (4/24) -->
-                        <div class="lg:col-span-4">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">ถึงวันที่</label>
-                            <input v-model="filters.departureTo" type="date"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500" />
-                        </div>
-
-                        <!-- Sort (รวม sortBy + sortOrder) (3/24) -->
+                        <!-- status filter -->
                         <div class="lg:col-span-3">
-                            <label class="block mb-1 text-xs font-medium text-gray-600">เรียงตาม</label>
-                            <select v-model="filters.sort"
+                            <label class="block mb-1 text-xs font-medium text-gray-600">
+                                สถานะการใช้งาน
+                            </label>
+                            <select v-model="filters.isActive"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
-                                <option value="">(ค่าเริ่มต้น)</option>
-                                <option value="departureTime:desc">departureTime desc</option>
-                                <option value="departureTime:asc">departureTime asc</option>
-                                <option value="createdAt:desc">createdAt desc</option>
-                                <option value="createdAt:asc">createdAt asc</option>
-                                <option value="updatedAt:desc">updatedAt desc</option>
-                                <option value="updatedAt:asc">updatedAt asc</option>
+                                <option value="">ทั้งหมด</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
                             </select>
                         </div>
+
+                        <!-- เรียงตามวันที่แบน -->
+                        <div class="lg:col-span-4">
+                            <label class="block mb-1 text-xs font-medium text-gray-600">
+                                เรียงตามวันที่แบน
+                            </label>
+                            <select v-model="filters.sortCreated"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
+                                <option value="">ค่าเริ่มต้น</option>
+                                <option value="asc">เก่า → ใหม่</option>
+                                <option value="desc">ใหม่ → เก่า</option>
+                            </select>
+                        </div>
+
+                        <!-- เรียงตามวันที่ปลดแบน -->
+                        <div class="lg:col-span-4">
+                            <label class="block mb-1 text-xs font-medium text-gray-600">
+                                เรียงตามวันที่ปลดแบน
+                            </label>
+                            <select v-model="filters.sortLifted"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
+                                <option value="">ค่าเริ่มต้น</option>
+                                <option value="asc">เก่า → ใหม่</option>
+                                <option value="desc">ใหม่ → เก่า</option>
+                            </select>
+                        </div>
+
 
                         <!-- Actions (2/24) -->
                         <div class="flex items-end justify-end gap-2 mt-1 lg:col-span-4 lg:mt-0">
@@ -302,13 +297,13 @@ const pagination = reactive({
 
 const filters = reactive({
     q: '',
-    role: '',
-    createdFrom: '',
-    createdTo: '',
-    sort: '',
-    isVerified: '',
-    isActive: ''
+    gender: '',
+    isActive: '',
+    sortCreated: '',
+    sortLifted: ''
 })
+
+
 
 const totalPages = computed(() =>
     Math.max(1, pagination.totalPages || Math.ceil((pagination.total || 0) / (pagination.limit || 20)))
@@ -369,9 +364,7 @@ function clearFilters() {
     filters.q = ''
     filters.role = ''
     filters.createdFrom = ''
-    filters.createdTo = ''
     filters.sort = ''
-    filters.isVerified = ''
     filters.isActive = ''
     pagination.page = 1
     fetchBlacklists(1)
@@ -394,7 +387,7 @@ async function onToggleActive(user, nextActive) {
     const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
 
     try {
-        const res = await fetch(`${config.public.apiBase}/blacklists/admin/${user.id}/status`, {
+        const res = await fetch(`${config.public.apiBase}/users/admin/${user.id}/status`, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
@@ -611,11 +604,20 @@ async function fetchBlacklists(page = 1) {
       headers: {
         Accept: 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {})
-      },
-      query: {
+    },
+    query: {
         page,
         limit: pagination.limit,
-      }
+        q: filters.q || undefined,
+        gender: filters.gender || undefined,
+        isActive: filters.isActive !== ''
+            ? filters.isActive === 'true'
+            : undefined,
+        sortCreated: filters.sortCreated || undefined,
+        sortLifted: filters.sortLifted || undefined
+    }
+
+
     })
 
     console.log('RAW API:', res)

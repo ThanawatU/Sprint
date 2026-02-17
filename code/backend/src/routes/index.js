@@ -11,7 +11,6 @@ const mapRoutes = require('./maps.routes')
 const monitorRoutes = require('./monitor.routes');
 const { prisma } = require("../utils/prisma"); // adjust path if needed
 
-
 const router = express.Router();
 
 router.use('/auth', authRoutes);
@@ -23,6 +22,8 @@ router.use('/bookings', bookingRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/api/maps', mapRoutes);
 router.use('/monitor', monitorRoutes);
+
+// เพิ่ม blacklist routes
 router.use('/blacklists', blacklistRoutes);
 
 

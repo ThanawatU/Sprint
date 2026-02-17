@@ -54,18 +54,81 @@ exports.createBlacklist = async (req, res) => {
 };
 
 exports.getBlacklists = async (req, res) => {
-  const records = await prisma.blacklist.findMany({
-    include: {
-      user: true,
-      evidences: true
-    },
-    orderBy: {
-      createdAt: "desc"
-    }
-  });
+  try {
+    const {
+      gender,
+      isActive,
+      sortCreated,
+      sortLifted,
+      q
+    } = req.query;
 
-  res.json(records);
+    const where = {};
+
+    // search
+    if (q) {
+      where.OR = [
+        { reason: { contains: q, mode: "insensitive" } },
+        {
+          user: {
+            OR: [
+              { firstName: { contains: q, mode: "insensitive" } },
+              { lastName: { contains: q, mode: "insensitive" } },
+              { email: { contains: q, mode: "insensitive" } }
+            ]
+          }
+        }
+      ];
+    }
+
+    // gender filter
+    if (gender) {
+      where.user = {
+        ...where.user,
+        gender
+      };
+    }
+
+    // isActive filter
+    if (isActive === "true" || isActive === "false") {
+      where.user = {
+        ...where.user,
+        isActive: isActive === "true"
+      };
+    }
+
+    // sorting
+    let orderBy = [];
+
+    if (sortCreated === "asc" || sortCreated === "desc") {
+      orderBy.push({ createdAt: sortCreated });
+    }
+
+    if (sortLifted === "asc" || sortLifted === "desc") {
+      orderBy.push({ liftedAt: sortLifted });
+    }
+
+    if (orderBy.length === 0) {
+      orderBy = [{ createdAt: "desc" }]; // default
+    }
+
+    const records = await prisma.blacklist.findMany({
+      where,
+      include: {
+        user: true,
+        evidences: true
+      },
+      orderBy
+    });
+
+    res.json(records);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch blacklists" });
+  }
 };
+
 
 exports.getBlacklistById = async (req, res) => {
   const { id } = req.params;

@@ -22,9 +22,16 @@ const cleanupOldLogs = async () => {
       where: { createdAt: { lt: thresholdDate } }
     });
 
+    // 3. ลบ AuditLog
+    const deletedAuditLogs = await prisma.$executeRaw`
+      DELETE FROM "AuditLog"
+      WHERE "createdAt" < NOW() - INTERVAL '90 days'
+    `;
+
     logger.info('Log retention cleanup finished', {
       deletedSystemLogs: systemLogs.count,
-      deletedAccessLogs: accessLogs.count
+      deletedAccessLogs: accessLogs.count,
+      deletedAuditLogs: deletedAuditLogs
     });
 
   } catch (error) {

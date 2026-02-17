@@ -102,25 +102,38 @@
 
                 <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
-                  <th class="px-4 py-2 w-[150px]">User</th>
-                  <th class="px-4 py-2 w-[250px]">Action</th>
-                  <th class="px-4 py-2 w-[250px]">Target</th>
+                  <th class="px-4 py-2 w-[120px]">User</th>
+                  <th class="px-4 py-2 w-[100px]">Role</th>
+                  <th class="px-4 py-2 w-[200px]">Action</th>
+                  <th class="px-4 py-2 w-[150px]">Entity</th>
+                  <th class="px-4 py-2 w-[120px]">Entity ID</th>
+                  <th class="px-4 py-2 w-[150px]">IP Address</th>
+                  <th class="px-4 py-2 w-[200px]">User Agent</th>
                 </template>
 
                 <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
+                  <th class="px-4 py-2 w-[80px]">Level</th>
+                  <th class="px-4 py-2 w-[120px]">Request ID</th>
                   <th class="px-4 py-2 w-[80px]">Method</th>
-                  <th class="px-4 py-2 w-[300px]">Endpoint</th>
-                  <th class="px-4 py-2 w-[100px]">Status</th>
-                  <th class="px-4 py-2 w-[120px]">Response</th>
-                  <th class="px-4 py-2 w-[100px]">Level</th>
+                  <th class="px-4 py-2 w-[250px]">Path</th>
+                  <th class="px-4 py-2 w-[80px]">Status</th>
+                  <th class="px-4 py-2 w-[100px]">Duration</th>
+                  <th class="px-4 py-2 w-[120px]">User</th>
+                  <th class="px-4 py-2 w-[140px]">IP</th>
+                  <th class="px-4 py-2 w-[200px]">User Agent</th>
+                  <th class="px-4 py-2 w-[200px]">Error</th>
+                  <th class="px-4 py-2 w-[200px]">Metadata</th>
                 </template>
 
                 <!-- AccessLog -->
                 <template v-else>
-                  <th class="px-4 py-2 w-[150px]">User</th>
-                  <th class="px-4 py-2 w-[120px]">Activity</th>
-                  <th class="px-4 py-2 w-[150px]">IP Address</th>
+                  <th class="px-4 py-2 w-[120px]">User</th>
+                  <th class="px-4 py-2 w-[150px]">Login Time</th>
+                  <th class="px-4 py-2 w-[150px]">Logout Time</th>
+                  <th class="px-4 py-2 w-[140px]">IP Address</th>
+                  <th class="px-4 py-2 w-[200px]">User Agent</th>
+                  <th class="px-4 py-2 w-[160px]">Session ID</th>
                 </template>
               </tr>
             </thead>
@@ -138,7 +151,11 @@
                 <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
                   <td class="px-4 py-2 font-medium">
-                    {{ log.userId }}
+                    {{ log.userId || "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">
+                    {{ log.role || "-" }}
                   </td>
 
                   <td class="px-4 py-2">
@@ -146,25 +163,31 @@
                   </td>
 
                   <td class="px-4 py-2">
-                    {{ log.entity }} ({{ log.entityId }})
+                    {{ log.entity || "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">
+                    {{ log.entityId || "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">
+                    {{ log.ipAddress || "-" }}
+                  </td>
+
+                  <td class="px-4 py-2 truncate" :title="log.userAgent">
+                    {{ log.userAgent || "-" }}
+                  </td>
+
+                  <td
+                    class="px-4 py-2 truncate"
+                    :title="JSON.stringify(log.metadata)"
+                  >
+                    {{ log.metadata ? JSON.stringify(log.metadata) : "-" }}
                   </td>
                 </template>
 
                 <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
-                  <td class="px-4 py-2">
-                    {{ log.method }}
-                  </td>
-
-                  <td class="px-4 py-2 truncate" :title="log.endpoint">
-                    {{ log.endpoint }}
-                  </td>
-
-                  <td class="px-4 py-2">
-                    {{ log.statusCode }}
-                  </td>
-
-                  <td class="px-4 py-2">{{ log.responseTime }} ms</td>
                   <td class="px-4 py-2">
                     <span
                       class="px-2 py-1 text-xs font-semibold rounded"
@@ -173,28 +196,76 @@
                       {{ log.level }}
                     </span>
                   </td>
+
+                  <td class="px-4 py-2">{{ log.requestId || "-" }}</td>
+                  <td class="px-4 py-2">{{ log.method || "-" }}</td>
+
+                  <td class="px-4 py-2 truncate" :title="log.path">
+                    {{ log.path || "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">{{ log.statusCode || "-" }}</td>
+                  <td class="px-4 py-2">
+                    {{ log.duration ? log.duration + " ms" : "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">{{ log.userId || "-" }}</td>
+                  <td class="px-4 py-2">{{ log.ipAddress || "-" }}</td>
+
+                  <td class="px-4 py-2 truncate" :title="log.userAgent">
+                    {{ log.userAgent || "-" }}
+                  </td>
+
+                  <td
+                    class="px-4 py-2 truncate"
+                    :title="JSON.stringify(log.error)"
+                  >
+                    {{ log.error ? JSON.stringify(log.error) : "-" }}
+                  </td>
+
+                  <td
+                    class="px-4 py-2 truncate"
+                    :title="JSON.stringify(log.metadata)"
+                  >
+                    {{ log.metadata ? JSON.stringify(log.metadata) : "-" }}
+                  </td>
                 </template>
 
                 <!-- AccessLog -->
                 <template v-else>
-                  <td class="px-4 py-2 font-medium">
-                    {{ log.userId }}
+                  <td class="px-4 py-2">{{ log.userId }}</td>
+
+                  <td class="px-4 py-2">
+                    {{ formatDate(log.loginTime) }}
                   </td>
 
                   <td class="px-4 py-2">
-                    <span class="text-blue-600 font-medium">
-                      {{ log.logoutTime ? "LOGOUT" : "LOGIN" }}
-                    </span>
+                    {{ log.logoutTime ? formatDate(log.logoutTime) : "-" }}
+                  </td>
+
+                  <td class="px-4 py-2">{{ log.ipAddress }}</td>
+
+                  <td class="px-4 py-2 truncate" :title="log.userAgent">
+                    {{ log.userAgent || "-" }}
                   </td>
 
                   <td class="px-4 py-2">
-                    {{ log.ipAddress }}
+                    {{ log.sessionId || "-" }}
                   </td>
                 </template>
               </tr>
 
               <tr v-if="logs.length === 0">
-                <td colspan="6" class="px-4 py-6 text-center text-gray-500">
+                <td
+                  :colspan="
+                    activeTab === 'AuditLog'
+                      ? 8
+                      : activeTab === 'SystemLog'
+                        ? 12
+                        : 7
+                  "
+                  class="px-4 py-6 text-center text-gray-500"
+                >
                   ไม่พบข้อมูล Log
                 </td>
               </tr>
@@ -216,7 +287,6 @@ import AdminSidebar from "~/components/admin/AdminSidebar.vue";
 definePageMeta({ middleware: ["admin-auth"] });
 
 const selectedDate = ref("");
-
 const logs = ref([]);
 const selectedLevel = ref("ALL");
 const tabs = ["AuditLog", "SystemLog", "AccessLog"];
@@ -287,8 +357,19 @@ async function fetchSummary() {
   }
 }
 
+let interval;
+
 onMounted(async () => {
   await fetchLogs();
   await fetchSummary();
+
+  interval = setInterval(() => {
+    fetchSummary();
+  }, 10000); 
 });
+
+onUnmounted(() => {
+  clearInterval(interval);
+});
+
 </script>
