@@ -42,36 +42,88 @@
         </div>
       </div>
 
+      <!-- Tabs -->
+      <div class="mb-4 border-b border-gray-200">
+        <nav class="flex space-x-6">
+          <button
+            v-for="tab in tabs"
+            :key="tab"
+            @click="changeTab(tab)"
+            :class="[
+              'pb-2 text-sm font-medium',
+              activeTab === tab
+                ? 'border-b-2 border-black text-black'
+                : 'text-gray-500 hover:text-black',
+            ]"
+          >
+            {{ tab }}
+          </button>
+        </nav>
+      </div>
+
       <!-- Log Table -->
       <div class="bg-white border border-gray-300 rounded-lg shadow-sm">
-        <div class="px-4 py-4 border-b border-gray-200">
+        <!-- Header row -->
+        <div
+          class="px-4 py-4 border-b border-gray-200 flex justify-between items-center"
+        >
           <h2 class="font-medium text-gray-800">
-            System Logs (ล่าสุด 100 รายการ)
+            {{ activeTab }} (ล่าสุด 100 รายการ)
           </h2>
 
-          <select
-            v-model="selectedLevel"
-            @change="fetchLogs"
-            class="border px-3 py-2 rounded-md text-sm"
-          >
-            <option value="ALL">All Levels</option>
-            <option value="INFO">INFO</option>
-            <option value="WARN">WARN</option>
-            <option value="ERROR">ERROR</option>
-          </select>
-        </div>
+          <div class="flex items-center gap-3">
+  
+  <!-- Level filter (เฉพาะ SystemLog) -->
+  <select
+    v-if="activeTab === 'SystemLog'"
+    v-model="selectedLevel"
+    @change="fetchLogs"
+    class="border px-3 py-2 rounded-md text-sm"
+  >
+    <option value="ALL">All Levels</option>
+    <option value="INFO">INFO</option>
+    <option value="WARN">WARN</option>
+    <option value="ERROR">ERROR</option>
+  </select>
+
+  <!-- Date filter -->
+  <input
+    type="date"
+    v-model="selectedDate"
+    @change="fetchLogs"
+    class="border px-3 py-2 rounded-md text-sm"
+  />
+</div>
+
 
         <div class="overflow-x-auto">
           <table class="min-w-full table-fixed text-sm text-left">
             <thead class="bg-gray-50">
               <tr>
                 <th class="px-4 py-2 w-[180px]">Time</th>
-                <th class="px-4 py-2 w-[100px]">User ID</th>
-                <th class="px-4 py-2 w-[80px]">Method</th>
-                <th class="px-4 py-2 w-[300px]">Endpoint</th>
-                <th class="px-4 py-2 w-[90px]">Status</th>
-                <th class="px-4 py-2 w-[120px]">Response</th>
-                <th class="px-4 py-2 w-[100px]">Level</th>
+
+                <!-- AuditLog -->
+                <template v-if="activeTab === 'AuditLog'">
+                  <th class="px-4 py-2 w-[150px]">User</th>
+                  <th class="px-4 py-2 w-[250px]">Action</th>
+                  <th class="px-4 py-2 w-[250px]">Target</th>
+                </template>
+
+                <!-- SystemLog -->
+                <template v-else-if="activeTab === 'SystemLog'">
+                  <th class="px-4 py-2 w-[80px]">Method</th>
+                  <th class="px-4 py-2 w-[300px]">Endpoint</th>
+                  <th class="px-4 py-2 w-[100px]">Status</th>
+                  <th class="px-4 py-2 w-[120px]">Response</th>
+                  <th class="px-4 py-2 w-[100px]">Level</th>
+                </template>
+
+                <!-- AccessLog -->
+                <template v-else>
+                  <th class="px-4 py-2 w-[150px]">User</th>
+                  <th class="px-4 py-2 w-[120px]">Activity</th>
+                  <th class="px-4 py-2 w-[150px]">IP Address</th>
+                </template>
               </tr>
             </thead>
 
@@ -81,43 +133,74 @@
                 :key="log.id"
                 class="border-b odd:bg-white even:bg-gray-50 hover:bg-gray-100"
               >
-                <td class="px-4 py-2 truncate">
+                <td class="px-4 py-2">
                   {{ formatDate(log.createdAt) }}
                 </td>
 
-                <td class="px-4 py-2 truncate">
-                  {{ log.userId || "-" }}
-                </td>
+                <!-- AuditLog -->
+                <template v-if="activeTab === 'AuditLog'">
+                  <td class="px-4 py-2 font-medium">
+                    {{ log.userId }}
+                  </td>
 
-                <td class="px-4 py-2 truncate">
-                  {{ log.method }}
-                </td>
+                  <td class="px-4 py-2">
+                    {{ log.action }}
+                  </td>
 
-                <td
-                  class="px-4 py-2 truncate max-w-[300px]"
-                  :title="log.endpoint"
-                >
-                  {{ log.endpoint }}
-                </td>
+                  <td class="px-4 py-2">
+                    {{ log.entity }} ({{ log.entityId }})
+                  </td>
+                </template>
 
-                <td class="px-4 py-2 truncate">
-                  {{ log.statusCode }}
-                </td>
+                <!-- SystemLog -->
+                <template v-else-if="activeTab === 'SystemLog'">
+                  <td class="px-4 py-2">
+                    {{ log.method }}
+                  </td>
 
-                <td class="px-4 py-2 truncate">{{ log.responseTime }} ms</td>
+                  <td class="px-4 py-2 truncate" :title="log.endpoint">
+                    {{ log.endpoint }}
+                  </td>
+
+                  <td class="px-4 py-2">
+                    {{ log.statusCode }}
+                  </td>
+
+                  <td class="px-4 py-2">{{ log.responseTime }} ms</td>
+                </template>
+
+                <!-- AccessLog -->
+                <template v-else>
+                  <td class="px-4 py-2 font-medium">
+                    {{ log.userId }}
+                  </td>
+
+                  <td class="px-4 py-2">
+                    <span class="text-blue-600 font-medium">
+                      {{ log.logoutTime ? "LOGOUT" : "LOGIN" }}
+                    </span>
+                  </td>
+
+                  <td class="px-4 py-2">
+                    {{ log.ipAddress }}
+                  </td>
+                </template>
 
                 <td class="px-4 py-2">
                   <span
+                    v-if="log.level"
                     :class="levelClass(log.level)"
                     class="px-2 py-1 text-xs rounded-full"
                   >
                     {{ log.level }}
                   </span>
+
+                  <span v-else class="text-gray-400">-</span>
                 </td>
               </tr>
 
               <tr v-if="logs.length === 0">
-                <td colspan="7" class="px-4 py-6 text-center text-gray-500">
+                <td colspan="6" class="px-4 py-6 text-center text-gray-500">
                   ไม่พบข้อมูล Log
                 </td>
               </tr>
@@ -129,6 +212,7 @@
   </div>
 </template>
 
+
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRuntimeConfig } from "#app";
@@ -138,8 +222,17 @@ import AdminSidebar from "~/components/admin/AdminSidebar.vue";
 
 definePageMeta({ middleware: ["admin-auth"] });
 
+const selectedDate = ref("");
+
 const logs = ref([]);
 const selectedLevel = ref("ALL");
+const tabs = ["AuditLog", "SystemLog", "AccessLog"];
+const activeTab = ref("AuditLog");
+
+function changeTab(tab) {
+  activeTab.value = tab;
+  fetchLogs();
+}
 
 const summary = ref({
   total: 0,
@@ -148,15 +241,21 @@ const summary = ref({
   highError: false,
 });
 
-function formatDate(iso) {
-  if (!iso) return "-";
-  return dayjs(iso).format("D MMM YYYY HH:mm:ss");
+const config = useRuntimeConfig();
+function formatDate(date) {
+  if (!date) return "-";
+  return dayjs(date).format("D MMM YYYY HH:mm:ss");
 }
 
 function levelClass(level) {
-  if (level === "ERROR") return "bg-red-100 text-red-700";
-  if (level === "WARN") return "bg-yellow-100 text-yellow-700";
-  return "bg-green-100 text-green-700";
+  switch (level) {
+    case "ERROR":
+      return "bg-red-100 text-red-700";
+    case "WARN":
+      return "bg-yellow-100 text-yellow-700";
+    default:
+      return "bg-green-100 text-green-700";
+  }
 }
 
 function getAuthHeaders() {
@@ -165,29 +264,30 @@ function getAuthHeaders() {
 }
 
 async function fetchLogs() {
-  const config = useRuntimeConfig();
-
   try {
-    logs.value = await $fetch("/monitor/logs", {
+    const data = await $fetch("/monitor/logs", {
       baseURL: config.public.apiBase,
       headers: getAuthHeaders(),
       query: {
         level: selectedLevel.value,
+        type: activeTab.value,
       },
     });
+
+    logs.value = data;
   } catch (error) {
     console.error("Fetch logs error:", error);
   }
 }
 
 async function fetchSummary() {
-  const config = useRuntimeConfig();
-
   try {
-    summary.value = await $fetch("/monitor/logs/summary", {
+    const data = await $fetch("/monitor/logs/summary", {
       baseURL: config.public.apiBase,
       headers: getAuthHeaders(),
     });
+
+    summary.value = data;
   } catch (error) {
     console.error("Fetch summary error:", error);
   }
