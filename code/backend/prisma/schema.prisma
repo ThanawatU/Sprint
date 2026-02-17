@@ -95,14 +95,9 @@ model User {
   createdRoutes           Route[]             @relation("DriverRoutes")
   bookings                Booking[]           @relation("PassengerBookings")
 
-<<<<<<< HEAD
-  // เพิ่มจาก User เดิม
-  auditLogs AuditLog[]
-=======
   // Logging relations
   auditLogs               AuditLog[]
   accessLogs              AccessLog[]
->>>>>>> main
 
   blacklists        Blacklist[]
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
