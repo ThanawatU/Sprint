@@ -140,6 +140,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-17 - Kanyapat_5037
+
+### Added
+- Created Blacklist Management page
+- Added log retention deletion function
+- Implemented Robot Framework automated test cases for Log Retention feature
+
+### Fixed
+- Resolved 404 error on route `/blacklists/:id/edit`
+- Fixed Cloudinary upload error
+
+---
+
 ## Version Guidelines
 
 ### Categories
