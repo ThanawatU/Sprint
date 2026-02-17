@@ -19,6 +19,8 @@ const { prisma } = require("./src/utils/prisma"); // adjust path if needed
 const cron = require('node-cron');
 const { cleanupOldLogs } = require('./src/services/logRetention.service');
 
+cleanupOldLogs(); //temporary for test
+
 const app = express();
 promClient.collectDefaultMetrics();
 
