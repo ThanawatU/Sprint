@@ -56,11 +56,15 @@
                             </a>
                             <a href="#section-9" :class="tocLinkClass('section-9')"
                                 class="block px-3 py-2 text-sm rounded-md toc-link">
-                                ข้อ 9: การเปลี่ยนแปลงนโยบาย
+                                ข้อ 9: การระงับบัญชีและระบบ Blacklist
                             </a>
                             <a href="#section-10" :class="tocLinkClass('section-10')"
                                 class="block px-3 py-2 text-sm rounded-md toc-link">
-                                ข้อ 10: ข้อมูลการติดต่อ
+                                ข้อ 10: การเปลี่ยนแปลงนโยบาย
+                            </a>
+                            <a href="#section-10" :class="tocLinkClass('section-11')"
+                                class="block px-3 py-2 text-sm rounded-md toc-link">
+                                ข้อ 11: ข้อมูลการติดต่อ
                             </a>
                         </nav>
                     </div>
@@ -243,6 +247,17 @@
                                     <span><strong>เพื่อปฏิบัติตามกฎหมาย:</strong>
                                         เพื่อปฏิบัติตามภาระผูกพันทางกฎหมายหรือการร้องขอจากหน่วยงานภาครัฐที่มีอํานาจ</span>
                                 </li>
+                                <li class="flex items-start">
+                                    <span class="mt-1 mr-3 text-indigo-500 shrink-0">✓</span>
+                                    <span>
+                                        <strong>เพื่อรักษาความปลอดภัยและความน่าเชื่อถือของแพลตฟอร์ม:</strong>
+                                        เพื่อป้องกันการกระทำที่ฝ่าฝืนข้อกำหนดการใช้งาน 
+                                        การทุจริต หรือพฤติกรรมที่ไม่เหมาะสม 
+                                        เราอาจพิจารณาระงับบัญชีหรือบันทึกข้อมูลไว้ในระบบ Blacklist 
+                                        เพื่อป้องกันการสมัครใช้งานซ้ำภายใต้บัญชีใหม่
+                                    </span>
+                                </li>
+
                             </ul>
                         </div>
                     </section>
@@ -271,6 +286,15 @@
                                     เราอาจแบ่งปันข้อมูลกับผู้ให้บริการที่ช่วยเราดําเนินงาน เช่น ระบบคลาวด์, แผนที่
                                     (Direction API),
                                     หรือผู้ให้บริการส่งรหัส OTP โดยมีสัญญาคุ้มครองข้อมูล
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-gray-50">
+                                <h3 class="mb-2 font-semibold text-gray-900">การจัดการบัญชีที่ถูกระงับหรือขึ้นบัญชี Blacklist</h3>
+                                <p class="text-sm text-gray-700">
+                                    ในกรณีที่ผู้ใช้กระทำการฝ่าฝืนเงื่อนไขการให้บริการ 
+                                    ก่อให้เกิดความเสียหาย หรือมีพฤติกรรมที่อาจกระทบต่อความปลอดภัยของผู้ใช้อื่น 
+                                    เราอาจดำเนินการระงับบัญชี หรือบันทึกข้อมูลบางส่วนไว้ในระบบ Blacklist 
+                                    เพื่อป้องกันการสมัครใช้งานใหม่ภายใต้ข้อมูลหรือพฤติกรรมเดิม
                                 </p>
                             </div>
                             <div class="p-4 border-l-4 border-red-400 rounded-r-lg bg-red-50">
@@ -303,6 +327,12 @@
                                         และตราบเท่าที่ท่านยังคงสถานะเป็นผู้ใช้ของแพลตฟอร์ม หลังจากที่ท่านยกเลิกบัญชี
                                         เราอาจยังคงเก็บข้อมูลบางส่วนไว้ตามระยะเวลาที่กฎหมายกำหนดเพื่อภาระผูกพันทางบัญชีและกฎหมาย
                                     </p>
+                                    <p class="mt-4 leading-relaxed text-gray-700">
+                                        สำหรับข้อมูลที่เกี่ยวข้องกับบัญชีที่ถูกระงับหรือขึ้นบัญชี Blacklist 
+                                        เราอาจเก็บรักษาข้อมูลดังกล่าวไว้ตามระยะเวลาที่จำเป็น 
+                                        เพื่อป้องกันการสมัครซ้ำ การทุจริต หรือเพื่อปฏิบัติตามข้อกำหนดทางกฎหมาย 
+                                        โดยจะพิจารณาเก็บรักษาเท่าที่จำเป็นและเหมาะสมเท่านั้น
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -326,6 +356,11 @@
                                         เพื่อป้องกันการเข้าถึง, การใช้งาน, การเปลี่ยนแปลง
                                         หรือการเปิดเผยข้อมูลส่วนบุคคลโดยไม่ได้รับอนุญาต
                                         ซึ่งรวมถึงการเข้ารหัสข้อมูลที่สำคัญ เช่น รหัสผ่าน
+                                    </p>
+                                    <p class="mt-3 text-gray-700">
+                                        ข้อมูล Log และข้อมูลจราจรทางคอมพิวเตอร์ถูกจัดเก็บในระบบที่มีการควบคุมสิทธิ์การเข้าถึง 
+                                        และมีมาตรการป้องกันการแก้ไขหรือเปลี่ยนแปลงโดยไม่ได้รับอนุญาต 
+                                        เพื่อคงไว้ซึ่งความถูกต้องครบถ้วนของข้อมูล (Data Integrity)
                                     </p>
                                 </div>
                             </div>
@@ -362,24 +397,48 @@
                                 <p class="text-sm text-gray-600">คัดค้านการเก็บรวบรวม, ใช้, หรือเปิดเผยข้อมูลของท่าน</p>
                             </div>
                         </div>
+                        <p class="mt-4 mb-6 leading-relaxed text-gray-700">
+                            ทั้งนี้ การใช้สิทธิ์ในการลบหรือคัดค้านการประมวลผลข้อมูล 
+                            อาจถูกจำกัดในกรณีที่ข้อมูลดังกล่าวจำเป็นต่อการป้องกันการทุจริต 
+                            การรักษาความปลอดภัยของระบบ หรือการปฏิบัติตามกฎหมายที่เกี่ยวข้อง
+                        </p>
                     </section>
 
                     <!-- Section 9 -->
                     <section id="section-9" ref="sectionsRef"
                         class="p-8 mb-6 bg-white rounded-lg shadow-md content-section section-card">
-                        <h2 class="mb-4 text-2xl font-bold text-gray-900">ข้อ 9: การเปลี่ยนแปลงนโยบาย</h2>
-                        <div class="p-6 border-l-4 border-teal-500 rounded-r-lg bg-teal-50">
+                        <!-- <div class="p-4 border-l-4 border-red-400 rounded-r-lg bg-red-50"> -->
+                            
+                                
+
+                        <h2 class="mb-4 text-2xl font-bold text-gray-900">
+                            ข้อ 9: การระงับบัญชีและระบบ Blacklist
+                        </h2>
+                        
+                        <div class="p-6 border-l-4 border-red-500 rounded-r-lg bg-red-50">
                             <div class="flex items-start">
-                                <svg class="w-8 h-8 mr-4 text-teal-600 shrink-0" fill="none" stroke="currentColor"
+                                <svg class="w-8 h-8 mr-4 text-red-600 shrink-0" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                        d="M12 9v2m0 4h.01M10.29 3.86l-8.2 14.2A1 1 0 003 19h18a1 1 0 00.91-1.94l-8.2-14.2a1 1 0 00-1.72 0z" />
                                 </svg>
                                 <div>
-                                    <h3 class="mb-1 text-lg font-semibold text-teal-900">Policy Updates</h3>
+                                    <h3 class="mb-1 text-lg font-semibold text-red-900">Blacklist System</h3>
+                                    <p class="mb-4 leading-relaxed text-gray-700">
+                                        เพื่อรักษาความปลอดภัย ความน่าเชื่อถือ และป้องกันการกระทำที่ฝ่าฝืนข้อกำหนดการใช้งาน 
+                                        เราอาจดำเนินการระงับบัญชีผู้ใช้ หรือบันทึกข้อมูลบางส่วนไว้ในระบบ Blacklist 
+                                        ในกรณีที่พบพฤติกรรมที่ไม่เหมาะสม การทุจริต การหลอกลวง 
+                                        หรือการกระทำที่อาจก่อให้เกิดความเสียหายแก่ผู้ใช้อื่นหรือแพลตฟอร์ม
+                                    </p>
+                                    <p class="mb-4 leading-relaxed text-gray-700">
+                                        ข้อมูลที่อาจถูกบันทึกในระบบ Blacklist อาจรวมถึงข้อมูลบัญชีผู้ใช้ 
+                                        ข้อมูลการกระทำที่เกี่ยวข้อง และข้อมูลทางเทคนิคที่จำเป็น 
+                                        เพื่อป้องกันการสมัครใช้งานใหม่ภายใต้บัญชีอื่น
+                                    </p>
                                     <p class="leading-relaxed text-gray-700">
-                                        เราอาจมีการทบทวนและแก้ไขนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราวเพื่อให้สอดคล้องกับการเปลี่ยนแปลงของบริการและกฎหมายที่เกี่ยวข้อง
-                                        เราจะแจ้งให้ท่านทราบถึงการเปลี่ยนแปลงที่สำคัญผ่านช่องทางที่เหมาะสมบนแพลตฟอร์ม
+                                        การประมวลผลข้อมูลดังกล่าวเป็นไปตามฐานประโยชน์โดยชอบด้วยกฎหมาย 
+                                        (Legitimate Interest) ของผู้ควบคุมข้อมูลในการรักษาความปลอดภัยของระบบ 
+                                        และจะดำเนินการเท่าที่จำเป็นและเหมาะสมเท่านั้น
                                     </p>
                                 </div>
                             </div>
@@ -427,8 +486,29 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </section>
 
+                    <!-- Section 11 -->
+                    <section id="section-11" class="p-8 mb-6 bg-white rounded-lg shadow-md content-section section-card">
+                        <h2 class="mb-4 text-2xl font-bold text-gray-900">ข้อ 11: การเปลี่ยนแปลงนโยบาย</h2>
+                        <div class="p-6 border-l-4 border-teal-500 rounded-r-lg bg-teal-50">
+                            <div class="flex items-start">
+                                <svg class="w-8 h-8 mr-4 text-teal-600 shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                <div>
+                                    <h3 class="mb-1 text-lg font-semibold text-teal-900">Policy Updates</h3>
+                                    <p class="leading-relaxed text-gray-700">
+                                        เราอาจมีการทบทวนและแก้ไขนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราวเพื่อให้สอดคล้องกับการเปลี่ยนแปลงของบริการและกฎหมายที่เกี่ยวข้อง
+                                        เราจะแจ้งให้ท่านทราบถึงการเปลี่ยนแปลงที่สำคัญผ่านช่องทางที่เหมาะสมบนแพลตฟอร์ม
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             </div>
         </main>
