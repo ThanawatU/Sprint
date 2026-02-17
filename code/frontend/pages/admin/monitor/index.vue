@@ -72,29 +72,27 @@
           </h2>
 
           <div class="flex items-center gap-3">
-  
-  <!-- Level filter (เฉพาะ SystemLog) -->
-  <select
-    v-if="activeTab === 'SystemLog'"
-    v-model="selectedLevel"
-    @change="fetchLogs"
-    class="border px-3 py-2 rounded-md text-sm"
-  >
-    <option value="ALL">All Levels</option>
-    <option value="INFO">INFO</option>
-    <option value="WARN">WARN</option>
-    <option value="ERROR">ERROR</option>
-  </select>
+            <select
+              v-if="activeTab === 'SystemLog'"
+              v-model="selectedLevel"
+              @change="fetchLogs"
+              class="border px-3 py-2 rounded-md text-sm"
+            >
+              <option value="ALL">All Levels</option>
+              <option value="INFO">INFO</option>
+              <option value="WARN">WARN</option>
+              <option value="ERROR">ERROR</option>
+            </select>
 
-  <!-- Date filter -->
-  <input
-    type="date"
-    v-model="selectedDate"
-    @change="fetchLogs"
-    class="border px-3 py-2 rounded-md text-sm"
-  />
-</div>
-
+            <!-- Date filter -->
+            <input
+              type="date"
+              v-model="selectedDate"
+              @change="fetchLogs"
+              class="border px-3 py-2 rounded-md text-sm"
+            />
+          </div>
+        </div>
 
         <div class="overflow-x-auto">
           <table class="min-w-full table-fixed text-sm text-left">
@@ -167,6 +165,14 @@
                   </td>
 
                   <td class="px-4 py-2">{{ log.responseTime }} ms</td>
+                  <td class="px-4 py-2">
+                    <span
+                      class="px-2 py-1 text-xs font-semibold rounded"
+                      :class="levelClass(log.level)"
+                    >
+                      {{ log.level }}
+                    </span>
+                  </td>
                 </template>
 
                 <!-- AccessLog -->
@@ -185,18 +191,6 @@
                     {{ log.ipAddress }}
                   </td>
                 </template>
-
-                <td class="px-4 py-2">
-                  <span
-                    v-if="log.level"
-                    :class="levelClass(log.level)"
-                    class="px-2 py-1 text-xs rounded-full"
-                  >
-                    {{ log.level }}
-                  </span>
-
-                  <span v-else class="text-gray-400">-</span>
-                </td>
               </tr>
 
               <tr v-if="logs.length === 0">
@@ -211,7 +205,6 @@
     </main>
   </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted } from "vue";
@@ -271,6 +264,7 @@ async function fetchLogs() {
       query: {
         level: selectedLevel.value,
         type: activeTab.value,
+        date: selectedDate.value || undefined,
       },
     });
 

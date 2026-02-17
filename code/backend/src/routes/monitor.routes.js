@@ -4,7 +4,7 @@ const { prisma } = require("../utils/prisma");
 
 router.get("/logs", async (req, res) => {
   try {
-    const { level = "ALL", type = "SystemLog" } = req.query;
+    const { level = "ALL", type = "SystemLog", date } = req.query;
 
     const modelMap = {
       AuditLog: prisma.auditLog,
@@ -14,11 +14,24 @@ router.get("/logs", async (req, res) => {
 
     const model = modelMap[type] || prisma.systemLog;
 
-    const whereCondition =
-      type === "SystemLog" && level !== "ALL" ? { level } : undefined;
+    const where = {};
+
+    if (type === "SystemLog" && level !== "ALL") {
+      where.level = level;
+    }
+
+    if (date) {
+      const start = new Date(`${date}T00:00:00.000+07:00`);
+      const end = new Date(`${date}T23:59:59.999+07:00`);
+
+      where.createdAt = {
+        gte: start,
+        lte: end,
+      };
+    }
 
     const logs = await model.findMany({
-      where: whereCondition,
+      where,
       orderBy: { createdAt: "desc" },
       take: 100,
     });
@@ -105,7 +118,7 @@ router.get("/logs/summary", async (req, res) => {
 });
 
 //กราฟ
-router.get('/logs/trend', async (req, res) => {
+router.get("/logs/trend", async (req, res) => {
   try {
     const result = await prisma.$queryRaw`
       SELECT 
@@ -119,7 +132,6 @@ router.get('/logs/trend', async (req, res) => {
     `;
 
     res.json(result);
-
   } catch (error) {
     console.error("Trend error:", error);
     res.status(500).json({ message: "Failed to fetch trend" });
