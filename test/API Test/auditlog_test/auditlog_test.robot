@@ -4,7 +4,7 @@ Library           DatabaseLibrary
 Library           Collections
 Library           JSONLibrary
 
-Suite Setup       Connect To Database    psycopg2    my_project_db    postgres    root123    127.0.0.1    5433
+Suite Setup       Connect To Database    psycopg2    pnnapp_db    pnnapp_user    1234    127.0.0.1    5433
 Suite Teardown    Disconnect From Database
 
 *** Variables ***

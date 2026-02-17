@@ -8,16 +8,17 @@ Library           String
 Library           DateTime
 
 # ตั้งค่า Database (ตรวจสอบ Port/Password ของคุณ)
-Suite Setup       Connect To Database    psycopg2    my_project_db    postgres    root123    127.0.0.1    5433
+# Database configuration (match Docker/Postgres settings)
+Suite Setup       Connect To Database    psycopg2    pnnapp_db    pnnapp_user    1234    127.0.0.1    5433
 Suite Teardown    Disconnect From Database
 
 *** Variables ***
 ${BASE_URL}       http://localhost:3000/api
-${PASSENGER_USER}        jangkup90
-${PASSENGER_ID_CONST}    cmlp9wtno0000hh5tm9wid5ko
-${DRIVER_USER}           rattatuay
-${DRIVER_ID_CONST}       cmlpfp9s4000013eo3bnclbce
-${COMMON_PASSWORD}       12345678asdASD
+${PASSENGER_USER}        pLoomN
+${PASSENGER_ID_CONST}    cmlq6xutn0001l5vvzg3hm6nx
+${DRIVER_USER}           Test123
+${DRIVER_ID_CONST}       cmlq83n8k003il5vv9e7ufc9l
+${COMMON_PASSWORD}       12345678aP
 
 *** Test Cases ***
 

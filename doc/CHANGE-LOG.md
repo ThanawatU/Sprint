@@ -184,6 +184,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-17 - Yodsanon_0215
+
+### Added
+- Added UAT scenarios for Audit Log and Blacklist management.
+- Implemented automated API tests using Robot Framework for AuditLog, AccessLog, SystemLog, and Blacklist workflow.
+
+---
+
 ## [1.0.0] - 2026-02-17 - Kanyapat_5037
 
 ### Added
