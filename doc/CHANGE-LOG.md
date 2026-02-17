@@ -158,6 +158,7 @@ All notable changes to this project will be documented in this file.
 - Created Monitor Dashboard page to display: system logs,Audit logs,Access logs (LOGIN / LOGOUT)
     Real-time summary (total requests, errors in last 5 minutes, average response time)
 - Connected frontend Monitor Dashboard with backend /monitor/logs and /monitor/logs/summary APIs.
+- Created User Manual documentation
 
 ### Changed
 - Updated monitor.controller to support dynamic log type selection (SystemLog, AuditLog, AccessLog).
