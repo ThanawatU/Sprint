@@ -4,19 +4,17 @@ const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
 const { logLogin } = require('../utils/accessLog');
-const { prisma } = require("../utils/prisma"); // adjust path if needed
+const { prisma } = require("../utils/prisma");
 
 const login = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
 
     let user;
-    // Check Whether Login by Email or Username
     if (email) {
         user = await userService.getUserByEmail(email);
     } else if (username) {
         user = await userService.getUserByUsername(username);
     }
-
 
     if (user && !user.isActive) {
         await logAudit({
@@ -32,6 +30,7 @@ const login = asyncHandler(async (req, res) => {
     }
 
     const passwordIsValid = user ? await userService.comparePassword(user, password) : false;
+
     if (!user || !passwordIsValid) {
         await logAudit({
             userId: user?.id,
@@ -45,10 +44,10 @@ const login = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid credentials");
     }
 
-
     const token = signToken({ sub: user.id, role: user.role });
+
     const {
-        password:_,
+        password: _,
         gender,
         phoneNumber,
         otpCode,
@@ -61,8 +60,8 @@ const login = asyncHandler(async (req, res) => {
         lastLogin,
         createdAt,
         updatedAt,
-        username:__,
-        email:___,
+        username: __,
+        email: ___,
         ...safeUser
     } = user;
 
@@ -75,7 +74,6 @@ const login = asyncHandler(async (req, res) => {
         req
     });
 
-    // บันทึก login ใน AccessLog
     await logLogin({
         userId: user.id,
         ipAddress: req.ip,
@@ -95,6 +93,54 @@ const login = asyncHandler(async (req, res) => {
         req
     });
 });
+
+
+const logout = asyncHandler(async (req, res) => {
+    const userId = req.user.sub;
+
+    await prisma.accessLog.updateMany({
+        where: {
+            userId: userId,
+            logoutTime: null
+        },
+        data: {
+            logoutTime: new Date()
+        }
+    });
+
+    await logAudit({
+        userId,
+        role: req.user.role,
+        action: "LOGOUT",
+        entity: "User",
+        entityId: userId,
+        req
+    });
+
+    // ✅ เพิ่ม SystemLog สำหรับ Monitor
+    await prisma.systemLog.create({
+        data: {
+            level: "INFO",
+            method: req.method,
+            path: req.originalUrl,
+            statusCode: 200,
+            duration: 0, // ถ้ามี middleware วัด response time ค่อยใส่จริง
+            userId: userId,
+            ipAddress: req.ip,
+            userAgent: req.get("user-agent"),
+            requestId: req.requestId,
+            metadata: {
+                action: "LOGOUT"
+            }
+        }
+    });
+
+    res.status(200).json({
+        success: true,
+        message: "Logout successful"
+    });
+});
+
 
 const changePassword = asyncHandler(async (req, res) => {
     const userId = req.user.sub;
@@ -116,6 +162,7 @@ const changePassword = asyncHandler(async (req, res) => {
             req,
             metadata: { reason: "Failed to update password" }
         });
+
         throw new ApiError(500, 'Could not update password.');
     }
 
@@ -133,7 +180,6 @@ const changePassword = asyncHandler(async (req, res) => {
         message: "Password changed successfully",
         data: null
     });
-    
 });
 
-module.exports = { login, changePassword};
+module.exports = { login, changePassword, logout };
