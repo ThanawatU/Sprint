@@ -193,21 +193,16 @@
                                     </td>
                                     <!-- ปุ่มจัดการ -->
                                     <td class="px-4 py-3">
-                                        <button @click="onViewBlacklist(b)"
-                                            class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-emerald-600"
-                                            title="ดูรายละเอียด" aria-label="ดูรายละเอียด">
-                                            <i class="text-lg fa-regular fa-eye"></i>
-                                        </button>
                                         <button @click="onEditBlacklist(b)"
                                             class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-blue-600"
                                             title="แก้ไข" aria-label="แก้ไข">
                                             <i class="text-lg fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button @click="askDeleteBlacklist(b)"
+                                        <!-- <button @click="askDeleteBlacklist(b)"
                                             class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-red-600"
                                             title="ลบ" aria-label="ลบ">
                                             <i class="text-lg fa-regular fa-trash-can"></i>
-                                        </button>
+                                        </button> -->
                                     </td>
                                 </tr>
 
