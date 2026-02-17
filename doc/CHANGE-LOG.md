@@ -203,6 +203,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - AI Declaration
 - Sprint Backlog File
+- Adapt Blueprint
 
 ---
 
