@@ -158,6 +158,7 @@ All notable changes to this project will be documented in this file.
 - Created Blacklist Management page
 - Added log retention deletion function
 - Implemented Robot Framework automated test cases for Log Retention feature
+- Added Privacy Policy updates for Log Retention and Blacklist compliance
 
 ### Fixed
 - Resolved 404 error on route `/blacklists/:id/edit`
