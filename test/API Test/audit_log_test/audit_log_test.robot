@@ -9,15 +9,21 @@ Library           DateTime
 
 # ตั้งค่า Database (ตรวจสอบ Port/Password ของคุณ)
 # Database configuration (match Docker/Postgres settings)
-Suite Setup       Connect To Database    psycopg2    pnnapp_db    pnnapp_user    1234    127.0.0.1    5433
+Suite Setup    Connect To Database
+...    psycopg2
+...    railway
+...    postgres
+...    NIGIxsqZVieNawPDWuUHbpQlsHvnovuN
+...    switchback.proxy.rlwy.net
+...    54228
 Suite Teardown    Disconnect From Database
 
 *** Variables ***
-${BASE_URL}       http://localhost:3000/api
+${BASE_URL}       https://deploy-production-88fa.up.railway.app/api
 ${PASSENGER_USER}        pLoomN
-${PASSENGER_ID_CONST}    cmlq6xutn0001l5vvzg3hm6nx
+${PASSENGER_ID_CONST}    cmlr0qn1d006c3mjam33l7wh5
 ${DRIVER_USER}           Test123
-${DRIVER_ID_CONST}       cmlq83n8k003il5vv9e7ufc9l
+${DRIVER_ID_CONST}       cmlr1qw2l00jf3mja2zlwv1k9
 ${COMMON_PASSWORD}       12345678aP
 
 *** Test Cases ***

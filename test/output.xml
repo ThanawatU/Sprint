@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.14.0 on darwin)" generated="2026-02-18T13:10:13.900566" rpa="false" schemaversion="5">
+<suite id="s1" name="Log Retension Test" source="/Users/thanawatueasiripracha/Desktop/project/painamnae_current/test/log_retension_test.robot">
+<kw name="Connect To Supabase" type="SETUP">
+<kw name="Connect To Database" owner="DatabaseLibrary">
+<msg time="2026-02-18T13:10:13.931504" level="INFO">Looking for configuration file: 'resources/db.cfg'</msg>
+<msg time="2026-02-18T13:10:13.931529" level="INFO">Configuration file doesn't exist</msg>
+<msg time="2026-02-18T13:10:14.015606" level="INFO">Connect to DB using : psycopg2.connect(database='postgres', user='postgres', password=***, host='db.nvgcrbllnbhjxlluqmic.supabase.co', port=5432, sslmode='require')</msg>
+<msg time="2026-02-18T13:10:14.101357" level="FAIL">OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</msg>
+<arg>psycopg2</arg>
+<arg>${DB_NAME}</arg>
+<arg>${DB_USER}</arg>
+<arg>${DB_PASSWORD}</arg>
+<arg>${DB_HOST}</arg>
+<arg>${DB_PORT}</arg>
+<arg>sslmode=require</arg>
+<doc>Creates a database connection using the DB API 2.0 ``db_module`` and the parameters provided.
+Along with listed commonly used arguments (`db_name`, `db_host` etc.)
+you can set any other DB module specific parameters as key/value pairs.</doc>
+<status status="FAIL" start="2026-02-18T13:10:13.931328" elapsed="0.171921">OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</kw>
+<status status="FAIL" start="2026-02-18T13:10:13.931144" elapsed="0.172298">OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</kw>
+<test id="s1-t1" name="Check Current DB" line="15">
+<status status="FAIL" start="2026-02-18T13:10:14.103536" elapsed="0.000356">Parent suite setup failed:
+OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</test>
+<test id="s1-t2" name="Check DB Time" line="19">
+<status status="FAIL" start="2026-02-18T13:10:14.104071" elapsed="0.000205">Parent suite setup failed:
+OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</test>
+<test id="s1-t3" name="Check Expired Logs Count" line="23">
+<status status="FAIL" start="2026-02-18T13:10:14.104429" elapsed="0.000189">Parent suite setup failed:
+OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</test>
+<test id="s1-t4" name="Retention Should NOT Delete Recent Logs" line="29">
+<doc>Verify logs within 90 days still exist</doc>
+<status status="FAIL" start="2026-02-18T13:10:14.104751" elapsed="0.000251">Parent suite setup failed:
+OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</test>
+<kw name="Disconnect From Database" owner="DatabaseLibrary" type="TEARDOWN">
+<msg time="2026-02-18T13:10:14.105497" level="INFO">No open database connection to close</msg>
+<doc>Disconnects from the database.</doc>
+<status status="PASS" start="2026-02-18T13:10:14.105394" elapsed="0.000150"/>
+</kw>
+<status status="FAIL" start="2026-02-18T13:10:13.901060" elapsed="0.204515">Suite setup failed:
+OperationalError: could not translate host name "db.nvgcrbllnbhjxlluqmic.supabase.co" to address: nodename nor servname provided, or not known
+</status>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="4" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Log Retension Test" id="s1" pass="0" fail="4" skip="0">Log Retension Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
