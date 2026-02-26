@@ -98,6 +98,8 @@ model User {
   // Logging relations
   auditLogs               AuditLog[]
   accessLogs              AccessLog[]
+  exportRequests        ExportRequest[]     @relation("ExportRequester")
+  reviewedExportRequests ExportRequest[]    @relation("ExportReviewer")
 
   blacklists        Blacklist[]
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
@@ -245,11 +247,13 @@ model AuditLog {
   metadata Json? @db.Json
 
   createdAt DateTime @default(now())
+  integrityHash String? @db.VarChar(64)
 
   @@index([userId])
   @@index([action])
   @@index([entity])
   @@index([createdAt])
+  @@index([integrityHash])
 }
 
 model SystemLog {
@@ -299,6 +303,7 @@ model AccessLog {
   createdAt   DateTime  @default(now())
 
   @@index([userId])
+  @@index([createdAt])
 }
 enum BlacklistType {
   DRIVER
@@ -357,4 +362,51 @@ model BlacklistEvidence {
 
   @@index([blacklistId])
   @@index([type])
+}
+
+enum ExportStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum ExportFormat {
+  CSV
+  JSON
+  PDF
+}
+
+model ExportRequest {
+  id             String       @id @default(cuid())
+
+  requestedById  String
+  requestedBy    User         @relation("ExportRequester", fields: [requestedById], references: [id], onDelete: Cascade)
+
+  logType        String       @db.VarChar(20) // "AuditLog" | "SystemLog" | "AccessLog"
+  format         ExportFormat @default(CSV)
+  filters        Json?        @db.Json
+
+  // Approval workflow
+  status         ExportStatus @default(PENDING)
+  reviewedById   String?
+  reviewedBy     User?        @relation("ExportReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt     DateTime?
+  rejectionReason String?
+
+  // Export result
+  filePath       String?
+  fileSize       Int?
+  recordCount    Int?
+
+  createdAt      DateTime     @default(now())
+  completedAt    DateTime?
+  expiresAt      DateTime?
+
+  @@index([requestedById])
+  @@index([status])
+  @@index([createdAt])
+  @@index([reviewedById])
 }

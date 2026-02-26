@@ -216,6 +216,17 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-26 - Phakorn_2160
+
+### Added
+
+- `ExportRequest` model in `prisma/schema.prisma` for tracking log export requests with approval workflow (status, reviewer, rejection reason) and export result metadata (filePath, fileSize, recordCount)
+- `ExportStatus` enum (PENDING, APPROVED, REJECTED, PROCESSING, COMPLETED, FAILED)
+- `ExportFormat` enum (CSV, JSON, PDF)
+- `integrityHash` field (`VarChar(64)`) on `AuditLog` model for SHA-256 tamper detection
+- `@@index([createdAt])` on `AccessLog` for date range queries and retention cleanup
+- `@@index([integrityHash])` on `AuditLog`
+
 ## Version Guidelines
 
 ### Categories
