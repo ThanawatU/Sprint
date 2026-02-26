@@ -226,6 +226,13 @@ All notable changes to this project will be documented in this file.
 - `integrityHash` field (`VarChar(64)`) on `AuditLog` model for SHA-256 tamper detection
 - `@@index([createdAt])` on `AccessLog` for date range queries and retention cleanup
 - `@@index([integrityHash])` on `AuditLog`
+- Report database core: `ReportCase`, `ReportCaseStatusHistory`, `ReportEvidence`
+- Report enums: `ReportCategory`, `ReportCaseStatus`, `ReportEvidenceType`
+- Prisma migration `20260226153400_add_report_case_tables` (tables, indexes, foreign keys)
+
+### Changed
+
+- Added report relations on `User`, `Booking`, and `Route` to support case linking and history/evidence workflows
 
 ## Version Guidelines
 

@@ -106,6 +106,12 @@ model User {
 
   uploadedEvidences BlacklistEvidence[]
 
+  filedReportCases         ReportCase[]              @relation("ReportCaseReporter")
+  receivedReportCases      ReportCase[]              @relation("ReportCaseDriver")
+  resolvedReportCases      ReportCase[]              @relation("ReportCaseResolver")
+  reportCaseStatusUpdates  ReportCaseStatusHistory[] @relation("ReportCaseStatusChangedBy")
+  uploadedReportEvidences  ReportEvidence[]          @relation("ReportEvidenceUploadedBy")
+
   @@index([role])
   @@index([isActive])
   @@index([isVerified])
@@ -205,6 +211,7 @@ model Route {
   updatedAt       DateTime    @updatedAt
 
   bookings Booking[]
+  reportCases ReportCase[]
 
   @@index([driverId])
   @@index([vehicleId])
@@ -227,6 +234,8 @@ model Booking {
   pickupLocation  Json          @db.Json
   dropoffLocation Json          @db.Json
   createdAt       DateTime      @default(now())
+
+  reportCases ReportCase[]
 }
 
 model AuditLog {
@@ -318,6 +327,113 @@ enum BlacklistStatus {
 enum EvidenceType {
   VIDEO
   IMAGE
+}
+
+enum ReportCategory {
+  DANGEROUS_DRIVING
+  AGGRESSIVE_BEHAVIOR
+  HARASSMENT
+  NO_SHOW
+  FRAUD_OR_SCAM
+  OTHER
+}
+
+enum ReportCaseStatus {
+  FILED
+  UNDER_REVIEW
+  INVESTIGATING
+  RESOLVED
+  REJECTED
+  CLOSED
+}
+
+enum ReportEvidenceType {
+  VIDEO
+  IMAGE
+  AUDIO
+  DOCUMENT
+}
+
+model ReportCase {
+  id String @id @default(cuid())
+
+  reporterId String
+  reporter   User   @relation("ReportCaseReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  driverId String
+  driver   User   @relation("ReportCaseDriver", fields: [driverId], references: [id], onDelete: Cascade)
+
+  bookingId String?
+  booking   Booking? @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+
+  routeId String?
+  route   Route? @relation(fields: [routeId], references: [id], onDelete: SetNull)
+
+  category    ReportCategory
+  description String
+  status      ReportCaseStatus @default(FILED)
+
+  resolvedById String?
+  resolvedBy   User? @relation("ReportCaseResolver", fields: [resolvedById], references: [id], onDelete: SetNull)
+
+  adminNotes String?
+  resolvedAt DateTime?
+  closedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  statusHistory ReportCaseStatusHistory[]
+  evidences     ReportEvidence[]
+
+  @@index([reporterId])
+  @@index([driverId])
+  @@index([bookingId])
+  @@index([routeId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([resolvedById])
+}
+
+model ReportCaseStatusHistory {
+  id String @id @default(cuid())
+
+  reportCaseId String
+  reportCase   ReportCase @relation(fields: [reportCaseId], references: [id], onDelete: Cascade)
+
+  fromStatus ReportCaseStatus?
+  toStatus   ReportCaseStatus
+
+  changedById String?
+  changedBy   User? @relation("ReportCaseStatusChangedBy", fields: [changedById], references: [id], onDelete: SetNull)
+
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([reportCaseId, createdAt])
+  @@index([changedById])
+}
+
+model ReportEvidence {
+  id String @id @default(cuid())
+
+  reportCaseId String
+  reportCase   ReportCase @relation(fields: [reportCaseId], references: [id], onDelete: Cascade)
+
+  type     ReportEvidenceType
+  url      String
+  fileName String?
+  mimeType String?
+  fileSize Int?
+
+  uploadedById String?
+  uploadedBy   User? @relation("ReportEvidenceUploadedBy", fields: [uploadedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+
+  @@index([reportCaseId])
+  @@index([type])
+  @@index([uploadedById])
 }
 
 model Blacklist {
