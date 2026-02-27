@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const { protect, authorize } = require("../middlewares/auth");
 const {
   adminOnly,
   selfOrAdmin,
@@ -10,8 +9,10 @@ const {
   auditListGuard,
 } = require("../middlewares/auditAccess.middleware");
 
+const blacklistController = require('../controllers/blacklist.controller');
 const auditController = require("../controllers/audit.controller");
-const validate = require("../middlewares/validate");
+const validate = require('../middlewares/validate');
+const { protect, requireAdmin} = require('../middlewares/auth')
 const { query, body } = require("express-validator");
 
 // ─────────────────────────────────────────────
@@ -43,10 +44,10 @@ router.use(protect);
  * - Others : scoped to own userId (via auditListGuard)
  */
 router.get(
-  "/audit",
+  '/audit',
   auditListGuard,
   [...paginationRules, ...dateRangeRules],
-  validate,
+  // validate,
   auditController.listAuditLogs
 );
 
@@ -58,7 +59,7 @@ router.get(
   adminOnly,
   sensitiveRateLimit(5, 60_000),       // max 5 times per minute
   [...dateRangeRules],
-  validate,
+  // validate,
   auditController.integrityReport
 );
 
@@ -83,7 +84,8 @@ router.get(
   "/system",
   adminOnly,
   [...paginationRules, ...dateRangeRules],
-  validate,
+  // validate,
+  // blacklistController.getBlacklists
   auditController.listSystemLogs
 );
 
@@ -98,7 +100,7 @@ router.get(
   "/access",
   adminOnly,
   [...paginationRules, ...dateRangeRules],
-  validate,
+  // validate,
   auditController.listAccessLogs
 );
 
@@ -109,12 +111,12 @@ router.get(
 /**
  * GET /api/logs/stats                  [ADMIN]
  */
-router.get("/stats", adminOnly, [...dateRangeRules], validate, auditController.getStats);
+router.get("/stats", adminOnly, [...dateRangeRules], auditController.getStats);
 
 /**
  * GET /api/logs/timeline               [ADMIN]
  */
-router.get("/timeline", adminOnly, [...dateRangeRules], validate, auditController.getTimeline);
+router.get("/timeline", adminOnly, [...dateRangeRules], auditController.getTimeline);
 
 // ═══════════════════════════════════════════════
 // USER ACTIVITY TRAIL
@@ -129,7 +131,7 @@ router.get(
   "/users/:userId/activity",
   selfOrAdmin,
   [...paginationRules, ...dateRangeRules],
-  validate,
+  // validate,
   auditController.getUserActivity
 );
 
@@ -152,7 +154,7 @@ router.post(
     body("format").optional().isIn(["CSV", "JSON"]),
     body("filters").optional().isObject(),
   ],
-  validate,
+  // validate,
   auditController.requestExport
 );
 
@@ -178,7 +180,7 @@ router.patch(
     body("status").isIn(["APPROVED", "REJECTED"]),
     body("rejectionReason").optional().isString().isLength({ max: 500 }),
   ],
-  validate,
+  // validate,
   auditController.reviewExport
 );
 

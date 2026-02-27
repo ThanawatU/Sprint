@@ -1,24 +1,35 @@
-const { ALL } = require("dns");
-const { prisma } = require("../utils/prisma"); // adjust path if needed
+const { prisma } = require("../utils/prisma");
 const crypto = require("crypto");
 
-const computeINtegrityHash = (data) => {
+// ─────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────
+
+/**
+ * สร้าง HMAC-SHA256 hash สำหรับตรวจสอบความสมบูรณ์ของ log
+ * ใช้ AUDIT_LOG_SECRET จาก env (fallback เป็น "default-secret" สำหรับ dev)
+ */
+const computeIntegrityHash = (data) => {
   const secret = process.env.AUDIT_LOG_SECRET || "default-audit-secret";
   const payload = JSON.stringify({
     userId: data.userId ?? null,
     role: data.role ?? null,
-    action: data.action ?? null,
+    action: data.action,
     entity: data.entity ?? null,
     entityId: data.entityId ?? null,
-    ipAddress: data.req?.ip ?? null,
-    userAgent: data.req?.headers["user-agent"] ?? null,
-    metadata: data.metadata ?? null,
-    createdAt: new Date().toISOString()
+    ipAddress: data.ipAddress ?? null,
+    createdAt: data.createdAt,
   });
-
   return crypto.createHmac("sha256", secret).update(payload).digest("hex");
 };
 
+// ─────────────────────────────────────────────
+// Core Write
+// ─────────────────────────────────────────────
+
+/**
+ * บันทึก AuditLog พร้อม integrityHash
+ */
 const logAudit = async ({
   userId,
   role,
@@ -26,7 +37,7 @@ const logAudit = async ({
   entity,
   entityId,
   req,
-  metadata
+  metadata,
 }) => {
   try {
     const createdAt = new Date();
@@ -42,8 +53,8 @@ const logAudit = async ({
       createdAt,
     };
 
-    const inegrityHash = computeINtegrityHash(data);  
-    
+    const integrityHash = computeIntegrityHash(data);
+
     await prisma.auditLog.create({
       data: { ...data, integrityHash },
     });
@@ -52,7 +63,22 @@ const logAudit = async ({
   }
 };
 
-// Search & Filter 
+// ─────────────────────────────────────────────
+// Search & Filter
+// ─────────────────────────────────────────────
+
+/**
+ * ค้นหา AuditLog พร้อม filter / pagination
+ *
+ * opts: {
+ *   page, limit,
+ *   userId, role, action, entity, entityId,
+ *   ipAddress,
+ *   dateFrom, dateTo,
+ *   q,                 // full-text search ใน action/entity/entityId
+ *   sortBy, sortOrder
+ * }
+ */
 const searchAuditLogs = async (opts = {}) => {
   const {
     page = 1,
@@ -70,8 +96,9 @@ const searchAuditLogs = async (opts = {}) => {
     sortOrder = "desc",
   } = opts;
 
-  // allowlist sortBy protects injection
-  const ALLOWED_SORT = ["createdAt", "role", "action", "entity"];
+  // allowlist sortBy เพื่อป้องกัน injection
+  const ALLOWED_SORT = ["createdAt", "action", "entity", "role"];
+  const safeSortBy = ALLOWED_SORT.includes(sortBy) ? sortBy : "createdAt";
   const safeSortOrder = sortOrder === "asc" ? "asc" : "desc";
 
   const where = {
@@ -99,6 +126,7 @@ const searchAuditLogs = async (opts = {}) => {
   };
 
   const skip = (page - 1) * limit;
+
   const [total, data] = await prisma.$transaction([
     prisma.auditLog.count({ where }),
     prisma.auditLog.findMany({
@@ -130,11 +158,11 @@ const searchAuditLogs = async (opts = {}) => {
       totalPages: Math.ceil(total / limit),
     },
   };
-
 };
 
-// Search SystemLog
-
+/**
+ * ค้นหา SystemLog
+ */
 const searchSystemLogs = async (opts = {}) => {
   const {
     page = 1,
@@ -154,7 +182,7 @@ const searchSystemLogs = async (opts = {}) => {
   const ALLOWED_SORT = ["createdAt", "level", "statusCode", "duration"];
   const safeSortBy = ALLOWED_SORT.includes(sortBy) ? sortBy : "createdAt";
   const safeSortOrder = sortOrder === "asc" ? "asc" : "desc";
-  
+
   const where = {
     ...(level && { level }),
     ...(userId && { userId }),
@@ -171,7 +199,7 @@ const searchSystemLogs = async (opts = {}) => {
   };
 
   const skip = (page - 1) * limit;
-  
+
   const [total, data] = await prisma.$transaction([
     prisma.systemLog.count({ where }),
     prisma.systemLog.findMany({
@@ -184,17 +212,13 @@ const searchSystemLogs = async (opts = {}) => {
 
   return {
     data,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
-  }
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  };
 };
 
-
-// Search AccessLog
+/**
+ * ค้นหา AccessLog
+ */
 const searchAccessLogs = async (opts = {}) => {
   const {
     page = 1,
@@ -252,7 +276,10 @@ const searchAccessLogs = async (opts = {}) => {
   };
 };
 
-// Get by id Single record 
+// ─────────────────────────────────────────────
+// Single Record
+// ─────────────────────────────────────────────
+
 const getAuditLogById = async (id) => {
   return prisma.auditLog.findUnique({
     where: { id },
@@ -271,21 +298,25 @@ const getAuditLogById = async (id) => {
   });
 };
 
+// ─────────────────────────────────────────────
 // Integrity Verification
+// ─────────────────────────────────────────────
+
 /**
  * ตรวจสอบความสมบูรณ์ของ AuditLog record
  * คืนค่า { valid: boolean, log }
  */
 const verifyLogIntegrity = async (id) => {
   const log = await prisma.auditLog.findUnique({ where: { id } });
-  if (!log) return { valid: false, log: null, reason: "NOT_FOUND" };2
-  
+  if (!log) return { valid: false, log: null, reason: "NOT_FOUND" };
+
   if (!log.integrityHash) {
     return { valid: false, log, reason: "NO_HASH" };
   }
 
   const expected = computeIntegrityHash(log);
-  const valid = expected === log.integrityHash;9
+  const valid = expected === log.integrityHash;
+
   return {
     valid,
     log,
@@ -449,9 +480,10 @@ const getActivityTimeline = async ({ dateFrom, dateTo } = {}) => {
   return rows;
 };
 
+// ─────────────────────────────────────────────
 // Export Request Workflow
+// ─────────────────────────────────────────────
 
-// Create export request (สำหรับ admin หรือ user ที่มีสิทธิ์)
 const createExportRequest = async ({ requestedById, logType, format = "CSV", filters = {} }) => {
   const ALLOWED_TYPES = ["AuditLog", "SystemLog", "AccessLog"];
   if (!ALLOWED_TYPES.includes(logType)) {
@@ -469,7 +501,7 @@ const createExportRequest = async ({ requestedById, logType, format = "CSV", fil
     },
   });
 };
-// Get export requests (สำหรับ admin)
+
 const getExportRequests = async (opts = {}) => {
   const {
     page = 1,
@@ -508,7 +540,6 @@ const getExportRequests = async (opts = {}) => {
   };
 };
 
-// Review export request (สำหรับ admin)
 const reviewExportRequest = async (id, { reviewedById, status, rejectionReason }) => {
   if (!["APPROVED", "REJECTED"].includes(status)) {
     throw new Error("status ต้องเป็น APPROVED หรือ REJECTED");
@@ -668,8 +699,3 @@ module.exports = {
   // user activity
   getUserActivityLog,
 };
-
-
-
-
-module.exports = { logAudit };

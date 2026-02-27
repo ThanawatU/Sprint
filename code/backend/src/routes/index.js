@@ -10,6 +10,7 @@ const mapRoutes = require('./maps.routes')
 const monitorRoutes = require('./monitor.routes');
 const blacklistRoutes = require('./blacklist.routes');
 const reportRoutes = require('./report.routes');
+const auditRoutes = require('./audit.routes');
 
 const { prisma } = require("../utils/prisma"); // adjust path if needed
 
@@ -32,5 +33,8 @@ router.use('/blacklists', blacklistRoutes);
 
 // report routes
 router.use('/reports', reportRoutes);
+
+// audit log routes
+router.use('/logs', auditRoutes);
 
 module.exports = router;
