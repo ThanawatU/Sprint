@@ -1,5 +1,6 @@
 const { prisma } = require('./prisma');
 const { logger } = require('./logger');
+const { getNow } = require('./timestamp');
 
 /**
  * บันทึก login ของผู้ใช้ไปยัง AccessLog
@@ -12,7 +13,7 @@ const logLogin = async ({
 }) => {
   try {
     // Login time + 90 days = expiration
-    const loginTime = new Date();
+    const loginTime = getNow();
 
     await prisma.accessLog.create({
       data: {
@@ -41,7 +42,7 @@ const logLogout = async ({
   sessionId
 }) => {
   try {
-    const logoutTime = new Date();
+    const logoutTime = getNow();
 
     // หาเซสชันที่ล่าสุด
     const accessLog = await prisma.accessLog.findFirst({

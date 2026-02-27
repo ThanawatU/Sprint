@@ -1,4 +1,5 @@
 const { prisma } = require("../utils/prisma"); // adjust path if needed
+const { getNow } = require("../utils/timestamp");
 
 const logAudit = async ({
   userId,
@@ -10,7 +11,7 @@ const logAudit = async ({
   metadata
 }) => {
   try {
-    const createdAt = new Date();
+    const createdAt = getNow();
     
     await prisma.auditLog.create({
       data: {
