@@ -156,17 +156,19 @@ All notable changes to this project will be documented in this file.
 - Created utility modules for accessLog and auditLog handling.
 - Implemented getLatestAccessLogs in monitor.service to support LOGIN/LOGOUT display.
 - Created Monitor Dashboard page to display: system logs,Audit logs,Access logs (LOGIN / LOGOUT)
-    Real-time summary (total requests, errors in last 5 minutes, average response time)
+  Real-time summary (total requests, errors in last 5 minutes, average response time)
 - Connected frontend Monitor Dashboard with backend /monitor/logs and /monitor/logs/summary APIs.
 - Created User Manual documentation
 
 ### Changed
+
 - Updated monitor.controller to support dynamic log type selection (SystemLog, AuditLog, AccessLog).
 - Updated monitor.service to: Support date filtering, Normalize access log output,
-    Standardize response fields for frontend usage
+  Standardize response fields for frontend usage
 - Improved AccessLog UI to visually distinguish
 
 ## Fixed
+
 - Fixed database connection issue in requestLogger.js.
 - Fixed AccessLog not updating logout time correctly.
 - Fixed Monitor Dashboard log filtering by selected date.
@@ -176,10 +178,12 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2026-02-17 - Yodsanon_0215
 
 ### Added
+
 - Added API base URL sanitization in the frontend to prevent duplicated paths (`//`) when calling backend endpoints.
 - Recreated Prisma migrations and initialized a clean database migration structure.
 
 ### Fixed
+
 - Fixed duplicated Prisma migrations and database schema mismatch issues.
 - Resolved `P2022` error caused by missing `AuditLog.expiresAt` column in the database.
 
@@ -188,6 +192,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2026-02-17 - Yodsanon_0215
 
 ### Added
+
 - Added UAT scenarios for Audit Log and Blacklist management.
 - Implemented automated API tests using Robot Framework for AuditLog, AccessLog, SystemLog, and Blacklist workflow.
 
@@ -196,12 +201,14 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2026-02-17 - Kanyapat_5037
 
 ### Added
+
 - Created Blacklist Management page
 - Added log retention deletion function
 - Implemented Robot Framework automated test cases for Log Retention feature
 - Added Privacy Policy updates for Log Retention and Blacklist compliance
 
 ### Fixed
+
 - Resolved 404 error on route `/blacklists/:id/edit`
 - Fixed Cloudinary upload error
 
@@ -210,6 +217,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2026-02-17 - Wisit_2348
 
 ### Added
+
 - AI Declaration
 - Sprint Backlog File
 - Adapt Blueprint
@@ -254,6 +262,18 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - `src/routes/index.js` - Mounted the new report routes at `/api/reports`.
+
+---
+
+## [1.0.0] - 2026-02-27 - Thanawat_2128
+
+### Added
+
+- Added `audit.routes.js`, `audit.controller.js` and `auditAccess.middleware.js` - Implemented Log core Service, Log Search & Filter API, and Access Control for Audit Log Management Service
+
+### Changed
+
+- Fixed Bugs in `audit.controller.js`
 
 ---
 
