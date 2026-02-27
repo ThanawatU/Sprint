@@ -1,0 +1,790 @@
+{
+  "info": {
+    "_postman_id": "6a5af3a7-585b-4941-a443-44edc85a3a4e",
+    "name": "Audit log",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "17306591"
+  },
+  "item": [
+    {
+      "name": "Audit Log Flow",
+      "item": [
+        {
+          "name": "ADMIN - List Audit Logs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ได้ array data', () => pm.expect(pm.response.json().data).to.be.an('array'));",
+                  "pm.test('มี pagination', () => pm.expect(pm.response.json().pagination).to.be.an('object'));",
+                  "pm.test('มี totalPages', () => pm.expect(pm.response.json().pagination.totalPages).to.be.a('number'));",
+                  "if (pm.response.json().data.length > 0) {",
+                  "  pm.environment.set('auditLogId', pm.response.json().data[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit?page=1&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Filter Audit Logs by Action",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ทุก log มี action LOGIN', () => {",
+                  "  pm.response.json().data.forEach(log => {",
+                  "    pm.expect(log.action.toUpperCase()).to.include('LOGIN');",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit?action=LOGIN",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "action",
+                  "value": "LOGIN"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Filter by Date Range",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ทุก log อยู่ในช่วงวันที่', () => {",
+                  "  const dateFrom = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);",
+                  "  pm.response.json().data.forEach(log => {",
+                  "    pm.expect(new Date(log.createdAt).getTime()).to.be.greaterThan(dateFrom.getTime());",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit?dateFrom=2025-01-01T00:00:00.000Z",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit"
+              ],
+              "query": [
+                {
+                  "key": "dateFrom",
+                  "value": "2025-01-01T00:00:00.000Z"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Non-admin - เห็น Log แค่ของตัวเอง",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ทุก log เป็นของ passenger คนนี้', () => {",
+                  "  const passId = pm.environment.get('passengerId');",
+                  "  pm.response.json().data.forEach(log => {",
+                  "    pm.expect(log.userId).to.equal(passId);",
+                  "  });",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Non-admin เข้า /audit/:id ไม่ได้ (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit/{{auditLogId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit",
+                "{{auditLogId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Verify Log Integrity",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('มี valid field', () => pm.expect(pm.response.json().data).to.have.property('valid'));",
+                  "pm.test('มี reason field', () => pm.expect(pm.response.json().data).to.have.property('reason'));",
+                  "console.log('Integrity result:', pm.response.json().data.valid, '- Reason:', pm.response.json().data.reason);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit/{{auditLogId}}/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit",
+                "{{auditLogId}}",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Integrity Report (Batch)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('มี total, valid, tampered fields', () => {",
+                  "  const d = pm.response.json().data;",
+                  "  pm.expect(d).to.have.property('total');",
+                  "  pm.expect(d).to.have.property('valid');",
+                  "  pm.expect(d).to.have.property('tampered');",
+                  "  pm.expect(d).to.have.property('missingHash');",
+                  "});",
+                  "console.log('Integrity report:', JSON.stringify(pm.response.json().data));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/audit/integrity-report",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "audit",
+                "integrity-report"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Dashboard Stats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('มี totals', () => pm.expect(d.totals).to.be.an('object'));",
+                  "pm.test('มี auditByAction', () => pm.expect(d.auditByAction).to.be.an('array'));",
+                  "pm.test('มี systemByLevel', () => pm.expect(d.systemByLevel).to.be.an('array'));",
+                  "pm.test('มี recentErrors', () => pm.expect(d.recentErrors).to.be.an('array'));",
+                  "console.log('Total audit logs:', d.totals.auditLogs);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "stats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - Activity Timeline",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ได้ array', () => pm.expect(pm.response.json().data).to.be.an('array'));",
+                  "if (pm.response.json().data.length > 0) {",
+                  "  pm.test('แต่ละ entry มี day และ count', () => {",
+                  "    const first = pm.response.json().data[0];",
+                  "    pm.expect(first).to.have.property('day');",
+                  "    pm.expect(first).to.have.property('count');",
+                  "  });",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/timeline?dateFrom=2025-01-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "timeline"
+              ],
+              "query": [
+                {
+                  "key": "dateFrom",
+                  "value": "2025-01-01"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User - ดู Activity ตัวเอง",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ได้ array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/users/{{passengerId}}/activity",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "users",
+                "{{passengerId}}",
+                "activity"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User ดู Activity คนอื่นไม่ได้ (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/users/{{adminId}}/activity",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "users",
+                "{{adminId}}",
+                "activity"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ADMIN - System Logs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ได้ array', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/system?level=ERROR&limit=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "system"
+              ],
+              "query": [
+                {
+                  "key": "level",
+                  "value": "ERROR"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export - Step 1: Request Export",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('status = PENDING', () => pm.expect(pm.response.json().data.status).to.equal('PENDING'));",
+                  "pm.test('logType = AuditLog', () => pm.expect(pm.response.json().data.logType).to.equal('AuditLog'));",
+                  "pm.environment.set('exportRequestId', pm.response.json().data.id);",
+                  "console.log('Export Request ID:', pm.response.json().data.id);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"logType\": \"AuditLog\",\n  \"format\": \"CSV\",\n  \"filters\": {\n    \"dateFrom\": \"2025-01-01T00:00:00.000Z\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/exports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "exports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Download PENDING Export (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400 - ยังไม่ approved', () => pm.response.to.have.status(400));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/exports/{{exportRequestId}}/download",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "exports",
+                "{{exportRequestId}}",
+                "download"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export - Step 2: Approve Export",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('status = APPROVED', () => pm.expect(pm.response.json().data.status).to.equal('APPROVED'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/exports/{{exportRequestId}}/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "exports",
+                "{{exportRequestId}}",
+                "review"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Export - Step 3: Download CSV",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Content-Type เป็น CSV', () => {",
+                  "  pm.expect(pm.response.headers.get('content-type')).to.include('text/csv');",
+                  "});",
+                  "pm.test('มี Content-Disposition header', () => {",
+                  "  pm.expect(pm.response.headers.get('content-disposition')).to.include('attachment');",
+                  "});",
+                  "pm.test('มี X-Record-Count header', () => {",
+                  "  pm.expect(pm.response.headers.get('x-record-count')).to.exist;",
+                  "});",
+                  "console.log('Downloaded records:', pm.response.headers.get('x-record-count'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/exports/{{exportRequestId}}/download",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "exports",
+                "{{exportRequestId}}",
+                "download"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Non-admin Reject Export ของคนอื่น (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 403', () => pm.response.to.have.status(403));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"REJECTED\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/logs/exports/{{exportRequestId}}/review",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "logs",
+                "exports",
+                "{{exportRequestId}}",
+                "review"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "ทดสอบ Log Search, Filter, Integrity, Stats, Export Workflow"
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\":\"admin123\",\n\"password\":\"123456789\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
