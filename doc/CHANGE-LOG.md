@@ -234,6 +234,29 @@ All notable changes to this project will be documented in this file.
 
 - Added report relations on `User`, `Booking`, and `Route` to support case linking and history/evidence workflows
 
+---
+
+## [1.0.0] - 2026-02-26 - Yodsanon_0215
+
+### Added
+
+- `src/services/report.service.js` - Implemented core business logic for Report Case management (create, get all, get by ID).
+- Added `ReportCaseStatusHistory` automated tracking inside `report.service.js` using Prisma `$transaction` during status updates.
+- Added multiple file upload support for `ReportEvidence` using `prisma.reportEvidence.createMany`.
+- `src/controllers/report.controller.js` - Created HTTP request handlers for the report lifecycle.
+- Added specific report query endpoints for Passenger (`GET /api/reports/my`) and Driver (`GET /api/reports/against-me`).
+- Integrated `AuditLog` tracking in `report.controller.js` for actions: `CREATE_REPORT` and `UPDATE_REPORT_STATUS`.
+- `src/routes/report.routes.js` - Defined API endpoints for Report functionality with `protect` and `requireAdmin` middlewares.
+- `src/validations/report.validation.js` - Added Zod validation schemas (`createReportSchema`, `updateReportStatusSchema`, `addReportEvidenceSchema`).
+- Implemented file upload validation rules (maximum 3 images and 3 videos per report evidence submission).
+- Added `Report.postman_collection.json` in `test/Sprint 2` for API testing.
+
+### Changed
+
+- `src/routes/index.js` - Mounted the new report routes at `/api/reports`.
+
+---
+
 ## Version Guidelines
 
 ### Categories

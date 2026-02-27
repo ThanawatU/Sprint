@@ -5,11 +5,11 @@ Library           Collections
 Suite Setup       Setup Admin Session
 
 *** Variables ***
-${BASE_URL}              http://localhost:3000
+${BASE_URL}              https://deploy-production-88fa.up.railway.app
 ${SESSION_ALIAS}         admin_api
 ${ADMIN_USER}            admin123
 ${ADMIN_PASS}            123456789
-${TARGET_USER_ID}        cmlqa1n7g008wl5vv6x8gh58q
+${TARGET_USER_ID}        cmlr1qw2l00jf3mja2zlwv1k9
 
 *** Test Cases ***
 Complete Blacklist Lifecycle Workflow

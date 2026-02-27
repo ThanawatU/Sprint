@@ -4,17 +4,11 @@ Library           DatabaseLibrary
 Library           Collections
 Library           JSONLibrary
 
-Suite Setup    Connect To Database
-...    psycopg2
-...    railway
-...    postgres
-...    NIGIxsqZVieNawPDWuUHbpQlsHvnovuN
-...    switchback.proxy.rlwy.net
-...    54228
+Suite Setup       Connect To Database    psycopg2    my_project_db    postgres    root123    127.0.0.1    5433
 Suite Teardown    Disconnect From Database
 
 *** Variables ***
-${BASE_URL}       https://deploy-production-88fa.up.railway.app/api
+${BASE_URL}       http://localhost:3000/api
 ${ADMIN_EMAIL}    admin@example.com
 ${ADMIN_PASSWORD}    123456789
 

@@ -8,23 +8,16 @@ Library           String
 Library           DateTime
 
 # ตั้งค่า Database (ตรวจสอบ Port/Password ของคุณ)
-# Database configuration (match Docker/Postgres settings)
-Suite Setup    Connect To Database
-...    psycopg2
-...    railway
-...    postgres
-...    NIGIxsqZVieNawPDWuUHbpQlsHvnovuN
-...    switchback.proxy.rlwy.net
-...    54228
+Suite Setup       Connect To Database    psycopg2    my_project_db    postgres    root123    127.0.0.1    5433
 Suite Teardown    Disconnect From Database
 
 *** Variables ***
-${BASE_URL}       https://deploy-production-88fa.up.railway.app/api
-${PASSENGER_USER}        pLoomN
-${PASSENGER_ID_CONST}    cmlr0qn1d006c3mjam33l7wh5
-${DRIVER_USER}           Test123
-${DRIVER_ID_CONST}       cmlr1qw2l00jf3mja2zlwv1k9
-${COMMON_PASSWORD}       12345678aP
+${BASE_URL}       http://localhost:3000/api
+${PASSENGER_USER}        jangkup90
+${PASSENGER_ID_CONST}    cmlp9wtno0000hh5tm9wid5ko
+${DRIVER_USER}           rattatuay
+${DRIVER_ID_CONST}       cmlpfp9s4000013eo3bnclbce
+${COMMON_PASSWORD}       12345678asdASD
 
 *** Test Cases ***
 

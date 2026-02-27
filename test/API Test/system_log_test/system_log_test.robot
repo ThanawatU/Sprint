@@ -5,12 +5,18 @@ Library           DatabaseLibrary
 Library           Collections
 Library           JSONLibrary
 
-Suite Setup       Connect To Database    psycopg2    pnnapp_db    pnnapp_user    1234    127.0.0.1    5433
+Suite Setup    Connect To Database
+...    psycopg2
+...    railway
+...    postgres
+...    NIGIxsqZVieNawPDWuUHbpQlsHvnovuN
+...    switchback.proxy.rlwy.net
+...    54228
 Suite Teardown    Disconnect From Database
 
 
 *** Variables ***
-${BASE_URL}          http://localhost:3000/api
+${BASE_URL}          https://deploy-production-88fa.up.railway.app/api
 ${DRIVER_USER}       Test123
 ${COMMON_PASSWORD}   12345678aP
 
