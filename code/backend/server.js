@@ -60,7 +60,7 @@ app.use(requestLogger);
 // Health Check Route
 app.get('/health', async (req, res) => {
     try {
-        const prisma = require('./src/utils/prisma');
+        const { prisma } = require('./src/utils/prisma');
         await prisma.$queryRaw`SELECT 1`;
         res.status(200).json({ status: 'ok' });
     } catch (err) {
