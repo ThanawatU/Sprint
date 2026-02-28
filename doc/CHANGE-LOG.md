@@ -277,6 +277,24 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-28 - Phakorn_2160
+
+### Added
+
+- File integrity validation for audit logs using SHA-256 hashing (Node.js built-in `crypto`, zero new dependencies)
+- `src/utils/integrityHash.js` — `computeIntegrityHash()` and `verifyIntegrityHash()` utilities
+- `src/services/integrity.service.js` — Single and batch verification with pagination and date filtering
+- `src/controllers/integrity.controller.js`, `src/routes/integrity.routes.js`, `src/validations/integrity.validation.js` — Admin-only verification API endpoints
+- `src/docs/integrity.doc.js` — Swagger documentation for integrity endpoints
+- API: `GET /api/integrity/verify` (batch) and `GET /api/integrity/verify/:id` (single), both admin-only
+
+### Changed
+
+- `src/services/audit.service.js` — `logAudit()` now computes and stores SHA-256 integrity hash on every audit log creation
+- `src/routes/index.js` — Registered integrity routes at `/integrity`
+
+---
+
 ## Version Guidelines
 
 ### Categories

@@ -11,6 +11,7 @@ const monitorRoutes = require('./monitor.routes');
 const blacklistRoutes = require('./blacklist.routes');
 const reportRoutes = require('./report.routes');
 const exportRoutes = require('./export.routes');
+const integrityRoutes = require('./integrity.routes');
 
 const { prisma } = require("../utils/prisma"); // adjust path if needed
 
@@ -36,5 +37,8 @@ router.use('/reports', reportRoutes);
 
 // export routes
 router.use('/exports', exportRoutes);
+
+// integrity routes
+router.use('/integrity', integrityRoutes);
 
 module.exports = router;
