@@ -1,2 +1,4 @@
 
 .env
+exports/
+node_modules/

@@ -18,6 +18,7 @@ const { prisma } = require("./src/utils/prisma"); // adjust path if needed
 // Log Retention
 const cron = require('node-cron');
 const { cleanupOldLogs } = require('./src/services/logRetention.service');
+const { deleteExpiredExports } = require('./src/services/export.service');
 
 cleanupOldLogs(); //temporary for test
 
@@ -100,6 +101,13 @@ const PORT = process.env.PORT || 3000;
 	cron.schedule('0 3 * * *', async () => { 
 		console.log('--- Log Retention Triggered ---'); // ใส่ log ไว้ดูว่ามันทำงานไหม
 		await cleanupOldLogs(); 
+	});
+
+	// Export file cleanup
+	// ลบไฟล์ export ที่หมดอายุทุกวันตอน 03:30 น.
+	cron.schedule('30 3 * * *', async () => {
+		console.log('--- Export Cleanup Triggered ---');
+		await deleteExpiredExports();
 	});
 	
     app.listen(PORT, () => {

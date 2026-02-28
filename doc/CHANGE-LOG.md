@@ -265,6 +265,44 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-02-27 - Phakorn_2160
+
+### Added
+
+- Implemented export management with request lifecycle endpoints (create, list, approve, reject, download).
+- Added export generators for CSV, JSON, and PDF with validation and Swagger documentation.
+- Added export route module and scheduled cleanup for expired export files.
+
+### Changed
+
+- Integrated export routes into backend server and route index.
+- Standardized metadata and timestamp handling across logging utilities and services.
+- Updated backend dependencies and `.gitignore` to support export workflow.
+
+### Fixed
+
+- Improved error handling and logging consistency in middleware and services for export flows.
+
+---
+
+## [1.0.0] - 2026-02-28 - Phakorn_2160
+
+### Added
+
+- File integrity validation for audit logs using SHA-256 hashing (Node.js built-in `crypto`, zero new dependencies)
+- `src/utils/integrityHash.js` — `computeIntegrityHash()` and `verifyIntegrityHash()` utilities
+- `src/services/integrity.service.js` — Single and batch verification with pagination and date filtering
+- `src/controllers/integrity.controller.js`, `src/routes/integrity.routes.js`, `src/validations/integrity.validation.js` — Admin-only verification API endpoints
+- `src/docs/integrity.doc.js` — Swagger documentation for integrity endpoints
+- API: `GET /api/integrity/verify` (batch) and `GET /api/integrity/verify/:id` (single), both admin-only
+
+### Changed
+
+- `src/services/audit.service.js` — `logAudit()` now computes and stores SHA-256 integrity hash on every audit log creation
+- `src/routes/index.js` — Registered integrity routes at `/integrity`
+
+---
+
 ## [1.0.0] - 2026-02-27 - Thanawat_2128
 
 ### Added

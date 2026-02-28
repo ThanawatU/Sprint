@@ -1,27 +1,10 @@
 const { prisma } = require("../utils/prisma");
-const crypto = require("crypto");
+const { getNow } = require("../utils/timestamp");
+const { computeIntegrityHash } = require("../utils/integrityHash");
 
 // ─────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────
-
-/**
- * สร้าง HMAC-SHA256 hash สำหรับตรวจสอบความสมบูรณ์ของ log
- * ใช้ AUDIT_LOG_SECRET จาก env (fallback เป็น "default-secret" สำหรับ dev)
- */
-const computeIntegrityHash = (data) => {
-  const secret = process.env.AUDIT_LOG_SECRET || "default-audit-secret";
-  const payload = JSON.stringify({
-    userId: data.userId ?? null,
-    role: data.role ?? null,
-    action: data.action,
-    entity: data.entity ?? null,
-    entityId: data.entityId ?? null,
-    ipAddress: data.ipAddress ?? null,
-    createdAt: data.createdAt,
-  });
-  return crypto.createHmac("sha256", secret).update(payload).digest("hex");
-};
 
 // ─────────────────────────────────────────────
 // Core Write
@@ -40,23 +23,27 @@ const logAudit = async ({
   metadata,
 }) => {
   try {
-    const createdAt = new Date();
-    const data = {
-      userId,
-      role,
-      action,
-      entity,
-      entityId,
-      ipAddress: req?.ip ?? null,
-      userAgent: req?.headers?.["user-agent"] ?? null,
-      metadata,
-      createdAt,
-    };
+    const createdAt = getNow();
 
-    const integrityHash = computeIntegrityHash(data);
+    const record = await prisma.auditLog.create({
+      data: {
+        userId,
+        role,
+        action,
+        entity,
+        entityId,
+        ipAddress: req?.ip ?? null,
+        userAgent: req?.headers?.["user-agent"] ?? null,
+        metadata,
+        createdAt,
+      }
+    });
 
-    await prisma.auditLog.create({
-      data: { ...data, integrityHash },
+    const integrityHash = computeIntegrityHash(record);
+
+    await prisma.auditLog.update({
+      where: { id: record.id },
+      data: { integrityHash }
     });
   } catch (error) {
     console.error("Audit log failed:", error);

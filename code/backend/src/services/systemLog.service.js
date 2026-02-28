@@ -1,5 +1,6 @@
 const { prisma } = require('../utils/prisma');
 const { logger } = require('../utils/logger');
+const { getNow } = require('../utils/timestamp');
 
 const logRequest = ({
   level = 'INFO',
@@ -14,6 +15,8 @@ const logRequest = ({
   error,
   metadata
 }) => {
+  const createdAt = getNow();
+
   prisma.systemLog.create({
     data: {
       level,
@@ -26,7 +29,8 @@ const logRequest = ({
       ipAddress,
       userAgent,
       error,
-      metadata
+      metadata,
+      createdAt
     }
   }).catch(err => {
     logger.error('SystemLog write failed', {
