@@ -3,7 +3,6 @@ const integrityController = require('../controllers/integrity.controller');
 const validate = require('../middlewares/validate');
 const { protect, requireAdmin } = require('../middlewares/auth');
 const { adminOnly, sensitiveRateLimit } = require("../middlewares/auditAccess.middleware");
-const integrityController = require("../controllers/integrity.controller");
 const { query, param } = require("express-validator");
 
 const {
