@@ -34,6 +34,15 @@
                             </NuxtLink>
                         </div>
 
+                        <div v-if="user && user.role === 'PASSENGER'">
+                             <NuxtLink
+                                 to="/myHistory"
+                                 class="text-gray-600 transition-colors duration-200 hover:text-blue-600"
+                                 :class="{ 'text-blue-600': $route.path === '/myHistory' }">
+                                 ประวัติการรีพอร์ต
+                             </NuxtLink>
+                        </div>
+
                         <!-- คนขับ: แสดงคำว่า การเดินทางทั้งหมด + ดรอปดาวน์ (การเดินทางของฉัน / คำขอจองเส้นทางของฉัน) -->
                         <div v-if="user && (user.role === 'DRIVER' || user.role === 'ADMIN')">
                             <div class="relative dropdown-trigger">
