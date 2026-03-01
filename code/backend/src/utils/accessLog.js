@@ -2,6 +2,17 @@ const { prisma } = require('./prisma');
 const { logger } = require('./logger');
 const { getNow } = require('./timestamp');
 
+const {
+  computeAccessHash, 
+  prepareLogHashes,
+} = require("../services/logIntegrity.service.js")
+
+const {
+  getLatestSystemLogHash,
+  getLatestAccessLogHash,
+} = require("../middlewares/audit.tools.js")
+
+
 /**
  * บันทึก login ของผู้ใช้ไปยัง AccessLog
  */
@@ -14,17 +25,23 @@ const logLogin = async ({
   try {
     // Login time + 90 days = expiration
     const loginTime = getNow();
+    
+    const data = {
+      userId,
+      loginTime,
+      logoutTime: null,
+      ipAddress,
+      userAgent: userAgent?.substring(0, 500) || null,
+      sessionId,
+      createdAt: loginTime
+    }
 
+    const prevHash      = await getLatestAccessLogHash();
+    const integrityHash = computeAccessHash(data, prevHash);
+    data.integrityHash = integrityHash;
+    data.prevHash = prevHash;
     await prisma.accessLog.create({
-      data: {
-        userId,
-        loginTime,
-        logoutTime: null,
-        ipAddress,
-        userAgent: userAgent?.substring(0, 500) || null,
-        sessionId,
-        createdAt: loginTime
-      }
+      data
     });
   } catch (error) {
     logger.error('AccessLog login record failed', {

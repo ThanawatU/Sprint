@@ -5,6 +5,15 @@ const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
 const { logLogin } = require('../utils/accessLog');
 const { prisma } = require("../utils/prisma");
+const {
+  computeSystemLogHash, 
+  prepareLogHashes,
+} = require("../services/logIntegrity.service.js")
+
+const {
+  getLatestSystemLogHash,
+} = require("../middlewares/audit.tools.js")
+
 
 const login = asyncHandler(async (req, res) => {
     const { email, username, password } = req.body;
@@ -93,12 +102,6 @@ const login = asyncHandler(async (req, res) => {
         message: "Login successful",
         data: { token, user: safeUser }
     });
-    await logAudit({
-        action: 'LOGIN_SUCCESS',
-        entity: 'User',
-        entityId: user.id,
-        req
-    });
 });
 
 
@@ -124,22 +127,27 @@ const logout = asyncHandler(async (req, res) => {
         req
     });
 
+    const data = {
+        level: "INFO",
+        method: req.method,
+        path: req.originalUrl,
+        statusCode: 200,
+        duration: 0, // ถ้ามี middleware วัด response time ค่อยใส่จริง
+        userId: userId,
+        ipAddress: req.ip,
+        userAgent: req.get("user-agent"),
+        requestId: req.requestId,
+        metadata: {
+            action: "LOGOUT"
+    }}
+    const prevHash      = await getLatestSystemLogHash();
+    const integrityHash = computeSystemLogHash(data, prevHash);
+    data.integrityHash = integrityHash;
+    data.prevHash = prevHash;
+
     // ✅ เพิ่ม SystemLog สำหรับ Monitor
     await prisma.systemLog.create({
-        data: {
-            level: "INFO",
-            method: req.method,
-            path: req.originalUrl,
-            statusCode: 200,
-            duration: 0, // ถ้ามี middleware วัด response time ค่อยใส่จริง
-            userId: userId,
-            ipAddress: req.ip,
-            userAgent: req.get("user-agent"),
-            requestId: req.requestId,
-            metadata: {
-                action: "LOGOUT"
-            }
-        }
+        data : data,
     });
 
     res.status(200).json({

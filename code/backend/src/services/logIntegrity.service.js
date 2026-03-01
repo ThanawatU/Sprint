@@ -41,7 +41,7 @@ const computeAuditHash = (record, prevHash = GENESIS_HASH) => {
 /**
  * คำนวณ HMAC-SHA256 สำหรับ SystemLog record
  */
-const computeSystemHash = (record, prevHash = GENESIS_HASH) => {
+const computeSystemLogHash = (record, prevHash = GENESIS_HASH) => {
   const payload = JSON.stringify({
     id:         record.id,
     level:      record.level,
@@ -81,7 +81,7 @@ const computeAccessHash = (record, prevHash = GENESIS_HASH) => {
 // Map ชื่อ table → compute function
 const HASH_FUNCTIONS = {
   AuditLog:  computeAuditHash,
-  SystemLog: computeSystemHash,
+  SystemLog: computeSystemLogHash,
   AccessLog: computeAccessHash,
 };
 
@@ -569,7 +569,7 @@ const cleanupOldLogs = async (retentionDays = 90) => {
 module.exports = {
   // hash computation (ใช้ใน service อื่น)
   computeAuditHash,
-  computeSystemHash,
+  computeSystemLogHash,
   computeAccessHash,
   prepareLogHashes,
   GENESIS_HASH,
