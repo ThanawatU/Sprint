@@ -12,6 +12,7 @@ const {
 
 const {
   getLatestSystemLogHash,
+
 } = require("../middlewares/audit.tools.js")
 
 
@@ -143,7 +144,6 @@ const logout = asyncHandler(async (req, res) => {
     const prevHash      = await getLatestSystemLogHash();
     const integrityHash = computeSystemLogHash(data, prevHash);
     data.integrityHash = integrityHash;
-    data.prevHash = prevHash;
 
     // ✅ เพิ่ม SystemLog สำหรับ Monitor
     await prisma.systemLog.create({
