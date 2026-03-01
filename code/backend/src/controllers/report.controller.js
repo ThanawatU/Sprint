@@ -47,6 +47,16 @@ exports.getReports = async (req, res) => {
     }
 
     const records = await reportService.getReports(where);
+    
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_REPORTS',
+      entity: 'ReportCase',
+      req,
+      metadata: { filters: { status, category, searchQuery: q } }
+    });
+    
     res.json(records);
   } catch (error) {
     console.error(error);
@@ -66,6 +76,15 @@ exports.getReportById = async (req, res) => {
     if (req.user.role !== 'ADMIN' && req.user.id !== report.reporterId && req.user.id !== report.driverId) {
       return res.status(403).json({ message: "Access denied" });
     }
+
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_REPORT',
+      entity: 'ReportCase',
+      entityId: id,
+      req
+    });
 
     res.json(report);
   } catch (error) {
@@ -113,6 +132,16 @@ exports.addEvidence = async (req, res) => {
 
     const result = await reportService.addEvidencesToReport(id, evidences, req.user.id);
 
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'ADD_REPORT_EVIDENCE',
+      entity: 'ReportCase',
+      entityId: id,
+      req,
+      metadata: { evidenceCount: result.count }
+    });
+
     res.status(201).json({ 
       message: "Evidences added successfully", 
       count: result.count
@@ -132,6 +161,15 @@ exports.getMyReports = async (req, res) => {
       reporterId: userId
     });
 
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_MY_REPORTS',
+      entity: 'ReportCase',
+      req,
+      metadata: { recordCount: records.length }
+    });
+
     res.json({ success: true, data: records });
   } catch (error) {
     console.error(error);
@@ -146,6 +184,15 @@ exports.getReportsAgainstMe = async (req, res) => {
 
     const records = await reportService.getReports({
       driverId: userId
+    });
+
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_REPORTS_AGAINST_ME',
+      entity: 'ReportCase',
+      req,
+      metadata: { recordCount: records.length }
     });
 
     res.json({ success: true, data: records });

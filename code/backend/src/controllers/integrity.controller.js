@@ -79,6 +79,16 @@ exports.verifyOne = asyncHandler(async (req, res) => {
 
   if (!result.record) throw new ApiError(404, "AuditLog not found");
 
+  // Add Log management
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'VERIFY_SINGLE_LOG',
+    entity: 'AuditLog',
+    entityId: req.params.id,
+    req,
+    metadata: { isValid: result.valid }
+  });
+
   res.status(200).json({
     success: true,
     data: {
@@ -119,6 +129,15 @@ exports.verifyChain = asyncHandler(async (req, res) => {
 
   const result = await integrityService.verifyChain(tableName, opts);
 
+  // Add Log management
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'VERIFY_CHAIN',
+    entity: 'AuditLog',
+    req,
+    metadata: { table: tableName }
+  });
+
   res.status(200).json({ success: true, data: result });
 });
 
@@ -135,6 +154,14 @@ exports.complianceReport = asyncHandler(async (req, res) => {
   const report = await integrityService.generateComplianceReport({
     dateFrom: req.query.dateFrom,
     dateTo:   req.query.dateTo,
+  });
+
+  // Add Log management
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'GENERATE_COMPLIANCE_REPORT',
+    entity: 'AuditLog',
+    req
   });
 
   // ถ้า status FAIL ส่ง HTTP 200 แต่ body บอก status FAIL

@@ -224,7 +224,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-02-26 - Phakorn_2160
+## [2.0.0] - 2026-02-26 - Phakorn_2160
 
 ### Added
 
@@ -244,7 +244,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-02-26 - Yodsanon_0215
+## [2.0.0] - 2026-02-26 - Yodsanon_0215
 
 ### Added
 
@@ -265,7 +265,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-02-27 - Phakorn_2160
+## [2.0.0] - 2026-02-27 - Phakorn_2160
 
 ### Added
 
@@ -285,7 +285,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-02-28 - Phakorn_2160
+## [2.0.0] - 2026-02-28 - Phakorn_2160
 
 ### Added
 
@@ -303,7 +303,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-02-27 - Thanawat_2128
+## [2.0.0] - 2026-02-27 - Thanawat_2128
 
 ### Added
 
@@ -313,7 +313,7 @@ All notable changes to this project will be documented in this file.
 
 - Fixed Bugs in `audit.controller.js`
 
-## [1.0.0] - 2026-02-28 - Thanawat_2128
+## [2.0.0] - 2026-02-28 - Thanawat_2128
 
 ### Added
 
@@ -325,6 +325,32 @@ All notable changes to this project will be documented in this file.
 - Modify DB trigger on UPDATE and DELETE on Log Tables
 
 - Fixed Bugs in `audit.controller.js`
+
+---
+
+## [2.0.0] - 2026-03-01 - Wisit_2348
+
+### Added
+- Added Audit Log for Passenger report system.
+- Added Audit Log support for exporting audit logs to file.
+- Extended Audit Log coverage in the following controllers:
+  - user.controller
+  - report.controller
+  - notification.controller
+  - integrity.controller
+  - export.controller
+  - driverVerification.controller
+  - blacklist.controller
+  - auth.controller
+- Added new environment variables related to Audit Log Key in .env (Docker environment)
+
+### Fixed
+- Updated version for Sprint 2 (changed to version 2.0.0)
+
+### Fixed
+- Fixed an issue where Logout action was not recorded in Access Log.
+- Fixed Audit Log configuration issue related to missing or incorrect AUDIT_LOG_KEY in Docker. 
+- Fixed Monitor Dashboard icon issue.
 
 ---
 
