@@ -354,6 +354,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-03-01 - Yodsanon_0215
+
+### Added
+- Added `yellowCardCount` and `yellowCardExpiresAt` fields to the `User` model in `schema.prisma`.
+- Implemented automatic yellow card issuance in `report.service.js` when an admin updates a report status to `RESOLVED`.
+- Added 30-day expiration tracking for yellow cards. If a user receives a new card within 30 days, the expiration extends; otherwise, it resets to zero.
+- Added logic to permanently blacklist users (`suspendedUntil: null`) and deactivate their accounts (`isActive: false`) upon receiving their 3rd yellow card.
+
+### Changed
+- `src/services/report.service.js` - Modified `updateReportStatus` to trigger the Yellow/Red card.
+
+---
+
 ## Version Guidelines
 
 ### Categories
