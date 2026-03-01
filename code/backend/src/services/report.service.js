@@ -1,5 +1,6 @@
 const { prisma } = require("../utils/prisma");
 
+// สร้าง Report ใหม่ และบันทึกประวัติสถานะแรก (FILED)
 const createReportCase = async (data) => {
   const { reporterId, driverId, bookingId, routeId, category, description } = data;
 
@@ -24,6 +25,7 @@ const createReportCase = async (data) => {
   });
 };
 
+// ดึงรายการ Report ทั้งหมด (สามารถใส่เงื่อนไข filter และ order ได้)
 const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
   return prisma.reportCase.findMany({
     where,
@@ -38,6 +40,7 @@ const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
   });
 };
 
+// ดึงรายละเอียด Report รายเคส พร้อมประวัติสถานะและหลักฐาน
 const getReportById = async (id) => {
   return prisma.reportCase.findUnique({
     where: { id },
@@ -55,6 +58,7 @@ const getReportById = async (id) => {
   });
 };
 
+// อัปเดตสถานะ Report, บันทึกประวัติ, และจัดการระบบใบเหลือง/ใบแดงอัตโนมัติ
 const updateReportStatus = async (id, { status, adminNotes, resolvedById, note }) => {
   const currentReport = await prisma.reportCase.findUnique({ where: { id } });
   if (!currentReport) return null;
@@ -72,7 +76,7 @@ const updateReportStatus = async (id, { status, adminNotes, resolvedById, note }
     updateData.closedAt = new Date();
   }
 
-  return prisma.$transaction([
+  const [updatedReport, historyRecord] = await prisma.$transaction([
     prisma.reportCase.update({
       where: { id },
       data: updateData
@@ -87,8 +91,66 @@ const updateReportStatus = async (id, { status, adminNotes, resolvedById, note }
       }
     })
   ]);
+
+  // ระบบแจกใบเหลือง (เมื่อเคสถูกตั้งเป็น RESOLVED)
+  if (status === 'RESOLVED') {
+    const targetUserId = currentReport.driverId; // คนที่ถูกรายงาน
+    const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+
+    if (targetUser) {
+      const now = new Date();
+      let currentCards = targetUser.yellowCardCount || 0;
+
+      // ถ้าระยะเวลาใบเหลืองหมดอายุ ให้รีเซ็ตกลับไปนับ 0 ใหม่
+      if (targetUser.yellowCardExpiresAt && targetUser.yellowCardExpiresAt < now) {
+        currentCards = 0;
+      }
+
+      currentCards += 1; // เพิ่มใบเหลือง
+      
+     // ถ้าครบ 3 ใบ แจกใบแดงแล้วแบนถาวรลงตาราง Blacklist และรีเซ็ตใบเหลือง
+      if (currentCards >= 3) {
+        await prisma.$transaction([
+          prisma.user.update({
+            where: { id: targetUserId },
+            data: { 
+              yellowCardCount: 0, 
+              yellowCardExpiresAt: null,
+              isActive: false 
+            }
+          }),
+
+          prisma.blacklist.create({
+            data: {
+              userId: targetUserId,
+              type: targetUser.role === 'PASSENGER' ? 'PASSENGER' : 'DRIVER',
+              reason: 'สะสมใบเหลืองครบ 3 ใบ',
+              createdById: resolvedById,
+              status: 'ACTIVE',
+              suspendedUntil: null
+            }
+          })
+        ]);
+      } else {
+        // ถ้าไม่ถึง 3 ใบ ให้อัปเดตจำนวนใบเหลืองและยืดเวลาหมดอายุไปอีก 30 วัน
+        const newExpiresAt = new Date();
+        newExpiresAt.setDate(newExpiresAt.getDate() + 30);
+
+        await prisma.user.update({
+          where: { id: targetUserId },
+          data: {
+            yellowCardCount: currentCards,
+            yellowCardExpiresAt: newExpiresAt
+          }
+        });
+      }
+    }
+  }
+
+  return [updatedReport, historyRecord];
 };
 
+// แนบหลักฐานหลายไฟล์ลงในเคส Report
 const addEvidencesToReport = async (reportCaseId, evidencesData, uploadedById) => {
   const formattedData = evidencesData.map(evidence => ({
     reportCaseId,

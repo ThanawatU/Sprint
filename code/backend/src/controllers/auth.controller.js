@@ -3,8 +3,8 @@ const { signToken } = require("../utils/jwt");
 const userService = require("../services/user.service");
 const ApiError = require('../utils/ApiError');
 const { logAudit } = require('../services/audit.service');
-const { logLogin } = require('../utils/accessLog');
 const { prisma } = require("../utils/prisma");
+const { logLogin, logLogout } = require('../utils/accessLog'); 
 const {
   computeSystemLogHash, 
   prepareLogHashes,
@@ -105,50 +105,43 @@ const login = asyncHandler(async (req, res) => {
     });
 });
 
-
 const logout = asyncHandler(async (req, res) => {
-    const userId = req.user.sub;
+    const userId = req.user?.sub;
+    const role   = req.user?.role ?? "USER";
 
-    await prisma.accessLog.updateMany({
-        where: {
-            userId: userId,
-            logoutTime: null
-        },
-        data: {
-            logoutTime: new Date()
-        }
+    await logLogout({
+        userId,
+        sessionId: req.requestId ?? null
     });
 
     await logAudit({
         userId,
-        role: req.user.role,
+        role,
         action: "LOGOUT",
         entity: "User",
         entityId: userId,
-        req
+        req,
+        force: true
     });
 
     const data = {
-        level: "INFO",
-        method: req.method,
-        path: req.originalUrl,
+        level:      "INFO",
+        method:     req.method,
+        path:       req.originalUrl,
         statusCode: 200,
-        duration: 0, // ถ้ามี middleware วัด response time ค่อยใส่จริง
-        userId: userId,
-        ipAddress: req.ip,
-        userAgent: req.get("user-agent"),
-        requestId: req.requestId,
-        metadata: {
-            action: "LOGOUT"
-    }}
+        duration:   0,
+        userId:     userId ?? null,
+        ipAddress:  req.ip ?? null,
+        userAgent:  req.get("user-agent") ?? null,
+        requestId:  req.requestId ?? null,
+        metadata:   { action: "LOGOUT" }
+    };
+
     const prevHash      = await getLatestSystemLogHash();
     const integrityHash = computeSystemLogHash(data, prevHash);
-    data.integrityHash = integrityHash;
+    data.integrityHash  = integrityHash;
 
-    // ✅ เพิ่ม SystemLog สำหรับ Monitor
-    await prisma.systemLog.create({
-        data : data,
-    });
+    await prisma.systemLog.create({ data });
 
     res.status(200).json({
         success: true,
