@@ -2,7 +2,6 @@ const integrityService = require("../services/integrity.service");
 const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/ApiError");
-const integrityService = require("../services/logIntegrity.service");
 
 exports.verifySingleLog = async (req, res) => {
   try {
@@ -75,7 +74,7 @@ exports.verifyBatchLogs = async (req, res) => {
  * GET /api/logs/integrity/audit/:id
  * ตรวจสอบ integrity ของ AuditLog record เดี่ยว
  */
-const verifyOne = asyncHandler(async (req, res) => {
+exports.verifyOne = asyncHandler(async (req, res) => {
   const result = await integrityService.verifyAuditLog(req.params.id);
 
   if (!result.record) throw new ApiError(404, "AuditLog not found");
@@ -102,7 +101,7 @@ const verifyOne = asyncHandler(async (req, res) => {
  * :table = audit | system | access
  * Query: dateFrom, dateTo, limit
  */
-const verifyChain = asyncHandler(async (req, res) => {
+exports.verifyChain = asyncHandler(async (req, res) => {
   const TABLE_MAP = {
     audit:  "AuditLog",
     system: "SystemLog",
@@ -132,7 +131,7 @@ const verifyChain = asyncHandler(async (req, res) => {
  * สร้าง full compliance report ทุก table
  * Query: dateFrom, dateTo
  */
-const complianceReport = asyncHandler(async (req, res) => {
+exports.complianceReport = asyncHandler(async (req, res) => {
   const report = await integrityService.generateComplianceReport({
     dateFrom: req.query.dateFrom,
     dateTo:   req.query.dateTo,
@@ -153,7 +152,7 @@ const complianceReport = asyncHandler(async (req, res) => {
  * body: { batchSize? }
  * ADMIN only + ต้องรันก่อนเปิด immutable trigger
  */
-const backfill = asyncHandler(async (req, res) => {
+exports.backfill = asyncHandler(async (req, res) => {
   const TABLE_MAP = {
     audit:  "AuditLog",
     system: "SystemLog",
@@ -174,4 +173,4 @@ const backfill = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { verifyOne, verifyChain, complianceReport, backfill };
+//module.exports = { verifyOne, verifyChain, complianceReport, backfill };
