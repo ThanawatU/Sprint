@@ -1,14 +1,10 @@
 const { prisma } = require("../utils/prisma");
 const { getNow } = require("../utils/timestamp");
 const { computeIntegrityHash } = require("../utils/integrityHash");
-
-// ─────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────
-
-// ─────────────────────────────────────────────
-// Core Write
-// ─────────────────────────────────────────────
+const {
+  computeAuditHash, 
+  prepareLogHashes,
+} = require("./logIntegrity.service")
 
 /**
  * บันทึก AuditLog พร้อม integrityHash
@@ -39,11 +35,13 @@ const logAudit = async ({
       }
     });
 
-    const integrityHash = computeIntegrityHash(record);
+    const { integrityHash, prevHash } = await prepareLogHashes("AuditLog", {
+      ...recordData,
+      id: "PLACEHOLDER"
+    });
 
-    await prisma.auditLog.update({
-      where: { id: record.id },
-      data: { integrityHash }
+    await prisma.auditLog.create({
+      data: { ...recordData, integrityHash, prevHash },
     });
   } catch (error) {
     console.error("Audit log failed:", error);
@@ -663,6 +661,34 @@ const getUserActivityLog = async (userId, opts = {}) => {
   };
 };
 
+const logSystem = async ({
+  level = "INFO", requestId, method, path,
+  statusCode, duration, userId, ipAddress,
+  userAgent, error, metadata,
+}) => {
+  try {
+    const createdAt = new Date();
+    const recordData = {
+      level, requestId, method, path, statusCode,
+      duration, userId, ipAddress, userAgent,
+      error: error ?? null,
+      metadata: metadata ?? null,
+      createdAt,
+    };
+
+    const { integrityHash, prevHash } = await prepareLogHashes("SystemLog", {
+      ...recordData,
+      id: "PLACEHOLDER",
+    });
+
+    await prisma.systemLog.create({
+      data: { ...recordData, integrityHash, prevHash },
+    });
+  } catch (err) {
+    console.error("SystemLog write failed:", err.message);
+  }
+};
+
 module.exports = {
   // core write
   logAudit,
@@ -686,3 +712,14 @@ module.exports = {
   // user activity
   getUserActivityLog,
 };
+
+
+
+
+
+
+
+
+
+
+
