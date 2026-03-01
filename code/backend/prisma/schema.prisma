@@ -257,12 +257,14 @@ model AuditLog {
 
   createdAt DateTime @default(now())
   integrityHash String? @db.VarChar(64)
+  prevHash      String?   @db.VarChar(64)
 
   @@index([userId])
   @@index([action])
   @@index([entity])
   @@index([createdAt])
   @@index([integrityHash])
+  @@index([prevHash]) 
 }
 
 model SystemLog {
@@ -291,11 +293,16 @@ model SystemLog {
 
   createdAt   DateTime  @default(now())
 
+  integrityHash String?   @db.VarChar(64)
+  prevHash      String?   @db.VarChar(64)
+
   @@index([level])
   @@index([requestId])
   @@index([statusCode])
   @@index([createdAt])
   @@index([userId])
+  @@index([integrityHash])
+  @@index([prevHash])
 }
 
 model AccessLog {
@@ -310,9 +317,13 @@ model AccessLog {
   sessionId   String?
 
   createdAt   DateTime  @default(now())
+  integrityHash String?   @db.VarChar(64)   
+  prevHash      String?   @db.VarChar(64)
 
   @@index([userId])
   @@index([createdAt])
+  @@index([integrityHash])    
+  @@index([prevHash]) 
 }
 enum BlacklistType {
   DRIVER
