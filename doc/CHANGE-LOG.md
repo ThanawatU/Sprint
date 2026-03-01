@@ -313,6 +313,19 @@ All notable changes to this project will be documented in this file.
 
 - Fixed Bugs in `audit.controller.js`
 
+## [1.0.0] - 2026-02-28 - Thanawat_2128
+
+### Added
+
+- Added Hash chain system to `AuditLog`, `AccessLog` and `SystemLog`
+- Added Automate Weekly check for Hash chain
+
+### Changed
+
+- Modify DB trigger on UPDATE and DELETE on Log Tables
+
+- Fixed Bugs in `audit.controller.js`
+
 ---
 
 ## Version Guidelines
