@@ -6,7 +6,7 @@
         class="p-6 mb-8 bg-white border border-gray-300 rounded-lg shadow-md"
       >
         <h2 class="mb-6 text-xl font-semibold text-gray-900">
-          ประวัติการรีพอร์ตของฉัน
+          ประวัติการรายงานของฉัน
         </h2>
 
         <form
@@ -38,12 +38,12 @@
             class="w-full px-3 py-2 border border-gray-300 rounded-md"
           >
             <option value="">ทุกสถานะ</option>
-            <option value="FILED">FILED</option>
-            <option value="UNDER_REVIEW">UNDER_REVIEW</option>
-            <option value="INVESTIGATING">INVESTIGATING</option>
-            <option value="RESOLVED">RESOLVED</option>
-            <option value="REJECTED">REJECTED</option>
-            <option value="CLOSED">CLOSED</option>
+            <option value="FILED">รอการตรวจสอบ</option>
+            <option value="UNDER_REVIEW">กำลังพิจารณา</option>
+            <option value="INVESTIGATING">กำลังตรวจสอบข้อเท็จจริง</option>
+            <option value="RESOLVED">แก้ไขเรียบร้อยแล้ว</option>
+            <option value="REJECTED">ปฏิเสธคำร้อง</option>
+            <option value="CLOSED">ปิดเคสแล้ว</option>
           </select>
 
           <button
@@ -59,7 +59,7 @@
       <div class="bg-white border border-gray-300 rounded-lg shadow-md">
         <div class="p-6 border-b border-gray-300">
           <h3 class="text-lg font-semibold text-gray-900">
-            รายการรีพอร์ต ({{ reportCases.length }} รายการ)
+            รายการรายงาน ({{ reportCases.length }} รายการ)
           </h3>
         </div>
 
@@ -72,7 +72,7 @@
             v-if="reportCases.length === 0"
             class="p-6 text-center text-gray-500"
           >
-            ยังไม่มีประวัติการรีพอร์ต
+            ยังไม่มีประวัติการรายงาน
           </div>
 
           <!-- CARD -->
@@ -105,7 +105,7 @@
               class="pt-4 mt-4 border-t border-gray-300"
             >
               <h5 class="mb-2 font-medium text-gray-900">
-                รายละเอียดการรีพอร์ต
+                รายละเอียดการรายงาน
               </h5>
 
               <p
@@ -176,15 +176,17 @@ const searchForm = ref({
   status: "",
 });
 
+
 const fetchReports = async () => {
   try {
     isLoading.value = true;
-    const data = await $fetch("/api/report-cases/my", {
+
+    const data = await $fetch("/reports/my", {
       params: searchForm.value,
     });
 
-    reportCases.value = data;
-    
+    reportCases.value = data.data;   
+
   } catch (err) {
     console.error(err);
   } finally {

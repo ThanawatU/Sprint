@@ -1,5 +1,6 @@
 const reportService = require('../services/report.service');
 const { auditLog, getUserFromRequest } = require('../utils/auditLog');
+const multer = require('multer');
 
 exports.createReport = async (req, res) => {
   try {
@@ -127,12 +128,25 @@ exports.addEvidence = async (req, res) => {
 exports.getMyReports = async (req, res) => {
   try {
     const userId = req.user.id;
+    const { keyword, category, status } = req.query;
 
-    const records = await reportService.getReports({
-      reporterId: userId
-    });
+    const where = {
+      reporterId: userId,
+    };
 
-    res.json({ success: true, data: records });
+    if (category) where.category = category;
+    if (status) where.status = status;
+
+    if (keyword) {
+      where.description = {
+        contains: keyword,
+        mode: "insensitive"
+      };
+    }
+
+    const records = await reportService.getReports(where);
+
+    res.json(records);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch your reports" });

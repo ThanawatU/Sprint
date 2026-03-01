@@ -32,6 +32,7 @@ const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
       driver: { select: { id: true, username: true, email: true, firstName: true, lastName: true } },
       booking: true,
       route: true,
+      evidences: true
     },
     orderBy
   });

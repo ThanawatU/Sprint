@@ -34,7 +34,7 @@
                             </NuxtLink>
                         </div>
 
-                        <div v-if="user && user.role === 'PASSENGER'">
+                        <div v-if="user && (user.role === 'PASSENGER' || user.role === 'DRIVER' || user.role === 'ADMIN')">
                              <NuxtLink
                                  to="/myHistory"
                                  class="text-gray-600 transition-colors duration-200 hover:text-blue-600"
