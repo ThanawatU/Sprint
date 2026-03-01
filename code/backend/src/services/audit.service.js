@@ -4,7 +4,7 @@ const { computeIntegrityHash } = require("../utils/integrityHash");
 const {
   computeAuditHash, 
   prepareLogHashes,
-} = require("./logIntegrity.service")
+} = require("./logIntegrity.service.js")
 
 /**
  * บันทึก AuditLog พร้อม integrityHash

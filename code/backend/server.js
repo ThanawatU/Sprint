@@ -20,6 +20,11 @@ const cron = require('node-cron');
 const { cleanupOldLogs } = require('./src/services/logRetention.service');
 const { deleteExpiredExports } = require('./src/services/export.service');
 
+
+// ScheduleIntegrityCheck (check hash chain)
+const { scheduleIntegrityChecks } = require('./src/middlewares/integrityScheduler');
+scheduleIntegrityChecks();
+
 cleanupOldLogs(); //temporary for test
 
 const app = express();
