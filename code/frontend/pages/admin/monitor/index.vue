@@ -4,13 +4,11 @@
     <AdminSidebar />
 
     <main id="main-content" class="main-content mt-16 ml-0 lg:ml-[280px] p-6">
-      <!-- Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-semibold text-gray-800">Monitor Dashboard</h1>
         <p class="text-sm text-gray-500">ตรวจสอบ System & API Logs</p>
       </div>
 
-      <!-- ALERT -->
       <div
         v-if="summary.highError"
         class="mb-6 p-4 bg-red-100 text-red-700 rounded-md"
@@ -18,7 +16,6 @@
         พบ Error จำนวนมากในช่วง 5 นาทีล่าสุด ({{ summary.errorCount }} ครั้ง)
       </div>
 
-      <!-- Summary Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white border rounded-lg p-4 shadow-sm">
           <p class="text-sm text-gray-500">Total Requests</p>
@@ -42,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Tabs -->
       <div class="mb-4 border-b border-gray-200">
         <nav class="flex space-x-6">
           <button
@@ -61,9 +57,7 @@
         </nav>
       </div>
 
-      <!-- Log Table -->
       <div class="bg-white border border-gray-300 rounded-lg shadow-sm">
-        <!-- Header row -->
         <div
           class="px-4 py-4 border-b border-gray-200 flex justify-between items-center"
         >
@@ -72,6 +66,14 @@
           </h2>
 
           <div class="flex items-center gap-3">
+            <input
+              type="text"
+              v-model="searchQuery"
+              @keyup.enter="fetchLogs"
+              placeholder="กด Enter เพื่อค้นหา"
+              class="border px-3 py-2 rounded-md text-sm w-[200px]"
+            />
+
             <select
               v-if="activeTab === 'SystemLog'"
               v-model="selectedLevel"
@@ -84,7 +86,6 @@
               <option value="ERROR">ERROR</option>
             </select>
 
-            <!-- Date filter -->
             <input
               type="date"
               v-model="selectedDate"
@@ -100,7 +101,6 @@
               <tr>
                 <th class="px-4 py-2 w-[180px]">Time</th>
 
-                <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
                   <th class="px-4 py-2 w-[120px]">User</th>
                   <th class="px-4 py-2 w-[100px]">Role</th>
@@ -111,7 +111,6 @@
                   <th class="px-4 py-2 w-[200px]">User Agent</th>
                 </template>
 
-                <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
                   <th class="px-4 py-2 w-[80px]">Level</th>
                   <th class="px-4 py-2 w-[120px]">Request ID</th>
@@ -126,7 +125,6 @@
                   <th class="px-4 py-2 w-[200px]">Metadata</th>
                 </template>
 
-                <!-- AccessLog -->
                 <template v-else>
                   <th class="px-4 py-2 w-[120px]">User</th>
                   <th class="px-4 py-2 w-[150px]">Login Time</th>
@@ -148,7 +146,6 @@
                   {{ formatDate(log.createdAt) }}
                 </td>
 
-                <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
                   <td class="px-4 py-2 font-medium">
                     {{ log.userId || "-" }}
@@ -186,7 +183,6 @@
                   </td>
                 </template>
 
-                <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
                   <td class="px-4 py-2">
                     <span
@@ -231,7 +227,6 @@
                   </td>
                 </template>
 
-                <!-- AccessLog -->
                 <template v-else>
                   <td class="px-4 py-2">{{ log.userId }}</td>
 
@@ -278,7 +273,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRuntimeConfig } from "#app";
 import dayjs from "dayjs";
 import AdminHeader from "~/components/admin/AdminHeader.vue";
@@ -287,6 +282,7 @@ import AdminSidebar from "~/components/admin/AdminSidebar.vue";
 definePageMeta({ middleware: ["admin-auth"] });
 
 const selectedDate = ref("");
+const searchQuery = ref(""); // เพิ่ม State สำหรับเก็บคำค้นหา
 const logs = ref([]);
 const selectedLevel = ref("ALL");
 const tabs = ["AuditLog", "SystemLog", "AccessLog"];
@@ -294,6 +290,7 @@ const activeTab = ref("AuditLog");
 
 function changeTab(tab) {
   activeTab.value = tab;
+  searchQuery.value = ""; // ล้างคำค้นหาเมื่อเปลี่ยนแท็บ
   fetchLogs();
 }
 
@@ -335,6 +332,7 @@ async function fetchLogs() {
         level: selectedLevel.value,
         type: activeTab.value,
         date: selectedDate.value || undefined,
+        search: searchQuery.value || undefined, // ส่งค่าการค้นหาไปที่ Backend
       },
     });
 
@@ -371,5 +369,4 @@ onMounted(async () => {
 onUnmounted(() => {
   clearInterval(interval);
 });
-
 </script>
