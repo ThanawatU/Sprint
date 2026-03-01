@@ -1,8 +1,19 @@
 const { prisma } = require('../utils/prisma');
 const { logger } = require('../utils/logger');
 const { getNow } = require('../utils/timestamp');
+const {
+  computeSystemLogHash, 
+  prepareLogHashes,
+} = require("../services/logIntegrity.service.js")
 
-const logRequest = ({
+const {
+  getLatestSystemLogHash,
+} = require("../middlewares/audit.tools.js")
+
+
+
+
+const logRequest = async ({
   level = 'INFO',
   requestId,
   method,
@@ -17,8 +28,7 @@ const logRequest = ({
 }) => {
   const createdAt = getNow();
 
-  prisma.systemLog.create({
-    data: {
+   const data = {
       level,
       requestId,
       method,
@@ -32,6 +42,12 @@ const logRequest = ({
       metadata,
       createdAt
     }
+  const prevHash      = await getLatestSystemLogHash();
+  const integrityHash = computeSystemLogHash(data, prevHash);
+  data.integrityHash = integrityHash;
+  data.prevHash = prevHash;
+  prisma.systemLog.create({
+    data : data,
   }).catch(err => {
     logger.error('SystemLog write failed', {
       error: err.message,

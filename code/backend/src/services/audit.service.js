@@ -6,45 +6,35 @@ const {
   prepareLogHashes,
 } = require("./logIntegrity.service.js")
 
-/**
- * บันทึก AuditLog พร้อม integrityHash
- */
-const logAudit = async ({
-  userId,
-  role,
-  action,
-  entity,
-  entityId,
-  req,
-  metadata,
-}) => {
+const {
+  getLatestAuditHash
+} = require("../middlewares/audit.tools.js")
+
+
+const logAudit = async ({ userId, role, action, entity, entityId, req, metadata }) => {
   try {
-    const createdAt = getNow();
+    const createdAt = new Date();
 
-    const record = await prisma.auditLog.create({
-      data: {
-        userId,
-        role,
-        action,
-        entity,
-        entityId,
-        ipAddress: req?.ip ?? null,
-        userAgent: req?.headers?.["user-agent"] ?? null,
-        metadata,
-        createdAt,
-      }
-    });
+    const data = {
+      userId:    userId    ?? null,
+      role:      role      ?? null,
+      action,
+      entity:    entity    ?? null,
+      entityId:  entityId  ?? null,
+      ipAddress: req?.ip                      ?? null,
+      userAgent: req?.headers?.["user-agent"] ?? null,
+      metadata:  metadata  ?? null,
+      createdAt,
+    };
 
-    const { integrityHash, prevHash } = await prepareLogHashes("AuditLog", {
-      ...recordData,
-      id: "PLACEHOLDER"
-    });
+    const prevHash      = await getLatestAuditHash();
+    const integrityHash = computeAuditHash(data, prevHash);
 
     await prisma.auditLog.create({
-      data: { ...recordData, integrityHash, prevHash },
+      data: { ...data, integrityHash, prevHash },
     });
   } catch (error) {
-    console.error("Audit log failed:", error);
+    console.error("Audit log failed:", error.message);
   }
 };
 
@@ -676,10 +666,7 @@ const logSystem = async ({
       createdAt,
     };
 
-    const { integrityHash, prevHash } = await prepareLogHashes("SystemLog", {
-      ...recordData,
-      id: "PLACEHOLDER",
-    });
+    
 
     await prisma.systemLog.create({
       data: { ...recordData, integrityHash, prevHash },
@@ -711,6 +698,7 @@ module.exports = {
   processExport,
   // user activity
   getUserActivityLog,
+  logSystem
 };
 
 
