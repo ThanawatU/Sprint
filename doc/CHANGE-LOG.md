@@ -367,6 +367,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Nattaphat_0126
+
+### Added
+- Added Auto-approval logic for export requests by `ADMIN` role in `audit.controller.js`
+- Added PDF export generation logic and format support in `audit.service.js` and `audit.routes.js`
+- Implemented Export Request Management UI for administrators in `admin/exports/index.vue`
+- Added User Log Request History and submission form for regular users in `profile/logs.vue`
+
+### Changed
+- Enhanced `ProfileSidebar.vue` and `AdminSidebar.vue` to include new log export navigation menus
+- Updated User Management table in `admin/users/index.vue` to display User IDs for better tracking
+
+---
+
 ## Version Guidelines
 
 ### Categories
