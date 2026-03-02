@@ -375,6 +375,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Yodsanon_0215
+### Added
+- Added groupId field to the ReportCase model in schema.prisma for multi-user reporting.
+- Implemented addEvidencesToReportGroup in report.service.js to support bulk evidence uploads for grouped reports.
+- Added logic to automatically generate and assign groupId (e.g., REP-xxxx) when reporting multiple users.
+
+### Changed
+- src/controllers/report.controller.js - Updated createReport and addEvidence to support group-based reporting and evidence distribution.
+
+- src/validations/report.validation.js - Updated createReportSchema to accept an array of reportedUserIds.
+
+---
+
 ## Version Guidelines
 
 ### Categories

@@ -12,7 +12,8 @@ const {
 const router = express.Router();
 
 // --- User Routes ---
-// POST /api/reports
+
+// 1. สร้าง Report (รองรับทั้งคนเดียวและหลายคนผ่าน reportedUserIds)
 router.post(
   '/', 
   protect, 
@@ -20,27 +21,21 @@ router.post(
   reportController.createReport
 );
 
-// GET /api/reports/my
+// 2. ดึงประวัติที่ตัวเองไปรีพอร์ตคนอื่น
 router.get(
   '/my',
   protect,
-  reportController.getMyReports);
+  reportController.getMyReports
+);
 
-// GET /api/reports/against-me
+// 3. ดึงประวัติที่ตัวเองถูกคนอื่นรีพอร์ต
 router.get(
   '/against-me', 
   protect, 
   reportController.getReportsAgainstMe
 );
 
-// GET /api/reports/:id
-router.get(
-  '/:id', 
-  protect, 
-  reportController.getReportById
-);
-
-// POST /api/reports/:id/evidence
+// 4. อัปโหลดหลักฐาน (รองรับทั้งส่งเข้า ID รายคน หรือส่งเข้า GroupID)
 router.post(
   '/:id/evidence', 
   protect, 
@@ -48,8 +43,17 @@ router.post(
   reportController.addEvidence
 );
 
+// 5. ดูรายละเอียด Report รายเคส (ดึงผ่าน ID หลักของเคสนั้นๆ)
+router.get(
+  '/:id', 
+  protect, 
+  reportController.getReportById
+);
+
+
 // --- Admin Routes ---
-// GET /api/reports/admin/all
+
+// 1. ดึงรายการรีพอร์ตทั้งหมดสำหรับแอดมิน
 router.get(
   '/admin/all', 
   protect, 
@@ -57,7 +61,7 @@ router.get(
   reportController.getReports
 );
 
-// PATCH /api/reports/admin/:id/status
+// 2. แอดมินอัปเดตสถานะ (ตัดสินเคส/แจกใบเหลือง)
 router.patch(
   '/admin/:id/status', 
   protect, 
