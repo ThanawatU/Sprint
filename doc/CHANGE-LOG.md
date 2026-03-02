@@ -372,6 +372,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Added Report Management page for report handling and monitoring.
 - Added a sidebar navigation link to the Report Management page.
+- Added 4LsRetroSpective File
 
 ---
 
