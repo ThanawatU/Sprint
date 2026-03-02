@@ -354,7 +354,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [1.0.0] - 2026-03-01 - Yodsanon_0215
+## [2.0.0] - 2026-03-01 - Yodsanon_0215
 
 ### Added
 - Added `yellowCardCount` and `yellowCardExpiresAt` fields to the `User` model in `schema.prisma`.
@@ -364,6 +364,14 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - `src/services/report.service.js` - Modified `updateReportStatus` to trigger the Yellow/Red card.
+
+---
+
+## [2.0.0] - 2026-03-02 - Wisit_2348
+
+### Added
+- Added Report Management page for report handling and monitoring.
+- Added a sidebar navigation link to the Report Management page.
 
 ---
 
