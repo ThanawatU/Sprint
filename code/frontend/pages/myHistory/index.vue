@@ -80,7 +80,7 @@
             v-for="report in reportCases"
             :key="report.id"
             class="p-6 transition-all duration-300 cursor-pointer hover:shadow-lg"
-            @click="toggleDetails(report)"
+           @click.self="toggleDetails(report)"
           >
             <div class="flex items-start justify-between">
               <div>
@@ -169,6 +169,7 @@ import { ref, onMounted } from "vue";
 const reportCases = ref([]);
 const selectedReport = ref(null);
 const isLoading = ref(false);
+const errorMessage = ref("");
 
 const searchForm = ref({
   keyword: "",
@@ -176,19 +177,30 @@ const searchForm = ref({
   status: "",
 });
 
-
 const fetchReports = async () => {
   try {
     isLoading.value = true;
+    errorMessage.value = "";
+    selectedReport.value = null;
 
-    const data = await $fetch("/reports/my", {
-      params: searchForm.value,
+    const res = await $fetch("/reports/my", {
+      method: "GET",
+      params: { ...searchForm.value },
     });
 
-    reportCases.value = data.data;   
+    // รองรับทั้ง { success: true, data: [] } และ []
+    if (Array.isArray(res)) {
+      reportCases.value = res;
+    } else if (res?.data) {
+      reportCases.value = res.data;
+    } else {
+      reportCases.value = [];
+    }
 
   } catch (err) {
     console.error(err);
+    errorMessage.value = "เกิดข้อผิดพลาดในการโหลดข้อมูล";
+    reportCases.value = [];
   } finally {
     isLoading.value = false;
   }
@@ -199,10 +211,13 @@ const handleSearch = () => {
 };
 
 const toggleDetails = (report) => {
-  selectedReport.value = selectedReport.value?.id === report.id ? null : report;
+  if (!report?.id) return;
+  selectedReport.value =
+    selectedReport.value?.id === report.id ? null : report;
 };
 
 const formatDate = (date) => {
+  if (!date) return "-";
   return new Date(date).toLocaleString("th-TH");
 };
 
@@ -215,27 +230,29 @@ const formatCategory = (cat) => {
     FRAUD_OR_SCAM: "ฉ้อโกง",
     OTHER: "อื่น ๆ",
   };
-  return map[cat] || cat;
+  return map[cat] || cat || "-";
 };
 
 const statusClass = (status) => {
-  return [
-    "px-3 py-1 rounded-full text-xs font-medium",
-    status === "FILED"
-      ? "bg-gray-100 text-gray-800"
-      : status === "UNDER_REVIEW"
-        ? "bg-yellow-100 text-yellow-800"
-        : status === "INVESTIGATING"
-          ? "bg-blue-100 text-blue-800"
-          : status === "RESOLVED"
-            ? "bg-green-100 text-green-800"
-            : status === "REJECTED"
-              ? "bg-red-100 text-red-800"
-              : "bg-gray-200 text-gray-700",
-  ];
+  const base = "px-3 py-1 rounded-full text-xs font-medium";
+
+  switch (status) {
+    case "FILED":
+      return `${base} bg-gray-100 text-gray-800`;
+    case "UNDER_REVIEW":
+      return `${base} bg-yellow-100 text-yellow-800`;
+    case "INVESTIGATING":
+      return `${base} bg-blue-100 text-blue-800`;
+    case "RESOLVED":
+      return `${base} bg-green-100 text-green-800`;
+    case "REJECTED":
+      return `${base} bg-red-100 text-red-800`;
+    case "CLOSED":
+      return `${base} bg-gray-200 text-gray-700`;
+    default:
+      return `${base} bg-gray-100 text-gray-600`;
+  }
 };
 
-onMounted(() => {
-  fetchReports();
-});
+onMounted(fetchReports);
 </script>

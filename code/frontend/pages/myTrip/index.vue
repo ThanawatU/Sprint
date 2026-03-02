@@ -346,13 +346,71 @@
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       @click.self="closeReportModal"
     >
-      <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-xl">
+      <div class="w-full max-w-2xl p-6 bg-white rounded-lg shadow-xl">
         <h3 class="text-lg font-semibold text-gray-900">
           รายงานปัญหาการเดินทาง
         </h3>
         <p class="mt-1 text-sm text-gray-600">โปรดกรอกข้อมูลให้ครบถ้วน</p>
 
         <div class="mt-4 space-y-4">
+          <!-- เลือกว่าจะรีพอร์ตใคร -->
+          <div>
+            <label class="block mb-2 text-sm text-gray-700">
+              เลือกผู้ที่ต้องการรายงาน
+            </label>
+
+            <div class="overflow-y-auto border rounded-md max-h-48">
+              <table class="w-full text-sm text-left">
+                <thead class="bg-gray-100">
+                  <tr>
+                    <th class="px-3 py-2">เลือก</th>
+                    <th class="px-3 py-2">ชื่อ</th>
+                    <th class="px-3 py-2">หน้าที่</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr
+                    v-for="user in reportableUsers"
+                    :key="user.id"
+                    class="border-t"
+                  >
+                    <td class="px-3 py-2">
+                      <input
+                        type="checkbox"
+                        :value="user.id"
+                        v-model="reportForm.reportedUserIds"
+                      />
+                    </td>
+
+                    <td class="px-3 py-2">
+                      {{ user.firstName }} {{ user.lastName }}
+                    </td>
+
+                    <td class="px-3 py-2">
+                      <span
+                        class="px-2 py-1 text-xs rounded"
+                        :class="
+                          user.role === 'DRIVER'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-green-100 text-green-700'
+                        "
+                      >
+                        {{ user.role }}
+                      </span>
+                    </td>
+                  </tr>
+
+                  <tr v-if="reportableUsers.length === 0">
+                    <td colspan="3" class="px-3 py-4 text-center text-gray-400">
+                      ไม่พบผู้ที่สามารถรายงานได้
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <!-- Category -->
           <div>
             <label class="block mb-1 text-sm text-gray-700">
@@ -373,7 +431,7 @@
 
           <!-- Description -->
           <div>
-            <label class="block mb-1 text-sm text-gray-700"> รายละเอียด </label>
+            <label class="block mb-1 text-sm text-gray-700">รายละเอียด</label>
             <textarea
               v-model="reportForm.description"
               rows="4"
@@ -406,9 +464,10 @@
 
           <button
             @click="submitReport"
-            class="px-4 py-2 text-sm text-white bg-yellow-600 rounded-md hover:bg-yellow-700"
+            :disabled="isSubmittingReport"
+            class="px-4 py-2 text-sm text-white bg-yellow-600 rounded-md hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            ส่งรายงาน
+            {{ isSubmittingReport ? "กำลังส่ง..." : "ส่งรายงาน" }}
           </button>
         </div>
       </div>
@@ -434,74 +493,136 @@ import buddhistEra from "dayjs/plugin/buddhistEra";
 import ConfirmModal from "~/components/ConfirmModal.vue";
 import { useToast } from "~/composables/useToast";
 
+const isSubmittingReport = ref(false);
 const isReportModalOpen = ref(false);
 const selectedReportTrip = ref(null);
+const reportableUsers = computed(() => {
+  if (!selectedReportTrip.value) return [];
+
+  const trip = selectedReportTrip.value;
+  const currentUserId = getCurrentUserId();
+
+  const users = [];
+
+  // คนขับ
+  if (trip.driverId && trip.driverId !== currentUserId) {
+    users.push({
+      id: trip.driverId,
+      firstName: trip.driver?.name?.split(" ")[0] || "คนขับ",
+      lastName: trip.driver?.name?.split(" ")[1] || "",
+      role: "DRIVER",
+    });
+  }
+
+  // ผู้โดยสาร
+  if (Array.isArray(trip.passengers)) {
+    trip.passengers.forEach((p) => {
+      if (p.id !== currentUserId) {
+        users.push({
+          id: p.id,
+          firstName: p.firstName,
+          lastName: p.lastName,
+          role: "PASSENGER",
+        });
+      }
+    });
+  }
+
+  return users;
+});
 
 const reportForm = ref({
   bookingId: null,
-  driverId: null,
   routeId: null,
+  reportedUserIds: [],
   category: "",
   description: "",
   evidences: [],
 });
+
+watch(
+  () => reportForm.value.reportTarget,
+  () => {
+    reportForm.value.reportedUserIds = [];
+  },
+);
 
 function openReportModal(trip) {
   selectedReportTrip.value = trip;
 
   reportForm.value = {
     bookingId: trip.id,
-    driverId: trip.driverId,
     routeId: trip.routeId,
+    reportedUserIds: [],
     category: "",
     description: "",
+    evidences: [],
   };
 
   isReportModalOpen.value = true;
 }
 
-// ปิด Modal และ reset ค่า
 function closeReportModal() {
   isReportModalOpen.value = false;
+  selectedReportTrip.value = null;
 
   reportForm.value = {
     bookingId: null,
-    driverId: null,
     routeId: null,
+    reportedUserIds: [],
     category: "",
     description: "",
+    evidences: [],
   };
 }
 
-//ส่งรายงาน
+function getCurrentUserId() {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  return payload.id;
+}
+
 async function submitReport() {
+  if (isSubmittingReport.value) return; // กันกดซ้ำรัว ๆ
+
   try {
-    const response = await fetch("/api/reports", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({
-        driverId: reportForm.value.driverId,
-        bookingId: reportForm.value.bookingId,
-        routeId: reportForm.value.routeId,
-        category: reportForm.value.category,
-        description: reportForm.value.description,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || "เกิดข้อผิดพลาด");
+    if (!reportForm.value.reportedUserIds.length) {
+      toast.error("กรุณาเลือกผู้ที่ต้องการรายงาน");
+      return;
     }
 
-    alert("ส่งรายงานเรียบร้อยแล้ว");
+    if (!reportForm.value.category) {
+      toast.error("กรุณาเลือกประเภทปัญหา");
+      return;
+    }
+
+    isSubmittingReport.value = true;
+
+    for (const userId of reportForm.value.reportedUserIds) {
+      await $api("/reports", {
+        method: "POST",
+        body: {
+          driverId: userId,
+          bookingId: reportForm.value.bookingId,
+          routeId: reportForm.value.routeId,
+          category: reportForm.value.category,
+          description: reportForm.value.description,
+        },
+      });
+    }
+
+    toast.success("ส่งรายงานสำเร็จ");
     closeReportModal();
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    toast.error(
+      "เกิดข้อผิดพลาด",
+      error?.data?.message || "ไม่สามารถส่งรายงานได้",
+    );
+  } finally {
+    isSubmittingReport.value = false;
   }
 }
 
@@ -517,7 +638,6 @@ function handleEvidenceUpload(event) {
     file,
   }));
 }
-
 
 // Setup dayjs for Thai locale
 dayjs.locale("th");

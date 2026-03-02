@@ -162,7 +162,18 @@ exports.getMyReports = async (req, res) => {
       reporterId: userId,
     };
 
-    // Add Log management
+    if (status) where.status = status;
+    if (category) where.category = category;
+
+    if (keyword) {
+      where.description = {
+        contains: keyword,
+        mode: "insensitive"
+      };
+    }
+
+    const records = await reportService.getReports(where);
+
     await auditLog({
       ...getUserFromRequest(req),
       action: 'VIEW_MY_REPORTS',
