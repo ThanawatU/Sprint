@@ -89,6 +89,8 @@ model User {
   updatedAt               DateTime            @updatedAt
   passengerSuspendedUntil DateTime?
   driverSuspendedUntil    DateTime?
+  yellowCardCount         Int       @default(0)
+  yellowCardExpiresAt     DateTime?
   driverVerification      DriverVerification?
   vehicles                Vehicle[]
   notification            Notification[]

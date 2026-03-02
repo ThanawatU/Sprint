@@ -44,6 +44,15 @@ exports.listExportRequests = async (req, res) => {
       logType
     });
 
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_EXPORT_REQUESTS',
+      entity: 'ExportRequest',
+      req,
+      metadata: { recordCount: result.data?.length || 0, status, logType }
+    });
+
     res.json(result);
   } catch (error) {
     console.error("listExportRequests error:", error);
@@ -55,6 +64,15 @@ exports.getExportRequestById = async (req, res) => {
   try {
     const { id } = req.params;
     const exportRequest = await exportService.getExportRequestById(id);
+
+    // Add Log management
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_EXPORT_REQUEST',
+      entity: 'ExportRequest',
+      entityId: id,
+      req
+    });
 
     res.json(exportRequest);
   } catch (error) {

@@ -44,6 +44,7 @@ services:
       ADMIN_FIRST_NAME: ${ADMIN_FIRST_NAME:-System}
       ADMIN_LAST_NAME: ${ADMIN_LAST_NAME:-Administrator}
       CORS_ORIGIN: ${CORS_ORIGIN:-}
+      AUDIT_LOG_SECRET: ${AUDIT_LOG_SECRET:?AUDIT_LOG_SECRET is required}
 
   frontend:
     build:
