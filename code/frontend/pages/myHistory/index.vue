@@ -80,7 +80,7 @@
             v-for="report in reportCases"
             :key="report.id"
             class="p-6 transition-all duration-300 cursor-pointer hover:shadow-lg"
-           @click.self="toggleDetails(report)"
+            @click.self="toggleDetails(report)"
           >
             <div class="flex items-start justify-between">
               <div>
@@ -164,7 +164,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onActivated } from "vue";
 
 const reportCases = ref([]);
 const selectedReport = ref(null);
@@ -183,12 +183,17 @@ const fetchReports = async () => {
     errorMessage.value = "";
     selectedReport.value = null;
 
-    const res = await $fetch("/reports/my", {
+    const query = {};
+    if (searchForm.value.keyword?.trim())
+      query.keyword = searchForm.value.keyword.trim();
+    if (searchForm.value.category) query.category = searchForm.value.category;
+    if (searchForm.value.status) query.status = searchForm.value.status;
+
+    const res = await $api("/reports/my", {
       method: "GET",
-      params: { ...searchForm.value },
+      params: query,
     });
 
-    // รองรับทั้ง { success: true, data: [] } และ []
     if (Array.isArray(res)) {
       reportCases.value = res;
     } else if (res?.data) {
@@ -196,7 +201,6 @@ const fetchReports = async () => {
     } else {
       reportCases.value = [];
     }
-
   } catch (err) {
     console.error(err);
     errorMessage.value = "เกิดข้อผิดพลาดในการโหลดข้อมูล";
@@ -212,8 +216,7 @@ const handleSearch = () => {
 
 const toggleDetails = (report) => {
   if (!report?.id) return;
-  selectedReport.value =
-    selectedReport.value?.id === report.id ? null : report;
+  selectedReport.value = selectedReport.value?.id === report.id ? null : report;
 };
 
 const formatDate = (date) => {
@@ -255,4 +258,5 @@ const statusClass = (status) => {
 };
 
 onMounted(fetchReports);
+onActivated(fetchReports);
 </script>

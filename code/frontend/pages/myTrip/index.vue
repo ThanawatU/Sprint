@@ -365,7 +365,7 @@
                   <tr>
                     <th class="px-3 py-2">เลือก</th>
                     <th class="px-3 py-2">ชื่อ</th>
-                    <th class="px-3 py-2">หน้าที่</th>
+                    <th class="px-3 py-2">บทบาท</th>
                   </tr>
                 </thead>
 
@@ -396,7 +396,7 @@
                             : 'bg-green-100 text-green-700'
                         "
                       >
-                        {{ user.role }}
+                        {{ user.role === "DRIVER" ? "คนขับ" : "ผู้โดยสาร" }}
                       </span>
                     </td>
                   </tr>
@@ -421,14 +421,15 @@
               class="w-full px-3 py-2 border border-gray-300 rounded-md"
             >
               <option disabled value="">-- เลือกประเภท --</option>
-              <option value="DRIVER_BEHAVIOR">พฤติกรรมผู้ขับ</option>
-              <option value="LATE_ARRIVAL">มาสาย</option>
+
               <option value="DANGEROUS_DRIVING">ขับรถอันตราย</option>
-              <option value="PAYMENT_ISSUE">ปัญหาการชำระเงิน</option>
+              <option value="AGGRESSIVE_BEHAVIOR">พฤติกรรมก้าวร้าว</option>
+              <option value="HARASSMENT">คุกคาม</option>
+              <option value="NO_SHOW">ไม่มาตามนัด</option>
+              <option value="FRAUD_OR_SCAM">โกง / หลอกลวง</option>
               <option value="OTHER">อื่น ๆ</option>
             </select>
           </div>
-
           <!-- Description -->
           <div>
             <label class="block mb-1 text-sm text-gray-700">รายละเอียด</label>
@@ -492,6 +493,9 @@ import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 import ConfirmModal from "~/components/ConfirmModal.vue";
 import { useToast } from "~/composables/useToast";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const isSubmittingReport = ref(false);
 const isReportModalOpen = ref(false);
@@ -500,28 +504,33 @@ const reportableUsers = computed(() => {
   if (!selectedReportTrip.value) return [];
 
   const trip = selectedReportTrip.value;
-  const currentUserId = getCurrentUserId();
-
   const users = [];
 
-  // คนขับ
-  if (trip.driverId && trip.driverId !== currentUserId) {
+  //เพิ่ม driver
+  if (trip.driverId) {
     users.push({
       id: trip.driverId,
-      firstName: trip.driver?.name?.split(" ")[0] || "คนขับ",
-      lastName: trip.driver?.name?.split(" ")[1] || "",
+      firstName:
+        trip.driver?.name?.split(" ")[0] ||
+        trip.driver?.firstName ||
+        "ไม่ทราบชื่อ",
+      lastName:
+        trip.driver?.name?.split(" ").slice(1).join(" ") ||
+        trip.driver?.lastName ||
+        "",
       role: "DRIVER",
     });
   }
 
-  // ผู้โดยสาร
+  //เพิ่มผู้โดยสารคนอื่น
   if (Array.isArray(trip.passengers)) {
     trip.passengers.forEach((p) => {
-      if (p.id !== currentUserId) {
+      // ไม่เอาตัวเอง
+      if (p.id !== getCurrentUserId()) {
         users.push({
           id: p.id,
-          firstName: p.firstName,
-          lastName: p.lastName,
+          firstName: p.firstName || "ไม่ทราบชื่อ",
+          lastName: p.lastName || "",
           role: "PASSENGER",
         });
       }
@@ -539,13 +548,6 @@ const reportForm = ref({
   description: "",
   evidences: [],
 });
-
-watch(
-  () => reportForm.value.reportTarget,
-  () => {
-    reportForm.value.reportedUserIds = [];
-  },
-);
 
 function openReportModal(trip) {
   selectedReportTrip.value = trip;
@@ -585,7 +587,7 @@ function getCurrentUserId() {
 }
 
 async function submitReport() {
-  if (isSubmittingReport.value) return; // กันกดซ้ำรัว ๆ
+  if (isSubmittingReport.value) return;
 
   try {
     if (!reportForm.value.reportedUserIds.length) {
@@ -598,29 +600,34 @@ async function submitReport() {
       return;
     }
 
+    if (
+      !reportForm.value.description ||
+      reportForm.value.description.trim().length < 5
+    ) {
+      toast.error("รายละเอียดต้องมีอย่างน้อย 5 ตัวอักษร");
+      return;
+    }
+
     isSubmittingReport.value = true;
 
-    for (const userId of reportForm.value.reportedUserIds) {
-      await $api("/reports", {
-        method: "POST",
-        body: {
-          driverId: userId,
-          bookingId: reportForm.value.bookingId,
-          routeId: reportForm.value.routeId,
-          category: reportForm.value.category,
-          description: reportForm.value.description,
-        },
-      });
-    }
+    await $api("/reports", {
+      method: "POST",
+      body: {
+        bookingId: reportForm.value.bookingId || null,
+        routeId: reportForm.value.routeId || null,
+        reportedUserIds: reportForm.value.reportedUserIds,
+        category: reportForm.value.category,
+        description: reportForm.value.description.trim(),
+        evidences: [],
+      },
+    });
 
     toast.success("ส่งรายงานสำเร็จ");
     closeReportModal();
+    
   } catch (error) {
     console.error(error);
-    toast.error(
-      "เกิดข้อผิดพลาด",
-      error?.data?.message || "ไม่สามารถส่งรายงานได้",
-    );
+    toast.error(error?.data?.message || "ไม่สามารถส่งรายงานได้");
   } finally {
     isSubmittingReport.value = false;
   }
@@ -723,6 +730,7 @@ async function fetchMyTrips() {
     // map ข้อมูลพื้นฐานก่อน (ตั้งชื่อชั่วคราวเป็นพิกัด แล้วไป reverse geocode ภายหลัง)
     const formatted = bookings.map((b) => {
       const driverData = {
+        id: b.route.driver.id, // เพิ่มบรรทัดนี้
         name: `${b.route.driver.firstName} ${b.route.driver.lastName}`.trim(),
         image:
           b.route.driver.profilePicture ||
@@ -790,6 +798,9 @@ async function fetchMyTrips() {
 
       return {
         id: b.id,
+
+        driverId: driverData.id,
+
         status: String(b.status || "").toLowerCase(),
         origin:
           start?.name ||
@@ -807,6 +818,15 @@ async function fetchMyTrips() {
         price: (b.route.pricePerSeat || 0) * (b.numberOfSeats || 1),
         seats: b.numberOfSeats || 1,
         driver: driverData,
+
+        passengers:
+          b.route.bookings?.map((bk) => ({
+            id: bk.user?.id,
+            firstName: bk.user?.firstName || "",
+            lastName: bk.user?.lastName || "",
+            name: `${bk.user?.firstName || ""} ${bk.user?.lastName || ""}`.trim(),
+          })) || [],
+
         coords: [
           [start.lat, start.lng],
           [end.lat, end.lng],
