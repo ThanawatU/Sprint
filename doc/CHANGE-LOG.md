@@ -435,7 +435,6 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Pimapsorn_5095
 
 ### Added
-
 - Report form page with multi-user selection support.
 - Report history page (My Reports) with search and filter.
 - Admin report detail page and case management system.
@@ -445,14 +444,13 @@ All notable changes to this project will be documented in this file.
 - User Manual documentation
 
 ### Changed
-
+- Notification system for case resolution updates.
 - Refactored report structure to support multiple reported users.
 - Updated frontend to use checkbox multi-select for reporting.
 - Improved authentication handling (cookie-based token).
 - Unified UI styling for report-related pages.
 
 ### Fixed
-
 - Fixed single-user report limitation.
 - Fixed token 400 error issue.
 - Fixed duplicate/incorrect report display.
