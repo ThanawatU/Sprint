@@ -158,30 +158,30 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
-                                    <!-- Driver -->
-                                    <tr>
+                                    <tr v-if="report?.route?.driver">
                                         <td class="px-4 py-3">
-                                        {{ report.driver?.firstName }} {{ report.driver?.lastName }}
+                                            <span class="inline-flex items-center px-2 py-1 mr-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-full">คนขับ</span>
+                                            {{ report.route.driver.firstName }} {{ report.route.driver.lastName }}
                                         </td>
-                                        <td>
-                                        <span :class="statusClass(report.driver)">
-                                            {{ getDisciplinaryStatus(report.driver).label }}
-                                        </span>
+                                        <td class="px-4 py-3">
+                                            <span :class="statusClass(report.route.driver)">
+                                                {{ getDisciplinaryStatus(report.route.driver).label }}
+                                            </span>
                                         </td>
                                     </tr>
 
-                                    <!-- Passengers -->
                                     <tr
-                                        v-for="booking in report.route?.bookings || []"
-                                        :key="booking.id"
+                                        v-for="passenger in uniquePassengers"
+                                        :key="passenger.id"
                                     >
                                         <td class="px-4 py-3">
-                                        {{ booking.passenger?.firstName }} {{ booking.passenger?.lastName }}
+                                            <span class="inline-flex items-center px-2 py-1 mr-2 text-xs font-medium text-green-700 bg-green-100 rounded-full">ผู้โดยสาร</span>
+                                            {{ passenger.firstName }} {{ passenger.lastName }}
                                         </td>
-                                        <td>
-                                        <span :class="statusClass(booking.passenger)">
-                                            {{ getDisciplinaryStatus(booking.passenger).label }}
-                                        </span>
+                                        <td class="px-4 py-3">
+                                            <span :class="statusClass(passenger)">
+                                                {{ getDisciplinaryStatus(passenger).label }}
+                                            </span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -411,23 +411,51 @@ const selectedUsers = ref([])
 const adminComment = ref('')
 const selectedPreset = ref('')
 
+const uniquePassengers = computed(() => {
+  if (!report.value?.route?.bookings) return []
+  
+  const passengers = []
+  const seen = new Set()
+
+  report.value.route.bookings.forEach(booking => {
+    if (booking.passenger && !seen.has(booking.passenger.id)) {
+      seen.add(booking.passenger.id)
+      passengers.push(booking.passenger)
+    }
+  })
+
+  return passengers
+})
+
 // คำนวณรายการผู้ใช้ที่ถูกรายงานเท่านั้น (แสดงเฉพาะคนที่ถูก report จริงๆ)
 const uniqueUsers = computed(() => {
-  if (!report.value) return []
+  // console.log("🟡 [FRONTEND DEBUG] กำลังคำนวณ uniqueUsers, ข้อมูลต้นทาง:", report.value);
+
+  if (!report.value) return [];
   
-  // แสดงเฉพาะคนที่ถูกรายงาน (คือ driver ใน ReportCase)
-  // ซึ่งในโครงสร้างปัจจุบัน reportedUser จะอยู่ที่ report.driver
+  if (report.value.reportedUsers && report.value.reportedUsers.length > 0) {
+    // console.log("🟡 [FRONTEND DEBUG] เข้าเงื่อนไขที่ 1 (แบบ Group มีหลายคน):", report.value.reportedUsers.length, "คน");
+    return report.value.reportedUsers.map(user => ({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      ...user
+    }));
+  }
+  
   if (report.value.driver) {
+    // console.log("🟡 [FRONTEND DEBUG] เข้าเงื่อนไขที่ 2 (แบบเดี่ยว / ของเก่า): 1 คน");
     return [{
       id: report.value.driver.id,
       firstName: report.value.driver.firstName,
       lastName: report.value.driver.lastName,
       ...report.value.driver
-    }]
+    }];
   }
   
-  return []
-})
+  // console.log("🟡 [FRONTEND DEBUG] หาใครไม่เจอเลย คืนค่า Array ว่าง");
+  return [];
+});
 
 const formatDateTime = (date) => {
   if (!date) return '-'
@@ -632,6 +660,9 @@ async function fetchReport() {
                 Authorization: `Bearer ${token.value}`
             }
         })
+
+        console.log("🟢 [FRONTEND DEBUG] Response จาก API:", res);
+        console.log("🟢 [FRONTEND DEBUG] res.reportedUsers:", res.reportedUsers);
 
         report.value = res
 
