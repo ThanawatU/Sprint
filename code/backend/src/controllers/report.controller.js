@@ -2,14 +2,15 @@ const reportService = require('../services/report.service');
 const { auditLog, getUserFromRequest } = require('../utils/auditLog');
 const { prisma } = require('../utils/prisma');
 
+// สร้าง Report (รองรับทั้งคนเดียว และ หลายคนพร้อมกัน)
 exports.createReport = async (req, res) => {
   try {
-    const { driverId, bookingId, routeId, category, description } = req.body;
+    const { reportedUserIds, bookingId, routeId, category, description } = req.body;
     const reporterId = req.user.id;
 
-    const report = await reportService.createReportCase({
+    const result = await reportService.createReportCase({
       reporterId,
-      driverId,
+      reportedUserIds,
       bookingId,
       routeId,
       category,
@@ -20,18 +21,29 @@ exports.createReport = async (req, res) => {
       ...getUserFromRequest(req),
       action: 'CREATE_REPORT',
       entity: 'ReportCase',
-      entityId: report.id,
       req,
-      metadata: { category }
+      metadata: { 
+        isGroup: result.isGroup, 
+        groupId: result.groupId, 
+        reportedCount: reportedUserIds.length 
+      }
     });
 
-    res.status(201).json({ message: "Report created successfully", data: report });
+    res.status(201).json({ 
+      success: true, 
+      message: result.isGroup 
+        ? `Successfully created group report with ${reportedUserIds.length} cases.` 
+        : "Successfully created report case.",
+      groupId: result.groupId,
+      data: result.data 
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to create report" });
+    res.status(500).json({ message: "Failed to create reports" });
   }
 };
 
+// ดึงรายการ Report ทั้งหมด (สำหรับ Admin)
 exports.getReports = async (req, res) => {
   try {
     const { status, category, q } = req.query;
@@ -49,7 +61,6 @@ exports.getReports = async (req, res) => {
 
     const records = await reportService.getReports(where);
     
-    // Add Log management
     await auditLog({
       ...getUserFromRequest(req),
       action: 'VIEW_REPORTS',
@@ -65,6 +76,7 @@ exports.getReports = async (req, res) => {
   }
 };
 
+// ดึงรายละเอียด Report รายเคส
 exports.getReportById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -74,11 +86,11 @@ exports.getReportById = async (req, res) => {
       return res.status(404).json({ message: "Report not found" });
     }
 
+    // เช็คสิทธิ์การเข้าดู
     if (req.user.role !== 'ADMIN' && req.user.id !== report.reporterId && req.user.id !== report.driverId) {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    // Add Log management
     await auditLog({
       ...getUserFromRequest(req),
       action: 'VIEW_REPORT',
@@ -94,6 +106,7 @@ exports.getReportById = async (req, res) => {
   }
 };
 
+// อัปเดตสถานะ
 exports.updateReportStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -126,43 +139,33 @@ exports.updateReportStatus = async (req, res) => {
   }
 };
 
+// เพิ่มหลักฐาน (รองรับทั้งส่งเข้า ID รายคน หรือส่งเข้า GroupID)
 exports.addEvidence = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; 
     const { evidences } = req.body;
 
-    const result = await reportService.addEvidencesToReport(id, evidences, req.user.id);
+    const isGroup = id.startsWith('REP-');
 
-    // Add Log management
-    await auditLog({
-      ...getUserFromRequest(req),
-      action: 'ADD_REPORT_EVIDENCE',
-      entity: 'ReportCase',
-      entityId: id,
-      req,
-      metadata: { evidenceCount: result.count }
-    });
+    // เรียก Service โดยส่ง Object ไปให้ถูกฟิลด์
+    const result = await reportService.addEvidencesToReportGroup(
+      isGroup ? id : null,
+      evidences, 
+      req.user.id
+    );
 
-    res.status(201).json({ 
-      message: "Evidences added successfully", 
-      count: result.count
-    });
+    res.status(201).json({ success: true, count: result.count });
   } catch (error) {
-    console.error(error);
+    console.error("Error Detail:", error);
     res.status(500).json({ message: "Failed to add evidences" });
   }
 };
 
-// ดึงประวัติการ Report (Passenger)
+// ดึงประวัติการ Report ที่เราส่งเอง
 exports.getMyReports = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const records = await reportService.getReports({ reporterId: req.user.id });
 
-    const records = await reportService.getReports({
-      reporterId: userId
-    });
-
-    // Add Log management
     await auditLog({
       ...getUserFromRequest(req),
       action: 'VIEW_MY_REPORTS',
@@ -178,16 +181,11 @@ exports.getMyReports = async (req, res) => {
   }
 };
 
-// ดึงประวัติที่ตัวเองถูก Report (Driver)
+// ดึงประวัติที่คนอื่นรีพอร์ตเรา
 exports.getReportsAgainstMe = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const records = await reportService.getReports({ driverId: req.user.id });
 
-    const records = await reportService.getReports({
-      driverId: userId
-    });
-
-    // Add Log management
     await auditLog({
       ...getUserFromRequest(req),
       action: 'VIEW_REPORTS_AGAINST_ME',

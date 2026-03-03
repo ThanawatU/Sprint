@@ -1,24 +1,23 @@
 const { z } = require("zod");
 
-//ตรวจสอบข้อมูลตอนผู้ใช้สร้าง Report
+// 1. ตรวจสอบข้อมูลตอนผู้ใช้สร้าง Report (รองรับหลายคน)
 const createReportSchema = z.object({
-  driverId: z.string().min(1, "Driver ID is required"),
+  // รับเป็น Array ของ ID คนที่ถูกรีพอร์ต (Checkbox)
+  reportedUserIds: z.array(z.string()).min(1, "Please select at least one user to report"),
   bookingId: z.string().optional().nullable(),
   routeId: z.string().optional().nullable(),
   category: z.enum([
-    "DANGEROUS_DRIVING",
-    "AGGRESSIVE_BEHAVIOR",
-    "HARASSMENT",
-    "NO_SHOW",
-    "FRAUD_OR_SCAM",
+    "DANGEROUS_DRIVING", 
+    "AGGRESSIVE_BEHAVIOR", 
+    "HARASSMENT", 
+    "NO_SHOW", 
+    "FRAUD_OR_SCAM", 
     "OTHER"
-  ], {
-    errorMap: () => ({ message: "Invalid report category" })
-  }),
-  description: z.string().min(5, "Description must be at least 5 characters").max(1000, "Description is too long")
+  ]),
+  description: z.string().min(10, "Description must be at least 10 characters long")
 });
 
-//ตรวจสอบข้อมูลตอนแอดมินอัปเดตสถานะ Report
+// 2. ตรวจสอบข้อมูลตอนแอดมินอัปเดตสถานะ Report
 const updateReportStatusSchema = z.object({
   status: z.enum([
     "FILED",
@@ -34,7 +33,7 @@ const updateReportStatusSchema = z.object({
   note: z.string().max(500).optional().nullable()
 });
 
-//ตรวจสอบข้อมูล
+// 3. ตรวจสอบการอัปโหลดหลักฐาน (กฎ: รูป 3 + วิดีโอ 3)
 const addReportEvidenceSchema = z.object({
   evidences: z.array(
     z.object({
@@ -48,19 +47,18 @@ const addReportEvidenceSchema = z.object({
     })
   )
   .min(1, "At least one evidence is required")
-  .max(6, "Cannot upload more than 6 files in total") // เปลี่ยนเป็น 6 (รูป 3 + วิดีโอ 3)
+  .max(6, "Total files cannot exceed 6") 
   .refine((items) => {
-    // นับจำนวนรูปและวิดีโอ
+    // นับจำนวนรายประเภท
     const imageCount = items.filter(item => item.type === "IMAGE").length;
     const videoCount = items.filter(item => item.type === "VIDEO").length;
     
-    // กฎใหม่: อย่างละไม่เกิน 3
+    // กฎ: รูปไม่เกิน 3 และ วิดีโอไม่เกิน 3
     return imageCount <= 3 && videoCount <= 3;
   }, { 
-    message: "You can upload a maximum of 3 images and 3 videos." 
+    message: "You can upload a maximum of 3 images and 3 videos per request." 
   })
 });
-
 
 module.exports = {
   createReportSchema,

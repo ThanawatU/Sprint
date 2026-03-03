@@ -303,6 +303,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Nattaphat_0126
+
+### Added
+- Added Auto-approval logic for export requests by `ADMIN` role in `audit.controller.js`
+- Added PDF export generation logic and format support in `audit.service.js` and `audit.routes.js`
+- Implemented Export Request Management UI for administrators in `admin/exports/index.vue`
+- Added User Log Request History and submission form for regular users in `profile/logs.vue`
+
+### Changed
+- Enhanced `ProfileSidebar.vue` and `AdminSidebar.vue` to include new log export navigation menus
+- Updated User Management table in `admin/users/index.vue` to display User IDs for better tracking
+
+---
+
 ## [2.0.0] - 2026-02-27 - Thanawat_2128
 
 ### Added
@@ -372,6 +386,20 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Added Report Management page for report handling and monitoring.
 - Added a sidebar navigation link to the Report Management page.
+- Added 4LsRetroSpective File
+
+---
+
+## [2.0.0] - 2026-03-03 - Yodsanon_0215
+### Added
+- Added groupId field to the ReportCase model in schema.prisma for multi-user reporting.
+- Implemented addEvidencesToReportGroup in report.service.js to support bulk evidence uploads for grouped reports.
+- Added logic to automatically generate and assign groupId (e.g., REP-xxxx) when reporting multiple users.
+
+### Changed
+- src/controllers/report.controller.js - Updated createReport and addEvidence to support group-based reporting and evidence distribution.
+
+- src/validations/report.validation.js - Updated createReportSchema to accept an array of reportedUserIds.
 
 ---
 

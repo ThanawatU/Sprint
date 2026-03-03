@@ -1,28 +1,43 @@
 const { prisma } = require("../utils/prisma");
+const crypto = require('crypto'); // ใช้สำหรับสร้างรหัสกลุ่ม
 
 // สร้าง Report ใหม่ และบันทึกประวัติสถานะแรก (FILED)
 const createReportCase = async (data) => {
-  const { reporterId, driverId, bookingId, routeId, category, description } = data;
+  const { reporterId, reportedUserIds, bookingId, routeId, category, description } = data;
 
-  return prisma.reportCase.create({
-    data: {
-      reporterId,
-      driverId,
-      bookingId,
-      routeId,
-      category,
-      description,
-      status: 'FILED',
-      statusHistory: {
-        create: {
-          toStatus: 'FILED',
-          changedById: reporterId,
-          note: 'Initial report filed'
+  const generatedGroupId = reportedUserIds.length > 1 
+    ? `REP-${crypto.randomBytes(4).toString('hex')}` 
+    : null;
+
+  const createPromises = reportedUserIds.map((targetUserId) => {
+    return prisma.reportCase.create({
+      data: {
+        groupId: generatedGroupId,
+        reporterId,
+        driverId: targetUserId,
+        bookingId,
+        routeId,
+        category,
+        description,
+        status: 'FILED',
+        statusHistory: {
+          create: {
+            toStatus: 'FILED',
+            changedById: reporterId,
+            note: 'Initial report filed'
+          }
         }
-      }
-    },
-    include: { reporter: true, driver: true }
+      },
+      include: { reporter: true, driver: true }
+    });
   });
+
+  const createdCases = await prisma.$transaction(createPromises);
+
+  return {
+    groupId: generatedGroupId,
+    cases: createdCases
+  };
 };
 
 // ดึงรายการ Report ทั้งหมด (สามารถใส่เงื่อนไข filter และ order ได้)
@@ -135,6 +150,57 @@ const updateReportStatus = async (id, payload) => {
     // แจกใบเหลือง
     if (payload.status === 'RESOLVED') {
       await handleYellowCard(tx, currentReport.driverId);
+  // ระบบแจกใบเหลือง (เมื่อเคสถูกตั้งเป็น RESOLVED)
+  // if (status === 'RESOLVED') {
+  //   const targetUserId = currentReport.driverId;
+  //   const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+
+  //   if (targetUser) {
+  //     const now = new Date();
+  //     let currentCards = targetUser.yellowCardCount || 0;
+
+  //     if (targetUser.yellowCardExpiresAt && targetUser.yellowCardExpiresAt < now) {
+  //       currentCards = 0;
+  //     }
+
+  //     currentCards += 1;
+
+  //     // ถ้าครบ 3 ใบแบนถาวรลงตาราง Blacklist และรีเซ็ตใบเหลือง
+  //     if (currentCards >= 3) {
+  //       await prisma.$transaction([
+  //         prisma.user.update({
+  //           where: { id: targetUserId },
+  //           data: { 
+  //             yellowCardCount: 0, 
+  //             yellowCardExpiresAt: null,
+  //             isActive: false 
+  //           }
+  //         }),
+
+  //         prisma.blacklist.create({
+  //           data: {
+  //             userId: targetUserId,
+  //             type: targetUser.role === 'PASSENGER' ? 'PASSENGER' : 'DRIVER',
+  //             reason: `สะสมใบเหลืองครบ 3 ใบ (จากเคส: ${id})`,
+  //             createdById: resolvedById,
+  //             status: 'ACTIVE',
+  //             suspendedUntil: null // แบนถาวร
+  //           }
+  //         })
+  //       ]);
+  //     } else {
+
+  //       const newExpiresAt = new Date();
+  //       newExpiresAt.setDate(newExpiresAt.getDate() + 30);
+
+  //       await prisma.user.update({
+  //         where: { id: targetUserId },
+  //         data: {
+  //           yellowCardCount: currentCards,
+  //           yellowCardExpiresAt: newExpiresAt
+  //         }
+  //       });
+  //     }
     }
 
     return updatedReport;
@@ -194,17 +260,30 @@ const handleYellowCard = async (tx, userId) => {
   }
 };
 
-// แนบหลักฐานหลายไฟล์ลงในเคส Report
-const addEvidencesToReport = async (reportCaseId, evidencesData, uploadedById) => {
-  const formattedData = evidencesData.map(evidence => ({
-    reportCaseId,
-    type: evidence.type,
-    url: evidence.url,
-    fileName: evidence.fileName,
-    mimeType: evidence.mimeType,
-    fileSize: evidence.fileSize,
-    uploadedById
-  }));
+// แนบหลักฐานให้ทุกเคสที่อยู่ในกลุ่มเดียวกัน (ใช้ GroupId)
+const addEvidencesToReportGroup = async (groupId, evidencesData, uploadedById) => {
+  const casesInGroup = await prisma.reportCase.findMany({
+    where: { groupId }
+  });
+
+  if (casesInGroup.length === 0) {
+    throw new Error("Report group not found");
+  }
+
+  const formattedData = [];
+  casesInGroup.forEach((reportCase) => {
+    evidencesData.forEach((evidence) => {
+      formattedData.push({
+        reportCaseId: reportCase.id, 
+        type: evidence.type,
+        url: evidence.url,
+        fileName: evidence.fileName,
+        mimeType: evidence.mimeType,
+        fileSize: evidence.fileSize,
+        uploadedById
+      });
+    });
+  });
 
   return prisma.reportEvidence.createMany({
     data: formattedData
@@ -216,5 +295,5 @@ module.exports = {
   getReports,
   getReportById,
   updateReportStatus,
-  addEvidencesToReport
+  addEvidencesToReportGroup
 };

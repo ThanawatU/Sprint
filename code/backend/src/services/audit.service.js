@@ -1,5 +1,7 @@
 const { prisma } = require("../utils/prisma");
 const { getNow } = require("../utils/timestamp");
+const PDFDocument = require('pdfkit');
+const { LOG_COLUMNS } = require('../utils/exportGenerators');
 const { computeIntegrityHash } = require("../utils/integrityHash");
 const {
   computeAuditHash, 
@@ -560,16 +562,19 @@ const processExport = async (exportRequestId) => {
   if (req.format === "CSV") {
     content = convertToCSV(records);
     mimeType = "text/csv";
-  } else {
+  } else if (req.format === "JSON") {
     content = JSON.stringify(records, null, 2);
     mimeType = "application/json";
+  } else if (req.format === "PDF") {
+    content = await generatePDFBuffer(records, req.logType);
+    mimeType = "application/pdf";
   }
 
-  // อัปเดต status เป็น COMPLETED
+  // อัปเดต status เป็น APPROVED
   await prisma.exportRequest.update({
     where: { id: exportRequestId },
     data: {
-      status: "COMPLETED",
+      status: "APPROVED",
       completedAt: new Date(),
       recordCount: records.length,
     },
@@ -675,6 +680,74 @@ const logSystem = async ({
     console.error("SystemLog write failed:", err.message);
   }
 };
+
+/**
+ * สร้าง pdgเป็น memory buffer
+ */
+function generatePDFBuffer(records, logType) {
+  return new Promise((resolve, reject) => {
+    try {
+      const columns = LOG_COLUMNS[logType];
+      if (!columns) return reject(new Error(`Unknown log type: ${logType}`));
+
+      const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 30 });
+      const buffers = [];
+
+      doc.on('data', buffers.push.bind(buffers));
+      doc.on('end', () => resolve(Buffer.concat(buffers)));
+
+      doc.fontSize(16).text(`${logType} Export Report`, { align: 'center' });
+      doc.fontSize(10).text(`Exported at: ${new Date().toISOString()}`, { align: 'center' });
+      doc.fontSize(10).text(`Total records: ${records.length}`, { align: 'center' });
+      doc.moveDown(1);
+
+      const maxCols = 7;
+      const displayHeaders = columns.headers.slice(0, maxCols);
+      const displayFields = columns.fields.slice(0, maxCols);
+      const tableLeft = 30;
+      const pageWidth = doc.page.width - 60;
+      const colWidth = Math.floor(pageWidth / displayHeaders.length);
+      const rowHeight = 20;
+
+      const formatValue = (value) => {
+        if (value === null || value === undefined) return '';
+        if (value instanceof Date) return value.toISOString();
+        if (typeof value === 'object') return JSON.stringify(value);
+        return String(value);
+      };
+
+      const drawTableHeader = (y) => {
+        doc.fontSize(8).font('Helvetica-Bold');
+        displayHeaders.forEach((header, i) => {
+          doc.text(header, tableLeft + (i * colWidth), y, { width: colWidth - 4, lineBreak: false });
+        });
+        doc.font('Helvetica');
+        return y + rowHeight;
+      };
+
+      let currentY = drawTableHeader(doc.y);
+      doc.fontSize(7);
+
+      for (const record of records) {
+        if (currentY + rowHeight > doc.page.height - 40) {
+          doc.addPage();
+          currentY = drawTableHeader(30);
+          doc.fontSize(7);
+        }
+        displayFields.forEach((field, i) => {
+          const value = formatValue(record[field]);
+          const displayValue = value.length > 30 ? value.substring(0, 27) + '...' : value;
+          doc.text(displayValue, tableLeft + (i * colWidth), currentY, { width: colWidth - 4, lineBreak: false });
+        });
+        currentY += rowHeight;
+      }
+
+      doc.end();
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
 
 module.exports = {
   // core write

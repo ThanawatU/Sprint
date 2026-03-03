@@ -369,7 +369,7 @@ enum ReportEvidenceType {
 
 model ReportCase {
   id String @id @default(cuid())
-
+  groupId     String?
   reporterId String
   reporter   User   @relation("ReportCaseReporter", fields: [reporterId], references: [id], onDelete: Cascade)
 
