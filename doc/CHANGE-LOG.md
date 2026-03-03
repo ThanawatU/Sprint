@@ -465,6 +465,8 @@ All notable changes to this project will be documented in this file.
 - Added Passenger Detail Report Robot 
 - Added Baned User Checked Robot 
 
+---
+
 ## Version Guidelines
 
 ### Categories
