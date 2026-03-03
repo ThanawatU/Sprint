@@ -1,205 +1,214 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.4.1 (Python 3.11.7 on win32)" generated="2026-03-03T22:40:44.105800" rpa="false" schemaversion="5">
+<robot generator="Robot 7.4.1 (Python 3.11.7 on win32)" generated="2026-03-03T23:32:00.794719" rpa="false" schemaversion="5">
 <suite id="s1" name="Export Logs" source="C:\Users\User\Documents\Code\Web\Sprint\test\API Test\export_logs_test\export_logs.robot">
 <test id="s1-t1" name="Scenario 1: User Request -&gt; Admin Approve -&gt; User Download" line="15">
 <kw name="Create Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.461455" level="INFO">Creating Session using : alias=api, url=http://localhost:3000/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<msg time="2026-03-03T23:32:01.251168" level="INFO">Creating Session using : alias=api, url=https://deploy-production-88fa.up.railway.app/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
 <arg>api</arg>
 <arg>${BASE_URL}</arg>
+<arg>verify=False</arg>
 <doc>Create Session: create a HTTP session to a server</doc>
-<status status="PASS" start="2026-03-03T22:40:44.461455" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:01.251168" elapsed="0.000000"/>
 </kw>
 <kw name="Login">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.464972" level="INFO">${body} = {'username': 'nutho04', 'password': '0123456789'}</msg>
+<msg time="2026-03-03T23:32:01.253694" level="INFO">${body} = {'username': 'exportTester1', 'password': '123456789'}</msg>
 <var>${body}</var>
 <arg>username=${user}</arg>
 <arg>password=${pass}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.464972" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:01.252679" elapsed="0.001015"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.536189" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:02.384697" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '49', 'Content-Type': 'application/json'} 
- body=b'{"username": "nutho04", "password": "0123456789"}' 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '54', 'Content-Type': 'application/json'} 
+ body=b'{"username": "exportTester1", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-03T22:40:44.536189" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:02.385702" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'f3b68774-77b4-4396-8e92-0958a54d5bf4', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 15:40:45 GMT; HttpOnly; SameSite=None', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '502', 'ETag': 'W/"1f6-d5/OZwXIPxuEv8EiAI/xi94/w8A"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk","user":{"id":"cmmamd1b2001hesfwwe4kvm49","firstName":"Ser Nutho","lastName":"Casteryrock","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '494', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1ee-0A8TOVgYlzyVeR7T8ey7wP4+ZRg"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:32:01 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'bW8wPPiAR4KwWMMOJH0Vcg', 'X-Request-Id': '3ab6b03f-5c58-4137-b441-8886616af1f9', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:01 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555521.051113,VS0,VE729', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0","user":{"id":"cmmatkiu2006svdykbxbtxy7q","firstName":"Export","lastName":"Tester","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-03T22:40:44.536189" level="INFO">${res} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:02.385702" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:02.385702" level="INFO">${res} = &lt;Response [200]&gt;</msg>
 <var>${res}</var>
 <arg>api</arg>
 <arg>/auth/login</arg>
 <arg>json=${body}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.464972" elapsed="0.071217"/>
+<status status="PASS" start="2026-03-03T23:32:01.253694" elapsed="1.132008"/>
 </kw>
 <return>
 <value>${res.json()['data']['token']}</value>
-<status status="PASS" start="2026-03-03T22:40:44.536189" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.385702" elapsed="0.001003"/>
 </return>
-<msg time="2026-03-03T22:40:44.536189" level="INFO">${user_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk</msg>
+<msg time="2026-03-03T23:32:02.388307" level="INFO">${user_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0</msg>
 <var>${user_token}</var>
 <arg>${USER_NAME}</arg>
 <arg>${USER_PASSWORD}</arg>
-<status status="PASS" start="2026-03-03T22:40:44.464972" elapsed="0.071217"/>
+<status status="PASS" start="2026-03-03T23:32:01.252679" elapsed="1.135628"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.536189" level="INFO">${user_headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8Mo...</msg>
+<msg time="2026-03-03T23:32:02.389307" level="INFO">${user_headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSr...</msg>
 <var>${user_headers}</var>
 <arg>Authorization=Bearer ${user_token}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.536189" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.389307" elapsed="0.000000"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.536189" level="INFO">${filters} = {'reason': 'User request test', 'userId': 'cmmamd1b2001hesfwwe4kvm49'}</msg>
+<msg time="2026-03-03T23:32:02.390907" level="INFO">${filters} = {'reason': 'User request test', 'userId': 'cmmatkiu2006svdykbxbtxy7q'}</msg>
 <var>${filters}</var>
 <arg>reason=User request test</arg>
 <arg>userId=${USER_ID}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.536189" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.390907" elapsed="0.000000"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.536189" level="INFO">${payload} = {'logType': 'AuditLog', 'format': 'PDF', 'filters': {'reason': 'User request test', 'userId': 'cmmamd1b2001hesfwwe4kvm49'}}</msg>
+<msg time="2026-03-03T23:32:02.391915" level="INFO">${payload} = {'logType': 'AuditLog', 'format': 'PDF', 'filters': {'reason': 'User request test', 'userId': 'cmmatkiu2006svdykbxbtxy7q'}}</msg>
 <var>${payload}</var>
 <arg>logType=AuditLog</arg>
 <arg>format=PDF</arg>
 <arg>filters=${filters}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.536189" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.390907" elapsed="0.001008"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.551905" level="INFO">POST Request : url=http://localhost:3000/api/logs/exports 
+<msg time="2026-03-03T23:32:02.677628" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports 
  path_url=/api/logs/exports 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk', 'Content-Length': '123', 'Content-Type': 'application/json'} 
- body=b'{"logType": "AuditLog", "format": "PDF", "filters": {"reason": "User request test", "userId": "cmmamd1b2001hesfwwe4kvm49"}}' 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0', 'Content-Length': '123', 'Content-Type': 'application/json'} 
+ body=b'{"logType": "AuditLog", "format": "PDF", "filters": {"reason": "User request test", "userId": "cmmatkiu2006svdykbxbtxy7q"}}' 
  </msg>
-<msg time="2026-03-03T22:40:44.551905" level="INFO">POST Response : url=http://localhost:3000/api/logs/exports 
+<msg time="2026-03-03T23:32:02.677628" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'ca49b47c-289b-4c7b-840b-6a9c2c136a73', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '506', 'ETag': 'W/"1fa-bRbpNYYqo4GIkioB7wIbrTLBrEU"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Export request submitted. Pending admin approval.","data":{"id":"cmmaryjyf003jsue1l8zbpug1","requestedById":"cmmamd1b2001hesfwwe4kvm49","logType":"AuditLog","format":"PDF","filters":{"reason":"User request test","userId":"cmmamd1b2001hesfwwe4kvm49"},"status":"PENDING","reviewedById":null,"reviewedAt":null,"rejectionReason":null,"filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T15:40:45.064Z","completedAt":null,"expiresAt":"2026-03-10T15:40:45.063Z"}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '506', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1fa-0eaktDxfsh2M0HwRXeicf5Xu0UM"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '1b5hm4TvRGOOyxyPJH0Vcg', 'X-Request-Id': '66cce931-bc4e-49e9-b9b6-ab0e332ddb26', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555522.804512,VS0,VE270', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Export request submitted. Pending admin approval.","data":{"id":"cmmatsi3v00g6vdykiw9ronc3","requestedById":"cmmatkiu2006svdykbxbtxy7q","logType":"AuditLog","format":"PDF","filters":{"reason":"User request test","userId":"cmmatkiu2006svdykbxbtxy7q"},"status":"PENDING","reviewedById":null,"reviewedAt":null,"rejectionReason":null,"filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T16:32:01.963Z","completedAt":null,"expiresAt":"2026-03-10T16:32:01.962Z"}} 
  </msg>
-<msg time="2026-03-03T22:40:44.551905" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-03T23:32:02.679211" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:02.679211" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
 <var>${resp}</var>
 <arg>api</arg>
 <arg>/logs/exports</arg>
 <arg>json=${payload}</arg>
 <arg>headers=${user_headers}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.536189" elapsed="0.015716"/>
+<status status="PASS" start="2026-03-03T23:32:02.391915" elapsed="0.287296"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>201</arg>
 <arg>${resp}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.551905" elapsed="0.001144"/>
+<status status="PASS" start="2026-03-03T23:32:02.680221" elapsed="0.000000"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.553049" level="INFO">${export_id} = cmmaryjyf003jsue1l8zbpug1</msg>
+<msg time="2026-03-03T23:32:02.681936" level="INFO">${export_id} = cmmatsi3v00g6vdykiw9ronc3</msg>
 <var>${export_id}</var>
 <arg>${resp.json()['data']['id']}</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.553049" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.680924" elapsed="0.001012"/>
 </kw>
 <kw name="Set Suite Variable" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.554846" level="INFO">${ID_S1} = cmmaryjyf003jsue1l8zbpug1</msg>
+<msg time="2026-03-03T23:32:02.682939" level="INFO">${ID_S1} = cmmatsi3v00g6vdykiw9ronc3</msg>
 <arg>${ID_S1}</arg>
 <arg>${export_id}</arg>
 <doc>Makes a variable available everywhere within the scope of the current suite.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.554309" elapsed="0.000537"/>
+<status status="PASS" start="2026-03-03T23:32:02.681936" elapsed="0.001003"/>
 </kw>
 <kw name="Login">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.555903" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
+<msg time="2026-03-03T23:32:02.685465" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
 <var>${body}</var>
 <arg>username=${user}</arg>
 <arg>password=${pass}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.555903" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:02.684449" elapsed="0.001016"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.656777" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:03.066543" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0', 'Content-Length': '49', 'Content-Type': 'application/json'} 
  body=b'{"username": "admin123", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-03T22:40:44.656777" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:03.066543" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '4de2182c-2d52-4c69-ba16-59f82d0a17af', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 15:40:45 GMT; HttpOnly; SameSite=None', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '491', 'ETag': 'W/"1eb-7InElPsSjKN9zoFW4QF1mWwsceg"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE","user":{"id":"cmm9idz2i0000s9j4gh6g8bfu","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '491', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1eb-4LF39T+0pzHwkCI9W4cSspN/ZuQ"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:32:02 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'JdWAxTkcS_K8zuSVJH0Vcg', 'X-Request-Id': 'a1a1a51d-662c-486d-b049-240757259c1c', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555522.096920,VS0,VE365', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY","user":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-03T22:40:44.656777" level="INFO">${res} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:03.066543" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:03.066543" level="INFO">${res} = &lt;Response [200]&gt;</msg>
 <var>${res}</var>
 <arg>api</arg>
 <arg>/auth/login</arg>
 <arg>json=${body}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.555903" elapsed="0.100874"/>
+<status status="PASS" start="2026-03-03T23:32:02.685465" elapsed="0.381078"/>
 </kw>
 <return>
 <value>${res.json()['data']['token']}</value>
-<status status="PASS" start="2026-03-03T22:40:44.656777" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.066543" elapsed="0.000000"/>
 </return>
-<msg time="2026-03-03T22:40:44.657805" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE</msg>
+<msg time="2026-03-03T23:32:03.067540" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY</msg>
 <var>${admin_token}</var>
 <arg>${ADMIN_NAME}</arg>
 <arg>${ADMIN_PASSWORD}</arg>
-<status status="PASS" start="2026-03-03T22:40:44.554846" elapsed="0.102959"/>
+<status status="PASS" start="2026-03-03T23:32:02.684449" elapsed="0.384091"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.657805" level="INFO">${admin_headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4W...</msg>
+<msg time="2026-03-03T23:32:03.068540" level="INFO">${admin_headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7...</msg>
 <var>${admin_headers}</var>
 <arg>Authorization=Bearer ${admin_token}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.657805" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.068540" elapsed="0.000000"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.658792" level="INFO">${body} = {'status': 'APPROVED'}</msg>
+<msg time="2026-03-03T23:32:03.069537" level="INFO">${body} = {'status': 'APPROVED'}</msg>
 <var>${body}</var>
 <arg>status=APPROVED</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.658792" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.069537" elapsed="0.000000"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.666906" level="INFO">PATCH Request : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/review 
- path_url=/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/review 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Content-Length': '22', 'Content-Type': 'application/json'} 
+<msg time="2026-03-03T23:32:03.368603" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/review 
+ path_url=/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/review 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY', 'Content-Length': '22', 'Content-Type': 'application/json'} 
  body=b'{"status": "APPROVED"}' 
  </msg>
-<msg time="2026-03-03T22:40:44.666906" level="INFO">PATCH Response : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/review 
+<msg time="2026-03-03T23:32:03.368603" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/review 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'c0447a5a-409f-423a-924e-19b19ce389b5', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '490', 'ETag': 'W/"1ea-bJFzu42vl9ijHIYm1SB15mUKruM"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"data":{"id":"cmmaryjyf003jsue1l8zbpug1","requestedById":"cmmamd1b2001hesfwwe4kvm49","logType":"AuditLog","format":"PDF","filters":{"reason":"User request test","userId":"cmmamd1b2001hesfwwe4kvm49"},"status":"APPROVED","reviewedById":"cmm9idz2i0000s9j4gh6g8bfu","reviewedAt":"2026-03-03T15:40:45.183Z","rejectionReason":null,"filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T15:40:45.064Z","completedAt":null,"expiresAt":"2026-03-10T15:40:45.063Z"}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '490', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1ea-lXdgLxM5EfYbCe1GOqxVOSFrld8"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'fuFJLPocT4KKdslQJH0Vcg', 'X-Request-Id': 'c6b0d36f-88cc-4510-ba51-a5e05c615c18', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555522.482585,VS0,VE281', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"data":{"id":"cmmatsi3v00g6vdykiw9ronc3","requestedById":"cmmatkiu2006svdykbxbtxy7q","logType":"AuditLog","format":"PDF","filters":{"reason":"User request test","userId":"cmmatkiu2006svdykbxbtxy7q"},"status":"APPROVED","reviewedById":"cmlqzl9o30000ewr7v4k30bee","reviewedAt":"2026-03-03T16:32:02.642Z","rejectionReason":null,"filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T16:32:01.963Z","completedAt":null,"expiresAt":"2026-03-10T16:32:01.962Z"}} 
  </msg>
-<msg time="2026-03-03T22:40:44.668034" level="INFO">${approve} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:03.368603" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:03.368603" level="INFO">${approve} = &lt;Response [200]&gt;</msg>
 <var>${approve}</var>
 <arg>api</arg>
 <arg>/logs/exports/${export_id}/review</arg>
 <arg>json=${body}</arg>
 <arg>headers=${admin_headers}</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.658792" elapsed="0.009242"/>
+<status status="PASS" start="2026-03-03T23:32:03.069537" elapsed="0.299066"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>200</arg>
 <arg>${approve}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.668034" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.369593" elapsed="0.000000"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.730926" level="INFO">GET Request : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
- path_url=/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hbWQxYjIwMDFoZXNmd3dlNGt2bTQ5Iiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1MjQ0NSwiZXhwIjoxNzcyNTU2MDQ1fQ.69cve3w1-plodKa8MoU80Yope0dNdpXmgQSLghz4bVk', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE'} 
+<msg time="2026-03-03T23:32:03.755956" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
+ path_url=/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGtpdTIwMDZzdmR5a2J4YnR4eTdxIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTUyMSwiZXhwIjoxNzcyNTU5MTIxfQ.8RAszaG_CiX3BqKVSrj9SouKizzs2EgbqmvQxdi4Ga0', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY'} 
  body=None 
  </msg>
-<msg time="2026-03-03T22:40:44.747318" level="INFO">GET Response : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
+<msg time="2026-03-03T23:32:03.773202" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '90a2b04e-236d-4ec0-a641-067db899de5a', 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="AuditLog_export_1772552445253.pdf"', 'X-Record-Count': '41', 'Content-Length': '5013', 'ETag': 'W/"1395-Fe3gl/ySI4G+W81looqGNQQsobE"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '2052', 'Access-Control-Allow-Credentials': 'true', 'Content-Disposition': 'attachment; filename="AuditLog_export_1772555523048.pdf"', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/pdf', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"804-zg+uiqKH0WN1Q2FtrBO4GGwtASI"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'qEgJpgNoSxuXwZlUJH0Vcg', 'X-Record-Count': '6', 'X-Request-Id': 'a21cb78c-3192-4865-9f68-064ee7557f73', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:03 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555523.781477,VS0,VE370', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
  body=%PDF-1.3
-%����
+%ÿÿÿÿ
 7 0 obj
 &lt;&lt;
 /Type /Page
@@ -222,68 +231,31 @@ endobj
 endobj
 5 0 obj
 &lt;&lt;
-/Length 1837
+/Length 755
 /Filter /FlateDecode
 &gt;&gt;
 stream
-x�ś�n�6��y
-�@]���?"�P�=�V ��ǖn=��/)�I��d�r��X'�������λ���N�b�N���j_��&gt;}`$x/NKѽ����o������W	o޽�R�L�ā��u�9X|s?I��^#�_�9��{������?�r(��{8E:���!?9��a*%zߜz�="�_�3&lt;0~� @q���O�="L�k���;�}p����Tys!z�������-R��:���WAXk�;�&lt;������$Y{˃���T�x�Jg�+�5޸���o�č�F&lt;QW^OLn���y��~�5���T�V@���L\�f��N:;x�.Il�	�yf(���@��:3��SI�" �;2QiX�(9�܍q�(��8g�|�&lt;S�#�]��43{˰�R!�0���E��\w@�����P�J/&amp;��!���$��$�uP�
-��XC��b�!��]��A�Bq#���3#���kJ����D��H���ڈ��;��:�)U�Q�"v]�D�$d�.D�������Q��"&lt;|�aP�6"fC�"�lJD�¶Dԃx��]��;���M�7W�����Ǖ��g��!�?Z�����p��b������\Tؔ���m����.�w����^GG�ↇ\��n��ގ�V"�,p�[��h��fC�"�lJD�¶Dԃx��]��;,�k$���((���Rn��c�Z��M�Q���E!N(��Ԉ�|�߀B݁-Q�[��A����x�ac`?�
-���˦ѿ���erWɺ.�����*�S�"��o\��[^�ؔ����A&lt;������K�~�bl�Z�#"�u �B�zy`e��q$Vۈ�[^�ؔ����A&lt;@����ф8�F|m�0��`jǒ������^X�4�$�`�mD�-��lJ����  bga�a�3��t&gt;w�ʈ���l��N&lt;���^Q�/=��je�ފ����(,*�&lt;�Q�����Y��=�-Dl-��]�⼰Fx�LF"�DD�#Բ�Xz&amp;�nz�=���51�7Qw`K"��AčXډ�wu����: �Ll��g���TK�T7}�)�
-�\J�x{K���|I}#�P�YR�yI��kf���r�s�Ix�Ɍ'Z�Lu��iD��]����;�x���[ؖ��%����]���堚���Kb��
-tl9����E�2����m(쭥�l��T�*�����]��*�t��|�k��w���Ly��yC`z��Ii��)h|	{K���P�@I�j:�Y�E�ːM`�M�C�؏oA����N�»0�&amp;&gt;s֗I�i.{zgcJY;"q��~D��g-�Lݙ��������ĭ;�e��-��v�/ZW����{#�Msw����n��9u��Y�x%?f-Ammڔ|]�G�O_&amp;����w!�o�ק�Ѻ�j�J�A��E���0K��m��}~0�_��zdM~N��h�5?��\9sA���g�|̋�|xՕi������&lt;9�B�z]���_�j#co]Zw`S2���ZTN[ Q7�0)IZ'�J�W�$��Lalx-̋��Ƙ��G˟�m|*���j����4��R�k��h�aoeZw`S��S��0�iM��!i���orDxF��X�弩n��4Ei���g�޲����iZ?�}^��|� �'9mz��g�]��A^���b�J�4��"�z�)O��O׈�Kć닺�Gˋ�r���B�����`q�_�߼�,���lysq����r����֡O��7T覵�s��BJ�^gdA��L��s�ݐOb�_����ixi
+xœÅ˜1oÛ0…wÿ
+ş�¸Ç{wïDÀğP ºğVtpliËĞÿ¿”�4hè(RlØ€=ĞÂ½wäûDQ9I’ô�“$/¾Ö.�VV¹5üuwÏ	ˆ5
+D,¹cEÓîiõå{N™i7¬~m,o$mÂi,avàÀP1�.„Cè6=X½ÀT\éÿn“üN»«o»ÕÏÊëAr”5Å^ÉÙĞ[a:M…9ûmrI(ê—z„§_7d{Šı8ŞCêu¾Ÿë³‹µPDrríÖbo|ºmSVIaÌ&lt;¨„Ò‰j�xå•sÕ%¹p�D5uç¹)6wÂ³åv-7é�Ñş1dfeu½PÙôP•~A\¨ªx Ï¬gaæ2³v^8°ŸYÓ;¿PÓÙÇˆQ”™5Y8]sÙŒJ²šæè�#§Ê�&lt;V¬ìB#*,ä -
+ThÔtsR³×–ş½Y{8İlzk4§zæ#KøhDÀÀsÏÔè¨aÑEAD^�ß¶´Ëù†aÙá0·ŞÂÜuA¢Û
+v°ÁÂŠõ&gt;8Üó*¶ àš8³½ İ÷ZIÆ‰øKãOÄ³rİ£‚—É‡%ñoJ¿EÁ�ñ¯ÿ,ŠÿDÏ·ŒSúªño*¼�}¬ÕÜÜÌíèâsoœ#í^&gt;AÁ�ÖE’Ù„ò142lT.uS¬ó÷¢OxtÕSİĞ-a¡i`‚…7ÓVe—±0ÕùYhJ_•…¦ÂMXh÷ò	î´.’L§X@ÔSÇ‰Ø³ò‰	ˆ@îyˆ˜ı¨7²Ğ4ğ�ö¨˜.Ü¦:¿!Mé«²ĞT¸	í^&gt;ÁÂ�ÖE’É„òá_îÏDtñBëé&lt;¸'Øós#9²Ğ40ÁÂé PY ÊR¦:¿!Mé«²ĞT8³0¸/‹}Ûö'b§%�Ó�w•#Øó¤ä‹ò#rÔhĞÙoMjàÛÒ¼ ÆC�/ütÏ7|[úš�o+\õL|¡‰åñ¿É‚ü=Á”"
 endstream
 endobj
-12 0 obj
-&lt;&lt;
-/Type /Page
-/Parent 1 0 R
-/MediaBox [0 0 841.89 595.28]
-/Contents 10 0 R
-/Resources 11 0 R
-&gt;&gt;
-endobj
 11 0 obj
-&lt;&lt;
-/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
-/Font &lt;&lt;
-/F2 9 0 R
-/F1 8 0 R
-&gt;&gt;
-/ColorSpace &lt;&lt;
-&gt;&gt;
-&gt;&gt;
+(PDFKit)
+endobj
+12 0 obj
+(PDFKit)
+endobj
+13 0 obj
+(D:20260303163202Z)
 endobj
 10 0 obj
 &lt;&lt;
-/Length 1506
-/Filter /FlateDecode
-&gt;&gt;
-stream
-x��[=��6��W����;K��"]���R����&amp; %�%eI&lt;���q��3��R�;׹��\�I���]����ko��1��;�N5}W�������G���I��{���&gt;�x�����ky�3��0�F5���fn��A���j�Z��bs���R7.(&amp;s��gn&gt;��}�unQ�=/jbi�L\�hۧ�:�=�+�Ά�	�x�g�՜.�X�h�7;#���B����/�B#�!���*�����1���~&gt;��F�g(�8x�,����;Q!�y�`�v&amp;WP���ຓx�BT�b�Z�]G�$Q5��I{���p�IE�B�:X��co��&amp;�;���!�@ӰH���HS�hJdr����"��f��U�U4e�i����y�_@�j�Ҵ� ��?⨈ָ���zG�2�-1	~b*��T��fJZ��鋽Z�
-�z�p�������/�k��]�ZE��U����ER�k�j+۝�&amp;޹u�b%��3����Iz�v'KDz3l-����ss��=𯌈&lt;�MʨC/(#���{�������ʨ��2��r���uÌ|V�s�򇔏c�(�����f	�&lt;[�b���%�%I0�������a���n[�Dz�$P�M� �I�y�_ �j�J��p��������t7C"y�6	�,��EF^��;��t{T��5��[ZO�WG�z���+��خ4}�2M�h�Y
-�8��Й%���)[Ⱥ=0Nd���xu`��+Y�80�t�+_�����i�����(G.x1�K_�Ɓ�(��  ���Ձ�^��|���8��iw���G�c�t���&lt;��0��%���{�G���e������������&gt;�;����
-cq{.&amp;�b�mj~�(o��ļm�QY���OI�l���$��*����-��I����&amp;�W��z�J�� W�Ų�W�
-�&lt;2X� �M��-Rx鶸�tDXL�w�����T,O�[�(�V	"Gh���	���^����"���U���Lٟ��K7�uX
-W8��A�	�7�bш6ݐ֡���ÕW-µ~�:��ؕ�u�c�33`{�],e����󁦰ǖE;�'�4��~��t{Νh�bZ��ǿ:��ؕ��s�.s����djXe��ĩ�ӮM{ƫ�l������X�WWLv@l&lt;V;?�����kᘹ��g��:~?Òۿ~��y?�ԇ*x~؎{a�Y*W�-��^�S}8��y���5&gt;������8&lt;��v��̀|Z��S��t��ؔ�h����g�\@��R ��	��S�-S�f9��Il���x�%�߶��Ş���1t�'&gt;���Y
-OD��C`�?��;9tG�#D;s+g
-Y��Ɖ���56.v~8Y��u����LG��u1E�c�#_��F�4^��G����`z��RnH}�#O�ے�r�G3���XG8ȉsC�������"����ǳ��'�jw�8uP�����m��Z&amp;�֤��±Z���V��^�4�&gt;?p[�5Z֭
-endstream
-endobj
-14 0 obj
-(PDFKit)
-endobj
-15 0 obj
-(PDFKit)
-endobj
-16 0 obj
-(D:20260303154045Z)
-endobj
-13 0 obj
-&lt;&lt;
-/Producer 14 0 R
-/Creator 15 0 R
-/CreationDate 16 0 R
+/Producer 11 0 R
+/Creator 12 0 R
+/CreationDate 13 0 R
 &gt;&gt;
 endobj
 8 0 obj
@@ -316,8 +288,8 @@ endobj
 1 0 obj
 &lt;&lt;
 /Type /Pages
-/Count 2
-/Kids [7 0 R 12 0 R]
+/Count 1
+/Kids [7 0 R]
 &gt;&gt;
 endobj
 2 0 obj
@@ -329,281 +301,288 @@ endobj
 &gt;&gt;
 endobj
 xref
-0 17
+0 14
 0000000000 65535 f 
-0000004407 00000 n 
-0000004471 00000 n 
-0000004345 00000 n 
-0000004324 00000 n 
+0000001513 00000 n 
+0000001570 00000 n 
+0000001451 00000 n 
+0000001430 00000 n 
 0000000242 00000 n 
 0000000125 00000 n 
 0000000015 00000 n 
-0000004125 00000 n 
-0000004222 00000 n 
-0000002383 00000 n 
-0000002265 00000 n 
-0000002152 00000 n 
-0000004049 00000 n 
-0000003963 00000 n 
-0000003988 00000 n 
-0000004013 00000 n 
+0000001231 00000 n 
+0000001328 00000 n 
+0000001155 00000 n 
+0000001069 00000 n 
+0000001094 00000 n 
+0000001119 00000 n 
 trailer
 &lt;&lt;
-/Size 17
+/Size 14
 /Root 3 0 R
-/Info 13 0 R
-/ID [&lt;29f166c288fb5a8a70db51c71469d8c0&gt; &lt;29f166c288fb5a8a70db51c71469d8c0&gt;]
+/Info 10 0 R
+/ID [&lt;21b4cbb7a0ad42b1e173e7046f01a804&gt; &lt;21b4cbb7a0ad42b1e173e7046f01a804&gt;]
 &gt;&gt;
 startxref
-4518
+1617
 %%EOF
  
  </msg>
-<msg time="2026-03-03T22:40:44.747318" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:03.774299" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:03.774299" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
 <var>${dl}</var>
 <arg>api</arg>
 <arg>/logs/exports/${export_id}/download</arg>
 <arg>headers=${user_headers}</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.668034" elapsed="0.079284"/>
+<status status="PASS" start="2026-03-03T23:32:03.370570" elapsed="0.403729"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>200</arg>
 <arg>${dl}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.747318" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.775288" elapsed="0.000000"/>
 </kw>
-<status status="PASS" start="2026-03-03T22:40:44.461455" elapsed="0.285863"/>
+<status status="PASS" start="2026-03-03T23:32:01.250174" elapsed="2.525114"/>
 </test>
-<test id="s1-t2" name="Scenario 2: Admin Request -&gt; Admin Download" line="42">
+<test id="s1-t2" name="Scenario 2: Admin Request -&gt; Admin Download" line="40">
 <kw name="Login">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.749346" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
+<msg time="2026-03-03T23:32:03.777208" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
 <var>${body}</var>
 <arg>username=${user}</arg>
 <arg>password=${pass}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.749346" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:03.777208" elapsed="0.000000"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.813021" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:04.155232" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIyLCJleHAiOjE3NzI1NTkxMjJ9.eNZeLUNQyqNrZdlowl0ldsR7i0FJXKpOhyV0YBJtGnY', 'Content-Length': '49', 'Content-Type': 'application/json'} 
  body=b'{"username": "admin123", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-03T22:40:44.813021" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:04.155232" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '786e212c-0909-43aa-846a-9ad319cfb106', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 15:40:45 GMT; HttpOnly; SameSite=None', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '491', 'ETag': 'W/"1eb-7InElPsSjKN9zoFW4QF1mWwsceg"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE","user":{"id":"cmm9idz2i0000s9j4gh6g8bfu","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '491', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1eb-WA+iiFl2YFATbLRk8RoYeVkkvis"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:32:03 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'hkhnYOYLTRaG1O03JH0Vcg', 'X-Request-Id': '7d7621ae-f43f-4c17-9327-fd47db765443', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:03 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555523.188772,VS0,VE360', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs","user":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-03T22:40:44.813021" level="INFO">${res} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:04.155232" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:04.156224" level="INFO">${res} = &lt;Response [200]&gt;</msg>
 <var>${res}</var>
 <arg>api</arg>
 <arg>/auth/login</arg>
 <arg>json=${body}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.749346" elapsed="0.063675"/>
+<status status="PASS" start="2026-03-03T23:32:03.777208" elapsed="0.379016"/>
 </kw>
 <return>
 <value>${res.json()['data']['token']}</value>
-<status status="PASS" start="2026-03-03T22:40:44.813021" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.156224" elapsed="0.000000"/>
 </return>
-<msg time="2026-03-03T22:40:44.814028" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE</msg>
+<msg time="2026-03-03T23:32:04.157224" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs</msg>
 <var>${admin_token}</var>
 <arg>${ADMIN_NAME}</arg>
 <arg>${ADMIN_PASSWORD}</arg>
-<status status="PASS" start="2026-03-03T22:40:44.749346" elapsed="0.064682"/>
+<status status="PASS" start="2026-03-03T23:32:03.777208" elapsed="0.380016"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.815027" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4W...</msg>
+<msg time="2026-03-03T23:32:04.159225" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${admin_token}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.815027" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.157224" elapsed="0.002001"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.816026" level="INFO">${filters} = {'reason': 'Admin system check'}</msg>
+<msg time="2026-03-03T23:32:04.159225" level="INFO">${filters} = {'reason': 'Admin system check'}</msg>
 <var>${filters}</var>
 <arg>reason=Admin system check</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.815027" elapsed="0.000999"/>
+<status status="PASS" start="2026-03-03T23:32:04.159225" elapsed="0.000000"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.816026" level="INFO">${payload} = {'logType': 'SystemLog', 'format': 'CSV', 'filters': {'reason': 'Admin system check'}}</msg>
+<msg time="2026-03-03T23:32:04.160742" level="INFO">${payload} = {'logType': 'SystemLog', 'format': 'CSV', 'filters': {'reason': 'Admin system check'}}</msg>
 <var>${payload}</var>
 <arg>logType=SystemLog</arg>
 <arg>format=CSV</arg>
 <arg>filters=${filters}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.816026" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.160235" elapsed="0.000507"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.827245" level="INFO">POST Request : url=http://localhost:3000/api/logs/exports 
+<msg time="2026-03-03T23:32:04.466046" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports 
  path_url=/api/logs/exports 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Content-Length': '86', 'Content-Type': 'application/json'} 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Content-Length': '86', 'Content-Type': 'application/json'} 
  body=b'{"logType": "SystemLog", "format": "CSV", "filters": {"reason": "Admin system check"}}' 
  </msg>
-<msg time="2026-03-03T22:40:44.827245" level="INFO">POST Response : url=http://localhost:3000/api/logs/exports 
+<msg time="2026-03-03T23:32:04.466046" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'adb2ec76-795c-4c10-8605-b91552887303', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '546', 'ETag': 'W/"222-DgyKRjAn/Ae8Y+1PydZgyrv+m2g"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Export request auto-approved and ready for download.","data":{"id":"cmmaryk6b003ysue1wsm9jpvk","requestedById":"cmm9idz2i0000s9j4gh6g8bfu","logType":"SystemLog","format":"CSV","filters":{"reason":"Admin system check"},"status":"APPROVED","reviewedById":"cmm9idz2i0000s9j4gh6g8bfu","reviewedAt":"2026-03-03T15:40:45.349Z","rejectionReason":"Auto-approved for ADMIN role","filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T15:40:45.347Z","completedAt":null,"expiresAt":"2026-03-10T15:40:45.347Z"}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '546', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"222-UzT37+1AiIHqqrA1cyvR8tFM5yQ"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '7LvxBuv2QKqMSGNwJH0Vcg', 'X-Request-Id': '82cd7c72-eca4-4b05-80cd-9af5bbdf9793', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:03 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555524.572166,VS0,VE287', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Export request auto-approved and ready for download.","data":{"id":"cmmatsjgx00gnvdykbtrwjjuf","requestedById":"cmlqzl9o30000ewr7v4k30bee","logType":"SystemLog","format":"CSV","filters":{"reason":"Admin system check"},"status":"APPROVED","reviewedById":"cmlqzl9o30000ewr7v4k30bee","reviewedAt":"2026-03-03T16:32:03.738Z","rejectionReason":"Auto-approved for ADMIN role","filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T16:32:03.730Z","completedAt":null,"expiresAt":"2026-03-10T16:32:03.727Z"}} 
  </msg>
-<msg time="2026-03-03T22:40:44.827245" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-03T23:32:04.466046" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:04.467047" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
 <var>${resp}</var>
 <arg>api</arg>
 <arg>/logs/exports</arg>
 <arg>json=${payload}</arg>
 <arg>headers=${headers}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.816026" elapsed="0.011219"/>
+<status status="PASS" start="2026-03-03T23:32:04.160742" elapsed="0.306305"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>201</arg>
 <arg>${resp}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.827245" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.467047" elapsed="0.001009"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.827245" level="INFO">${export_id} = cmmaryk6b003ysue1wsm9jpvk</msg>
+<msg time="2026-03-03T23:32:04.469057" level="INFO">${export_id} = cmmatsjgx00gnvdykbtrwjjuf</msg>
 <var>${export_id}</var>
 <arg>${resp.json()['data']['id']}</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.827245" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.468056" elapsed="0.001001"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.827245" level="INFO">${body} = {'status': 'APPROVED'}</msg>
+<msg time="2026-03-03T23:32:04.470063" level="INFO">${body} = {'status': 'APPROVED'}</msg>
 <var>${body}</var>
 <arg>status=APPROVED</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.827245" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:04.469057" elapsed="0.001006"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.877904" level="INFO">PATCH Request : url=http://localhost:3000/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/review 
- path_url=/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/review 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Content-Length': '22', 'Content-Type': 'application/json'} 
+<msg time="2026-03-03T23:32:04.764893" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/review 
+ path_url=/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/review 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Content-Length': '22', 'Content-Type': 'application/json'} 
  body=b'{"status": "APPROVED"}' 
  </msg>
-<msg time="2026-03-03T22:40:44.877904" level="INFO">PATCH Response : url=http://localhost:3000/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/review 
+<msg time="2026-03-03T23:32:04.764893" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/review 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '78cab390-09fb-4135-988d-944a1a1b549d', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '481', 'ETag': 'W/"1e1-hHUMZRxlFDxrnOGTBK0liBt1t5I"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"data":{"id":"cmmaryk6b003ysue1wsm9jpvk","requestedById":"cmm9idz2i0000s9j4gh6g8bfu","logType":"SystemLog","format":"CSV","filters":{"reason":"Admin system check"},"status":"APPROVED","reviewedById":"cmm9idz2i0000s9j4gh6g8bfu","reviewedAt":"2026-03-03T15:40:44.874Z","rejectionReason":"Auto-approved for ADMIN role","filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T15:40:45.347Z","completedAt":null,"expiresAt":"2026-03-10T15:40:45.347Z"}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '481', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1e1-s3nICXCLmKzOaObb1rhhLqhYzfI"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '3y4hEN1IR6mF0KEuJH0Vcg', 'X-Request-Id': '3db1f7c3-ad94-4c9e-995f-7f24062e7720', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:04 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555524.882947,VS0,VE277', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"data":{"id":"cmmatsjgx00gnvdykbtrwjjuf","requestedById":"cmlqzl9o30000ewr7v4k30bee","logType":"SystemLog","format":"CSV","filters":{"reason":"Admin system check"},"status":"APPROVED","reviewedById":"cmlqzl9o30000ewr7v4k30bee","reviewedAt":"2026-03-03T16:32:04.043Z","rejectionReason":"Auto-approved for ADMIN role","filePath":null,"fileSize":null,"recordCount":null,"createdAt":"2026-03-03T16:32:03.730Z","completedAt":null,"expiresAt":"2026-03-10T16:32:03.727Z"}} 
  </msg>
+<msg time="2026-03-03T23:32:04.764893" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
 <arg>api</arg>
 <arg>/logs/exports/${export_id}/review</arg>
 <arg>json=${body}</arg>
 <arg>headers=${headers}</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.827245" elapsed="0.050659"/>
+<status status="PASS" start="2026-03-03T23:32:04.470063" elapsed="0.294830"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:44.922784" level="INFO">GET Request : url=http://localhost:3000/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/download 
- path_url=/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/download 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE'} 
+<msg time="2026-03-03T23:32:07.374150" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/download 
+ path_url=/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/download 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs'} 
  body=None 
  </msg>
-<msg time="2026-03-03T22:40:44.923332" level="INFO">GET Response : url=http://localhost:3000/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/download 
+<msg time="2026-03-03T23:32:07.378165" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/download 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '7b9cc48f-d7f3-47c6-a421-c064f76d9ba0', 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="SystemLog_export_1772552444920.csv"', 'X-Record-Count': '680', 'Content-Length': '341313', 'ETag': 'W/"53541-xqyjjpCvPD7bDgxuTVMrkSpk+hE"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '3141801', 'Access-Control-Allow-Credentials': 'true', 'Content-Disposition': 'attachment; filename="SystemLog_export_1772555525069.csv"', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'text/csv; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"2ff0a9-8hkPnp6+1LY1W4glpiiTvr55FwA"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Uggi2eMSQWed5oEHJH0Vcg', 'X-Record-Count': '5386', 'X-Request-Id': '0569fba8-c6fb-4a79-af4c-22ab7fb13be2', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:05 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555524.177883,VS0,VE1006', 'Vary': 'Origin, Accept-Encoding', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
  body=id,level,requestId,method,path,statusCode,duration,userId,ipAddress,userAgent,error,metadata,createdAt,integrityHash,prevHash
-cmmaryk6j003zsue1lfor83yk,INFO,adb2ec76-795c-4c10-8605-b91552887303,POST,/api/logs/exports,201,8,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),74788f97f15d18c085190525705247c64f57db1a87b4e163d57a35ad5188f5f1,e855e9321c17b5a408512d206e52f3f811845ce052c4a13c6803c6d4a0782416
-cmmaryk62003wsue1fkuyah6q,INFO,786e212c-0909-43aa-846a-9ad319cfb106,POST,/api/auth/login,200,62,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),e855e9321c17b5a408512d206e52f3f811845ce052c4a13c6803c6d4a0782416,df88618f373d424eb18a581710cf2774df4df26d2d6c941e2f6cf82bea702d3c
-cmmaryk3s003rsue111mx3na8,INFO,90a2b04e-236d-4ec0-a641-067db899de5a,GET,/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download,200,64,cmmamd1b2001hesfwwe4kvm49,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmaryjyf003jsue1l8zbpug1""}}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),df88618f373d424eb18a581710cf2774df4df26d2d6c941e2f6cf82bea702d3c,9eda7dbd325fb219b49ce138137b7a531d85717a83dbfe34e2a9cb7eb41054be
-cmmaryk1v003qsue1yd1nedbs,INFO,c0447a5a-409f-423a-924e-19b19ce389b5,PATCH,/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/review,200,5,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmaryjyf003jsue1l8zbpug1""}}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),9eda7dbd325fb219b49ce138137b7a531d85717a83dbfe34e2a9cb7eb41054be,f057c781a02f162c0be7c719e013bdb6d1bc457a72f45190f6d1ab7c1b7740fc
-cmmaryk1k003psue1r85esanb,INFO,4de2182c-2d52-4c69-ba16-59f82d0a17af,POST,/api/auth/login,200,59,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),f057c781a02f162c0be7c719e013bdb6d1bc457a72f45190f6d1ab7c1b7740fc,79a2bc92daecdac9a0ffe2c74c5ca0091e8b9178b738f0c8ecea2b3ec27db559
-cmmaryjyk003ksue1g8v7w2pn,INFO,ca49b47c-289b-4c7b-840b-6a9c2c136a73,POST,/api/logs/exports,201,7,cmmamd1b2001hesfwwe4kvm49,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),79a2bc92daecdac9a0ffe2c74c5ca0091e8b9178b738f0c8ecea2b3ec27db559,74fad9337102ff1276b83556db316a3ecce09f753c45eba365a7574c0b79de58
-cmmaryjy5003hsue1lapwn202,INFO,f3b68774-77b4-4396-8e92-0958a54d5bf4,POST,/api/auth/login,200,64,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:45 GMT+0700 (Indochina Time),74fad9337102ff1276b83556db316a3ecce09f753c45eba365a7574c0b79de58,16a118165b8d4ec933b9227ed7308b66052e6c153a5433903a34e99449fa6894
-cmmaryjta0040sue11elc2x3v,INFO,78cab390-09fb-4135-988d-944a1a1b549d,PATCH,/api/logs/exports/cmmaryk6b003ysue1wsm9jpvk/review,200,5,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmaryk6b003ysue1wsm9jpvk""}}",Tue Mar 03 2026 22:40:44 GMT+0700 (Indochina Time),7ba50820001ac71b1d15c3d80208ac2398b056cacd96a69843fbef08175ae498,74788f97f15d18c085190525705247c64f57db1a87b4e163d57a35ad5188f5f1
-cmmaryi6k003csue1aszf6679,INFO,8eb13826-d714-4589-bdfc-b14d66574641,GET,/api/monitor/logs/summary,200,13,,::ffff:172.18.0.1,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 22:40:42 GMT+0700 (Indochina Time),16a118165b8d4ec933b9227ed7308b66052e6c153a5433903a34e99449fa6894,8b5f0daec02de655a56af976a2046a8b8002c7008610e3ec0988c1d5ca4c6fee
-cmmarx7t8003bsue1g2wo6c78,INFO,f51065f6-fcfe-404e-b0e7-3c3ad6323c97,GET,/api/monitor/logs/summary,200,8,,::ffff:172.18.0.1,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 22:39:42 GMT+0700 (Indochina Time),8b5f0daec02de655a56af976a2046a8b8002c7008610e3ec0988c1d5ca4c6fee,6d651118773e72ab2716048bf8246a76645d151d40db1aa0137c5f973448fb89
-cmmarvxg7003asue1wa6tcz73,INFO,3469afbb-2682-4442-9ea4-f2192cbfad78,GET,/api/monitor/logs/summary,200,6,,::ffff:172.18.0.1,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:42 GMT+0700 (Indochina Time),6d651118773e72ab2716048bf8246a76645d151d40db1aa0137c5f973448fb89,e74ececa1befcbbd72576057b63ae9b98931356f5bd2101a6ed3e256c7e79e52
-cmmarvnmp0039sue1fgiospl5,INFO,aced2d32-9f4c-4ad1-a0c0-745a1bad68e8,POST,/api/auth/login,200,63,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),e74ececa1befcbbd72576057b63ae9b98931356f5bd2101a6ed3e256c7e79e52,0ac8477ccb5150186d29bfe4a6100521f403c963b12d52ec95edc0cc4c13a982
-cmmarvnkt0034sue1pjgu8enp,INFO,6c8540cb-c39e-487d-9a81-bde9ce05ad9e,GET,/api/logs/exports/cmmarvngd0031sue11mitiv7b/download,200,92,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmarvngd0031sue11mitiv7b""}}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),0ac8477ccb5150186d29bfe4a6100521f403c963b12d52ec95edc0cc4c13a982,5d672050a43f8f5da3c056e54a4f47f55719a5c6fb5f30ac2de99e1370979ff7
-cmmarvni30033sue1dt0czysn,INFO,ef34a240-4084-421c-9a2d-0b1fbc5a1e82,PATCH,/api/logs/exports/cmmarvngd0031sue11mitiv7b/review,200,7,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmarvngd0031sue11mitiv7b""}}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),5d672050a43f8f5da3c056e54a4f47f55719a5c6fb5f30ac2de99e1370979ff7,04c8375d6f804cfe126b95aac84228b8cdc3dc7dbf647461821e2d53f7c27617
-cmmarvngk0032sue1fmltk5rd,INFO,c64b79c9-56ac-40a2-9636-24f584e1582f,POST,/api/logs/exports,201,9,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),04c8375d6f804cfe126b95aac84228b8cdc3dc7dbf647461821e2d53f7c27617,0856cd6f464dc4b84218083a445ec15c4a84a06059fdd140e3f3d11b77f62c0a
-cmmarvng5002zsue10g30jkgv,INFO,1f3d8c86-1a46-48ca-a767-85a23f207365,POST,/api/auth/login,200,64,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),0856cd6f464dc4b84218083a445ec15c4a84a06059fdd140e3f3d11b77f62c0a,64e889a1b3c3b348a350e76fbb189cc05eace160ca2ef434224d3f8532a46e2c
-cmmarvncn002tsue1rxo5b8dm,WARN,a7d481ca-d9a2-4ef0-9e38-66d28d9b4c58,POST,/api/logs/exports,403,4,cmmamd1b2001hesfwwe4kvm49,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),64e889a1b3c3b348a350e76fbb189cc05eace160ca2ef434224d3f8532a46e2c,541151661e738fbf110550f18f6bb6fbcfbabbd3bd03d7a7a4d5711289fe6d04
-cmmarvnco002usue1r45auhl0,ERROR,a7d481ca-d9a2-4ef0-9e38-66d28d9b4c58,POST,/api/logs/exports,403,,cmmamd1b2001hesfwwe4kvm49,::ffff:172.18.0.1,python-requests/2.32.3,"{""name"":""Error"",""message"":""filters.userId must match your own user id when exporting as non-admin"",""code"":null,""stack"":null}","{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),c23e56ccb058d7e3dbb5c2e124b435bb73186e43e31d1c7b2ab03098d4e874e8,541151661e738fbf110550f18f6bb6fbcfbabbd3bd03d7a7a4d5711289fe6d04
-cmmarvncc002ssue13woktog5,INFO,646c6ddd-4d74-457e-a3b3-33c6270ab547,POST,/api/auth/login,200,69,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:29 GMT+0700 (Indochina Time),541151661e738fbf110550f18f6bb6fbcfbabbd3bd03d7a7a4d5711289fe6d04,8aaf972ae730841c2a931635b7ead3b73da6ca238d530d1bac00c473668c8ec7
-cmmarv1g7002nsue14ar3s3j9,INFO,14009933-c658-47d0-9bf7-f03875d2f0c5,POST,/api/auth/login,200,64,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:01 GMT+0700 (Indochina Time),8aaf972ae730841c2a931635b7ead3b73da6ca238d530d1bac00c473668c8ec7,766e0489d538c00a105485c2ed3345756cecf56d3f02a5079dd011bd175afd68
-cmmarv1e8002isue122k5ungb,INFO,593d0882-a7b6-4a47-b0e9-4b3130ef23a9,GET,/api/logs/exports/cmmarv1at002fsue15z749uws/download,200,48,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmarv1at002fsue15z749uws""}}",Tue Mar 03 2026 22:38:01 GMT+0700 (Indochina Time),766e0489d538c00a105485c2ed3345756cecf56d3f02a5079dd011bd175afd68,ce7ee6218d04c3b327826bb161d13d69db1e52fbdbeaf7200fe7d75f51e24391
-cmmarv1cr002hsue1ra2csbhc,INFO,9f291b55-d6ff-4363-807b-80d04e64037f,PATCH,/api/logs/exports/cmmarv1at002fsue15z749uws/review,200,7,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmarv1at002fsue15z749uws""}}",Tue Mar 03 2026 22:38:00 GMT+0700 (Indochina Time),ce7ee6218d04c3b327826bb161d13d69db1e52fbdbeaf7200fe7d75f51e24391,70c6c0e10a9b1bac26716172fd6a49856d883bb38005e61af6b25d833f864597
-cmmarv1b6002gsue1o70f5tp6,INFO,e19a40db-3ddb-4d0c-a995-54c5f015a776,POST,/api/logs/exports,201,16,cmm9idz2i0000s9j4gh6g8bfu,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:00 GMT+0700 (Indochina Time),70c6c0e10a9b1bac26716172fd6a49856d883bb38005e61af6b25d833f864597,4f65dba694ebb1c684a1ae38e4e40db070e879e938b8e6aacc9eed44c4c3b77f
-cmmarv1aj002dsue1w1z4hx77,INFO,bd71e027-fcf0-454d-8150-db546aa9dad3,POST,/api/auth/login,200,67,,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:00 GMT+0700 (Indochina Time),4f65dba694ebb1c684a1ae38e4e40db070e879e938b8e6aacc9eed44c4c3b77f,b1fd3f66da14bfed76ea0cad39ad00ff9e3445f78ffadad89827e049f5007216
-cmmarv17j0028sue1chk2q1aq,WARN,d1dac24f-099b-4ab4-836b-94b6e2167dc5,POST,/api/logs/exports,403,4,cmmamd1b2001hesfwwe4kvm49,::ffff:172.18.0.1,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 22:38:00 GMT+0700 (Indochina Time),b1fd3f66da14... (set the log level to DEBUG or TRACE to see the full content) 
+cmmatsjq900gsvdykj4t3q3ff,INFO,3db1f7c3-ad94-4c9e-995f-7f24062e7720,PATCH,/api/logs/exports/cmmatsjgx00gnvdykbtrwjjuf/review,200,26,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmatsjgx00gnvdykbtrwjjuf""}}",Tue Mar 03 2026 16:32:04 GMT+0000 (Coordinated Universal Time),bb99b9ed083d5df1aa0709bfb58ed170cdbc5219353552af06c8d6332074daa3,2bfb6ba5013e7638ff12add8e9f6f3d1df49236c9b3b2906d5c25c72cb41b29b
+cmmatsjht00grvdyk8xoue9o6,INFO,82cd7c72-eca4-4b05-80cd-9af5bbdf9793,POST,/api/logs/exports,201,38,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:03 GMT+0000 (Coordinated Universal Time),2bfb6ba5013e7638ff12add8e9f6f3d1df49236c9b3b2906d5c25c72cb41b29b,9a382557b80c7e458fe485d3a408f1fbb0d7ebfb867c5e698160461c4726a049
+cmmatsjhh00gqvdykeb06e9rp,INFO,13e93759-0ccd-4772-87fc-b6e88fc7998f,POST,/api/auth/login,200,118,,::ffff:100.64.0.13,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:03 GMT+0000 (Coordinated Universal Time),9a382557b80c7e458fe485d3a408f1fbb0d7ebfb867c5e698160461c4726a049,9be0341e0773fe7b681e0fe096dae746a17a3051047d3a5f33b3bc5214d26014
+cmmatsj9b00gjvdyk91yrsd08,INFO,7d7621ae-f43f-4c17-9327-fd47db765443,POST,/api/auth/login,200,115,,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:03 GMT+0000 (Coordinated Universal Time),9be0341e0773fe7b681e0fe096dae746a17a3051047d3a5f33b3bc5214d26014,c48ebfe41e5b1c940c351a4da237de5dab7862e82573fd6dd184b42fe4eb0e10
+cmmatsiy800gevdyk547qp0s9,INFO,a21cb78c-3192-4865-9f68-064ee7557f73,GET,/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download,200,121,cmmatkiu2006svdykbxbtxy7q,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmatsi3v00g6vdykiw9ronc3""}}",Tue Mar 03 2026 16:32:03 GMT+0000 (Coordinated Universal Time),c48ebfe41e5b1c940c351a4da237de5dab7862e82573fd6dd184b42fe4eb0e10,465cf373bed55fc50a7277a3cd99cacc4ff629d3e5a931770c88383de71183cb
+cmmatsinf00gdvdykpjomnogv,INFO,c6b0d36f-88cc-4510-ba51-a5e05c615c18,PATCH,/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/review,200,27,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmatsi3v00g6vdykiw9ronc3""}}",Tue Mar 03 2026 16:32:02 GMT+0000 (Coordinated Universal Time),465cf373bed55fc50a7277a3cd99cacc4ff629d3e5a931770c88383de71183cb,1a9dbca520d9493c780c1fe9a2a334f6c6f07ea876bba425a45d2a3d1351292e
+cmmatsif400gcvdyk4mphn3kr,INFO,a1a1a51d-662c-486d-b049-240757259c1c,POST,/api/auth/login,200,107,,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:02 GMT+0000 (Coordinated Universal Time),1a9dbca520d9493c780c1fe9a2a334f6c6f07ea876bba425a45d2a3d1351292e,170fedc605681832421890156784514978484e51859ac4a99af07b48c53bb349
+cmmatsi4a00g7vdyk9r5oaam1,INFO,66cce931-bc4e-49e9-b9b6-ab0e332ddb26,POST,/api/logs/exports,201,24,cmmatkiu2006svdykbxbtxy7q,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:01 GMT+0000 (Coordinated Universal Time),170fedc605681832421890156784514978484e51859ac4a99af07b48c53bb349,7301fc9d0d59c924400ec494f39f345973d939ef47a39aba5149983d1bd281b4
+cmmatshwc00g4vdykchcyupno,INFO,3ab6b03f-5c58-4137-b441-8886616af1f9,POST,/api/auth/login,200,250,,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:32:01 GMT+0000 (Coordinated Universal Time),7301fc9d0d59c924400ec494f39f345973d939ef47a39aba5149983d1bd281b4,0db00798779734398401649a78dfac06f520d7f71a1ecbb1da85a34f4f6ebbd3
+cmmatrx7i00fzvdykufknxmc7,INFO,9426c72a-a59e-4d6c-8764-8917043ce615,GET,/api/logs/exports?limit=50,200,53,cmman2un30088b7qevb6whgmj,::ffff:100.64.0.12,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0"",""query"":{""limit"":50}}",Tue Mar 03 2026 16:31:34 GMT+0000 (Coordinated Universal Time),0db00798779734398401649a78dfac06f520d7f71a1ecbb1da85a34f4f6ebbd3,adf383de2ed93fd7b44742d3436a628043b989dbdaead64d8e03af5bcf08070b
+cmmatrwsb00fyvdykn8xng5z5,INFO,679e9e0f-c812-4aa5-abf1-170cef097f5a,POST,/api/logs/exports,201,23,cmman2un30088b7qevb6whgmj,::ffff:100.64.0.3,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 16:31:34 GMT+0000 (Coordinated Universal Time),adf383de2ed93fd7b44742d3436a628043b989dbdaead64d8e03af5bcf08070b,c1da5b0a6dc85fd453a3af1df60681b88bcd257ac85405b4d0d3d350a580647c
+cmmatrtyo00fvvdyko7ap79y2,INFO,bdcdce50-9f02-450f-bb71-db0007bac3f3,GET,/api/notifications?page=1&amp;limit=20,200,36,cmman2un30088b7qevb6whgmj,::ffff:100.64.0.10,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0"",""query"":{""page"":1,""limit"":20,""sortBy"":""createdAt"",""sortOrder"":""desc""}}",Tue Mar 03 2026 16:31:30 GMT+0000 (Coordinated Universal Time),c1da5b0a6dc85fd453a3af1df60681b88bcd257ac85405b4d0d3d350a580647c,da347654c054f5a150e17c0dce13cf1b9d4d0d30e8a6d8b6a71a56beaeb6dcd4
+cmmatrttc00fuvdykrerm1t6t,INFO,01bb2ff8-1d85-40ff-a3e6-d57a3e2adc77,GET,/api/logs/exports?limit=50,200,78,cmman2un30088b7qevb6whgmj,::ffff:100.64.0.11,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0"",""query"":{""limit"":50}}",Tue Mar 03 2026 16:31:30 GMT+0000 (Coordinated Universal Time),da347654c054f5a150e17c0dce13cf1b9d4d0d30e8a6d8b6a71a56beaeb6dcd4,c479bf347ff51881e152874ea23161d5dff15c8ae869167d0add00e5261fec36
+cmmatrsz400ftvdykpn1tu30r,INFO,1bbca4f2-4c0d-4358-8773-4debbe4383a7,POST,/api/auth/login,200,129,,::ffff:100.64.0.7,"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",,"{""version"":""1.0""}",Tue Mar 03 2026 16:31:29 GMT+0000 (Coordinated Universal Time),c479bf347ff51881e152874ea23161d5dff15c8ae869167d0add00e5261fec36,17893a6b3079e2356f167f9aec9cc2674eaf1346af8c3514ac24649b31828eb6
+cmmatpwmb00fovdykh2clp9mc,INFO,d7c6ad1a-92f9-474f-bcc3-98efeb16778c,POST,/api/auth/login,200,108,,::ffff:100.64.0.10,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:30:00 GMT+0000 (Coordinated Universal Time),17893a6b3079e2356f167f9aec9cc2674eaf1346af8c3514ac24649b31828eb6,c4adb4c0c2418886b43ae204ac8afbab7fc1f4a7f0bba0a04f3ec4722b91803e
+cmmatpw9k00fjvdyktabi15re,INFO,7f2ea692-e589-4080-a2ab-a867ee0b7235,GET,/api/logs/exports/cmmatpu1k00fgvdykxhnuo0wm/download,200,2271,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.13,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmatpu1k00fgvdykxhnuo0wm""}}",Tue Mar 03 2026 16:30:00 GMT+0000 (Coordinated Universal Time),c4adb4c0c2418886b43ae204ac8afbab7fc1f4a7f0bba0a04f3ec4722b91803e,f08d2a970b5024a53cb2644adbde848f3a329c94af2d462f1ce3ea68a4c71e5d
+cmmatpub400fivdykopsn1jd5,INFO,afea36a0-3555-4919-ab92-606e8ff13e15,PATCH,/api/logs/exports/cmmatpu1k00fgvdykxhnuo0wm/review,200,34,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.13,python-requests/2.32.3,,"{""version"":""1.0"",""params"":{""id"":""cmmatpu1k00fgvdykxhnuo0wm""}}",Tue Mar 03 2026 16:29:57 GMT+0000 (Coordinated Universal Time),f08d2a970b5024a53cb2644adbde848f3a329c94af2d462f1ce3ea68a4c71e5d,1eb488103cb52c25d2200ae80416833777577fa5510805d0cad5fe1001662d9f
+cmmatpu3400fhvdyk9o3xov5g,INFO,52e917bd-2e05-4b0c-8165-c101f405c8f1,POST,/api/logs/exports,201,64,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.13,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:29:57 GMT+0000 (Coordinated Universal Time),1eb488103cb52c25d2200ae80416833777577fa5510805d0cad5fe1001662d9f,33dc38f02e6a570070923aab89e765cf97174cadb14bc9ca6bc55e4890dfbedd
+cmmatpto100fevdyka2flc1zv,INFO,e8606bbb-f4b4-429e-a26a-320415c7d5a3,POST,/api/auth/login,200,151,,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:29:56 GMT+0000 (Coordinated Universal Time),33dc38f02e6a570070923aab89e765cf97174cadb14bc9ca6bc55e4890dfbedd,37374be3166cedb2ea6af1ea45b55a73584a14cc84857d559b2b975e6c53bbb0
+cmmatptew00f9vdykenj7xlww,WARN,99573502-95c3-4811-b6ca-806b8b99bda2,POST,/api/auth/login,401,112,,::ffff:100.64.0.9,python-requests/2.32.3,,"{""version"":""1.0""}",Tue Mar 03 2026 16:29:56 GMT+0000 (Coordinated Universal Time),37374be3166cedb2ea6af1ea45b55a73584a14cc84857d559b2b975e6c53bbb0,a9e3bdf4362885dc6fab1bda47174491ab2331224dae364c6a1f844fe9745a17
+cmmatptbk00f8vdykrl8am509,ERROR,99573502-95c3-4811-b6ca-806b8b99bda2,POST,/api/auth/login,401,,,::ffff:100.64.0.9,python-requests/2.32.3,"{""name"":""Error"",""message"":""Invalid credentials"",""code"":null,""stack"":""Error: Invalid credentials\n    at /app/src/controllers/auth.controller.js:54:15""}","{""version"":""1.0""}",Tue Mar 03 2026 16:29:56 GMT+0000 (Coordinated Universal Time),e4bbc4b994f71a06274b80ae1aa683675b312767e2b7faf4419be637f46d1e6f,a9e3bdf4362885dc6fab1bda47174491ab2331224dae364c6a1f844fe9745a17
+cmmatotd900f5vdykpf6b4qn2,INFO,609c8ac0-59a3-4b80-93e3-2416589653d7,GET,/api/reports/cmmatog8l00b7vdykaqa4f2ax,200,69,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.10,python-requests/2.32.5,,"{""version"":""1.0"",""params"":{""id"":""cmmatog8l00b7vdykaqa4f2ax""}}",Tue Mar 03 2026 16:29:09 GMT+0000 (Coordinated Universal Time),a9e3bdf4362885dc6fab1bda47174491ab2331224dae364c6a1f844fe9745a17,5ab963d37953bfcabce8f465125bebe3c4d38382e4af9615f9c3a80fab3a2986
+cmmatos5000f2vdykl7bt3kyl,INFO,9759f72e-4d47-475f-9d7d-fb23347bed70,POST,/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/issue-yellow,200,112,cmlqzl9o30000ewr7v4k30bee,::ffff:100.64.0.3,python-requests/2.32.5,,"{""version"":""1.0"",""params"":{""id"":""cmmatog8l00b7vdykaqa4f2ax""}}",Tue Mar 03 2026 16:29:... (set the log level to DEBUG or TRACE to see the full content) 
  </msg>
-<msg time="2026-03-03T22:40:44.923332" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:07.379162" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:07.379162" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
 <var>${dl}</var>
 <arg>api</arg>
 <arg>/logs/exports/${export_id}/download</arg>
 <arg>headers=${headers}</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.877904" elapsed="0.045428"/>
+<status status="PASS" start="2026-03-03T23:32:04.766180" elapsed="2.612982"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>200</arg>
 <arg>${dl}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.923332" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:07.380161" elapsed="0.000000"/>
 </kw>
-<status status="PASS" start="2026-03-03T22:40:44.747318" elapsed="0.176014"/>
+<status status="PASS" start="2026-03-03T23:32:03.776212" elapsed="3.604948"/>
 </test>
-<test id="s1-t3" name="Scenario 3: Admin Download User Request" line="59">
+<test id="s1-t3" name="Scenario 3: Admin Download User Request" line="57">
 <kw name="Login">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:44.925885" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
+<msg time="2026-03-03T23:32:07.383160" level="INFO">${body} = {'username': 'admin123', 'password': '123456789'}</msg>
 <var>${body}</var>
 <arg>username=${user}</arg>
 <arg>password=${pass}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.924849" elapsed="0.001036"/>
+<status status="PASS" start="2026-03-03T23:32:07.383160" elapsed="0.000000"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:45.025405" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:07.804093" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTIzLCJleHAiOjE3NzI1NTkxMjN9.qwl0mOiF54Un0MJfyz0aMEs6Z8kPtloHsA54CmcLBQs', 'Content-Length': '49', 'Content-Type': 'application/json'} 
  body=b'{"username": "admin123", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-03T22:40:45.025405" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-03T23:32:07.804093" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'fbae8a29-3c48-4b44-817e-835ce42ac451', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 15:40:45 GMT; HttpOnly; SameSite=None', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '491', 'ETag': 'W/"1eb-7InElPsSjKN9zoFW4QF1mWwsceg"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE","user":{"id":"cmm9idz2i0000s9j4gh6g8bfu","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '491', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1eb-Zeh1z9UfV/kagmDi3bRQ3W2Jhws"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5pKMDYXzraS76xcU91Mg; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:32:07 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Hy9G7Yj3TK2FZYwEJH0Vcg', 'X-Request-Id': '3863a21a-b91a-477a-89c7-b0ba7ad9339a', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:07 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555527.797636,VS0,VE402', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5pKMDYXzraS76xcU91Mg","user":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-03T22:40:45.025405" level="INFO">${res} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:07.804093" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:07.805081" level="INFO">${res} = &lt;Response [200]&gt;</msg>
 <var>${res}</var>
 <arg>api</arg>
 <arg>/auth/login</arg>
 <arg>json=${body}</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:44.925885" elapsed="0.099520"/>
+<status status="PASS" start="2026-03-03T23:32:07.384668" elapsed="0.420413"/>
 </kw>
 <return>
 <value>${res.json()['data']['token']}</value>
-<status status="PASS" start="2026-03-03T22:40:45.025405" elapsed="0.000000"/>
+<status status="PASS" start="2026-03-03T23:32:07.805081" elapsed="0.000000"/>
 </return>
-<msg time="2026-03-03T22:40:45.025405" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE</msg>
+<msg time="2026-03-03T23:32:07.806134" level="INFO">${admin_token} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5pKMDYXzraS76xcU91Mg</msg>
 <var>${admin_token}</var>
 <arg>${ADMIN_NAME}</arg>
 <arg>${ADMIN_PASSWORD}</arg>
-<status status="PASS" start="2026-03-03T22:40:44.924849" elapsed="0.100556"/>
+<status status="PASS" start="2026-03-03T23:32:07.383160" elapsed="0.422974"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-03T22:40:45.027921" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4W...</msg>
+<msg time="2026-03-03T23:32:07.807072" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${admin_token}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-03T22:40:45.025405" elapsed="0.002516"/>
+<status status="PASS" start="2026-03-03T23:32:07.806134" elapsed="0.000938"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-03T22:40:45.071955" level="INFO">GET Request : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
- path_url=/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
- headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW05aWR6MmkwMDAwczlqNGdoNmc4YmZ1Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTUyNDQ1LCJleHAiOjE3NzI1NTYwNDV9.37fszcXxP9A6I48nmDDrTh4WsbdCHSPsYzXVqqdPluE'} 
+<msg time="2026-03-03T23:32:08.196494" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
+ path_url=/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate, br', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5pKMDYXzraS76xcU91Mg', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1NTI3LCJleHAiOjE3NzI1NTkxMjd9.Y8t9_tnH7Yqc2MYZ5ezVwMd5pKMDYXzraS76xcU91Mg'} 
  body=None 
  </msg>
-<msg time="2026-03-03T22:40:45.084643" level="INFO">GET Response : url=http://localhost:3000/api/logs/exports/cmmaryjyf003jsue1l8zbpug1/download 
+<msg time="2026-03-03T23:32:08.203017" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/logs/exports/cmmatsi3v00g6vdykiw9ronc3/download 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '91c3cff9-c38a-4b80-bb24-9256588fee65', 'Content-Type': 'application/pdf', 'Content-Disposition': 'attachment; filename="AuditLog_export_1772552444489.pdf"', 'X-Record-Count': '41', 'Content-Length': '5018', 'ETag': 'W/"139a-+ncanH8DbTdi4gYZSdc14GJIeIo"', 'Date': 'Tue, 03 Mar 2026 15:40:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ headers={'Connection': 'keep-alive', 'Content-Length': '2053', 'Access-Control-Allow-Credentials': 'true', 'Content-Disposition': 'attachment; filename="AuditLog_export_1772555527490.pdf"', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/pdf', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"805-GqPqgOxtgbW18l8MVc1X/y8fBy8"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'JZAtqjmbT2Ka-x5NJH0Vcg', 'X-Record-Count': '6', 'X-Request-Id': '0b948da3-179d-4bc0-b794-2400d66a80bd', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:32:07 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555527.218299,VS0,VE373', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310025-BKK'} 
  body=%PDF-1.3
-%����
+%ÿÿÿÿ
 7 0 obj
 &lt;&lt;
 /Type /Page
@@ -626,68 +605,31 @@ endobj
 endobj
 5 0 obj
 &lt;&lt;
-/Length 1842
+/Length 756
 /Filter /FlateDecode
 &gt;&gt;
 stream
-x�ś�n�H��y�z��V�O��� �f{[ ��[��a���`�q��e�*�m���H������b��b�^��?_�zI����~�&gt;���U����ϗ��Bbx_��*�- �WS
-{9q��(j�E����o� 9j���˷�������˿�r(�4FE`��C��Я����Lp|�k����gD`�TA��A,����ǵ~vr�]�1��!�/~����cx�h��S�����N1|�U��ڏA#�d6��rwzY{˓���T��L5��W^9k�qe5P-���/�W�y�����ܸ��yϑ��kj�7����d��k���5��h��!Z���6]���g��Zy
-�&lt;Zg��&lt;��P*z�bG�T�&amp;��`݃�0�&lt;�!ʫ1���g
-sq$"��I3�7���
-ᇑg�.�'s����$�BT1Q��]� 'Ť�AG���Q�XC���zC��,1�#���F��I��0(:�}("��t8"�/�5ll��������Q��-�  b�e�A�N"�@��'�?�]��"��ADD�����������Q��-�  b�e�A�}DD�-5�qq���E�3O�H�-\T�X�8Bay|�h�b��U6�ja[.�A&lt;�Ů���E.������!W5�-&lt;)�hk�q!���	Gߺ��Z;͆�DTؔ���m����.KX���I6���F��{��;�Ժ�m"G�nz�|AEX��(���(�����MQ�D;
-�.KX�0&amp;�]Ax�D�s��B�Ҋ2�ޕDo]����J�T�߮���[^�ؔ����A&lt;�������Z	���Ԛ�dGd&amp;�@�����:��~��D������;�)ϗ�7�x����5�5�	Gp:��ޒ-`X��Ԏ%Ue��U!b��N`i8��"]`�����;�)��7�x����5��g"������*#F��]Y��N&lt;���^Q�o=&amp;W5�2boE]w`S��ak**�r֨k�y[�}W'�&lt;/���:���+��5�kCw"����ӈ]�1�u�$�n�D܈���}W'�&lt;��z��M:"��*�0��Ҁj)��o!ew@��˥ލ�����;�)ϗ�7�x��%u���.^}�i��ʥ�i'�'3�hhi2�=X "M�ERw��z&gt;�� �钺na["����.Ky^R��j�ص\3f�O*б��nz���\�7hCao-]w`S����Vm���]��V/�c7����U:#��&amp;���2�j-$���2HeS�":�6���u6%�n�ҋ��(g�u�,�QF7�IC4muc��!�Ͽ��Ei^M|�l,������;���#z���G��Q~�R�ԝ�+qQڡ���Y��Oܺ[&amp;n݂��~Ӻ���m��m�����5w}g祋�t�Z?��Z��iS�u��&gt;c����#ޅ� _��G���*YF�ËrY�a�\����}F~��z�zdM~^��ٺk~��\�� �V�3;�b���2M=Y��AB�7��䓣-d�ץ߻�ũ62�֥u6%��K!Iעr������XHI��iB�tLp�������Ɔ7�Ҽ8i�&gt;4=Y��pj�S��-�+S��g=�&gt;����ʴ���0�-&lt;��alӚfACҘ���_����z�X-�Mu�w�)J%�&gt;����u6M��	����+��8=�i�'�}������|�Z���*q��Tj��멦&lt;�[$&gt;]#�/�/�-/���gT����`q��_��߼�,��lysq������&lt;q�z�{�Ч��*t�Z�9�s!%���řX��	8~Ϳ�$��B����sxi
+xœÅ˜±�Û0D{ ÎrgwV.$Eºî‚&gt;[ê®Èÿ7%ßå�££“Î†Ø…dìÌ’óDR9I’ô)'I^|«]:&gt;m~orëò—ıùzN@lQ bÉÛ(šöO›ÏßrÊLûaóóÁò.AÒC8�%Ì�*æÑ…pİ¥OVÿ`*®ô.î’üJûï›¯ûÍ�wÊÛAr”-Å^ÉÙĞ[a:M…9‡]rI*PÔ/õ¦_7dŠ¡=óÃRŸ]l…"’“k·{ãÓm—²JzàÆÌ£J(�¨Öi�W^¹T]’·à$ª©;�M±¥�-·k¹±ğDŒöO!+«ë…Ê ‡ª¬ğâBUåÀ#}a=»0–™µóÂ�ıÂšŞù…šÎ&gt;FŒ¢,¬ÉÂùšëFT’Õ4G÷á˜*&lt;ñT±
+°�€@ÈAZ&gt;"¨Ğ¨é0–&amp;¤f¯-ı.z³öp(ºÅôÖhÎõÌG–ğÑˆ€�ç�©ÑQÃ¢‹‚ˆ¼"¿mi—óÃ²�Ï$ë-Ì]W$º­`G,¬XïƒÃİ`0¯b+~¡‰3Û+Ò}¯	‘dœ‰¿„Q�1şD&lt;+×51*x™pXÿ¦ôã¯(8ÀÁ1şõÎªøÏô|Ëø7¥¯ÿ¦Âëø×mÍ¨ææfn'_úà)h÷ò
+î4/’Ìf”O¡‘a£r©‹b¿}Â£«�ê²€nM3,Ä¸ Ø¸‘‹µKÁ\ç7d¡)}Uš
+7a¡İËX¸Ó¼H2�cQO°gå‰	ˆ@xŒX¼ÕYhx‚N{TLW®s�ß�…¦ôUYh*Ü„…v/`áNó"ÉdFùø7÷g"ºx!‚õt&lt;ìyŒ¥‘Yh˜aa:(Tˆ²–…¹ÎoÈBSúª,4Î,îëbß¶ı�Øßi
+dzÃó_åöœ”ƒ|Q~D�úºø­I|[ú�ŸŞhÕh¬ü|Ï7|[úš�o+\õL|¡‰õñ¿É„üwü”1
 endstream
 endobj
-12 0 obj
-&lt;&lt;
-/Type /Page
-/Parent 1 0 R
-/MediaBox [0 0 841.89 595.28]
-/Contents 10 0 R
-/Resources 11 0 R
-&gt;&gt;
-endobj
 11 0 obj
-&lt;&lt;
-/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
-/Font &lt;&lt;
-/F2 9 0 R
-/F1 8 0 R
-&gt;&gt;
-/ColorSpace &lt;&lt;
-&gt;&gt;
-&gt;&gt;
+(PDFKit)
+endobj
+12 0 obj
+(PDFKit)
+endobj
+13 0 obj
+(D:20260303163207Z)
 endobj
 10 0 obj
 &lt;&lt;
-/Length 1506
-/Filter /FlateDecode
-&gt;&gt;
-stream
-x��[=��6��W����;K��"]���R����&amp; %�%eI&lt;���q��3��R�;׹��\�I���]����ko��1��;�N5}W�������G���I��{���&gt;�x�����ky�3��0�F5���fn��A���j�Z��bs���R7.(&amp;s��gn&gt;��}�unQ�=/jbi�L\�hۧ�:�=�+�Ά�	�x�g�՜.�X�h�7;#���B����/�B#�!���*�����1���~&gt;��F�g(�8x�,����;Q!�y�`�v&amp;WP���ຓx�BT�b�Z�]G�$Q5��I{���p�IE�B�:X��co��&amp;�;���!�@ӰH���HS�hJdr����"��f��U�U4e�i����y�_@�j�Ҵ� ��?⨈ָ���zG�2�-1	~b*��T��fJZ��鋽Z�
-�z�p�������/�k��]�ZE��U����ER�k�j+۝�&amp;޹u�b%��3����Iz�v'KDz3l-����ss��=𯌈&lt;�MʨC/(#���{�������ʨ��2��r���uÌ|V�s�򇔏c�(�����f	�&lt;[�b���%�%I0�������a���n[�Dz�$P�M� �I�y�_ �j�J��p��������t7C"y�6	�,��EF^��;��t{T��5��[ZO�WG�z���+��خ4}�2M�h�Y
-�8��Й%���)[Ⱥ=0Nd���xu`��+Y�80�t�+_�����i�����(G.x1�K_�Ɓ�(��  ���Ձ�^��|���8��iw���G�c�t���&lt;��0��%���{�G���e������������&gt;�;����
-cq{.&amp;�b�mj~�(o��ļm�QY���OI�l���$��*����-��I����&amp;�W��z�J�� W�Ų�W�
-�&lt;2X� �M��-Rx鶸�tDXL�w�����T,O�[�(�V	"Gh���	���^����"���U���Lٟ��K7�uX
-W8��A�	�7�bш6ݐ֡���ÕW-µ~�:��ؕ�u�c�33`{�],e����󁦰ǖE;�'�4��~��t{Νh�bZ��ǿ:��ؕ��s�.s����djXe��ĩ�ӮM{ƫ�l������X�WWLv@l&lt;V;?�����kᘹ��g��:~?Òۿ~��y?�ԇ*x~؎{a�Y*W�-��^�S}8��y���5&gt;������8&lt;��v��̀|Z��S��t��ؔ�h����g�\@��R ��	��S�-S�f9��Il���x�%�߶��Ş���1t�'&gt;���Y
-OD��C`�?��;9tG�#D;s+g
-Y��Ɖ���56.v~8Y��u����LG��u1E�c�#_��F�4^��G����`z��RnH}�#O�ے�r�G3���XG8ȉsC�������"����ǳ��'�jw�8uP�����m��Z&amp;�֤��±Z���V��^�4�&gt;?p[�5Z֭
-endstream
-endobj
-14 0 obj
-(PDFKit)
-endobj
-15 0 obj
-(PDFKit)
-endobj
-16 0 obj
-(D:20260303154044Z)
-endobj
-13 0 obj
-&lt;&lt;
-/Producer 14 0 R
-/Creator 15 0 R
-/CreationDate 16 0 R
+/Producer 11 0 R
+/Creator 12 0 R
+/CreationDate 13 0 R
 &gt;&gt;
 endobj
 8 0 obj
@@ -720,8 +662,8 @@ endobj
 1 0 obj
 &lt;&lt;
 /Type /Pages
-/Count 2
-/Kids [7 0 R 12 0 R]
+/Count 1
+/Kids [7 0 R]
 &gt;&gt;
 endobj
 2 0 obj
@@ -733,53 +675,52 @@ endobj
 &gt;&gt;
 endobj
 xref
-0 17
+0 14
 0000000000 65535 f 
-0000004412 00000 n 
-0000004476 00000 n 
-0000004350 00000 n 
-0000004329 00000 n 
+0000001514 00000 n 
+0000001571 00000 n 
+0000001452 00000 n 
+0000001431 00000 n 
 0000000242 00000 n 
 0000000125 00000 n 
 0000000015 00000 n 
-0000004130 00000 n 
-0000004227 00000 n 
-0000002388 00000 n 
-0000002270 00000 n 
-0000002157 00000 n 
-0000004054 00000 n 
-0000003968 00000 n 
-0000003993 00000 n 
-0000004018 00000 n 
+0000001232 00000 n 
+0000001329 00000 n 
+0000001156 00000 n 
+0000001070 00000 n 
+0000001095 00000 n 
+0000001120 00000 n 
 trailer
 &lt;&lt;
-/Size 17
+/Size 14
 /Root 3 0 R
-/Info 13 0 R
-/ID [&lt;ffbdca73c38ab39eca28bc81aaa499c0&gt; &lt;ffbdca73c38ab39eca28bc81aaa499c0&gt;]
+/Info 10 0 R
+/ID [&lt;19e3a5e8d517e7606d17dcb1d566b5bb&gt; &lt;19e3a5e8d517e7606d17dcb1d566b5bb&gt;]
 &gt;&gt;
 startxref
-4523
+1618
 %%EOF
  
  </msg>
-<msg time="2026-03-03T22:40:45.084643" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-03T23:32:08.203542" level="INFO">C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:32:08.204163" level="INFO">${dl} = &lt;Response [200]&gt;</msg>
 <var>${dl}</var>
 <arg>api</arg>
 <arg>/logs/exports/${ID_S1}/download</arg>
 <arg>headers=${headers}</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-03T22:40:45.027921" elapsed="0.056722"/>
+<status status="PASS" start="2026-03-03T23:32:07.807761" elapsed="0.396402"/>
 </kw>
 <kw name="Status Should Be" owner="RequestsLibrary">
 <arg>200</arg>
 <arg>${dl}</arg>
 <doc>Fails if response status code is different than the expected.</doc>
-<status status="PASS" start="2026-03-03T22:40:45.085712" elapsed="0.000403"/>
+<status status="PASS" start="2026-03-03T23:32:08.204163" elapsed="0.001028"/>
 </kw>
-<status status="PASS" start="2026-03-03T22:40:44.924849" elapsed="0.161266"/>
+<status status="PASS" start="2026-03-03T23:32:07.382160" elapsed="0.823031"/>
 </test>
-<status status="PASS" start="2026-03-03T22:40:44.105800" elapsed="0.980315"/>
+<status status="PASS" start="2026-03-03T23:32:00.795654" elapsed="7.410519"/>
 </suite>
 <statistics>
 <total>
