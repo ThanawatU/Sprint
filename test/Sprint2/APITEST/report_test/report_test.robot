@@ -7,7 +7,7 @@ Library           String
 Suite Setup       Setup Session and Login
 
 *** Variables ***
-${BASE_URL}              https://deploy-production-88fa.up.railway.app
+${BASE_URL}              http://localhost:3003/
 ${SESSION_ALIAS}         api
 
 ${REPORTER_USER}         pLoomN
