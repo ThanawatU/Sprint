@@ -427,7 +427,7 @@ All notable changes to this project will be documented in this file.
 - Yellow/Red card policy system (30-day expiration, auto-suspension after 3 yellow cards).
 - Group report support using `groupId` and `reportedUserIds[]`.
 - Evidence upload support with Cloudinary integration.
-- Notification system for case resolution updates.
+- User Manual documentation 
 
 ### Changed
 - Refactored report structure to support multiple reported users.
