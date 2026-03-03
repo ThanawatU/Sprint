@@ -37,10 +37,10 @@ const adminOnly = (req, res, next) => {
 const selfOrAdmin = (req, res, next) => {
   if (!req.user) return next(new ApiError(401, "Unauthorized"));
 
-  const { role, sub } = req.user;
+  const { role, id } = req.user;
 
   if (role === "ADMIN") return next();
-  if (req.params.userId && req.params.userId === sub) return next();
+  if (req.params.userId && req.params.userId === id) return next();
 
   next(new ApiError(403, "Forbidden: you can only access your own logs"));
 };
@@ -59,7 +59,7 @@ const sensitiveRateLimit = (maxPerWindow = 10, windowMs = 60 * 1000) => {
   return (req, res, next) => {
     if (!req.user) return next(new ApiError(401, "Unauthorized"));
 
-    const key = req.user.sub;
+    const key = req.user.id;
     const now = Date.now();
     const entry = sensitiveActionCounts.get(key);
 
@@ -91,7 +91,7 @@ const sensitiveRateLimit = (maxPerWindow = 10, windowMs = 60 * 1000) => {
 const exportAccessGuard = (req, res, next) => {
   if (!req.user) return next(new ApiError(401, "Unauthorized"));
 
-  const { role, sub } = req.user;
+  const { role, id } = req.user;
   if (role === "ADMIN") return next();
 
   const { logType, filters } = req.body;
@@ -101,7 +101,7 @@ const exportAccessGuard = (req, res, next) => {
   }
 
   // บังคับ filter userId ให้เป็นตัวเอง
-  if (!filters || filters.userId !== sub) {
+  if (!filters || filters.userId !== id) {
     return next(
       new ApiError(403, "filters.userId must match your own user id when exporting as non-admin")
     );
@@ -121,11 +121,11 @@ const exportAccessGuard = (req, res, next) => {
 const auditListGuard = (req, res, next) => {
   if (!req.user) return next(new ApiError(401, "Unauthorized"));
 
-  const { role, sub } = req.user;
+  const { role, id } = req.user;
   if (role === "ADMIN") return next();
 
   // Non-admin: scope ลง userId ตัวเอง
-  req.query.userId = sub;
+  req.query.userId = id;
 
   // ลบ query param ที่ non-admin ไม่ควรใช้
   delete req.query.ipAddress;

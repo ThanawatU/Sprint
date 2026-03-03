@@ -61,7 +61,7 @@
                 <!-- Status Distribution Bar -->
                 <div class="bg-white border border-gray-300 rounded-lg shadow-sm mb-6 p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">สถานะ Report</h3>
-                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5"> 
                         <div v-for="status in statusList" :key="status.value"
                             class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
                             @click="filterByStatus(status.value)">
@@ -83,7 +83,7 @@
                                 <option value="">ทั้งหมด</option>
                                 <option value="FILED">FILED</option>
                                 <option value="UNDER_REVIEW">UNDER_REVIEW</option>
-                                <option value="INVESTIGATING">INVESTIGATING</option>
+                                <!-- <option value="INVESTIGATING">INVESTIGATING</option> -->
                                 <option value="RESOLVED">RESOLVED</option>
                                 <option value="REJECTED">REJECTED</option>
                                 <option value="CLOSED">CLOSED</option>
@@ -313,7 +313,6 @@ const stats = reactive({
     byStatus: {
         FILED: 0,
         UNDER_REVIEW: 0,
-        INVESTIGATING: 0,
         RESOLVED: 0,
         REJECTED: 0,
         CLOSED: 0
@@ -323,7 +322,6 @@ const stats = reactive({
 const statusList = [
     { value: 'FILED', label: 'Filed', color: 'text-blue-600' },
     { value: 'UNDER_REVIEW', label: 'Under Review', color: 'text-yellow-600' },
-    { value: 'INVESTIGATING', label: 'Investigating', color: 'text-orange-600' },
     { value: 'RESOLVED', label: 'Resolved', color: 'text-green-600' },
     { value: 'REJECTED', label: 'Rejected', color: 'text-red-600' },
     { value: 'CLOSED', label: 'Closed', color: 'text-gray-600' }
@@ -368,7 +366,6 @@ function statusBadge(status) {
     const map = {
         FILED: 'bg-blue-100 text-blue-700',
         UNDER_REVIEW: 'bg-yellow-100 text-yellow-700',
-        INVESTIGATING: 'bg-orange-100 text-orange-700',
         RESOLVED: 'bg-green-100 text-green-700',
         REJECTED: 'bg-red-100 text-red-700',
         CLOSED: 'bg-gray-100 text-gray-700'
@@ -392,7 +389,6 @@ function formatStatus(status) {
     const map = {
         FILED: 'Filed',
         UNDER_REVIEW: 'Under Review',
-        INVESTIGATING: 'Investigating',
         RESOLVED: 'Resolved',
         REJECTED: 'Rejected',
         CLOSED: 'Closed'
@@ -475,7 +471,6 @@ function calculateStats() {
     stats.byStatus = {
         FILED: 0,
         UNDER_REVIEW: 0,
-        INVESTIGATING: 0,
         RESOLVED: 0,
         REJECTED: 0,
         CLOSED: 0
