@@ -3,21 +3,21 @@ Library           RequestsLibrary
 Library           Collections
 
 *** Variables ***
-${BASE_URL}             https://deploy-production-88fa.up.railway.app/api
-${USER_NAME}            exportTester1
-${USER_ID}              cmmatkiu2006svdykbxbtxy7q 
-${USER_PASSWORD}        123456789
+${BASE_URL}             http://localhost:3000/api
+${USER_NAME}            nutho04
+${USER_ID}              cmmamd1b2001hesfwwe4kvm49 
+${USER_PASSWORD}        0123456789
 ${ADMIN_NAME}           admin123
 ${ADMIN_PASSWORD}       123456789
 
 *** Test Cases ***
 
 Scenario 1: User Request -> Admin Approve -> User Download
-    Create Session    api    ${BASE_URL}    verify=False
+    Create Session    api    ${BASE_URL}
 
-    # 1. User ขอ Export
     ${user_token}=    Login    ${USER_NAME}    ${USER_PASSWORD}
     ${user_headers}=    Create Dictionary    Authorization=Bearer ${user_token}
+    
     ${filters}=    Create Dictionary    reason=User request test    userId=${USER_ID}
     ${payload}=    Create Dictionary    logType=AuditLog    format=PDF    filters=${filters}
     
