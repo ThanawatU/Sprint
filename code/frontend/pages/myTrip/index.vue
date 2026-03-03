@@ -658,7 +658,7 @@ async function submitReport() {
         reportedUserIds: reportForm.value.reportedUserIds,
         category: reportForm.value.category,
         description: reportForm.value.description.trim(),
-        evidences: [],
+        evidences: reportForm.value.evidences,
       },
     });
 
@@ -677,14 +677,20 @@ async function submitReport() {
 function handleEvidenceUpload(event) {
   const files = Array.from(event.target.files);
 
-  reportForm.value.evidences = files.map((file) => ({
-    type: file.type.startsWith("image")
+  reportForm.value.evidences = files.map((file) => {
+    const type = file.type.startsWith("image")
       ? "IMAGE"
       : file.type.startsWith("video")
         ? "VIDEO"
-        : "FILE",
-    file,
-  }));
+        : "FILE";
+
+    return {
+      type,
+      file,
+      previewUrl: URL.createObjectURL(file), // 👈 เพิ่มอันนี้
+      fileName: file.name,
+    };
+  });
 }
 
 // Setup dayjs for Thai locale
