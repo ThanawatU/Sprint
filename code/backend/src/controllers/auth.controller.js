@@ -190,4 +190,26 @@ const changePassword = asyncHandler(async (req, res) => {
     });
 });
 
-module.exports = { login, changePassword, logout };
+const getMe = asyncHandler(async (req,res) => {
+    try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        id: true,
+        username: true,
+        firstName: true,
+        lastName: true,
+        role: true,
+        email: true
+      }
+    });
+
+    res.json(user);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch current user' });
+  }
+})
+
+module.exports = { login, changePassword, logout, getMe };

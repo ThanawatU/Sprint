@@ -514,7 +514,7 @@ function filterByStatus(status) {
 
 function onViewReport(report) {
     // TODO: Navigate to report detail page when it's created
-    toast.info('รายละเอียด Report', 'หน้านี้ยังไม่ได้สร้าง')
+    navigateTo(`/admin/reports-dashboard/${report.id}`).catch(() => { })
     console.log('View report:', report.id)
 }
 
