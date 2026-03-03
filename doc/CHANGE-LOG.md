@@ -411,6 +411,7 @@ All notable changes to this project will be documented in this file.
 - Yellow card system with 30-day expiration and automatic suspension after 3 cards.
 - Notification system to send resolution updates back to reporter.
 - API blocking for suspended users via authentication middleware.
+- Added reject button for admin case management.
 
 ### Fixed
 - Fixed routing path to admin report detail page.
