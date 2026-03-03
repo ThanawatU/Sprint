@@ -272,12 +272,12 @@
                     <div class="relative">
                       <img
                         v-if="file.type.startsWith('image')"
-                        :src="URL.createObjectURL(file)"
+                        :src="getPreviewUrl(file)"
                         class="object-cover w-full border border-gray-300 rounded-lg aspect-video"
                       />
                       <video
                         v-else-if="file.type.startsWith('video')"
-                        :src="URL.createObjectURL(file)"
+                        :src="getPreviewUrl(file)"
                         class="object-cover w-full border border-gray-300 rounded-lg aspect-video"
                         controls
                       ></video>
@@ -444,6 +444,13 @@ const uploadToCloudinary = async (file) => {
   }
 
   return response.json();
+};
+
+const getPreviewUrl = (file) => {
+  if (typeof window !== 'undefined' && window.URL && file) {
+    return window.URL.createObjectURL(file);
+  }
+  return '';
 };
 
 const uploadEvidence = async (reportId) => {
