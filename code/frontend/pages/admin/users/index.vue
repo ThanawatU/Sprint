@@ -125,6 +125,8 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ID
+                                    </th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ผู้ใช้
                                     </th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">อีเมล
@@ -144,9 +146,15 @@
                                     </th>
                                 </tr>
                             </thead>
+
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <tr v-for="u in users" :key="u.id" class="transition-opacity hover:bg-gray-50"
                                     :class="!u.isActive ? 'opacity-60' : ''">
+                                    
+                                    <td class="px-4 py-3 text-xs text-gray-500 font-mono">
+                                        <span class="inline-block w-20 truncate" :title="u.id">{{ u.id }}</span>
+                                    </td>
+
                                     <td class="px-4 py-3">
                                         <div class="flex items-center gap-3">
                                             <img :src="u.profilePicture || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.firstName || 'U')}&background=random&size=64`"
@@ -161,26 +169,26 @@
                                             </div>
                                         </div>
                                     </td>
+                                    
                                     <td class="px-4 py-3 text-gray-700">{{ u.email }}</td>
                                     <td class="px-4 py-3 text-gray-700">{{ u.username }}</td>
+                                    
                                     <td class="px-4 py-3">
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
                                             :class="roleBadge(u.role)">
                                             <i class="mr-1 fa-solid fa-shield-halved" v-if="u.role === 'ADMIN'"></i>
                                             {{ u.role }}
                                         </span>
                                     </td>
+                                    
                                     <td class="px-4 py-3">
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
                                             :class="u.isVerified ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'">
                                             <i class="mr-1 fa-solid fa-circle-check" v-if="u.isVerified"></i>
                                             {{ u.isVerified ? 'ยืนยันแล้ว' : 'ยังไม่ยืนยัน' }}
                                         </span>
                                     </td>
 
-                                    <!-- สวิตช์เปิด/ปิดการใช้งาน -->
                                     <td class="px-4 py-3">
                                         <div class="flex items-center">
                                             <label class="inline-flex items-center cursor-pointer select-none switch">
@@ -189,8 +197,7 @@
                                                     @change="onToggleActive(u, $event.target.checked)" />
                                                 <span class="switch-slider"></span>
                                             </label>
-                                            <span class="ml-2 text-sm "
-                                                :class="u.isActive ? 'text-green-700' : 'text-gray-500'">
+                                            <span class="ml-2 text-sm " :class="u.isActive ? 'text-green-700' : 'text-gray-500'">
                                                 {{ u.isActive ? 'Active' : 'Inactive' }}
                                             </span>
                                         </div>
@@ -202,26 +209,20 @@
                                     </td>
 
                                     <td class="px-4 py-3 ">
-                                        <button @click="onViewUser(u)"
-                                            class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-emerald-600"
-                                            title="ดูรายละเอียด" aria-label="ดูรายละเอียด">
+                                        <button @click="onViewUser(u)" class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-emerald-600" title="ดูรายละเอียด" aria-label="ดูรายละเอียด">
                                             <i class="text-lg fa-regular fa-eye"></i>
                                         </button>
-                                        <button @click="onEditUser(u)"
-                                            class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-blue-600"
-                                            title="แก้ไข" aria-label="แก้ไข">
+                                        <button @click="onEditUser(u)" class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-blue-600" title="แก้ไข" aria-label="แก้ไข">
                                             <i class="text-lg fa-regular fa-pen-to-square"></i>
                                         </button>
-                                        <button @click="askDelete(u)"
-                                            class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-red-600"
-                                            title="ลบ" aria-label="ลบ">
+                                        <button @click="askDelete(u)" class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-red-600" title="ลบ" aria-label="ลบ">
                                             <i class="text-lg fa-regular fa-trash-can"></i>
                                         </button>
                                     </td>
                                 </tr>
 
                                 <tr v-if="!users.length">
-                                    <td colspan="8" class="px-4 py-10 text-center text-gray-500">ไม่มีข้อมูลผู้ใช้</td>
+                                    <td colspan="9" class="px-4 py-10 text-center text-gray-500">ไม่มีข้อมูลผู้ใช้</td>
                                 </tr>
                             </tbody>
                         </table>

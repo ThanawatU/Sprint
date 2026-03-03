@@ -92,6 +92,9 @@ app.use((req, res, next) => {
 // --- Error Handling Middleware ---
 app.use(errorHandler);
 
+// --- Get Current User ---
+app.use('/api/auth', require('./src/routes/auth.routes'));
+
 // --- Start Server ---
 const PORT = process.env.PORT || 3000;
 (async () => {

@@ -151,7 +151,7 @@ router.post(
     body("logType")
       .isIn(["AuditLog", "SystemLog", "AccessLog"])
       .withMessage("logType must be AuditLog, SystemLog, or AccessLog"),
-    body("format").optional().isIn(["CSV", "JSON"]),
+    body("format").optional().isIn(["CSV", "JSON", "PDF"]),
     body("filters").optional().isObject(),
   ],
   // validate,
@@ -166,7 +166,8 @@ router.post(
 router.get(
   "/exports",
   [...paginationRules],
-  validate,
+  // คอมเม้นต์ validate เพราะทำให้ non-admin ใช้ query.userId ไม่ได้
+  // validate,
   auditController.listExportRequests
 );
 
@@ -189,9 +190,11 @@ router.patch(
  * - ADMIN or requester (checked inside controller)
  * - rate-limited: max 3 downloads per minute per user
  */
+
+// EDIT : แก้จาก 3 เป็น 100 (Nattaphat_0126)
 router.get(
   "/exports/:id/download",
-  sensitiveRateLimit(3, 60_000),
+  sensitiveRateLimit(100, 60_000),
   auditController.downloadExport
 );
 

@@ -70,4 +70,24 @@ router.patch(
   reportController.updateReportStatus
 );
 
+// assign แอดมินรับเรื่อง report
+router.patch(
+  '/admin/:id/assign',
+  protect,
+  requireAdmin,
+  reportController.assignReport
+);
+
+// ให้ใบเหลือง
+router.post(
+  '/admin/:id/issue-yellow',
+  protect,  
+  requireAdmin,
+  reportController.issueYellowCard
+);
+
+console.log("protect:", protect);
+console.log("requireAdmin:", requireAdmin);
+console.log("issueYellowCard:", reportController.issueYellowCard);
+
 module.exports = router;

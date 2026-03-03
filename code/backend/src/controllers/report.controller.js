@@ -1,5 +1,6 @@
 const reportService = require('../services/report.service');
 const { auditLog, getUserFromRequest } = require('../utils/auditLog');
+const { prisma } = require('../utils/prisma');
 
 // สร้าง Report (รองรับทั้งคนเดียว และ หลายคนพร้อมกัน)
 exports.createReport = async (req, res) => {
@@ -197,5 +198,177 @@ exports.getReportsAgainstMe = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch reports against you" });
+  }
+};
+
+//assign admin ที่กดเข้ามาหน้า report
+exports.issueYellowCard = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userIds, adminComment, notificationType } = req.body;
+
+    if (!userIds || !userIds.length) {
+      return res.status(400).json({ message: 'No users selected' });
+    }
+
+    const report = await prisma.reportCase.findUnique({
+      where: { id }
+    });
+
+    if (!report) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
+
+    const results = [];
+
+    await prisma.$transaction(async (tx) => {
+
+      for (const userId of userIds) {
+
+        const user = await tx.user.findUnique({
+          where: { id: userId }
+        });
+
+        if (!user) continue;
+
+        let currentCards = user.yellowCardCount || 0;
+        currentCards += 1;
+
+        if (currentCards >= 3) {
+          const suspendUntil = new Date()
+          suspendUntil.setDate(suspendUntil.getDate() + 30)
+
+          await tx.user.update({
+            where: { id: userId },
+            data: {
+              yellowCardCount: 0,
+              yellowCardExpiresAt: null,
+              ...(user.role === 'DRIVER'
+              ? { driverSuspendedUntil: suspendUntil }
+              : { passengerSuspendedUntil: suspendUntil })
+            }
+          })
+
+        } else {
+          const newExpiresAt = new Date();
+          newExpiresAt.setDate(newExpiresAt.getDate() + 30);
+
+          await tx.user.update({
+            where: { id: userId },
+            data: {
+              yellowCardCount: currentCards,
+              yellowCardExpiresAt: newExpiresAt
+            }
+          });
+        }
+
+        results.push(userId);
+      }
+
+      // update report
+      await tx.reportCase.update({
+        where: { id },
+        data: {
+          status: 'RESOLVED',
+          resolvedById: req.user.id,
+          resolvedAt: new Date(),
+          adminNotes: adminComment
+        }
+      });
+
+      // status history (เพิ่มตรงนี้ให้สมบูรณ์)
+      await tx.reportCaseStatusHistory.create({
+        data: {
+          reportCaseId: id,
+          fromStatus: report.status,
+          toStatus: 'RESOLVED',
+          changedById: req.user.id,
+          note: adminComment || 'Issue yellow card'
+        }
+      });
+
+      // หัวข้อหลัก
+      const mainTitle = 'ผลการดำเนินการรายงานของคุณ';
+
+      // หัวข้อย่อยจาก preset
+      let subTitle = '';
+
+      if (notificationType === 'RESOLVED') {
+        subTitle = 'เคสได้รับการดำเนินการแล้ว';
+      } else if (notificationType === 'WARNING_ISSUED') {
+        subTitle = 'ได้ทำการมอบใบเหลืองแล้ว';
+      }
+
+      // สร้างข้อความเหตุผล
+      const reasonText =
+        adminComment && adminComment.trim().length > 0
+          ? `เหตุผล: ${adminComment}`
+          : '';
+
+      // รวมข้อความทั้งหมด
+      const fullMessage = `
+      ${subTitle}
+      ${reasonText}
+      `.trim();
+
+      // สร้าง notification
+      await tx.notification.create({
+        data: {
+          userId: report.reporterId,
+          type: 'SYSTEM',
+          title: mainTitle,
+          body: fullMessage,
+          link: `/reports/${id}`
+        }
+      });
+
+    });
+
+    res.json({
+      message: 'Yellow card issued and report resolved',
+      affectedUsers: results
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to issue yellow card' });
+  }
+};
+
+// assign admin รับเรื่อง
+exports.assignReport = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const report = await prisma.reportCase.findUnique({
+      where: { id }
+    });
+
+    if (!report) {
+      return res.status(404).json({ message: 'Report not found' });
+    }
+
+    if (!['FILED', 'PENDING'].includes(report.status)) {
+      return res.status(400).json({ message: 'Report already assigned or processed' });
+    }
+
+    const updated = await prisma.reportCase.update({
+      where: { id },
+      data: {
+        resolvedById: req.user.id,
+        status: 'UNDER_REVIEW'
+      },
+      include: {
+        resolvedBy: {
+          select: { id: true, firstName: true, lastName: true }
+        }
+      }
+    });
+
+    res.json(updated);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to assign report' });
   }
 };

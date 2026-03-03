@@ -303,6 +303,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Nattaphat_0126
+
+### Added
+- Added Auto-approval logic for export requests by `ADMIN` role in `audit.controller.js`
+- Added PDF export generation logic and format support in `audit.service.js` and `audit.routes.js`
+- Implemented Export Request Management UI for administrators in `admin/exports/index.vue`
+- Added User Log Request History and submission form for regular users in `profile/logs.vue`
+
+### Changed
+- Enhanced `ProfileSidebar.vue` and `AdminSidebar.vue` to include new log export navigation menus
+- Updated User Management table in `admin/users/index.vue` to display User IDs for better tracking
+
+---
+
 ## [2.0.0] - 2026-02-27 - Thanawat_2128
 
 ### Added
@@ -386,6 +400,21 @@ All notable changes to this project will be documented in this file.
 - src/controllers/report.controller.js - Updated createReport and addEvidence to support group-based reporting and evidence distribution.
 
 - src/validations/report.validation.js - Updated createReportSchema to accept an array of reportedUserIds.
+
+---
+
+## [2.0.0] - 2026-03-03 - Kanyapat_5037
+### Added
+- Report Detail page for admin dashboard
+- Report grouping support (groupId) for multiple reported users.
+- Admin case management section (issue yellow card + resolution controls).
+- Yellow card system with 30-day expiration and automatic suspension after 3 cards.
+- Notification system to send resolution updates back to reporter.
+- API blocking for suspended users via authentication middleware.
+- Added reject button for admin case management.
+
+### Fixed
+- Fixed routing path to admin report detail page.
 
 ---
 
