@@ -985,9 +985,21 @@ async function confirmBooking() {
 
     try {
         await $api('/bookings', { method: 'POST', body: payload });
+        
         closeModal();
-        toast.success('ส่งคำขอจองสำเร็จ!', 'คำขอของคุณถูกส่งไปให้ผู้ขับแล้ว โปรดรอการยืนยัน');
-        setTimeout(() => navigateTo('/myTrip'), 1500);
+        toast.success('ส่งคำขอจองสำเร็จ!', 'กำลังนำคุณไปยังหน้าการเดินทางของฉัน...');
+        
+        // Refresh รายการค้นหา เพื่ออัปเดทที่นั่งที่เหลือ
+        // Route ที่จองครบที่จะถูกกรองออกโดย backend (status = FULL)
+        handleSearch().catch(() => {}); // ไม่รอผลลัพธ์
+        
+        // Navigate ไปยังหน้า myTrip พร้อม query param เพื่อ force refresh
+        setTimeout(() => {
+          navigateTo({
+            path: '/myTrip',
+            query: { refresh: Date.now() }
+          });
+        }, 1200);
     } catch (error) {
         console.error("Failed to create booking:", error);
         toast.error('เกิดข้อผิดพลาดในการจอง', error.data?.message || 'โปรดลองใหม่อีกครั้งในภายหลัง');

@@ -23,7 +23,7 @@ exports.createReport = async (req, res) => {
       entity: 'ReportCase',
       req,
       metadata: { 
-        isGroup: result.isGroup, 
+        isGroup: result.groupId !== null, 
         groupId: result.groupId, 
         reportedCount: reportedUserIds.length 
       }
@@ -31,15 +31,17 @@ exports.createReport = async (req, res) => {
 
     res.status(201).json({ 
       success: true, 
-      message: result.isGroup 
+      message: result.groupId 
         ? `Successfully created group report with ${reportedUserIds.length} cases.` 
         : "Successfully created report case.",
       groupId: result.groupId,
-      data: result.data 
+      cases: result.cases,
+      data: result.cases 
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Failed to create reports" });
+    const statusCode = error.message.includes("รายงาน") ? 400 : 500;
+    res.status(statusCode).json({ success: false, message: error.message || "Failed to create reports" });
   }
 };
 
