@@ -442,6 +442,16 @@ All notable changes to this project will be documented in this file.
 - Fixed admin routing path issue.
 - Fixed Docker database connection issue.
 - Fixed passenger selection not appearing in report table.
+## [2.0.0] - 2026-03-03 - Wisit_2348
+
+### Added
+- Added automated API tests for the report module.
+
+### Changed
+- Reorganized project documentation files for better structure and maintainability.
+
+### Fixed
+- Fixed bugs related to the report system.
 
 ---
 
