@@ -456,6 +456,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Kanyapat_5037
+
+### Added
+- Added Admin Ban Report Robot 
+- Added Admin Reject Report Robot 
+- Added Passenger Report Robot 
+- Added Passenger Detail Report Robot 
+- Added Baned User Checked Robot 
+
 ## Version Guidelines
 
 ### Categories
