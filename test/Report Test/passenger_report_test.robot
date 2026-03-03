@@ -11,38 +11,81 @@ ${PASSWORD}     Mark1234
 
 *** Keywords ***
 Open Browser And Login
-    Open Browser    ${FRONT_URL}/login    ${BROWSER}
+    ${options}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+
+    ${prefs}=    Create Dictionary
+    ...    credentials_enable_service=${False}
+    ...    profile.password_manager_enabled=${False}
+
+    Call Method    ${options}    add_experimental_option    prefs    ${prefs}
+    Call Method    ${options}    add_argument    --disable-notifications
+    Call Method    ${options}    add_argument    --incognito
+
+    Open Browser    ${FRONT_URL}/login    Chrome    options=${options}
     Maximize Browser Window
-    Wait Until Element Is Visible    id=identifier    15s
+
+    Wait Until Element Is Visible    id=identifier    20s
     Input Text    id=identifier    ${USERNAME}
     Input Text    id=password      ${PASSWORD}
     Click Button    xpath=//button[@type='submit']
-    Wait Until Location Does Not Contain    /login    15s
+    Wait Until Location Does Not Contain    /login    20s
 
 *** Test Cases ***
-User Can Submit Report Successfully
-    Go To    ${FRONT_URL}/my-trips
-    Wait Until Page Does Not Contain    กำลังโหลดข้อมูล...    20s
+Passenger Can Submit Report Successfully
+    [Documentation]    Passenger รายงานปัญหา กรอกครบ แล้วส่งสำเร็จ
+
+    Go To    ${FRONT_URL}/myTrip
+    Wait Until Page Contains    การเดินทางของฉัน    20s
+    Wait Until Page Does Not Contain    กำลังโหลดข้อมูลการเดินทาง...    20s
+
+    # กด tab ทั้งหมดก่อน
+    Click Button    xpath=//button[contains(.,'ทั้งหมด')]
+
+    # รอ DOM update
+    Sleep    1s
+
+    # รอ trip-card
+    Wait Until Element Is Visible
+    ...    xpath=//div[contains(@class,'trip-card')]
+    ...    20s
 
     # คลิก trip แรก
-    Wait Until Element Is Visible    xpath=(//div[contains(@class,'trip-card')])[1]    15s
     Click Element    xpath=(//div[contains(@class,'trip-card')])[1]
 
-    # รอปุ่มรายงาน (ต้องดู DOM จริงว่าชื่ออะไร)
-    Wait Until Element Is Visible    xpath=//button[contains(.,'รายงาน')]    10s
-    Click Button    xpath=//button[contains(.,'รายงาน')]
+    # ถ้ามีปุ่มรายงานปัญหา ให้กด
+    Wait Until Element Is Visible
+    ...    xpath=//button[normalize-space()='รายงานปัญหา']
+    ...    20s
 
-    # รอ modal หรือหน้า form
-    Wait Until Element Is Visible    xpath=//textarea    15s
+    Click Button    xpath=//button[normalize-space()='รายงานปัญหา']
 
-    Input Text    xpath=//textarea    ทดสอบรายงานโดย automation
+    # รอ modal เปิด
+    Wait Until Element Is Visible
+    ...    xpath=//h3[normalize-space()='รายงานปัญหาการเดินทาง']
+    ...    20s
 
-    Select From List By Index    xpath=//select    1
+    # เลือก checkbox คนแรก
+    Click Element    xpath=(//input[@type='checkbox'])[1]
 
-    Choose File
-    ...    xpath=//input[@type='file']
-    ...    ${CURDIR}/files/test1.jpg\n${CURDIR}/files/test2.jpg
+    # เลือกประเภท
+    Select From List By Value
+    ...    xpath=//select
+    ...    DANGEROUS_DRIVING
 
-    Click Button    xpath=//button[contains(.,'ส่งรายงาน')]
+    # กรอกรายละเอียด (เกิน 10 ตัวอักษร)
+    Input Text
+    ...    xpath=//textarea[@placeholder='กรอกรายละเอียดปัญหา...']
+    ...    ทดสอบรายงานปัญหาโดยระบบ automation ผ่านแน่นอน
 
-    Wait Until Page Contains    ส่งรายงานสำเร็จ    15s
+    # กดส่งรายงาน
+    Wait Until Element Is Enabled
+    ...    xpath=//button[normalize-space()='ส่งรายงาน']
+    ...    15s
+
+    Click Button    xpath=//button[normalize-space()='ส่งรายงาน']
+
+    # รอ success toast
+    Wait Until Page Contains    ส่งรายงานสำเร็จ    20s
+
+    # รอ redirect
+    Wait Until Location Contains    /myHistory    20s
