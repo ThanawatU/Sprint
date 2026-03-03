@@ -228,32 +228,33 @@ async function submitRequest() {
 }
 
 async function downloadLog(id, format) {
-    try {
-        toast.info('กำลังดาวน์โหลด', 'กรุณารอสักครู่ระบบกำลังดึงไฟล์...');
-        const blob = await $fetch(`/logs/exports/${id}/download`, {
-        baseURL: config.public.apiBase,
-        headers: getAuthHeaders(),
-        responseType: 'blob'
-        });
+  try {
+    toast.info('กำลังดาวน์โหลด', 'กรุณารอสักครู่ระบบกำลังดึงไฟล์...');
+    
+    const blob = await $fetch(`/logs/exports/${id}/download`, {
+      baseURL: config.public.apiBase,
+      headers: getAuthHeaders(),
+      responseType: 'blob'
+    });
 
-        let extension = "csv";
-        if (format === "JSON") extension = "json";
-        if (format === "PDF") extension = "pdf";
+    let extension = "csv";
+    if (format === "JSON") extension = "json";
+    if (format === "PDF") extension = "pdf";
 
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `UserRequest_${id}_${dayjs().format('YYYYMMDD')}.${extension}`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-        
-        toast.success('สำเร็จ', 'ดาวน์โหลดไฟล์เรียบร้อยแล้ว');
-    } catch (error) {
-        console.error("Download Error:", error);
-        toast.error('เกิดข้อผิดพลาด', 'ไม่สามารถดาวน์โหลดไฟล์ได้');
-    }
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Audit_Export_${id}_${dayjs().format('YYYYMMDD')}.${extension}`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+    
+    toast.success('สำเร็จ', 'ดาวน์โหลดไฟล์เรียบร้อยแล้ว');
+  } catch (error) {
+    console.error("Download Error:", error);
+    toast.error('เกิดข้อผิดพลาด', 'ไม่สามารถดาวน์โหลดไฟล์ได้ หรือไฟล์อาจหมดอายุระบบถูกลบทิ้งไปแล้ว');
+  }
 }
 
 onMounted(() => {

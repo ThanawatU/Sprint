@@ -60,22 +60,27 @@
                 </td>
                 <td class="px-4 py-3 text-right">
                   <div v-if="req.status === 'PENDING'" class="flex justify-end gap-2">
-                    <button 
-                      @click="handleApprove(req.id)"
-                      :disabled="processingId === req.id"
-                      class="text-white bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-xs font-medium transition flex items-center gap-1 disabled:opacity-50"
-                    >
-                      <span v-if="processingId === req.id">กำลังสร้างไฟล์</span>
+                    <button @click="handleApprove(req.id)" :disabled="processingId === req.id" class="text-white bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-xs font-medium transition flex items-center gap-1 disabled:opacity-50">
+                      <span v-if="processingId === req.id">กำลังสร้างไฟล์...</span>
                       <span v-else>อนุมัติ</span>
                     </button>
-                    <button 
-                      @click="openRejectModal(req.id)"
-                      :disabled="processingId === req.id"
-                      class="text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50"
-                    >
+                    <button @click="openRejectModal(req.id)" :disabled="processingId === req.id" class="text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-medium transition disabled:opacity-50">
                       ปฏิเสธ
                     </button>
                   </div>
+                  
+                  <div v-else-if="req.status === 'APPROVED'" class="flex justify-end items-center gap-2">
+                    <span class="text-gray-400 text-xs hidden sm:inline-block" :title="req.reviewedBy?.email">
+                      รีวิวโดย: {{ req.reviewedBy?.email || 'System' }}
+                    </span>
+                    <button 
+                      @click="downloadLog(req.id, req.format)"
+                      class="text-blue-600 hover:text-blue-800 font-medium text-xs border border-blue-600 px-3 py-1 rounded bg-blue-50 transition flex items-center gap-1"
+                    >
+                      <i class="fa-solid fa-download"></i> ดาวน์โหลด
+                    </button>
+                  </div>
+
                   <span v-else class="text-gray-400 text-xs">
                     รีวิวโดย: {{ req.reviewedBy?.email || 'System' }}
                   </span>
