@@ -580,18 +580,58 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
+const tokenCookie = useCookie('token');
+const userCookie = useCookie('user');
+
+// ใช้ computed เพื่อให้ดึงค่าได้อย่างถูกต้องและปลอดภัยใน Nuxt
+const myUserId = computed(() => {
+  if (userCookie.value) {
+    try {
+      const userData = typeof userCookie.value === 'string'
+        ? JSON.parse(decodeURIComponent(userCookie.value))
+        : userCookie.value;
+
+      if (userData?.id) return String(userData.id);
+    } catch (err) {
+      console.error("Parse userCookie error:", err);
+    }
+  }
+
+  if (tokenCookie.value) {
+    try {
+      const payload = JSON.parse(atob(tokenCookie.value.split(".")[1]));
+      if (payload?.sub) return String(payload.sub);
+    } catch (err) {
+      console.error("Parse tokenCookie error:", err);
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    const localToken = localStorage.getItem('token');
+    if (localToken) {
+      try {
+        const payload = JSON.parse(atob(localToken.split(".")[1]));
+        if (payload?.sub) return String(payload.sub);
+      } catch (err) {}
+    }
+  }
+
+  return null;
+});
+
 const isSubmittingReport = ref(false);
 const isReportModalOpen = ref(false);
 const selectedReportTrip = ref(null);
+
 const reportableUsers = computed(() => {
   if (!selectedReportTrip.value) return [];
 
   const trip = selectedReportTrip.value;
   const users = [];
-  const currentUserId = getCurrentUserId();
+  const currentUserId = myUserId.value; // ดึงค่าจาก computed ด้านบน
 
   // เพิ่มคนขับ
-  if (trip.driverId && trip.driverId !== currentUserId) {
+  if (trip.driverId && String(trip.driverId) !== currentUserId) {
     users.push({
       id: trip.driverId,
       firstName:
@@ -609,7 +649,8 @@ const reportableUsers = computed(() => {
   // เพิ่มผู้โดยสาร
   if (Array.isArray(trip.passengers)) {
     trip.passengers.forEach((p) => {
-      if (!p?.id || p.id === currentUserId) return;
+      // ถ้าไม่มี ID หรือ ID ตรงกับตัวเอง ให้ข้ามไป
+      if (!p?.id || String(p.id) === currentUserId) return;
 
       users.push({
         id: p.id,
@@ -620,7 +661,7 @@ const reportableUsers = computed(() => {
     });
   }
 
-  // ป้องกันซ้ำ
+  // ป้องกันการแสดงชื่อคนซ้ำ
   const seen = new Set();
   return users.filter((u) => {
     if (seen.has(u.id)) return false;
@@ -686,14 +727,6 @@ function closeReportModal() {
   };
 }
 
-function getCurrentUserId() {
-  const token = localStorage.getItem("token");
-  if (!token) return null;
-
-  const payload = JSON.parse(atob(token.split(".")[1]));
-  return payload.id;
-}
-
 async function uploadToCloudinary(file) {
   const config = useRuntimeConfig();
   const formData = new FormData();
@@ -724,16 +757,16 @@ async function submitReport() {
   if (isSubmittingReport.value) return;
 
   try {
-    console.log('[submitReport] reportForm:', JSON.parse(JSON.stringify(reportForm.value)));
+    // console.log('[submitReport] reportForm:', JSON.parse(JSON.stringify(reportForm.value)));
 
     if (!reportForm.value.reportedUserIds.length) {
-      console.log('[submitReport] ไม่ได้เลือกผู้ที่ต้องการรายงาน');
+      // console.log('[submitReport] ไม่ได้เลือกผู้ที่ต้องการรายงาน');
       toast.error("กรุณาเลือกผู้ที่ต้องการรายงาน");
       return;
     }
 
     if (!reportForm.value.category) {
-      console.log('[submitReport] ไม่ได้เลือกประเภทปัญหา');
+      // console.log('[submitReport] ไม่ได้เลือกประเภทปัญหา');
       toast.error("กรุณาเลือกประเภทปัญหา");
       return;
     }
@@ -742,7 +775,7 @@ async function submitReport() {
       !reportForm.value.description ||
       reportForm.value.description.trim().length < 10
     ) {
-      console.log('[submitReport] รายละเอียดไม่ครบ 10 ตัวอักษร');
+      // console.log('[submitReport] รายละเอียดไม่ครบ 10 ตัวอักษร');
       toast.error("รายละเอียดต้องมีอย่างน้อย 10 ตัวอักษร");
       return;
     }
@@ -752,25 +785,25 @@ async function submitReport() {
     );
 
     if (hasBlockedUser) {
-      console.log('[submitReport] มีผู้ใช้ที่ถูก block อยู่:', blockedReportedUserIds.value);
+      // console.log('[submitReport] มีผู้ใช้ที่ถูก block อยู่:', blockedReportedUserIds.value);
       toast.error("ไม่สามารถรายงานซ้ำได้ กรุณารอให้การตรวจสอบเสร็จสิ้น");
       return;
     }
 
-    console.log('[submitReport] ผ่านการ validate ทั้งหมด');
+    // console.log('[submitReport] ผ่านการ validate ทั้งหมด');
     isSubmittingReport.value = true;
 
     // อัปโหลดไฟล์ไปที่ Cloudinary ก่อน
     const evidences = [];
     if (reportForm.value.evidences.length > 0) {
-      console.log('[submitReport] เริ่มอัปโหลดไฟล์', reportForm.value.evidences.length, 'ไฟล์');
+      // console.log('[submitReport] เริ่มอัปโหลดไฟล์', reportForm.value.evidences.length, 'ไฟล์');
       toast.info('กำลังอัปโหลดไฟล์...');
       
       for (const evidence of reportForm.value.evidences) {
         try {
-          console.log('[submitReport] อัปโหลด:', evidence.fileName);
+          // console.log('[submitReport] อัปโหลด:', evidence.fileName);
           const cloudinaryData = await uploadToCloudinary(evidence.file);
-          console.log('[submitReport] อัปโหลดสำเร็จ:', cloudinaryData.secure_url);
+          // console.log('[submitReport] อัปโหลดสำเร็จ:', cloudinaryData.secure_url);
           evidences.push({
             type: evidence.type,
             url: cloudinaryData.secure_url,
@@ -784,7 +817,7 @@ async function submitReport() {
           throw err;
         }
       }
-      console.log('[submitReport] อัปโหลดไฟล์สำเร็จทั้งหมด:', evidences);
+      // console.log('[submitReport] อัปโหลดไฟล์สำเร็จทั้งหมด:', evidences);
     }
 
     // ส่งรายงานพร้อม URL ของไฟล์
@@ -795,48 +828,48 @@ async function submitReport() {
       category: reportForm.value.category,
       description: reportForm.value.description.trim(),
     };
-    console.log('[submitReport] ส่ง report payload:', reportPayload);
+    // console.log('[submitReport] ส่ง report payload:', reportPayload);
 
     const response = await $api("/reports", {
       method: "POST",
       body: reportPayload,
     });
 
-    console.log('[submitReport] Response จากการสร้าง report:', response);
+    // console.log('[submitReport] Response จากการสร้าง report:', response);
     
     // รองรับทั้งกรณี response เป็น Array หรือ Object
     const reportData = Array.isArray(response) ? response[0] : response;
-    console.log('[submitReport] reportData:', reportData);
+    // console.log('[submitReport] reportData:', reportData);
     
     // ถ้ามี groupId ใช้ groupId, ไม่มีใช้ id
     const reportId = reportData?.groupId || reportData?.id;
-    console.log('[submitReport] reportId (groupId || id):', reportId);
+    // console.log('[submitReport] reportId (groupId || id):', reportId);
 
     // อัปโหลดหลักฐาน (ถ้ามี)
     if (evidences.length > 0 && reportId) {
-      console.log('[submitReport] เริ่มส่งหลักฐาน');
+      // console.log('[submitReport] เริ่มส่งหลักฐาน');
       try {
-        console.log('[submitReport] reportId ที่จะใช้:', reportId);
+        // console.log('[submitReport] reportId ที่จะใช้:', reportId);
         
         const evidencePayload = { evidences };
-        console.log('[submitReport] evidence payload:', evidencePayload);
-        console.log('[submitReport] endpoint:', `/reports/${reportId}/evidence`);
+        // console.log('[submitReport] evidence payload:', evidencePayload);
+        // console.log('[submitReport] endpoint:', `/reports/${reportId}/evidence`);
         
         const evidenceResponse = await $api(`/reports/${reportId}/evidence`, {
           method: "POST",
           body: evidencePayload,
         });
-        console.log('[submitReport] Response จากการส่งหลักฐาน:', evidenceResponse);
+        // console.log('[submitReport] Response จากการส่งหลักฐาน:', evidenceResponse);
       } catch (err) {
         console.error('[submitReport]  Error uploading evidences:', err);
         console.error('[submitReport] Error details:', err.data || err.message);
         // ไม่ throw error เพราะรายงานส่งไปแล้ว
       }
     } else if (evidences.length > 0 && !reportId) {
-      console.log('[submitReport] ไม่พบ reportId - ไม่สามารถส่งหลักฐานได้');
+      // console.log('[submitReport] ไม่พบ reportId - ไม่สามารถส่งหลักฐานได้');
     }
 
-    console.log('[submitReport] สำเร็จ! กำลังปิด modal และ refresh');
+    // console.log('[submitReport] สำเร็จ! กำลังปิด modal และ refresh');
     toast.success(
       "ส่งรายงานสำเร็จ\n\nหากต้องการเพิ่มหลักฐานเพิ่มเติม\nสามารถไปที่หน้าประวัติการรายงานได้",
       { duration: 5000 }
@@ -849,7 +882,7 @@ async function submitReport() {
 
     // นำทางไปหน้าประวัติ
     setTimeout(() => {
-      console.log('[submitReport] Navigate to /myHistory');
+      // console.log('[submitReport] Navigate to /myHistory');
       router.push("/myHistory");
     }, 1500);
   } catch (error) {
@@ -860,7 +893,7 @@ async function submitReport() {
     toast.error(errorMessage);
   } finally {
     isSubmittingReport.value = false;
-    console.log('[submitReport] จบฟังก์ชัน submitReport');
+    // console.log('[submitReport] จบฟังก์ชัน submitReport');
   }
 }
 
@@ -1520,6 +1553,32 @@ onMounted(() => {
     return;
   }
 
+  const token = localStorage.getItem("token") || tokenCookie.value;
+  
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      myUserId.value = String(payload.sub || payload.id || payload.userId || '');
+    } catch (error) {
+      console.error("Error parsing token:", error);
+    }
+  }
+
+  if (!myUserId.value && userCookie.value) {
+    try {
+      // Nuxt มักจะแปลง JSON ใน Cookie ให้เป็น Object อัตโนมัติ แต่กันเหนียวไว้ก่อน
+      const userData = typeof userCookie.value === 'string' 
+        ? JSON.parse(decodeURIComponent(userCookie.value)) 
+        : userCookie.value;
+
+      if (userData?.id) {
+        myUserId.value = String(userData.id);
+      }
+    } catch (err) {
+      console.error("Error parsing user cookie:", err);
+    }
+  }
+
   // ยังไม่โหลดเสร็จ: ตั้ง callback
   window[GMAPS_CB] = () => {
     try {
@@ -1549,10 +1608,10 @@ onActivated(() => {
 // Watch query params เพื่อ refresh เมื่อมี query.refresh (จาก navigate หลังจอง)
 watch(() => route.query.refresh, (newVal) => {
   if (newVal) {
-    console.log('[myTrip] Detected refresh query, fetching trips...');
+    // console.log('[myTrip] Detected refresh query, fetching trips...');
     // Fetch ข้อมูลใหม่เมื่อมี refresh query
     fetchMyTrips().then(() => {
-      console.log('[myTrip] Fetched trips:', allTrips.value.length, 'trips');
+      // console.log('[myTrip] Fetched trips:', allTrips.value.length, 'trips');
       if (filteredTrips.value.length) {
         updateMap(filteredTrips.value[0]);
       }
