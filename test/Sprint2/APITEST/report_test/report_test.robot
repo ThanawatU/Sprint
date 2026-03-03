@@ -7,13 +7,13 @@ Library           String
 Suite Setup       Setup Session and Login
 
 *** Variables ***
-${BASE_URL}              https://csse1469.cpkku.com
+${BASE_URL}              https://deploy-production-88fa.up.railway.app
 ${SESSION_ALIAS}         api
 
-${REPORTER_USER}         pLoomN
-${REPORTER_PASS}         12345678aP
-${REPORTED_USER}         Test123
-${REPORTED_PASS}         12345678aP
+${REPORTER_USER}         reporttester01
+${REPORTER_PASS}         123456789
+${REPORTED_USER}         reporttester02
+${REPORTED_PASS}         123456789
 ${ADMIN_USER}            admin123
 ${ADMIN_PASS}            123456789
 
@@ -236,34 +236,6 @@ Verify Final Report Status
 Setup Session and Login
     [Documentation]    สร้าง Session และ Login ทุก role
     Create Session    ${SESSION_ALIAS}    ${BASE_URL}    disable_warnings=1
-
-    # --- Create Reporter User ---
-    ${reporter_reg}=    Create Dictionary
-    ...    username=${REPORTER_USER}
-    ...    password=${REPORTER_PASS}
-    ...    email=ploomn@test.com
-    ...    firstName=Ploom
-    ...    lastName=Noom
-    ...    phoneNumber=0812345001
-    ...    dateOfBirth=1995-05-15
-    ...    gender=MALE
-    ${resp_reg_reporter}=    POST On Session    ${SESSION_ALIAS}    url=/api/users    json=${reporter_reg}    expected_status=anything
-    Log    Reporter Register: ${resp_reg_reporter.status_code}
-    Sleep    0.5s
-
-    # --- Create Reported User ---
-    ${reported_reg}=    Create Dictionary
-    ...    username=${REPORTED_USER}
-    ...    password=${REPORTED_PASS}
-    ...    email=test123@test.com
-    ...    firstName=Test
-    ...    lastName=User
-    ...    phoneNumber=0812345002
-    ...    dateOfBirth=1998-03-20
-    ...    gender=FEMALE
-    ${resp_reg_reported}=    POST On Session    ${SESSION_ALIAS}    url=/api/users    json=${reported_reg}    expected_status=anything
-    Log    Reported User Register: ${resp_reg_reported.status_code}
-    Sleep    0.5s
 
     # --- Login Reporter ---
     ${reporter_payload}=    Create Dictionary    username=${REPORTER_USER}    password=${REPORTER_PASS}

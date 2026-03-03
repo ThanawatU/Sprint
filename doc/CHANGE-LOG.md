@@ -446,6 +446,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Added automated API tests for the report module.
+- Added A-DAPT Blueprint FOR SPRINT 2
 
 ### Changed
 - Reorganized project documentation files for better structure and maintainability.
