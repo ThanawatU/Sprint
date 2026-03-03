@@ -5,7 +5,7 @@ Library           Collections
 *** Variables ***
 ${BASE_URL}             http://localhost:3000/api
 ${USER_NAME}            nutho04
-${USER_ID}              cmmamd1b2001hesfwwe4kvm49  # 🚀 ต้องมี ID ของ User ด้วย
+${USER_ID}              cmmamd1b2001hesfwwe4kvm49 
 ${USER_PASSWORD}        0123456789
 ${ADMIN_NAME}           admin123
 ${ADMIN_PASSWORD}       123456789
