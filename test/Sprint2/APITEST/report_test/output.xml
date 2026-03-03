@@ -1,0 +1,1288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.0.1 (Python 3.13.2 on win32)" generated="2026-03-03T23:28:48.786530" rpa="false" schemaversion="5">
+<suite id="s1" name="Report Test" source="D:\Y3T2\SotwareEngi\SoftEnProJ\Sprint\test\Sprint2\APITEST\report_test\report_test.robot">
+<kw name="Setup Session and Login" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:48.954980" level="INFO">Creating Session using : alias=api, url=https://deploy-production-88fa.up.railway.app, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>${SESSION_ALIAS}</arg>
+<arg>${BASE_URL}</arg>
+<arg>disable_warnings=1</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-03-03T23:28:48.954777" elapsed="0.000373"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:48.955517" level="INFO">${reporter_payload} = {'username': 'reporttester01', 'password': '123456789'}</msg>
+<var>${reporter_payload}</var>
+<arg>username=${REPORTER_USER}</arg>
+<arg>password=${REPORTER_PASS}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:48.955269" elapsed="0.000265"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:49.651952" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ body=b'{"username": "reporttester01", "password": "123456789"}' 
+ </msg>
+<msg time="2026-03-03T23:28:49.652136" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '496', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1f0-sTlMsgd+RMtm02KOr7cw/7aQZVY"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:28:50 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'kBcS_scdSnefSJU90ubPiw', 'X-Request-Id': '7bd75d00-7b07-4ef8-a471-bb83ab19b15d', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:50 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555330.611989,VS0,VE595', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE","user":{"id":"cmmatc86u0022vdykaz1x5h3d","firstName":"report","lastName":"tester01","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-03T23:28:49.652316" level="INFO">${resp_reporter} = &lt;Response [200]&gt;</msg>
+<var>${resp_reporter}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/auth/login</arg>
+<arg>json=${reporter_payload}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:48.955618" elapsed="0.696732"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-03T23:28:49.653522" level="INFO">Reporter Login (200): {"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE","user":{"id":"cmmatc86u0022vdykaz1x5h3d","firstName":"report","lastName":"tester01","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}}</msg>
+<arg>Reporter Login (${resp_reporter.status_code}): ${resp_reporter.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-03T23:28:49.652551" elapsed="0.001059"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:49.654976" level="INFO">${REPORTER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE</msg>
+<arg>${REPORTER_TOKEN}</arg>
+<arg>${resp_reporter.json()['data']['token']}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-03T23:28:49.654425" elapsed="0.000591"/>
+</kw>
+<arg>${resp_reporter.status_code} == 200</arg>
+<arg>Set Suite Variable</arg>
+<arg>${REPORTER_TOKEN}</arg>
+<arg>${resp_reporter.json()['data']['token']}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:49.653784" elapsed="0.001279"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.156080" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:49.655156" elapsed="0.501117"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.156952" level="INFO">${reported_payload} = {'username': 'reporttester02', 'password': '123456789'}</msg>
+<var>${reported_payload}</var>
+<arg>username=${REPORTED_USER}</arg>
+<arg>password=${REPORTED_PASS}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.156595" elapsed="0.000385"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:50.754783" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ body=b'{"username": "reporttester02", "password": "123456789"}' 
+ </msg>
+<msg time="2026-03-03T23:28:50.754889" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '496', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1f0-AW6FYoNaiUOBVJTwsYNIvm9OUiA"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGZiaG8wMDRsdmR5a3lkMmo0amhkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMSwiZXhwIjoxNzcyNTU4OTMxfQ.ZrrMbTQA5Iz40hUeWlyLqSENDmlkHlpf0ITlninz4xk; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:28:51 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'spPp-rK_ShKTdDEeAQeqjw', 'X-Request-Id': 'c0e727b4-7369-44a8-83fe-dafa52148d7a', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:51 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555331.729059,VS0,VE580', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGZiaG8wMDRsdmR5a3lkMmo0amhkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMSwiZXhwIjoxNzcyNTU4OTMxfQ.ZrrMbTQA5Iz40hUeWlyLqSENDmlkHlpf0ITlninz4xk","user":{"id":"cmmatfbho004lvdykyd2j4jhd","firstName":"report","lastName":"tester02","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-03T23:28:50.755208" level="INFO">${resp_reported} = &lt;Response [200]&gt;</msg>
+<var>${resp_reported}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/auth/login</arg>
+<arg>json=${reported_payload}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.157117" elapsed="0.598125"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.756231" level="INFO">Reported User Login (200): {"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGZiaG8wMDRsdmR5a3lkMmo0amhkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMSwiZXhwIjoxNzcyNTU4OTMxfQ.ZrrMbTQA5Iz40hUeWlyLqSENDmlkHlpf0ITlninz4xk","user":{"id":"cmmatfbho004lvdykyd2j4jhd","firstName":"report","lastName":"tester02","profilePicture":null,"role":"PASSENGER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}}</msg>
+<arg>Reported User Login (${resp_reported.status_code}): ${resp_reported.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.755410" elapsed="0.000872"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.757445" level="INFO">${REPORTED_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGZiaG8wMDRsdmR5a3lkMmo0amhkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMSwiZXhwIjoxNzcyNTU4OTMxfQ.ZrrMbTQA5Iz40hUeWlyLqSENDmlkHlpf0ITlninz4xk</msg>
+<arg>${REPORTED_TOKEN}</arg>
+<arg>${resp_reported.json()['data']['token']}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.756933" elapsed="0.000567"/>
+</kw>
+<arg>${resp_reported.status_code} == 200</arg>
+<arg>Set Suite Variable</arg>
+<arg>${REPORTED_TOKEN}</arg>
+<arg>${resp_reported.json()['data']['token']}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.756425" elapsed="0.001121"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Extract User Id">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.759382" level="INFO">${has_user} = True</msg>
+<var>${has_user}</var>
+<arg>'data' in $json and 'user' in $json['data'] and 'id' in $json['data']['user']</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.758850" elapsed="0.000563"/>
+</kw>
+<kw name="Return From Keyword If" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.759667" level="INFO">Returning from the enclosing user keyword.</msg>
+<arg>${has_user}</arg>
+<arg>${json['data']['user']['id']}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.759542" elapsed="0.000218"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<var>${has_data_id}</var>
+<arg>'data' in $json and 'id' in $json['data']</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="NOT RUN" start="2026-03-03T23:28:50.759962" elapsed="0.000044"/>
+</kw>
+<kw name="Return From Keyword If" owner="BuiltIn">
+<arg>${has_data_id}</arg>
+<arg>${json['data']['id']}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<status status="NOT RUN" start="2026-03-03T23:28:50.760147" elapsed="0.000019"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<var>${has_id}</var>
+<arg>'id' in $json</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="NOT RUN" start="2026-03-03T23:28:50.760299" elapsed="0.000023"/>
+</kw>
+<kw name="Return From Keyword If" owner="BuiltIn">
+<arg>${has_id}</arg>
+<arg>${json['id']}</arg>
+<doc>Returns from the enclosing user keyword if ``condition`` is true.</doc>
+<status status="NOT RUN" start="2026-03-03T23:28:50.760419" elapsed="0.000022"/>
+</kw>
+<kw name="Fail" owner="BuiltIn">
+<arg>Cannot extract user ID from: ${json}</arg>
+<doc>Fails the test with the given message and optionally alters its tags.</doc>
+<status status="NOT RUN" start="2026-03-03T23:28:50.760546" elapsed="0.000015"/>
+</kw>
+<arg>${resp_reported.json()}</arg>
+<status status="PASS" start="2026-03-03T23:28:50.758293" elapsed="0.003302"/>
+</kw>
+<msg time="2026-03-03T23:28:50.761759" level="INFO">${reported_user_id} = cmmatfbho004lvdykyd2j4jhd</msg>
+<var>${reported_user_id}</var>
+<arg>${resp_reported.status_code} == 200</arg>
+<arg>Extract User Id</arg>
+<arg>${resp_reported.json()}</arg>
+<arg>ELSE</arg>
+<arg>Set Variable</arg>
+<arg>${EMPTY}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.757645" elapsed="0.004146"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:50.763113" level="INFO">${REPORTED_USER_ID} = cmmatfbho004lvdykyd2j4jhd</msg>
+<arg>${REPORTED_USER_ID}</arg>
+<arg>${reported_user_id}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.762829" elapsed="0.000345"/>
+</kw>
+<arg>'${reported_user_id}' != '${EMPTY}'</arg>
+<arg>Set Suite Variable</arg>
+<arg>${REPORTED_USER_ID}</arg>
+<arg>${reported_user_id}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.761976" elapsed="0.001280"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:51.264028" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:50.763411" elapsed="0.500717"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:51.264539" level="INFO">${admin_payload} = {'username': 'admin123', 'password': '123456789'}</msg>
+<var>${admin_payload}</var>
+<arg>username=${ADMIN_USER}</arg>
+<arg>password=${ADMIN_PASS}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.264277" elapsed="0.000285"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:51.669928" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGZiaG8wMDRsdmR5a3lkMmo0amhkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMSwiZXhwIjoxNzcyNTU4OTMxfQ.ZrrMbTQA5Iz40hUeWlyLqSENDmlkHlpf0ITlninz4xk', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ body=b'{"username": "admin123", "password": "123456789"}' 
+ </msg>
+<msg time="2026-03-03T23:28:51.670038" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '491', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1eb-25lTRmgjla1dr1TYtsrLlKhrzqo"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ; Max-Age=604800; Path=/; Expires=Tue, 10 Mar 2026 16:28:52 GMT; HttpOnly; SameSite=None', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'e5xziPMsRMG4vrvR0ubPiw', 'X-Request-Id': '86f945d3-fff9-4f31-9af8-a2b87387a49e', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:52 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555332.835675,VS0,VE369', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ","user":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-03T23:28:51.670311" level="INFO">${resp_admin} = &lt;Response [200]&gt;</msg>
+<var>${resp_admin}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/auth/login</arg>
+<arg>json=${admin_payload}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.264650" elapsed="0.405690"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-03T23:28:51.672054" level="INFO">Admin Login (200): {"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ","user":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}}</msg>
+<arg>Admin Login (${resp_admin.status_code}): ${resp_admin.text}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.670510" elapsed="0.001625"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:51.673790" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ</msg>
+<arg>${ADMIN_TOKEN}</arg>
+<arg>${resp_admin.json()['data']['token']}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.673213" elapsed="0.000626"/>
+</kw>
+<arg>${resp_admin.status_code} == 200</arg>
+<arg>Set Suite Variable</arg>
+<arg>${ADMIN_TOKEN}</arg>
+<arg>${resp_admin.json()['data']['token']}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.672369" elapsed="0.001533"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.174326" level="INFO">Slept 500 milliseconds.</msg>
+<arg>0.5s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:51.674013" elapsed="0.500415"/>
+</kw>
+<doc>สร้าง Session และ Login ทุก role</doc>
+<status status="PASS" start="2026-03-03T23:28:48.954349" elapsed="3.220179"/>
+</kw>
+<test id="s1-t1" name="Create Report Simple Case" line="31">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.175922" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.175513" elapsed="0.000446"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.176943" level="INFO">${reported_ids} = ['cmmatfbho004lvdykyd2j4jhd']</msg>
+<var>${reported_ids}</var>
+<arg>${REPORTED_USER_ID}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.176719" elapsed="0.000248"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.178004" level="INFO">${body} = {'reportedUserIds': ['cmmatfbho004lvdykyd2j4jhd'], 'category': 'DANGEROUS_DRIVING', 'description': 'คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง'}</msg>
+<var>${body}</var>
+<arg>reportedUserIds=${reported_ids}</arg>
+<arg>category=DANGEROUS_DRIVING</arg>
+<arg>description=คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.177716" elapsed="0.000315"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:52.562568" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ path_url=/api/reports 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '396', 'Content-Type': 'application/json'} 
+ body=b'{"reportedUserIds": ["cmmatfbho004lvdykyd2j4jhd"], "category": "DANGEROUS_DRIVING", "description": "\\u0e04\\u0e19\\u0e02\\u0e31\\u0e1a\\u0e02\\u0e31\\u0e1a\\u0e23\\u0e16\\u0e40\\u0e23\\u0e47\\u0e27\\u0e40\\u0e01\\u0e34\\u0e19\\u0e01\\u0e33\\u0e2b\\u0e19\\u0e14\\u0e21\\u0e32\\u0e01\\u0e41\\u0e25\\u0e30\\u0e1b\\u0e32\\u0e14\\u0e0b\\u0e49\\u0e32\\u0e22\\u0e1b\\u0e32\\u0e14\\u0e02\\u0e27\\u0e32\\u0e15\\u0e25\\u0e2d\\u0e14\\u0e17\\u0e32\\u0e07"}' 
+ </msg>
+<msg time="2026-03-03T23:28:52.562727" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ status=201, reason=Created 
+ headers={'Connection': 'keep-alive', 'Content-Length': '4752', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1290-SSjzDrqAJjWchxabeyvcqGgFEwY"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'KahT0_CBS2SvXUVBAQeqjw', 'X-Request-Id': '6472c00f-e9b3-4412-9ed7-edff5c75adf0', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:53 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555333.749016,VS0,VE333', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"message":"Successfully created report case.","groupId":null,"cases":[{"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"FILED","resolvedById":null,"adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:28:52.917Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","password":"$2b$10$SphrmuIH2oYXTM2JRbseYu0pLDAe6iBnATLqWjOXhVlIghPoF1q9u","firstName":"report","lastName":"tester01","gender":"MALE","phoneNumber":"0941234567","profilePicture":null,"nationalIdNumber":"1234567891234","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554761/painamnae/national_ids/tvfodzzf2hou6bg7xvcl.png","nationalIdExpiryDate":"2589-04-21T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554761/painamnae/selfies/lqqnvczviyzetrroyxos.jpg","role":"PASSENGER","isVerified":false,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-03T16:19:22.614Z","updatedAt":"2026-03-03T16:19:22.614Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","password":"$2b$10$lttQw8sE4qiyGPY0zC0sBurB/yTpxPd3rr2lhinhIpt/6gfugC17O","firstName":"report","lastName":"tester02","gender":"MALE","phoneNumber":"0921345678","profilePicture":null,"nationalIdNumber":"1239876543023","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554906/painamnae/national_ids/kk9wuaraomqieuub83ow.jpg","nationalIdExpiryDate":"2580-02-10T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554906/painamnae/selfies/bdcqzgmhczepzbug4leo.jpg","role":"PASSENGER","isVerified":false,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-03T16:21:46.860Z","updatedAt":"2026-03-03T16:21:46.860Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}],"data":[{"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"FILED","resolvedById":null,"adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:28:52.917Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","password":"$2b$10$SphrmuIH2oYXTM2JRbseYu0pLDAe6iBnATLqWjOXhVlIghPoF1q9u","firstName":"report","lastName":"tester01","gender":"MALE","phoneNumber":"0941234567","profilePicture":null,"nationalIdNumber":"1234567891234","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554761/painamnae/national_ids/tvfodzzf2hou6bg7xvcl.png","nationalIdExpiryDate":"2589-04-21T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554761/painamnae/selfies/lqqnvczviyzetrroyxos.jpg","role":"PASSENGER","isVerified":false,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-03T16:19:22.614Z","updatedAt":"2026-03-03T16:19:22.614Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","password":"$2b$10$lttQw8sE4qiyGPY0zC0sBurB/yTpxPd3rr2lhinhIpt/6gfugC17O","firstName":"report","lastName":"tester02","gender":"MALE","phoneNumber":"0921345678","profilePicture":null,"nationalIdNumber":"1239876543023","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554906/painamnae/national_ids/kk9wuaraomqieuub83ow.jpg","nationalIdExpiryDate":"2580-02-10T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772554906/painamnae/selfies/bdcqzgmhczepzbug4leo.jpg","role":"PASSENGER","isVerified":false,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-03T16:21:46.860Z","updatedAt":"2026-03-03T16:21:46.860Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}]} 
+ </msg>
+<msg time="2026-03-03T23:28:52.563112" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.178673" elapsed="0.384484"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.564520" level="INFO">Status=201</msg>
+<arg>Status=${resp.status_code}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.563737" elapsed="0.000833"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.565842" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.565211" elapsed="0.000728"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.567840" level="INFO">${json} = {'success': True, 'message': 'Successfully created report case.', 'groupId': None, 'cases': [{'id': 'cmmatog8l00b7vdykaqa4f2ax', 'groupId': None, 'reporterId': 'cmmatc86u0022vdykaz1x5h3d', 'driverId':...</msg>
+<var>${json}</var>
+<arg>__import__('json').loads("""${resp.text}""")</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.566648" elapsed="0.001241"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${json}[success]</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.568646" elapsed="0.000246"/>
+</kw>
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.569758" level="INFO">${has_cases} = True</msg>
+<var>${has_cases}</var>
+<arg>'cases' in $json and len($json['cases']) &gt; 0</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.569304" elapsed="0.000501"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.571230" level="INFO">${CREATED_REPORT_ID} = cmmatog8l00b7vdykaqa4f2ax</msg>
+<arg>${CREATED_REPORT_ID}</arg>
+<arg>${json}[cases][0][id]</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.571025" elapsed="0.000252"/>
+</kw>
+<arg>${has_cases}</arg>
+<arg>Set Suite Variable</arg>
+<arg>${CREATED_REPORT_ID}</arg>
+<arg>${json}[cases][0][id]</arg>
+<arg>ELSE</arg>
+<arg>Get Report ID From Latest</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.570783" elapsed="0.000543"/>
+</kw>
+<kw name="Log" owner="BuiltIn">
+<msg time="2026-03-03T23:28:52.572268" level="INFO">Created Report ID: cmmatog8l00b7vdykaqa4f2ax</msg>
+<arg>Created Report ID: ${CREATED_REPORT_ID}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.572079" elapsed="0.000236"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:54.573536" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:52.572777" elapsed="2.000918"/>
+</kw>
+<doc>สร้างรีพอร์ตแจ้งคนเดียว (Positive)</doc>
+<tag>CreateReport</tag>
+<status status="PASS" start="2026-03-03T23:28:52.174619" elapsed="2.399656"/>
+</test>
+<test id="s1-t2" name="Create Report Without Token Should Fail" line="51">
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:54.577152" level="INFO">${reported_ids} = ['cmmatfbho004lvdykyd2j4jhd']</msg>
+<var>${reported_ids}</var>
+<arg>${REPORTED_USER_ID}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:54.576936" elapsed="0.000252"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:54.578074" level="INFO">${body} = {'reportedUserIds': ['cmmatfbho004lvdykyd2j4jhd'], 'category': 'DANGEROUS_DRIVING', 'description': 'ทดสอบสร้างรีพอร์ตโดยไม่มี Token'}</msg>
+<var>${body}</var>
+<arg>reportedUserIds=${reported_ids}</arg>
+<arg>category=DANGEROUS_DRIVING</arg>
+<arg>description=ทดสอบสร้างรีพอร์ตโดยไม่มี Token</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:54.577829" elapsed="0.000268"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:55.125355" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ path_url=/api/reports 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '258', 'Content-Type': 'application/json'} 
+ body=b'{"reportedUserIds": ["cmmatfbho004lvdykyd2j4jhd"], "category": "DANGEROUS_DRIVING", "description": "\\u0e17\\u0e14\\u0e2a\\u0e2d\\u0e1a\\u0e2a\\u0e23\\u0e49\\u0e32\\u0e07\\u0e23\\u0e35\\u0e1e\\u0e2d\\u0e23\\u0e4c\\u0e15\\u0e42\\u0e14\\u0e22\\u0e44\\u0e21\\u0e48\\u0e21\\u0e35 Token"}' 
+ </msg>
+<msg time="2026-03-03T23:28:55.125471" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ status=401, reason=Unauthorized 
+ headers={'Connection': 'keep-alive', 'Content-Length': '66', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"42-VIvuqXCkSos5B2HjVRGsrV8/u7s"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'vKrOa7D8Rrqqe0l4JH0Vcg', 'X-Request-Id': '3d22a176-827d-401a-8087-ed75e0b52d5f', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:55 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555335.151235,VS0,VE463', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Not authorized, no token","data":null} 
+ </msg>
+<msg time="2026-03-03T23:28:55.125608" level="INFO">${resp} = &lt;Response [401]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:54.578607" elapsed="0.547023"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.127130" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.126344" elapsed="0.000871"/>
+</kw>
+<doc>สร้างรีพอร์ตโดยไม่มี Token ต้อง Fail 401</doc>
+<tag>CreateReport</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:54.575571" elapsed="0.552185"/>
+</test>
+<test id="s1-t3" name="Create Report Missing Required Fields" line="62">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.129810" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.129556" elapsed="0.000280"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.130618" level="INFO">${reported_ids} = ['cmmatfbho004lvdykyd2j4jhd']</msg>
+<var>${reported_ids}</var>
+<arg>${REPORTED_USER_ID}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.130465" elapsed="0.000172"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.131466" level="INFO">${body} = {'reportedUserIds': ['cmmatfbho004lvdykyd2j4jhd'], 'category': 'OTHER', 'description': 'short'}</msg>
+<var>${body}</var>
+<arg>reportedUserIds=${reported_ids}</arg>
+<arg>category=OTHER</arg>
+<arg>description=short</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.131260" elapsed="0.000228"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:55.429228" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ path_url=/api/reports 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '95', 'Content-Type': 'application/json'} 
+ body=b'{"reportedUserIds": ["cmmatfbho004lvdykyd2j4jhd"], "category": "OTHER", "description": "short"}' 
+ </msg>
+<msg time="2026-03-03T23:28:55.429366" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ status=400, reason=Bad Request 
+ headers={'Connection': 'keep-alive', 'Content-Length': '126', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"7e-+Q1K4BD64CwsYDVGpR1lIUZn9v4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'jMVshA8PSF2WSFFHJH0Vcg', 'X-Request-Id': 'b2e33bce-da3b-4599-bc66-7aab457de37f', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:55 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555336.703037,VS0,VE255', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Validation error: body.description - Description must be at least 10 characters long","data":null} 
+ </msg>
+<msg time="2026-03-03T23:28:55.429507" level="INFO">${resp} = &lt;Response [400]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.132227" elapsed="0.297311"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.430874" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>400</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.430083" elapsed="0.000862"/>
+</kw>
+<doc>ส่ง description เล็กเกินไป ต้อง Fail 400</doc>
+<tag>CreateReport</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:55.128539" elapsed="0.303068"/>
+</test>
+<test id="s1-t4" name="Add Single Evidence" line="78">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.434527" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.434064" elapsed="0.000500"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.435941" level="INFO">${evidence_item} = {'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg', 'fileName': 'evidence_test_1.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}</msg>
+<var>${evidence_item}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg</arg>
+<arg>fileName=evidence_test_1.jpg</arg>
+<arg>mimeType=image/jpeg</arg>
+<arg>fileSize=${1024000}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.435329" elapsed="0.000648"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.436740" level="INFO">${evidence_list} = [{'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg', 'fileName': 'evidence_test_1.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}]</msg>
+<var>${evidence_list}</var>
+<arg>${evidence_item}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.436550" elapsed="0.000215"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.437327" level="INFO">${body} = {'evidences': [{'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg', 'fileName': 'evidence_test_1.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}]}</msg>
+<var>${body}</var>
+<arg>evidences=${evidence_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.437152" elapsed="0.000196"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:55.838801" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '198', 'Content-Type': 'application/json'} 
+ body=b'{"evidences": [{"type": "IMAGE", "url": "https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg", "fileName": "evidence_test_1.jpg", "mimeType": "image/jpeg", "fileSize": 1024000}]}' 
+ </msg>
+<msg time="2026-03-03T23:28:55.838941" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ status=201, reason=Created 
+ headers={'Connection': 'keep-alive', 'Content-Length': '27', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1b-/BZioQ1V6aqHDtenwgBKcS/7sw4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'u1-lxSmcR6WBzTjVAQeqjw', 'X-Request-Id': '87861cac-b7b2-4d06-8a58-82496447d5a2', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:56 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555336.008363,VS0,VE297', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"count":47} 
+ </msg>
+<msg time="2026-03-03T23:28:55.839057" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}/evidence</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.437749" elapsed="0.401325"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:55.840567" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.839997" elapsed="0.000634"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:56.841947" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:55.841335" elapsed="1.000717"/>
+</kw>
+<doc>อัปโหลดรูปภาพหลักฐาน (Positive)</doc>
+<tag>Evidence</tag>
+<status status="PASS" start="2026-03-03T23:28:55.432632" elapsed="1.410499"/>
+</test>
+<test id="s1-t5" name="Add Evidence Without Token Should Fail" line="94">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:56.845560" level="INFO">${evidence_item} = {'type': 'IMAGE', 'url': 'https://example.com/img.jpg'}</msg>
+<var>${evidence_item}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://example.com/img.jpg</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:56.845313" elapsed="0.000284"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:56.846763" level="INFO">${evidence_list} = [{'type': 'IMAGE', 'url': 'https://example.com/img.jpg'}]</msg>
+<var>${evidence_list}</var>
+<arg>${evidence_item}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:56.846516" elapsed="0.000265"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:56.848251" level="INFO">${body} = {'evidences': [{'type': 'IMAGE', 'url': 'https://example.com/img.jpg'}]}</msg>
+<var>${body}</var>
+<arg>evidences=${evidence_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:56.848012" elapsed="0.000267"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:57.330585" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '72', 'Content-Type': 'application/json'} 
+ body=b'{"evidences": [{"type": "IMAGE", "url": "https://example.com/img.jpg"}]}' 
+ </msg>
+<msg time="2026-03-03T23:28:57.330682" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ status=401, reason=Unauthorized 
+ headers={'Connection': 'keep-alive', 'Content-Length': '66', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"42-VIvuqXCkSos5B2HjVRGsrV8/u7s"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Vnw2zOmYSaadL_vJoB_USg', 'X-Request-Id': '9148d8b1-3398-479e-b45a-574b43240863', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:57 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555337.419810,VS0,VE463', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Not authorized, no token","data":null} 
+ </msg>
+<msg time="2026-03-03T23:28:57.330793" level="INFO">${resp} = &lt;Response [401]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}/evidence</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:56.849055" elapsed="0.481760"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.332133" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.331490" elapsed="0.000695"/>
+</kw>
+<doc>อัปโหลดโดยไม่มี Token ต้อง 401</doc>
+<tag>Evidence</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:56.844449" elapsed="0.488448"/>
+</test>
+<test id="s1-t6" name="Add Too Many Images Should Fail" line="103">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.341078" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.340738" elapsed="0.000376"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.342039" level="INFO">${ev1} = {'type': 'IMAGE', 'url': 'https://example.com/1.jpg'}</msg>
+<var>${ev1}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://example.com/1.jpg</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.341725" elapsed="0.000341"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.343230" level="INFO">${ev2} = {'type': 'IMAGE', 'url': 'https://example.com/2.jpg'}</msg>
+<var>${ev2}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://example.com/2.jpg</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.342845" elapsed="0.000417"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.343899" level="INFO">${ev3} = {'type': 'IMAGE', 'url': 'https://example.com/3.jpg'}</msg>
+<var>${ev3}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://example.com/3.jpg</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.343656" elapsed="0.000280"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.344905" level="INFO">${ev4} = {'type': 'IMAGE', 'url': 'https://example.com/4.jpg'}</msg>
+<var>${ev4}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://example.com/4.jpg</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.344722" elapsed="0.000207"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.345729" level="INFO">${evidence_list} = [{'type': 'IMAGE', 'url': 'https://example.com/1.jpg'}, {'type': 'IMAGE', 'url': 'https://example.com/2.jpg'}, {'type': 'IMAGE', 'url': 'https://example.com/3.jpg'}, {'type': 'IMAGE', 'url': 'https://...</msg>
+<var>${evidence_list}</var>
+<arg>${ev1}</arg>
+<arg>${ev2}</arg>
+<arg>${ev3}</arg>
+<arg>${ev4}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.345508" elapsed="0.000245"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.346480" level="INFO">${body} = {'evidences': [{'type': 'IMAGE', 'url': 'https://example.com/1.jpg'}, {'type': 'IMAGE', 'url': 'https://example.com/2.jpg'}, {'type': 'IMAGE', 'url': 'https://example.com/3.jpg'}, {'type': 'IMAGE', 'u...</msg>
+<var>${body}</var>
+<arg>evidences=${evidence_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.346266" elapsed="0.000238"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:57.683055" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '235', 'Content-Type': 'application/json'} 
+ body=b'{"evidences": [{"type": "IMAGE", "url": "https://example.com/1.jpg"}, {"type": "IMAGE", "url": "https://example.com/2.jpg"}, {"type": "IMAGE", "url": "https://example.com/3.jpg"}, {"type": "IMAGE", "url": "https://example.com/4.jpg"}]}' 
+ </msg>
+<msg time="2026-03-03T23:28:57.683256" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ status=400, reason=Bad Request 
+ headers={'Connection': 'keep-alive', 'Content-Length': '139', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"8b-UNTOvOlu5YVqteSw/k9BMLBaGrA"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'c7KfkMtxQAehZoIhoB_USg', 'X-Request-Id': 'f30a6563-f83a-416c-85a1-19614ebb57c0', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:58 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555338.917826,VS0,VE259', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Validation error: body.evidences - You can upload a maximum of 3 images and 3 videos per request.","data":null} 
+ </msg>
+<msg time="2026-03-03T23:28:57.683406" level="INFO">${resp} = &lt;Response [400]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}/evidence</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.346902" elapsed="0.336559"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.685363" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>400</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.684102" elapsed="0.001376"/>
+</kw>
+<doc>ส่ง IMAGE มากกว่า 3 ต้อง 400</doc>
+<tag>Evidence</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:57.337024" elapsed="0.349056"/>
+</test>
+<test id="s1-t7" name="Add Evidence Multiple Times" line="116">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.688783" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.688481" elapsed="0.000337"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.690394" level="INFO">${evidence_item} = {'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg', 'fileName': 'evidence_test_2.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}</msg>
+<var>${evidence_item}</var>
+<arg>type=IMAGE</arg>
+<arg>url=https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg</arg>
+<arg>fileName=evidence_test_2.jpg</arg>
+<arg>mimeType=image/jpeg</arg>
+<arg>fileSize=${1024000}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.689699" elapsed="0.000722"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.691178" level="INFO">${evidence_list} = [{'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg', 'fileName': 'evidence_test_2.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}]</msg>
+<var>${evidence_list}</var>
+<arg>${evidence_item}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.690968" elapsed="0.000317"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:57.692253" level="INFO">${body} = {'evidences': [{'type': 'IMAGE', 'url': 'https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg', 'fileName': 'evidence_test_2.jpg', 'mimeType': 'image/jpeg', 'fileSize': 1024000}]}</msg>
+<var>${body}</var>
+<arg>evidences=${evidence_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.691785" elapsed="0.000521"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:58.298121" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '198', 'Content-Type': 'application/json'} 
+ body=b'{"evidences": [{"type": "IMAGE", "url": "https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg", "fileName": "evidence_test_2.jpg", "mimeType": "image/jpeg", "fileSize": 1024000}]}' 
+ </msg>
+<msg time="2026-03-03T23:28:58.298444" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax/evidence 
+ status=201, reason=Created 
+ headers={'Connection': 'keep-alive', 'Content-Length': '27', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"1b-/BZioQ1V6aqHDtenwgBKcS/7sw4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'e1pwkKBqRKehRodNAXC71g', 'X-Request-Id': 'cb8feadf-a43e-4b35-8dcf-ff525f6430d4', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:28:58 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555338.263546,VS0,VE551', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"count":47} 
+ </msg>
+<msg time="2026-03-03T23:28:58.298829" level="INFO">${resp} = &lt;Response [201]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}/evidence</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:57.692716" elapsed="0.606238"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:58.302356" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:58.300438" elapsed="0.002110"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.304972" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:28:58.303954" elapsed="1.001225"/>
+</kw>
+<doc>อัปโหลดหลักฐานครั้งที่ 2 (สะสม)</doc>
+<tag>Evidence</tag>
+<status status="PASS" start="2026-03-03T23:28:57.687518" elapsed="1.618742"/>
+</test>
+<test id="s1-t8" name="Create Report With Invalid Category Should Fail" line="132">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.310200" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.309754" elapsed="0.000488"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.311011" level="INFO">${reported_ids} = ['cmmatfbho004lvdykyd2j4jhd']</msg>
+<var>${reported_ids}</var>
+<arg>${REPORTED_USER_ID}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.310747" elapsed="0.000310"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.311818" level="INFO">${body} = {'reportedUserIds': ['cmmatfbho004lvdykyd2j4jhd'], 'category': 'INVALID_CATEGORY', 'description': 'ทดสอบส่ง category ที่ไม่ถูกต้อง'}</msg>
+<var>${body}</var>
+<arg>reportedUserIds=${reported_ids}</arg>
+<arg>category=INVALID_CATEGORY</arg>
+<arg>description=ทดสอบส่ง category ที่ไม่ถูกต้อง</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.311455" elapsed="0.000401"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:59.631128" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ path_url=/api/reports 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '237', 'Content-Type': 'application/json'} 
+ body=b'{"reportedUserIds": ["cmmatfbho004lvdykyd2j4jhd"], "category": "INVALID_CATEGORY", "description": "\\u0e17\\u0e14\\u0e2a\\u0e2d\\u0e1a\\u0e2a\\u0e48\\u0e07 category \\u0e17\\u0e35\\u0e48\\u0e44\\u0e21\\u0e48\\u0e16\\u0e39\\u0e01\\u0e15\\u0e49\\u0e2d\\u0e07"}' 
+ </msg>
+<msg time="2026-03-03T23:28:59.631270" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports 
+ status=400, reason=Bad Request 
+ headers={'Connection': 'keep-alive', 'Content-Length': '232', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"e8-Jk87/Qv4Z4g+h+OYJaF06j9kML0"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '88KngZloQ1SGjm6qoB_USg', 'X-Request-Id': '744e13b3-44ef-4877-9fc1-231eb281f303', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:00 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555340.884134,VS0,VE250', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Validation error: body.category - Invalid enum value. Expected 'DANGEROUS_DRIVING' | 'AGGRESSIVE_BEHAVIOR' | 'HARASSMENT' | 'NO_SHOW' | 'FRAUD_OR_SCAM' | 'OTHER', received 'INVALID_CATEGORY'","data":null} 
+ </msg>
+<msg time="2026-03-03T23:28:59.631621" level="INFO">${resp} = &lt;Response [400]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.312249" elapsed="0.319406"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.632965" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>400</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.632104" elapsed="0.000942"/>
+</kw>
+<doc>สร้างรีพอร์ตด้วย category ที่ไม่ถูกต้อง ต้อง 400</doc>
+<tag>CreateReport</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:59.308015" elapsed="0.325296"/>
+</test>
+<test id="s1-t9" name="Get My Reports" line="148">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.635283" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.635064" elapsed="0.000241"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:28:59.926242" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/my 
+ path_url=/api/reports/my 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:28:59.926369" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/my 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '1730', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"6c2-OGsppJVQXQa1uE4dzI+zJdcd6Bg"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'PG1VdihnT7y0fzC0oB_USg', 'X-Request-Id': '69944d18-5fbd-4fb2-9795-1e535ac16a01', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:00 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555340.205171,VS0,VE273', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":true,"data":[{"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"FILED","resolvedById":null,"adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:28:52.917Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","firstName":"report","lastName":"tester01"},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02"},"booking":null,"route":null,"evidences":[{"id":"cmmatoiqw00crvdykm0cgvush","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e7vdykomj7sj01","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"isGroup":false,"reportedUsers":[{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02"}]}]} 
+ </msg>
+<msg time="2026-03-03T23:28:59.926519" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/my</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.635536" elapsed="0.291008"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.928271" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.927537" elapsed="0.000797"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:28:59.929506" level="INFO">${json} = {'success': True, 'data': [{'id': 'cmmatog8l00b7vdykaqa4f2ax', 'groupId': None, 'reporterId': 'cmmatc86u0022vdykaz1x5h3d', 'driverId': 'cmmatfbho004lvdykyd2j4jhd', 'bookingId': None, 'routeId': None, ...</msg>
+<var>${json}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.928830" elapsed="0.000703"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${json['success']}</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.930012" elapsed="0.000558"/>
+</kw>
+<doc>ผู้ร้องเรียนดูประวัติที่ตัวเองแจ้งไว้</doc>
+<tag>GetReports</tag>
+<status status="PASS" start="2026-03-03T23:28:59.634128" elapsed="0.296836"/>
+</test>
+<test id="s1-t10" name="Get Reports Without Token Should Fail" line="158">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:00.193553" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/my 
+ path_url=/api/reports/my 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:00.193666" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/my 
+ status=401, reason=Unauthorized 
+ headers={'Connection': 'keep-alive', 'Content-Length': '66', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"42-VIvuqXCkSos5B2HjVRGsrV8/u7s"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'gXymfAM6QpC-_kSToB_USg', 'X-Request-Id': '0e0cd71d-21dc-4c8a-9e1f-2ee7584817d7', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:00 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555341.502473,VS0,VE245', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Not authorized, no token","data":null} 
+ </msg>
+<msg time="2026-03-03T23:29:00.193930" level="INFO">${resp} = &lt;Response [401]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/my</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:28:59.932939" elapsed="0.261018"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:00.195681" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:00.194987" elapsed="0.000752"/>
+</kw>
+<doc>ดูประวัติโดยไม่มี Token ต้อง 401</doc>
+<tag>GetReports</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:28:59.931857" elapsed="0.264831"/>
+</test>
+<test id="s1-t11" name="Get Report By ID" line="164">
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:29:01.201110" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:29:00.200590" elapsed="1.000658"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:01.202981" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vne...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${REPORTER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.202522" elapsed="0.000500"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:01.581382" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1hdGM4NnUwMDIydmR5a2F6MXg1aDNkIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MjU1NTMzMCwiZXhwIjoxNzcyNTU4OTMwfQ.Mu-gOls89N0Bgd8vnehvtW1YU2puxp_nymuy0thherE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:01.581502" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '2285', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"8ed-93xVDPajiqEOKnNEZq+r35Vp+GA"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'hUkrzosCQG2pW0i-oB_USg', 'X-Request-Id': '4e4bfbac-0e48-4987-94d0-0b97d7bfefdc', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555342.775492,VS0,VE275', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"FILED","resolvedById":null,"adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:28:52.917Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","firstName":"report","lastName":"tester01"},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02","yellowCardCount":0,"yellowCardExpiresAt":null,"driverSuspendedUntil":null,"passengerSuspendedUntil":null,"isActive":true},"booking":null,"route":null,"resolvedBy":null,"evidences":[{"id":"cmmatoiqw00crvdykm0cgvush","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e7vdykomj7sj01","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"statusHistory":[{"id":"cmmatog8l00b9vdyk96vavpaq","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","fromStatus":null,"toStatus":"FILED","changedById":"cmmatc86u0022vdykaz1x5h3d","note":"Initial report filed","createdAt":"2026-03-03T16:28:52.917Z","changedBy":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01"}}],"isGroup":false,"reportedUsers":[{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02","yellowCardCount":0,"yellowCardExpiresAt":null,"driverSuspendedUntil":null,"passengerSuspendedUntil":null,"isActive":true}]} 
+ </msg>
+<msg time="2026-03-03T23:29:01.581644" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.203817" elapsed="0.377848"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:01.582801" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.582395" elapsed="0.000441"/>
+</kw>
+<doc>ดูรายละเอียดรีพอร์ตเรื่องเดียว</doc>
+<tag>GetReports</tag>
+<status status="PASS" start="2026-03-03T23:29:00.199260" elapsed="1.384057"/>
+</test>
+<test id="s1-t12" name="Get Report By ID Without Token Should Fail" line="172">
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:01.881173" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:01.881295" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ status=401, reason=Unauthorized 
+ headers={'Connection': 'keep-alive', 'Content-Length': '66', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"42-VIvuqXCkSos5B2HjVRGsrV8/u7s"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '5Rhwr5AjT3ui2uuCoB_USg', 'X-Request-Id': '223a4ff0-aa7a-471d-91dc-02a1c2a5b7be', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555342.155860,VS0,VE245', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"success":false,"message":"Not authorized, no token","data":null} 
+ </msg>
+<msg time="2026-03-03T23:29:01.881409" level="INFO">${resp} = &lt;Response [401]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.586145" elapsed="0.295285"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:01.883403" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>401</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.882400" elapsed="0.001204"/>
+</kw>
+<doc>ดูรายละเอียดโดยไม่มี Token ต้อง 401</doc>
+<tag>GetReports</tag>
+<tag>Negative</tag>
+<status status="PASS" start="2026-03-03T23:29:01.584966" elapsed="0.299271"/>
+</test>
+<test id="s1-t13" name="Admin Get All Reports" line="182">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:01.887733" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.887478" elapsed="0.000288"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:03.337451" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/all 
+ path_url=/api/reports/admin/all 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:03.338806" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/all 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '713248', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"ae220-aTLFDkpMw+rLcDk4av67ZpeAEJI"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'BvwrtCYKT4GxfUudAXC71g', 'X-Request-Id': '91db2df0-57e5-4e1c-9cb8-b97ad51061e4', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:02 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555342.457648,VS0,VE329', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body=[{"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"FILED","resolvedById":null,"adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:28:52.917Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","firstName":"report","lastName":"tester01"},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02"},"booking":null,"route":null,"evidences":[{"id":"cmmatoiqw00crvdykm0cgvush","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e7vdykomj7sj01","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"isGroup":false,"reportedUsers":[{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02"}]},{"id":"cmmarltzv036n13tmfsitra4g","groupId":null,"reporterId":"cmlr0qn1d006c3mjam33l7wh5","driverId":"cmlr1qw2l00jf3mja2zlwv1k9","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"RESOLVED","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":"ออกใบเหลืองเตือน","resolvedAt":"2026-03-03T15:31:08.503Z","closedAt":null,"createdAt":"2026-03-03T15:30:51.548Z","updatedAt":"2026-03-03T15:31:08.504Z","reporter":{"id":"cmlr0qn1d006c3mjam33l7wh5","username":"pLoomN","email":"pLoomN@ex.com","firstName":"pLoomN","lastName":"pLoomN"},"driver":{"id":"cmlr1qw2l00jf3mja2zlwv1k9","username":"Test123","email":"Test123@test.com","firstName":"Test123","lastName":"Test123"},"booking":null,"route":null,"evidences":[{"id":"cmmarlxxo038913tm93qktei2","reportCaseId":"cmmarltzv036n13tmfsitra4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:30:56.652Z"},{"id":"cmmarlzqc039o13tm17et2tzb","reportCaseId":"cmmarltzv036n13tmfsitra4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:30:58.979Z"},{"id":"cmmatoiqw00cqvdykerdaqgwg","reportCaseId":"cmmarltzv036n13tmfsitra4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e6vdykci5hmcgm","reportCaseId":"cmmarltzv036n13tmfsitra4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"isGroup":false,"reportedUsers":[{"id":"cmlr1qw2l00jf3mja2zlwv1k9","username":"Test123","email":"Test123@test.com","firstName":"Test123","lastName":"Test123"}]},{"id":"cmmarfzcu02vb13tm5fg7ii4g","groupId":null,"reporterId":"cmlr0qn1d006c3mjam33l7wh5","driverId":"cmlr1qw2l00jf3mja2zlwv1k9","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"RESOLVED","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":"ออกใบเหลืองเตือน","resolvedAt":"2026-03-03T15:26:33.440Z","closedAt":null,"createdAt":"2026-03-03T15:26:18.559Z","updatedAt":"2026-03-03T15:26:33.440Z","reporter":{"id":"cmlr0qn1d006c3mjam33l7wh5","username":"pLoomN","email":"pLoomN@ex.com","firstName":"pLoomN","lastName":"pLoomN"},"driver":{"id":"cmlr1qw2l00jf3mja2zlwv1k9","username":"Test123","email":"Test123@test.com","firstName":"Test123","lastName":"Test123"},"booking":null,"route":null,"evidences":[{"id":"cmmarg27y02x313tmkc0t5xfc","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:26:22.270Z"},{"id":"cmmarg3nt02yk13tmvaut0a0n","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:26:24.137Z"},{"id":"cmmariswt034713tm9n4x5uxm","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772551708/y6qvd8hx25ncizrjkpck.jpg","fileName":"test-report.jpg","mimeType":"image/jpeg","fileSize":88812,"uploadedById":"cmlrmzm7o0047p0go2zo5ic78","createdAt":"2026-03-03T15:28:30.172Z"},{"id":"cmmarlxxo038813tm9y2tabyw","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:30:56.652Z"},{"id":"cmmarlzqb039n13tm4emscto0","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:30:58.979Z"},{"id":"cmmatoiqw00cpvdykwmgnluhv","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e5vdykbkom0ke8","reportCaseId":"cmmarfzcu02vb13tm5fg7ii4g","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"isGroup":false,"reportedUsers":[{"id":"cmlr1qw2l00jf3mja2zlwv1k9","username":"Test123","email":"Test123@test.com","firstName":"Test123","lastName":"Test123"}]},{"id":"cmmarf43702qz13tmk0iimp21","groupId":null,"reporterId":"cmlr0qn1d006c3mjam33l7wh5","driverId":"cmlr1qw2l00jf3mja2zlwv1k9","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"RESOLVED","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":"ออกใบเหลืองเตือน","resolvedAt":"2026-03-03T15:25:53.540Z","closedAt":null,"createdAt":"2026-03-03T15:25:38.035Z","updatedAt":"2026-03-03T15:25:53.541Z","reporter":{"id":"cmlr0qn1d006c3mjam33l7wh5","username":"pLoomN","email":"pLoomN@ex.com","firstName":"pLoomN","lastName":"pLoomN"},"driver":{"id":"cmlr1qw2l00jf3mja2zlwv1k9","username":"Test123","email":"Test123@test.com","firstName":"Test123","lastName":"Test123"},"booking":null,"route":null,"evidences":[{"id":"cmmarf72q02sj13tm56bq4f9j","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:25:41.906Z"},{"id":"cmmarf8p702tw13tm9vs216qb","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:25:44.010Z"},{"id":"cmmarg27y02x213tmcatvmw32","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:26:22.270Z"},{"id":"cmmarg3nt02yj13tmxk9xoeoa","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:26:24.137Z"},{"id":"cmmariswt034613tms0gkz0qi","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1772551708/y6qvd8hx25ncizrjkpck.jpg","fileName":"test-report.jpg","mimeType":"image/jpeg","fileSize":88812,"uploadedById":"cmlrmzm7o0047p0go2zo5ic78","createdAt":"2026-03-03T15:28:30.172Z"},{"id":"cmmarlxxo038713tml3zzgm71","reportCaseId":"cmmarf43702qz13tmk0iimp21","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmlr0qn1d006c3mjam33l7wh5","createdAt":"2026-03-03T15:30:56.652Z"},{"id":"cmmarlzqb039m13tm2drdz619","report... (set the log level to DEBUG or TRACE to see the full content) 
+ </msg>
+<msg time="2026-03-03T23:29:03.339312" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/admin/all</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:01.888286" elapsed="1.451065"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:03.341267" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:03.340421" elapsed="0.000895"/>
+</kw>
+<doc>แอดมินดูรายการรีพอร์ตทั้งหมด</doc>
+<tag>Admin</tag>
+<status status="PASS" start="2026-03-03T23:29:01.885622" elapsed="1.456256"/>
+</test>
+<test id="s1-t14" name="Admin Assign Report" line="189">
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:29:04.344352" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:29:03.343683" elapsed="1.000910"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:04.347055" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:04.346324" elapsed="0.000804"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:04.633041" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/assign 
+ path_url=/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/assign 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:04.633173" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/assign 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '649', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"289-gvUnmFpn/dv1zJylhHu7uu7hinM"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'cy2sEJXfQq2pzsf2AXC71g', 'X-Request-Id': 'e370a750-3257-4544-850d-040bca7c8487', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:05 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555345.919946,VS0,VE263', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"UNDER_REVIEW","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":null,"resolvedAt":null,"closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:29:05.064Z","resolvedBy":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator"}} 
+ </msg>
+<msg time="2026-03-03T23:29:04.633318" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/admin/${CREATED_REPORT_ID}/assign</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:04.348696" elapsed="0.284645"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:04.634919" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:04.634119" elapsed="0.000863"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:29:05.636068" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:29:04.635524" elapsed="1.000904"/>
+</kw>
+<doc>แอดมินกดรับเรื่องเคส (UNDER_REVIEW)</doc>
+<tag>Admin</tag>
+<status status="PASS" start="2026-03-03T23:29:03.342898" elapsed="2.294966"/>
+</test>
+<test id="s1-t15" name="Admin Update To Resolved" line="198">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:05.643688" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:05.643012" elapsed="0.000736"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:05.645033" level="INFO">${body} = {'status': 'RESOLVED', 'adminNotes': 'ตรวจสอบเรียบร้อย'}</msg>
+<var>${body}</var>
+<arg>status=RESOLVED</arg>
+<arg>adminNotes=ตรวจสอบเรียบร้อย</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:05.644640" elapsed="0.000456"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:06.284505" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/status 
+ path_url=/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/status 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '136', 'Content-Type': 'application/json'} 
+ body=b'{"status": "RESOLVED", "adminNotes": "\\u0e15\\u0e23\\u0e27\\u0e08\\u0e2a\\u0e2d\\u0e1a\\u0e40\\u0e23\\u0e35\\u0e22\\u0e1a\\u0e23\\u0e49\\u0e2d\\u0e22"}' 
+ </msg>
+<msg time="2026-03-03T23:29:06.284874" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/status 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '660', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"294-iymKWDOmpCjqi8t9KXLTk2jWS1E"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'ZZDRucytTUa3CLW4VOLIQQ', 'X-Request-Id': '042e357b-b0cc-4e39-9918-075fa7bf3ce6', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:06 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555346.219390,VS0,VE580', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"message":"Report status updated","data":{"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"RESOLVED","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":"ตรวจสอบเรียบร้อย","resolvedAt":"2026-03-03T16:29:06.610Z","closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:29:06.611Z"}} 
+ </msg>
+<msg time="2026-03-03T23:29:06.285155" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/admin/${CREATED_REPORT_ID}/status</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:05.645993" elapsed="0.639212"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:06.287504" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:06.286314" elapsed="0.001327"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:29:07.289012" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:29:06.288549" elapsed="1.000642"/>
+</kw>
+<doc>แอดมินตัดสินเคส RESOLVED</doc>
+<tag>Admin</tag>
+<status status="PASS" start="2026-03-03T23:29:05.640705" elapsed="1.649133"/>
+</test>
+<test id="s1-t16" name="Admin Issue Yellow Card" line="209">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:07.293302" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.293048" elapsed="0.000279"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-03T23:29:07.293995" level="INFO">${user_ids} = ['cmmatfbho004lvdykyd2j4jhd']</msg>
+<var>${user_ids}</var>
+<arg>${REPORTED_USER_ID}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.293766" elapsed="0.000254"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:07.294806" level="INFO">${body} = {'userIds': ['cmmatfbho004lvdykyd2j4jhd'], 'adminComment': 'ออกใบเหลืองเตือน', 'notificationType': 'WARNING_ISSUED'}</msg>
+<var>${body}</var>
+<arg>userIds=${user_ids}</arg>
+<arg>adminComment=ออกใบเหลืองเตือน</arg>
+<arg>notificationType=WARNING_ISSUED</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.294418" elapsed="0.000437"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:07.922044" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/issue-yellow 
+ path_url=/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/issue-yellow 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Content-Length': '196', 'Content-Type': 'application/json'} 
+ body=b'{"userIds": ["cmmatfbho004lvdykyd2j4jhd"], "adminComment": "\\u0e2d\\u0e2d\\u0e01\\u0e43\\u0e1a\\u0e40\\u0e2b\\u0e25\\u0e37\\u0e2d\\u0e07\\u0e40\\u0e15\\u0e37\\u0e2d\\u0e19", "notificationType": "WARNING_ISSUED"}' 
+ </msg>
+<msg time="2026-03-03T23:29:07.922243" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/reports/admin/cmmatog8l00b7vdykaqa4f2ax/issue-yellow 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '98', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"62-p/mwnJDe5bmf3g8fREhG92mKKAU"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '9rlEJEHgRveFLaPZ0ubPiw', 'X-Request-Id': '9759f72e-4d47-475f-9d7d-fb23347bed70', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:08 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555348.867211,VS0,VE573', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"message":"Yellow card issued and report resolved","affectedUsers":["cmmatfbho004lvdykyd2j4jhd"]} 
+ </msg>
+<msg time="2026-03-03T23:29:07.922464" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/admin/${CREATED_REPORT_ID}/issue-yellow</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.295404" elapsed="0.627105"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:07.923902" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.923092" elapsed="0.000873"/>
+</kw>
+<doc>แอดมินออกใบเหลืองให้ผู้กระทำผิด</doc>
+<tag>Admin</tag>
+<status status="PASS" start="2026-03-03T23:29:07.291469" elapsed="0.633081"/>
+</test>
+<test id="s1-t17" name="Verify Final Report Status" line="225">
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2026-03-03T23:29:08.927329" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2026-03-03T23:29:07.926820" elapsed="1.000652"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:29:08.928621" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:29:08.928123" elapsed="0.000534"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:29:09.478243" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ path_url=/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbWxxemw5bzMwMDAwZXdyN3Y0azMwYmVlIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcyNTU1MzMyLCJleHAiOjE3NzI1NTg5MzJ9.nBqXiFAgcH9LhZ84Fb3JZprG7Brk8PuSPWxtODmZ3LQ'} 
+ body=None 
+ </msg>
+<msg time="2026-03-03T23:29:09.478387" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/reports/cmmatog8l00b7vdykaqa4f2ax 
+ status=200, reason=OK 
+ headers={'Connection': 'keep-alive', 'Content-Length': '3147', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"c4b-2z3ygPtAQXOTFCIPQGSit0oWV1U"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'hklCW2aQR3q01u6qAXC71g', 'X-Request-Id': '609c8ac0-59a3-4b80-93e3-2416589653d7', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:29:10 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555350.502829,VS0,VE531', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310027-BKK'} 
+ body={"id":"cmmatog8l00b7vdykaqa4f2ax","groupId":null,"reporterId":"cmmatc86u0022vdykaz1x5h3d","driverId":"cmmatfbho004lvdykyd2j4jhd","bookingId":null,"routeId":null,"category":"DANGEROUS_DRIVING","description":"คนขับขับรถเร็วเกินกำหนดมากและปาดซ้ายปาดขวาตลอดทาง","status":"RESOLVED","resolvedById":"cmlqzl9o30000ewr7v4k30bee","adminNotes":"ออกใบเหลืองเตือน","resolvedAt":"2026-03-03T16:29:08.281Z","closedAt":null,"createdAt":"2026-03-03T16:28:52.917Z","updatedAt":"2026-03-03T16:29:08.282Z","reporter":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01","email":"reporttester01@gmail.com","firstName":"report","lastName":"tester01"},"driver":{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02","yellowCardCount":2,"yellowCardExpiresAt":"2026-04-02T16:29:08.270Z","driverSuspendedUntil":null,"passengerSuspendedUntil":null,"isActive":true},"booking":null,"route":null,"resolvedBy":{"id":"cmlqzl9o30000ewr7v4k30bee","firstName":"System","lastName":"Administrator"},"evidences":[{"id":"cmmatoiqw00crvdykm0cgvush","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_1.jpg","fileName":"evidence_test_1.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:56.167Z"},{"id":"cmmatoko500e7vdykomj7sj01","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","type":"IMAGE","url":"https://res.cloudinary.com/demo/image/upload/v12345/evidence_test_2.jpg","fileName":"evidence_test_2.jpg","mimeType":"image/jpeg","fileSize":1024000,"uploadedById":"cmmatc86u0022vdykaz1x5h3d","createdAt":"2026-03-03T16:28:58.661Z"}],"statusHistory":[{"id":"cmmatos3z00ezvdyk4tfpq79f","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","fromStatus":"RESOLVED","toStatus":"RESOLVED","changedById":"cmlqzl9o30000ewr7v4k30bee","note":"ออกใบเหลืองเตือน","createdAt":"2026-03-03T16:29:08.304Z","changedBy":{"id":"cmlqzl9o30000ewr7v4k30bee","username":"admin123"}},{"id":"cmmatoqtk00ervdyksu0hvujx","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","fromStatus":"UNDER_REVIEW","toStatus":"RESOLVED","changedById":"cmlqzl9o30000ewr7v4k30bee","note":"Status updated to RESOLVED","createdAt":"2026-03-03T16:29:06.632Z","changedBy":{"id":"cmlqzl9o30000ewr7v4k30bee","username":"admin123"}},{"id":"cmmatog8l00b9vdyk96vavpaq","reportCaseId":"cmmatog8l00b7vdykaqa4f2ax","fromStatus":null,"toStatus":"FILED","changedById":"cmmatc86u0022vdykaz1x5h3d","note":"Initial report filed","createdAt":"2026-03-03T16:28:52.917Z","changedBy":{"id":"cmmatc86u0022vdykaz1x5h3d","username":"reporttester01"}}],"isGroup":false,"reportedUsers":[{"id":"cmmatfbho004lvdykyd2j4jhd","username":"reporttester02","email":"reporttester02@gmail.com","firstName":"report","lastName":"tester02","yellowCardCount":2,"yellowCardExpiresAt":"2026-04-02T16:29:08.270Z","driverSuspendedUntil":null,"passengerSuspendedUntil":null,"isActive":true}]} 
+ </msg>
+<msg time="2026-03-03T23:29:09.478596" level="INFO">${resp} = &lt;Response [200]&gt;</msg>
+<var>${resp}</var>
+<arg>${SESSION_ALIAS}</arg>
+<arg>url=/api/reports/${CREATED_REPORT_ID}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=anything</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:29:08.929238" elapsed="0.549390"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2026-03-03T23:29:09.480289" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${resp.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2026-03-03T23:29:09.479565" elapsed="0.000809"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-03T23:29:09.482020" level="INFO">${json} = {'id': 'cmmatog8l00b7vdykaqa4f2ax', 'groupId': None, 'reporterId': 'cmmatc86u0022vdykaz1x5h3d', 'driverId': 'cmmatfbho004lvdykyd2j4jhd', 'bookingId': None, 'routeId': None, 'category': 'DANGEROUS_DRIV...</msg>
+<var>${json}</var>
+<arg>${resp.json()}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-03T23:29:09.481129" elapsed="0.000985"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${json['status']}</arg>
+<arg>RESOLVED</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2026-03-03T23:29:09.482822" elapsed="0.000684"/>
+</kw>
+<doc>ตรวจสอบเคสหลังจากผ่านทุกขั้นตอน</doc>
+<tag>Verify</tag>
+<status status="PASS" start="2026-03-03T23:29:07.925590" elapsed="1.558584"/>
+</test>
+<doc>Report System API Test - Essential Cases Only</doc>
+<status status="PASS" start="2026-03-03T23:28:48.788331" elapsed="20.697933"/>
+</suite>
+<statistics>
+<total>
+<stat pass="17" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="4" fail="0" skip="0">Admin</stat>
+<stat pass="4" fail="0" skip="0">CreateReport</stat>
+<stat pass="4" fail="0" skip="0">Evidence</stat>
+<stat pass="4" fail="0" skip="0">GetReports</stat>
+<stat pass="7" fail="0" skip="0">Negative</stat>
+<stat pass="1" fail="0" skip="0">Verify</stat>
+</tag>
+<suite>
+<stat pass="17" fail="0" skip="0" id="s1" name="Report Test">Report Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
