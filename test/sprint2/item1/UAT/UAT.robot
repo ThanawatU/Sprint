@@ -22,28 +22,9 @@ Open Chrome
     Evaluate    setattr($opts, "binary_location", r"""${CHROME_BROWSER_PATH}""")
     Call Method    ${opts}    add_argument    --start-maximized
     Call Method    ${opts}    add_argument    --disable-notifications
-    ${prefs}=    Create Dictionary    download.default_directory=${DOWNLOAD_DIR}    download.prompt_for_download=${False}    download.directory_upgrade=${True}    credentials_enable_service=${False}    profile.password_manager_enabled=${False}    profile.password_manager_leak_detection=${False}
+
+    ${prefs}=    Create Dictionary    download.default_directory=${DOWNLOAD_DIR}    download.prompt_for_download=${False}    download.directory_upgrade=${True}
     Call Method    ${opts}    add_experimental_option    prefs    ${prefs}
-
-    ${exclude}=    Evaluate    ['enable-automation']
-    Call Method    ${opts}    add_experimental_option    excludeSwitches    ${exclude}
-
-    ${svc}=     Evaluate    sys.modules["selenium.webdriver.chrome.service"].Service(executable_path=r"${CHROME_DRIVER_PATH}")
-    Create Webdriver    Chrome    options=${opts}    service=${svc}
-    Set Selenium Speed  0
-
-Open Chrome in Incognito Mode
-    ${opts}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys
-    Evaluate    setattr($opts, "binary_location", r"""${CHROME_BROWSER_PATH}""")
-    Call Method    ${opts}    add_argument    --start-maximized
-    Call Method    ${opts}    add_argument    --disable-notifications
-    Call Method    ${opts}    add_argument    --incognito
-    Call Method    ${opts}    add_argument    --disable-features\=PasswordLeakDetection
-    ${prefs}=    Create Dictionary    download.default_directory=${DOWNLOAD_DIR}    download.prompt_for_download=${False}    download.directory_upgrade=${True}    credentials_enable_service=${False}    profile.password_manager_enabled=${False}    profile.password_manager_leak_detection=${False}
-    Call Method    ${opts}    add_experimental_option    prefs    ${prefs}
-
-    ${exclude}=    Evaluate    ['enable-automation']
-    Call Method    ${opts}    add_experimental_option    excludeSwitches    ${exclude}
 
     ${svc}=     Evaluate    sys.modules["selenium.webdriver.chrome.service"].Service(executable_path=r"${CHROME_DRIVER_PATH}")
     Create Webdriver    Chrome    options=${opts}    service=${svc}
@@ -114,7 +95,7 @@ Click Export CSV Button And Verify Download
     Wait Until Keyword Succeeds    10s    1s    Verify File Downloaded
 
 Verify File Downloaded
-    ${files}=    List Files In Directory    ${DOWNLOAD_DIR}
+    ${files}=    List Files In Directory    ${DOWNLOAD_DIR}    exclude=*.crdownload
     ${file_count}=    Get Length    ${files}
     Should Be True    ${file_count} > 0    "ไฟล์ CSV ยังไม่ถูกดาวน์โหลดหรือโหลดไม่สำเร็จ"
 
@@ -232,10 +213,15 @@ Verify AccessLog Has At Least 1 Row
 
 Select Export Format
     [Arguments]    ${format}
+<<<<<<< HEAD
     ${select_xpath}=    Set Variable    xpath=(//select)[last()]
     
     Wait Until Element Is Visible    ${select_xpath}    10s
     Select From List By Label        ${select_xpath}    ${format}
+=======
+    Wait Until Element Is Visible    xpath=//select    10s
+    Select From List By Label        xpath=//select    ${format}
+>>>>>>> 60c32bc (Yodsanon_0215 :add test sprint 2)
 
 Click Export JSON Button And Verify Download
     Create Directory    ${DOWNLOAD_DIR}
