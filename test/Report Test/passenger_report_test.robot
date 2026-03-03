@@ -8,6 +8,7 @@ ${FRONT_URL}    http://cs-softeng-sec1-g4.cpkku.com
 ${BROWSER}      Chrome
 ${USERNAME}     mark___
 ${PASSWORD}     Mark1234
+${IMAGE_PATH}   /Users/cherryp/Desktop/test-report.jpg
 
 *** Keywords ***
 Open Browser And Login
@@ -76,6 +77,13 @@ Passenger Can Submit Report Successfully
     Input Text
     ...    xpath=//textarea[@placeholder='กรอกรายละเอียดปัญหา...']
     ...    ทดสอบรายงานปัญหาโดยระบบ automation ผ่านแน่นอน
+
+    # อัปโหลดรูปภาพประกอบ
+    Choose File
+    ...    xpath=//input[@type='file']
+    ...    ${IMAGE_PATH}
+
+    Sleep    1s
 
     # กดส่งรายงาน
     Wait Until Element Is Enabled
