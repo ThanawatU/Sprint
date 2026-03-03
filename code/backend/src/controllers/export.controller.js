@@ -6,7 +6,7 @@ exports.createExportRequest = async (req, res) => {
     const { logType, format, filters } = req.body;
 
     const exportRequest = await exportService.createExportRequest({
-      requestedById: req.user.sub,
+      requestedById: req.user.id,
       logType,
       format,
       filters
@@ -87,7 +87,7 @@ exports.approveExportRequest = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await exportService.approveExportRequest(id, req.user.sub);
+    const result = await exportService.approveExportRequest(id, req.user.id);
 
     await auditLog({
       ...getUserFromRequest(req),

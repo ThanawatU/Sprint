@@ -3,7 +3,8 @@ const ApiError = require('../utils/ApiError');
 const { prisma } = require('../utils/prisma');
 
 const requireDriverVerified = asyncHandler(async (req, res, next) => {
-    const driverId = req.user.sub;
+    
+    const driverId = req.user?.sub ?? req.user?.id ?? req.user?.userId;
     const dv = await prisma.driverVerification.findUnique({
         where: { userId: driverId }
     });

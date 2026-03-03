@@ -106,7 +106,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const logout = asyncHandler(async (req, res) => {
-    const userId = req.user?.sub;
+    const userId = req.user?.id;
     const role   = req.user?.role ?? "USER";
 
     await logLogout({
@@ -151,7 +151,7 @@ const logout = asyncHandler(async (req, res) => {
 
 
 const changePassword = asyncHandler(async (req, res) => {
-    const userId = req.user.sub;
+    const userId = req.user.id; 
     const { currentPassword, newPassword } = req.body;
 
     const result = await userService.updatePassword(userId, currentPassword, newPassword);

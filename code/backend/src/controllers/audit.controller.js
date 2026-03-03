@@ -123,7 +123,7 @@ const getTimeline = asyncHandler(async (req, res) => {
  */
 const getUserActivity = asyncHandler(async (req, res) => {
   const { userId } = req.params;
-  const requesterId = req.user.sub;
+  const requesterId = req.user.id || req.user.sub; // เผื่อ token ถอดรหัสมาแล้วไม่มี .sub ให้สลับไปใช้ .id
   const requesterRole = req.user.role;
 
   if (requesterRole !== "ADMIN" && requesterId !== userId) {
@@ -155,7 +155,7 @@ const requestExport = asyncHandler(async (req, res) => {
   if (!logType) throw new ApiError(400, "logType is required");
 
   let exportRequest = await auditService.createExportRequest({
-    requestedById: req.user.sub,
+    requestedById: req.user.id,
     logType,
     format: format || "CSV",
     filters: filters || {},
@@ -163,7 +163,7 @@ const requestExport = asyncHandler(async (req, res) => {
 
   if (req.user.role === "ADMIN") {
     exportRequest = await auditService.reviewExportRequest(exportRequest.id, {
-      reviewedById: req.user.sub, 
+      reviewedById: req.user.id, 
       status: "APPROVED",
       rejectionReason: "Auto-approved for ADMIN role"
     });
@@ -195,7 +195,7 @@ const listExportRequests = asyncHandler(async (req, res) => {
     limit: Math.min(Number(req.query.limit) || 20, 100),
     status: req.query.status,
     logType: req.query.logType,
-    requestedById: isAdmin ? req.query.requestedById : req.user.sub,
+    requestedById: isAdmin ? req.query.requestedById : req.user.id,
   };
 
   const result = await auditService.getExportRequests(opts);
@@ -248,7 +248,7 @@ const downloadExport = asyncHandler(async (req, res) => {
   const exportReq = await prisma.exportRequest.findUnique({ where: { id: req.params.id } });
 
   if (!exportReq) throw new ApiError(404, "Export request not found");
-  if (req.user.role !== "ADMIN" && exportReq.requestedById !== req.user.sub) {
+  if (req.user.role !== "ADMIN" && exportReq.requestedById !== req.user.id) {
     throw new ApiError(403, "Forbidden");
   }
   if (exportReq.status !== "APPROVED") {

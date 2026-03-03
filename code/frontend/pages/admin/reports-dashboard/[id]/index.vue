@@ -292,47 +292,26 @@
 
                                 <tbody class="bg-white divide-y divide-gray-200">
 
-                                    <!-- Driver -->
-                                    <tr>
-                                    <td class="px-4 py-3">
-                                        <input
-                                        type="checkbox"
-                                        :value="report.driver.id"
-                                        v-model="selectedUsers"
-                                        class="w-4 h-4 text-yellow-600 border-gray-300 rounded"
-                                        />
-                                    </td>
-                                    <td class="px-4 py-3 font-medium text-gray-900">
-                                        {{ report.driver.firstName }}
-                                        {{ report.driver.lastName }}
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <span :class="statusClass(report.driver)">
-                                        {{ getDisciplinaryStatus(report.driver).label }}
-                                        </span>
-                                    </td>
-                                    </tr>
-
-                                    <!-- Passengers -->
+                                    <!-- แสดงรายการผู้ใช้ที่ไม่ซ้ำกัน -->
                                     <tr
-                                    v-for="booking in report.route?.bookings || []"
-                                    :key="booking.id"
+                                    v-for="user in uniqueUsers"
+                                    :key="user.id"
                                     >
                                     <td class="px-4 py-3">
                                         <input
                                         type="checkbox"
-                                        :value="booking.passenger.id"
+                                        :value="user.id"
                                         v-model="selectedUsers"
                                         class="w-4 h-4 text-yellow-600 border-gray-300 rounded"
                                         />
                                     </td>
                                     <td class="px-4 py-3 font-medium text-gray-900">
-                                        {{ booking.passenger.firstName }}
-                                        {{ booking.passenger.lastName }}
+                                        {{ user.firstName }}
+                                        {{ user.lastName }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span :class="statusClass(booking.passenger)">
-                                        {{ getDisciplinaryStatus(booking.passenger).label }}
+                                        <span :class="statusClass(user)">
+                                        {{ getDisciplinaryStatus(user).label }}
                                         </span>
                                     </td>
                                     </tr>
@@ -431,6 +410,24 @@ const showManageSection = ref(false)
 const selectedUsers = ref([])
 const adminComment = ref('')
 const selectedPreset = ref('')
+
+// คำนวณรายการผู้ใช้ที่ถูกรายงานเท่านั้น (แสดงเฉพาะคนที่ถูก report จริงๆ)
+const uniqueUsers = computed(() => {
+  if (!report.value) return []
+  
+  // แสดงเฉพาะคนที่ถูกรายงาน (คือ driver ใน ReportCase)
+  // ซึ่งในโครงสร้างปัจจุบัน reportedUser จะอยู่ที่ report.driver
+  if (report.value.driver) {
+    return [{
+      id: report.value.driver.id,
+      firstName: report.value.driver.firstName,
+      lastName: report.value.driver.lastName,
+      ...report.value.driver
+    }]
+  }
+  
+  return []
+})
 
 const formatDateTime = (date) => {
   if (!date) return '-'
