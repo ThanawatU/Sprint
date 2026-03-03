@@ -475,7 +475,7 @@ async function fetchBookings() {
     loadError.value = ''
     try {
         const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
-        const res = await fetch('http://localhost:3000/api/bookings/admin', {
+        const res = await fetch('https://deploy-production-88fa.up.railway.app/api/bookings/admin', {
             headers: {
                 Accept: 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})

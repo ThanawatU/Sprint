@@ -13,7 +13,7 @@ RUN npm ci
 COPY . .
 
 # Build-time public config (embedded into client bundle)
-ARG NUXT_PUBLIC_API_BASE=http://localhost:3000/api/
+ARG NUXT_PUBLIC_API_BASE=https://deploy-production-88fa.up.railway.app/api/
 ARG NUXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 
 ENV NUXT_PUBLIC_API_BASE=$NUXT_PUBLIC_API_BASE
