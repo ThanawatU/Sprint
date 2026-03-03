@@ -6,7 +6,8 @@ const createReportCase = async (data) => {
   const { reporterId, reportedUserIds, bookingId, routeId, category, description } = data;
 
   //เพิ่มเช็คกันรายงานซ้ำ
-  const activeStatuses = ['FILED', 'UNDER_REVIEW', 'INVESTIGATING'];
+  //const activeStatuses = ['FILED', 'UNDER_REVIEW', 'INVESTIGATING'];
+  const activeStatuses = ['FILED', 'UNDER_REVIEW'];
 
   const existingReports = await prisma.reportCase.findMany({
     where: {
@@ -57,9 +58,9 @@ const createReportCase = async (data) => {
   };
 };
 
-// ดึงรายการ Report ทั้งหมด (สามารถใส่เงื่อนไข filter และ order ได้)
+// ดึงรายการ Report ทั้งหมด (ทำการ Group รหัส REP-xxx ให้แล้ว)
 const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
-  return prisma.reportCase.findMany({
+  const records = await prisma.reportCase.findMany({
     where,
     include: {
       reporter: { select: { id: true, username: true, email: true, firstName: true, lastName: true } },
@@ -70,204 +71,175 @@ const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
     },
     orderBy
   });
+
+  const grouped = {};
+  const result = [];
+
+  for (const record of records) {
+    const key = record.groupId || record.id;
+    if (!grouped[key]) {
+      grouped[key] = {
+        ...record,
+        id: key, // สวมรอยใช้ groupId เป็น id หลัก
+        isGroup: !!record.groupId,
+        reportedUsers: [record.driver] // เก็บรายชื่อคนที่ถูกรีพอร์ตทั้งหมดลง Array
+      };
+      result.push(grouped[key]);
+    } else {
+      grouped[key].reportedUsers.push(record.driver);
+    }
+  }
+
+  // ปรับแต่งชื่อคนถูกรีพอร์ตให้โชว์รวบกันในหน้าตาราง (เช่น นาย A, นาย B)
+  result.forEach(r => {
+    if (r.reportedUsers.length > 1) {
+      r.driver = {
+        ...r.reportedUsers[0],
+        username: r.reportedUsers.map(u => u.username).join(', '),
+        firstName: r.reportedUsers.map(u => u.firstName).join(', '),
+        lastName: ''
+      };
+    }
+  });
+
+  return result;
 };
 
 // ดึงรายละเอียด Report รายเคส พร้อมประวัติสถานะและหลักฐาน
 const getReportById = async (id) => {
-  return prisma.reportCase.findUnique({
-    where: { id },
-    include: {
-      reporter: {
-        select: { id: true, username: true, email: true, firstName: true, lastName: true }
-      },
-      driver: {
-        select: {
-          id: true,
-          username: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          yellowCardCount: true,
-          yellowCardExpiresAt: true,
-          driverSuspendedUntil: true,
-          passengerSuspendedUntil: true,
-          isActive: true
-        }
-      },
-      booking: true,
-      route: {
-        include: {
-          bookings: {
-            include: {
-              passenger: {
-                select: {
-                  id: true,
-                  firstName: true,
-                  lastName: true,
-                  yellowCardCount: true,
-                  yellowCardExpiresAt: true,
-                  driverSuspendedUntil: true,
-                  passengerSuspendedUntil: true
-                }
-              }
-            }
-          }
-        }
-      },
-      resolvedBy: {
-        select: { id: true, firstName: true, lastName: true }
-      },
-      evidences: true,
-      statusHistory: {
-        include: { changedBy: { select: { id: true, username: true } } },
-        orderBy: { createdAt: "desc" }
+  const isGroup = id.startsWith('REP-');
+  const includeOptions = {
+    reporter: { select: { id: true, username: true, email: true, firstName: true, lastName: true } },
+    driver: {
+      select: {
+        id: true, username: true, email: true, firstName: true, lastName: true,
+        yellowCardCount: true, yellowCardExpiresAt: true, driverSuspendedUntil: true, passengerSuspendedUntil: true, isActive: true
       }
-    }
-  });
+    },
+    booking: true,
+    route: { 
+      include: {
+        driver: { 
+          select: { 
+            id: true, firstName: true, lastName: true, 
+            yellowCardCount: true, driverSuspendedUntil: true, passengerSuspendedUntil: true 
+          } 
+        },
+        bookings: { 
+          include: { 
+            passenger: { 
+              select: { 
+                id: true, firstName: true, lastName: true, 
+                yellowCardCount: true, driverSuspendedUntil: true, passengerSuspendedUntil: true 
+              } 
+            } 
+          } 
+        } 
+      } 
+    },
+    resolvedBy: { select: { id: true, firstName: true, lastName: true } },
+    evidences: true,
+    statusHistory: { include: { changedBy: { select: { id: true, username: true } } }, orderBy: { createdAt: "desc" } }
+  };
+  if (isGroup) {
+    const cases = await prisma.reportCase.findMany({
+      where: { groupId: id },
+      include: includeOptions,
+      orderBy: { createdAt: "asc" }
+    });
+
+    if (!cases.length) return null;
+    return {
+      ...cases[0],
+      id, // คง ID เป็น REP-xxx ไว้ให้ Frontend
+      isGroup: true,
+      reportedUsers: cases.map(c => c.driver), // ส่งรายชื่อคนโดนรีพอร์ตทั้งหมดให้ Frontend แสดงผล
+      cases
+    };
+  } else {
+    const report = await prisma.reportCase.findUnique({ where: { id }, include: includeOptions });
+    if (!report) return null;
+    return { ...report, isGroup: false, reportedUsers: [report.driver] };
+  }
 };
 
 // อัปเดตสถานะ Report, บันทึกประวัติ, และจัดการระบบใบเหลือง/ใบแดงอัตโนมัติ
 const updateReportStatus = async (id, payload) => {
   return prisma.$transaction(async (tx) => {
+    const isGroup = id.startsWith('REP-');
+    const casesToUpdate = isGroup 
+      ? await tx.reportCase.findMany({ where: { groupId: id } })
+      : [await tx.reportCase.findUnique({ where: { id } })].filter(Boolean);
 
-    const currentReport = await tx.reportCase.findUnique({
-      where: { id }
-    });
+    if (!casesToUpdate.length) return null;
 
-    if (!currentReport) return null;
+    const updatedCases = [];
+    let notificationSent = false;
 
-    if (currentReport.status === payload.status) {
-      throw new Error('Report already in this status');
-    }
-    
-    if (['RESOLVED', 'REJECTED'].includes(payload.status) && !payload.resolvedById) {
-      throw new Error('ResolvedById is required for decision');
-    }
-    
-    if (payload.status === 'CLOSED' && 
-      !['RESOLVED', 'REJECTED'].includes(currentReport.status)) {
-      throw new Error('Cannot close report before decision');
-    }
-
-    const updateData = {
-      status: payload.status,
-      adminNotes: payload.adminNotes ?? currentReport.adminNotes,
-    };
-
-    if (['RESOLVED', 'REJECTED'].includes(payload.status)) {
-      updateData.resolvedById = payload.resolvedById;
-      updateData.resolvedAt = new Date();
-    }
-
-    if (payload.status === 'CLOSED') {
-      updateData.closedAt = new Date();
-    }
-
-    const updatedReport = await tx.reportCase.update({
-      where: { id },
-      data: updateData
-    });
-
-    await tx.reportCaseStatusHistory.create({
-      data: {
-        reportCaseId: id,
-        fromStatus: currentReport.status,
-        toStatus: payload.status,
-        changedById: payload.resolvedById || currentReport.resolvedById,
-        note: payload.note || `Status updated to ${payload.status}`
+    for (const currentReport of casesToUpdate) {
+      if (currentReport.status === payload.status) continue;
+      
+      if (['RESOLVED', 'REJECTED'].includes(payload.status) && !payload.resolvedById) {
+        throw new Error('ResolvedById is required for decision');
       }
-    });
+      
+      if (payload.status === 'CLOSED' && !['RESOLVED', 'REJECTED'].includes(currentReport.status)) {
+        throw new Error('Cannot close report before decision');
+      }
+      
+      const updateData = { status: payload.status, adminNotes: payload.adminNotes ?? currentReport.adminNotes };
+      
+      if (['RESOLVED', 'REJECTED'].includes(payload.status)) {
+        updateData.resolvedById = payload.resolvedById;
+        updateData.resolvedAt = new Date();
+      }
+      if (payload.status === 'CLOSED') {
+        updateData.closedAt = new Date();
+      }
 
-    // ===== Notification Section =====
-    if (['REJECTED', 'RESOLVED'].includes(payload.status)) {
+      const updatedReport = await tx.reportCase.update({
+        where: { id: currentReport.id },
+        data: updateData
+      });
 
-      let bodyMessage = '';
-
-      if (payload.status === 'REJECTED') {
-        bodyMessage = 'เคสของคุณถูกปฏิเสธ';
-
-        if (payload.adminNotes && payload.adminNotes.trim().length > 0) {
-          bodyMessage += `\nเหตุผล: ${payload.adminNotes}`;
-        } else {
-          bodyMessage += '\nหากต้องการข้อมูลเพิ่มเติม กรุณาติดต่อฝ่ายสนับสนุน';
+      await tx.reportCaseStatusHistory.create({
+        data: {
+          reportCaseId: currentReport.id,
+          fromStatus: currentReport.status, 
+          toStatus: payload.status,
+          changedById: payload.resolvedById || currentReport.resolvedById,
+          note: payload.note || `Status updated to ${payload.status}`
         }
+      });
 
-      } else if (payload.status === 'RESOLVED') {
-        bodyMessage = 'เคสของคุณได้รับการดำเนินการแล้ว';
+      if (payload.status === 'RESOLVED') {
+        await handleYellowCard(tx, currentReport.driverId);
+      }
+      updatedCases.push(updatedReport);
+    }
 
-        if (payload.adminNotes && payload.adminNotes.trim().length > 0) {
-          bodyMessage += `\nหมายเหตุ: ${payload.adminNotes}`;
-        }
+    // แจ้งเตือนคนแจ้งแค่ 1 ครั้งต่อ 1 Group
+    if (updatedCases.length > 0 && ['REJECTED', 'RESOLVED'].includes(payload.status) && !notificationSent) {
+      let bodyMessage = payload.status === 'REJECTED' ? 'เคสของคุณถูกปฏิเสธ' : 'เคสของคุณได้รับการดำเนินการแล้ว';
+      if (payload.adminNotes && payload.adminNotes.trim().length > 0) {
+        bodyMessage += `\nเหตุผล: ${payload.adminNotes}`;
+      } else if (payload.status === 'REJECTED') {
+        bodyMessage += '\nหากต้องการข้อมูลเพิ่มเติม กรุณาติดต่อฝ่ายสนับสนุน';
       }
 
       await tx.notification.create({
-        data: {
-          userId: currentReport.reporterId,
-          type: 'SYSTEM',
-          title: 'ผลการดำเนินการรายงานของคุณ',
-          body: bodyMessage,
-          link: `/reports/${id}`
+        data: { 
+          userId: updatedCases[0].reporterId, 
+          type: 'SYSTEM', 
+          title: 'ผลการดำเนินการรายงานของคุณ', 
+          body: bodyMessage, 
+          link: `/reports/${id}` 
         }
       });
+      notificationSent = true;
     }
-
-    // แจกใบเหลือง
-    if (payload.status === 'RESOLVED') {
-      await handleYellowCard(tx, currentReport.driverId);
-  // ระบบแจกใบเหลือง (เมื่อเคสถูกตั้งเป็น RESOLVED)
-  // if (status === 'RESOLVED') {
-  //   const targetUserId = currentReport.driverId;
-  //   const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
-
-  //   if (targetUser) {
-  //     const now = new Date();
-  //     let currentCards = targetUser.yellowCardCount || 0;
-
-  //     if (targetUser.yellowCardExpiresAt && targetUser.yellowCardExpiresAt < now) {
-  //       currentCards = 0;
-  //     }
-
-  //     currentCards += 1;
-
-  //     // ถ้าครบ 3 ใบแบนถาวรลงตาราง Blacklist และรีเซ็ตใบเหลือง
-  //     if (currentCards >= 3) {
-  //       await prisma.$transaction([
-  //         prisma.user.update({
-  //           where: { id: targetUserId },
-  //           data: { 
-  //             yellowCardCount: 0, 
-  //             yellowCardExpiresAt: null,
-  //             isActive: false 
-  //           }
-  //         }),
-
-  //         prisma.blacklist.create({
-  //           data: {
-  //             userId: targetUserId,
-  //             type: targetUser.role === 'PASSENGER' ? 'PASSENGER' : 'DRIVER',
-  //             reason: `สะสมใบเหลืองครบ 3 ใบ (จากเคส: ${id})`,
-  //             createdById: resolvedById,
-  //             status: 'ACTIVE',
-  //             suspendedUntil: null // แบนถาวร
-  //           }
-  //         })
-  //       ]);
-  //     } else {
-
-  //       const newExpiresAt = new Date();
-  //       newExpiresAt.setDate(newExpiresAt.getDate() + 30);
-
-  //       await prisma.user.update({
-  //         where: { id: targetUserId },
-  //         data: {
-  //           yellowCardCount: currentCards,
-  //           yellowCardExpiresAt: newExpiresAt
-  //         }
-  //       });
-  //     }
-    }
-
-    return updatedReport;
+    
+    return updatedCases;
   });
 };
 
