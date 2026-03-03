@@ -403,6 +403,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-03 - Kanyapat_5037
+### Added
+- Report Detail page for admin dashboard
+- Report grouping support (groupId) for multiple reported users.
+- Admin case management section (issue yellow card + resolution controls).
+- Yellow card system with 30-day expiration and automatic suspension after 3 cards.
+- Notification system to send resolution updates back to reporter.
+- API blocking for suspended users via authentication middleware.
+
+### Fixed
+- Fixed routing path to admin report detail page.
+
+---
+
 ## Version Guidelines
 
 ### Categories
