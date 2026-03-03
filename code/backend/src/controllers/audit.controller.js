@@ -154,12 +154,26 @@ const requestExport = asyncHandler(async (req, res) => {
 
   if (!logType) throw new ApiError(400, "logType is required");
 
-  const exportRequest = await auditService.createExportRequest({
+  let exportRequest = await auditService.createExportRequest({
     requestedById: req.user.sub,
     logType,
     format: format || "CSV",
     filters: filters || {},
   });
+
+  if (req.user.role === "ADMIN") {
+    exportRequest = await auditService.reviewExportRequest(exportRequest.id, {
+      reviewedById: req.user.sub, 
+      status: "APPROVED",
+      rejectionReason: "Auto-approved for ADMIN role"
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Export request auto-approved and ready for download.",
+      data: exportRequest,
+    });
+  }
 
   res.status(201).json({
     success: true,
@@ -193,20 +207,34 @@ const listExportRequests = asyncHandler(async (req, res) => {
  * body: { status: "APPROVED" | "REJECTED", rejectionReason? }
  * ADMIN only
  */
+/**
+ * PATCH /api/logs/exports/:id/review
+ * body: { status: "APPROVED" | "REJECTED", rejectionReason? }
+ * ADMIN only
+ */
 const reviewExport = asyncHandler(async (req, res) => {
-  const { status, rejectionReason } = req.body;
+  try {
+    const { status, rejectionReason } = req.body;
 
-  if (!["APPROVED", "REJECTED"].includes(status)) {
-    throw new ApiError(400, 'status must be "APPROVED" or "REJECTED"');
+    if (!["APPROVED", "REJECTED"].includes(status)) {
+      throw new ApiError(400, 'status must be "APPROVED" or "REJECTED"');
+    }
+
+    // เผื่อ token ถอดรหัสมาแล้วไม่มี .sub ให้สลับไปใช้ .id หรือ null
+    const adminId = req.user?.sub || req.user?.id || null;
+
+    const updated = await auditService.reviewExportRequest(req.params.id, {
+      reviewedById: adminId,
+      status,
+      rejectionReason,
+    });
+
+    res.status(200).json({ success: true, data: updated });
+    
+  } catch (error) {
+    console.error("reviewExport Error: ", error.message || error);
+    throw error;
   }
-
-  const updated = await auditService.reviewExportRequest(req.params.id, {
-    reviewedById: req.user.sub,
-    status,
-    rejectionReason,
-  });
-
-  res.status(200).json({ success: true, data: updated });
 });
 
 /**
@@ -229,7 +257,10 @@ const downloadExport = asyncHandler(async (req, res) => {
 
   const { content, mimeType, recordCount, format } = await auditService.processExport(req.params.id);
 
-  const ext = format === "CSV" ? "csv" : "json";
+  let ext = "csv";
+  if (format === "JSON") ext = "json";
+  if (format === "PDF") ext = "pdf";
+  
   const filename = `${exportReq.logType}_export_${Date.now()}.${ext}`;
 
   res.setHeader("Content-Type", mimeType);

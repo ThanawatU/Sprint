@@ -4,13 +4,11 @@
     <AdminSidebar />
 
     <main id="main-content" class="main-content mt-16 ml-0 lg:ml-[280px] p-6">
-      <!-- Header -->
       <div class="mb-8">
         <h1 class="text-2xl font-semibold text-gray-800">Monitor Dashboard</h1>
         <p class="text-sm text-gray-500">ตรวจสอบ System & API Logs</p>
       </div>
 
-      <!-- ALERT -->
       <div
         v-if="summary.highError"
         class="mb-6 p-4 bg-red-100 text-red-700 rounded-md"
@@ -18,7 +16,6 @@
         พบ Error จำนวนมากในช่วง 5 นาทีล่าสุด ({{ summary.errorCount }} ครั้ง)
       </div>
 
-      <!-- Summary Cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white border rounded-lg p-4 shadow-sm">
           <p class="text-sm text-gray-500">Total Requests</p>
@@ -42,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Tabs -->
       <div class="mb-4 border-b border-gray-200">
         <nav class="flex space-x-6">
           <button
@@ -61,9 +57,7 @@
         </nav>
       </div>
 
-      <!-- Log Table -->
       <div class="bg-white border border-gray-300 rounded-lg shadow-sm">
-        <!-- Header row -->
         <div
           class="px-4 py-4 border-b border-gray-200 flex justify-between items-center"
         >
@@ -72,6 +66,14 @@
           </h2>
 
           <div class="flex items-center gap-3">
+            <input
+              type="text"
+              v-model="searchQuery"
+              @keyup.enter="fetchLogs"
+              placeholder="กด Enter เพื่อค้นหา"
+              class="border px-3 py-2 rounded-md text-sm w-[200px]"
+            />
+
             <select
               v-if="activeTab === 'SystemLog'"
               v-model="selectedLevel"
@@ -84,13 +86,38 @@
               <option value="ERROR">ERROR</option>
             </select>
 
-            <!-- Date filter -->
             <input
               type="date"
               v-model="selectedDate"
               @change="fetchLogs"
               class="border px-3 py-2 rounded-md text-sm"
             />
+
+            <select 
+              v-model="selectedFormat" 
+              class="border px-3 py-2 rounded-md text-sm bg-gray-50 font-medium"
+            >
+              <option value="CSV">CSV</option>
+              <option value="JSON">JSON</option>
+              <option value="PDF">PDF</option>
+            </select>
+
+            <button 
+              @click="handleAdminExport" 
+              :disabled="isExporting"
+              class="flex items-center gap-2 border px-4 py-2 rounded-md text-sm font-medium transition"
+              :class="isExporting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-black text-white hover:bg-gray-800'"
+            >
+              <svg v-if="isExporting" class="animate-spin h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+              <svg v-else class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+              </svg>
+              {{ isExporting ? 'กำลังเตรียมไฟล์...' : `Export ${selectedFormat}` }}
+            </button>
+
           </div>
         </div>
 
@@ -100,7 +127,6 @@
               <tr>
                 <th class="px-4 py-2 w-[180px]">Time</th>
 
-                <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
                   <th class="px-4 py-2 w-[120px]">User</th>
                   <th class="px-4 py-2 w-[100px]">Role</th>
@@ -111,7 +137,6 @@
                   <th class="px-4 py-2 w-[200px]">User Agent</th>
                 </template>
 
-                <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
                   <th class="px-4 py-2 w-[80px]">Level</th>
                   <th class="px-4 py-2 w-[120px]">Request ID</th>
@@ -126,7 +151,6 @@
                   <th class="px-4 py-2 w-[200px]">Metadata</th>
                 </template>
 
-                <!-- AccessLog -->
                 <template v-else>
                   <th class="px-4 py-2 w-[120px]">User</th>
                   <th class="px-4 py-2 w-[150px]">Login Time</th>
@@ -148,7 +172,6 @@
                   {{ formatDate(log.createdAt) }}
                 </td>
 
-                <!-- AuditLog -->
                 <template v-if="activeTab === 'AuditLog'">
                   <td class="px-4 py-2 font-medium">
                     {{ log.userId || "-" }}
@@ -186,7 +209,6 @@
                   </td>
                 </template>
 
-                <!-- SystemLog -->
                 <template v-else-if="activeTab === 'SystemLog'">
                   <td class="px-4 py-2">
                     <span
@@ -231,7 +253,6 @@
                   </td>
                 </template>
 
-                <!-- AccessLog -->
                 <template v-else>
                   <td class="px-4 py-2">{{ log.userId }}</td>
 
@@ -278,7 +299,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRuntimeConfig } from "#app";
 import dayjs from "dayjs";
 import AdminHeader from "~/components/admin/AdminHeader.vue";
@@ -287,13 +308,18 @@ import AdminSidebar from "~/components/admin/AdminSidebar.vue";
 definePageMeta({ middleware: ["admin-auth"] });
 
 const selectedDate = ref("");
+const searchQuery = ref(""); // เพิ่ม State สำหรับเก็บคำค้นหา
 const logs = ref([]);
 const selectedLevel = ref("ALL");
 const tabs = ["AuditLog", "SystemLog", "AccessLog"];
 const activeTab = ref("AuditLog");
 
+const isExporting = ref(false);
+const selectedFormat = ref("CSV");
+
 function changeTab(tab) {
   activeTab.value = tab;
+  searchQuery.value = ""; // ล้างคำค้นหาเมื่อเปลี่ยนแท็บ
   fetchLogs();
 }
 
@@ -322,7 +348,9 @@ function levelClass(level) {
 }
 
 function getAuthHeaders() {
-  const token = localStorage.getItem("token");
+  const token = useCookie("token").value;
+  //console.log("Token value:", token);
+
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
@@ -335,6 +363,7 @@ async function fetchLogs() {
         level: selectedLevel.value,
         type: activeTab.value,
         date: selectedDate.value || undefined,
+        search: searchQuery.value || undefined, // ส่งค่าการค้นหาไปที่ Backend
       },
     });
 
@@ -357,6 +386,66 @@ async function fetchSummary() {
   }
 }
 
+async function handleAdminExport() {
+  if (isExporting.value) return;
+  isExporting.value = true;
+  
+  try {
+    let dateFromFilter = undefined;
+    let dateToFilter = undefined;
+
+    // 2. เช็กว่า User ได้เลือกวันที่ในหน้าจอไหม
+    if (selectedDate.value) {
+      dateFromFilter = `${selectedDate.value}T00:00:00.000Z`;
+      dateToFilter = `${selectedDate.value}T23:59:59.999Z`;
+    }
+
+    const reqResponse = await $fetch("/logs/exports", {
+      method: "POST",
+      baseURL: config.public.apiBase,
+      headers: getAuthHeaders(),
+      body: {
+        logType: activeTab.value,
+        format: selectedFormat.value,
+        filters: {
+          q: searchQuery.value || undefined, 
+          level: selectedLevel.value !== "ALL" ? selectedLevel.value : undefined,
+          dateFrom: dateFromFilter,
+          dateTo: dateToFilter
+        }
+      }
+    });
+
+    if (reqResponse.success && reqResponse.data?.id) {
+      const exportId = reqResponse.data.id;
+      
+      const blob = await $fetch(`/logs/exports/${exportId}/download`, {
+        baseURL: config.public.apiBase,
+        headers: getAuthHeaders(),
+        responseType: 'blob'
+      });
+
+      let extension = "csv";
+      if (selectedFormat.value === "JSON") extension = "json";
+      if (selectedFormat.value === "PDF") extension = "pdf";
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${activeTab.value}_Export_${dayjs().format('YYYYMMDD_HHmm')}.${extension}`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    }
+  } catch (error) {
+    console.error("Export Error:", error);
+    alert("เกิดข้อผิดพลาดในการ Export Log");
+  } finally {
+    isExporting.value = false;
+  }
+}
+
 let interval;
 
 onMounted(async () => {
@@ -371,5 +460,4 @@ onMounted(async () => {
 onUnmounted(() => {
   clearInterval(interval);
 });
-
 </script>
