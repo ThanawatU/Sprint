@@ -5,7 +5,7 @@ const { protect, requireAdmin } = require('../middlewares/auth');
 
 const {
   createReportSchema,
-  updateReportStatusSchema,
+  adminDecisionSchema,
   addReportEvidenceSchema
 } = require('../validations/report.validation');
 
@@ -43,7 +43,14 @@ router.post(
   reportController.addEvidence
 );
 
-// 5. ดูรายละเอียด Report รายเคส (ดึงผ่าน ID หลักของเคสนั้นๆ)
+// 5. ผู้ใช้ยกเลิก Report ด้วยตัวเอง (ต้องเป็นสถานะ PENDING เท่านั้น)
+router.patch(
+  '/:id/cancel',
+  protect,
+  reportController.cancelReport
+);
+
+// 6. ดูรายละเอียด Report รายเคส (ดึงผ่าน ID หลักของเคสนั้นๆ)
 router.get(
   '/:id', 
   protect, 
@@ -61,16 +68,7 @@ router.get(
   reportController.getReports
 );
 
-// 2. แอดมินอัปเดตสถานะ (ตัดสินเคส/แจกใบเหลือง)
-router.patch(
-  '/admin/:id/status', 
-  protect, 
-  requireAdmin, 
-  validate({ body: updateReportStatusSchema }), 
-  reportController.updateReportStatus
-);
-
-// assign แอดมินรับเรื่อง report
+// 2. แอดมินรับเรื่อง (เปลี่ยนสถานะ PENDING -> UNDER_REVIEW)
 router.patch(
   '/admin/:id/assign',
   protect,
@@ -78,12 +76,22 @@ router.patch(
   reportController.assignReport
 );
 
-// ให้ใบเหลือง
-router.post(
-  '/admin/:id/issue-yellow',
-  protect,  
-  requireAdmin,
-  reportController.issueYellowCard
+// 3. แอดมินอนุมัติเคส (RESOLVED + แจกใบเหลืองอัตโนมัติ)
+router.patch(
+  '/admin/:id/resolve', 
+  protect, 
+  requireAdmin, 
+  validate({ body: adminDecisionSchema }), 
+  reportController.resolveReport
+);
+
+// 4. แอดมินปฏิเสธเคส (REJECTED)
+router.patch(
+  '/admin/:id/reject', 
+  protect, 
+  requireAdmin, 
+  validate({ body: adminDecisionSchema }), 
+  reportController.rejectReport
 );
 
 module.exports = router;

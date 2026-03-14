@@ -315,51 +315,6 @@ Verify File Count Equals
 # ---------------------------
 # UAT-PNN-001 Audit Log Steps
 # ---------------------------
-UAT-PNN-001-STEP-001 Open Home Page
-    Open Chrome
-    Go To    ${BASE_URL}
-    Verify Home Page
-
-UAT-PNN-001-STEP-002 Click Login And See Login Form
-    Open Chrome
-    Go To    ${BASE_URL}
-    Click Element    xpath=//a[@href='/login']
-    Wait Until Element Is Visible    id=loginForm    10s
-    Verify Login Page And Form
-
-UAT-PNN-001-STEP-003 Admin Login And Go Dashboard
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Verify Admin Logged In And On Dashboard
-
-UAT-PNN-001-STEP-004 Open Monitor And See Tabs
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify Monitor Tabs Exist
-
-UAT-PNN-001-STEP-005 Verify AuditLog Header And Active Tab
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify AuditLog Header
-
-UAT-PNN-001-STEP-006 Verify AuditLog Table Columns
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify AuditLog Columns
-
-UAT-PNN-001-STEP-007 Verify AuditLog Data Exists
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify AuditLog Has At Least 1 Row
 
 UAT-PNN-001-STEP-008 Verify And Click Export CSV
     Open Chrome
@@ -397,54 +352,6 @@ UAT-PNN-001 Admin View Audit Log
 # ---------------------------
 # UAT-PNN-002 System Log Steps
 # ---------------------------
-UAT-PNN-002-STEP-001 Open Home Page
-    Open Chrome
-    Go To    ${BASE_URL}
-    Verify Home Page
-
-UAT-PNN-002-STEP-002 Click Login And See Login Form
-    Open Chrome
-    Go To    ${BASE_URL}
-    Click Element    xpath=//a[@href='/login']
-    Wait Until Element Is Visible    id=loginForm    10s
-    Verify Login Page And Form
-
-UAT-PNN-002-STEP-003 Admin Login And Go Dashboard
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Verify Admin Logged In And On Dashboard
-
-UAT-PNN-002-STEP-004 Open Monitor And See Tabs
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify Monitor Tabs Exist
-
-UAT-PNN-002-STEP-005 Verify SystemLog Header
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    SystemLog
-    Verify SystemLog Header
-
-UAT-PNN-002-STEP-006 Verify SystemLog Table Columns
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    SystemLog
-    Verify SystemLog Columns
-
-UAT-PNN-002-STEP-007 Verify SystemLog Data Exists
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    SystemLog
-    Verify SystemLog Has At Least 1 Row
 
 UAT-PNN-002-STEP-008 Verify And Click Export CSV
     Open Chrome
@@ -483,54 +390,6 @@ UAT-PNN-002 Admin View System Log
 # ---------------------------
 # UAT-PNN-003 Access Log Steps
 # ---------------------------
-UAT-PNN-003-STEP-001 Open Home Page
-    Open Chrome
-    Go To    ${BASE_URL}
-    Verify Home Page
-
-UAT-PNN-003-STEP-002 Click Login And See Login Form
-    Open Chrome
-    Go To    ${BASE_URL}
-    Click Element    xpath=//a[@href='/login']
-    Wait Until Element Is Visible    id=loginForm    10s
-    Verify Login Page And Form
-
-UAT-PNN-003-STEP-003 Admin Login And Go Dashboard
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Verify Admin Logged In And On Dashboard
-
-UAT-PNN-003-STEP-004 Open Monitor And See Tabs
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Verify Monitor Tabs Exist
-
-UAT-PNN-003-STEP-005 Verify AccessLog Header
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    AccessLog
-    Verify AccessLog Header
-
-UAT-PNN-003-STEP-006 Verify AccessLog Table Columns
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    AccessLog
-    Verify AccessLog Columns
-
-UAT-PNN-003-STEP-007 Verify AccessLog Data Exists
-    Open Chrome
-    Go To Login Page
-    Login As Admin And Go Dashboard
-    Open Monitor Page
-    Switch Monitor Tab    AccessLog
-    Verify AccessLog Has At Least 1 Row
 
 UAT-PNN-003-STEP-008 Verify And Click Export CSV
     Open Chrome

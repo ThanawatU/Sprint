@@ -13,6 +13,7 @@ const reportRoutes = require('./report.routes');
 const exportRoutes = require('./export.routes');
 const integrityRoutes = require('./integrity.routes');
 const auditRoutes = require('./audit.routes');
+const incidentRoutes = require('./incident.routes');
 
 const router = express.Router();
 
@@ -42,5 +43,8 @@ router.use('/integrity', integrityRoutes);
 
 // audit log routes
 router.use('/logs', auditRoutes);
+
+// incident routes
+router.use('/incidents', incidentRoutes);
 
 module.exports = router;

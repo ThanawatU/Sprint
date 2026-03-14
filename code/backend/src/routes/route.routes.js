@@ -130,4 +130,7 @@ router.delete(
   routeController.deleteRoute
 );
 
+router.get('/:id/participants', protect, routeController.getOtherParticipants);
+
+
 module.exports = router;

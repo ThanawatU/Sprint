@@ -1,0 +1,391 @@
+{
+  "info": {
+    "_postman_id": "3ad73c42-4225-403b-afda-a4444ef1c368",
+    "name": "Report System API",
+    "description": "API endpoints for the Report System (User & Admin)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41516873"
+  },
+  "item": [
+    {
+      "name": "1. User Routes",
+      "item": [
+        {
+          "name": "1.1 Create Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZng1NGkwMDBmNG9hdW83YWg1dnpiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwMDEwOCwiZXhwIjoxNzczNTAzNzA4fQ._9hk_KQg7NQjXkXdNN03xUXyVNAusV0G_AX74xCpz48",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reportedUserIds\": [\"cmmqfuzea00034oau1medpiu1\",\"cmmqfw2n900094oauyfcqxzlb\"],\n  \"routeId\": \"cmmqg1bd700374oau1dvyoetb\",\n  \"bookingId\": \"cmmqg2abf004a4oaucdhcb2qb\",\n  \"category\": \"DANGEROUS_DRIVING\",\n  \"description\": \"ขับรถเร็วมากและปาดหน้าคันอื่นตลอดทาง\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 Get My Reports",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZng1NGkwMDBmNG9hdW83YWg1dnpiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwMDEwOCwiZXhwIjoxNzczNTAzNzA4fQ._9hk_KQg7NQjXkXdNN03xUXyVNAusV0G_AX74xCpz48",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "my"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.3 Get Reports Against Me",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzUwMTE1MywiZXhwIjoxNzczNTA0NzUzfQ.pTCWFxxgEPgtQAcKAHJAG9AGLvNPHWUtgl80Ee5MSAM",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/against-me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "against-me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.4 Upload Evidence",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZng1NGkwMDBmNG9hdW83YWg1dnpiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwMTIwNywiZXhwIjoxNzczNTA0ODA3fQ.9OgxzkXZOKrshvXCLtt_2nD8H_ERJG3i6w5o7kbh1-Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"evidences\": [\n    {\n      \"type\": \"IMAGE\",\n      \"url\": \"https://example.com/evidence1.jpg\",\n      \"fileName\": \"evidence1.jpg\",\n      \"mimeType\": \"image/jpeg\",\n      \"fileSize\": 102400\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/cmmqgr3d10001g4jof95c4wxk/evidence",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "cmmqgr3d10001g4jof95c4wxk",
+                "evidence"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.5 Cancel Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZncybjkwMDA5NG9hdXlmY3F4emxiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwMTMwNSwiZXhwIjoxNzczNTA0OTA1fQ.st1Gz0zxoFEmowbraJgkLhtDijWDSro_4ZeyBlhCupw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/cmmqgy0ln001lg4jof2au0g5k/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "cmmqgy0ln001lg4jof2au0g5k",
+                "cancel"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.6 Get Report Details",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZncybjkwMDA5NG9hdXlmY3F4emxiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwMTMwNSwiZXhwIjoxNzczNTA0OTA1fQ.st1Gz0zxoFEmowbraJgkLhtDijWDSro_4ZeyBlhCupw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/cmmqgr3d30005g4jo9v98dawu",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "cmmqgr3d30005g4jo9v98dawu"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Other Participants in Route",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Admin Routes",
+      "item": [
+        {
+          "name": "2.1 Get All Reports",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNTAxNjY5LCJleHAiOjE3NzM1MDUyNjl9.49MaJg3qXBu0RjBuksnkEED61HwniH_Gq99ie9a9dgc",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/admin/all?status=PENDING",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "admin",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 Assign Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/admin/{{reportId}}/assign",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "admin",
+                "{{reportId}}",
+                "assign"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.3 Resolve Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminNotes\": \"ตรวจสอบหลักฐานแล้วพบว่าผิดจริง ดำเนินการตักเตือนและให้ใบเหลืองแล้ว\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/admin/{{reportId}}/resolve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "admin",
+                "{{reportId}}",
+                "resolve"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.4 Reject Report",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adminNotes\": \"หลักฐานไม่เพียงพอ ไม่สามารถดำเนินการได้\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/admin/{{reportId}}/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "admin",
+                "{{reportId}}",
+                "reject"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "userToken",
+      "value": "your_user_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "your_admin_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "reportId",
+      "value": "replace_with_report_id_or_group_id",
+      "type": "string"
+    }
+  ]
+}

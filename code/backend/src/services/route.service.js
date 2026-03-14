@@ -371,6 +371,53 @@ const cancelRoute = async (routeId, driverId, opts = {}) => {
   return { id: routeId, status: RouteStatus.CANCELLED, cancelledBy: 'DRIVER', cancelledAt: now };
 };
 
+
+const getOtherParticipantsInRoute = async (routeId, currentUserId) => {
+  const route = await prisma.route.findUnique({
+    where: { id: routeId },
+    include: {
+
+      driver: {
+        select: { id: true, firstName: true, lastName: true, role: true, profilePicture: true }
+      },
+
+      bookings: {
+        where: { 
+          status: 'CONFIRMED',
+          cancelledAt: null 
+        },
+        include: {
+          passenger: {
+            select: { id: true, firstName: true, lastName: true, role: true, profilePicture: true }
+          }
+        }
+      }
+    }
+  });
+
+  if (!route) throw new Error("ไม่พบข้อมูลเส้นทาง/ทริปนี้ในระบบ");
+
+  const participants = [];
+
+  if (route.driverId !== currentUserId) {
+    participants.push({
+      ...route.driver,
+      participantType: 'DRIVER'
+    });
+  }
+
+  route.bookings.forEach(booking => {
+    if (booking.passengerId !== currentUserId) {
+      participants.push({
+        ...booking.passenger,
+        participantType: 'PASSENGER'
+      });
+    }
+  });
+
+  return participants;
+};
+
 module.exports = {
   getAllRoutes,
   searchRoutes,
@@ -379,5 +426,6 @@ module.exports = {
   createRoute,
   updateRoute,
   deleteRoute,
-  cancelRoute
+  cancelRoute,
+  getOtherParticipantsInRoute
 };
