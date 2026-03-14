@@ -1,9 +1,6 @@
 const { prisma } = require("../utils/prisma");
 const crypto = require('crypto');
 
-// ==========================================
-// 🛠️ HELPER FUNCTIONS
-// ==========================================
 
 // ตรวจสอบว่าผู้ใช้อยู่ในทริปนั้นจริงหรือไม่
 const checkUserInTrip = async (userId, routeId) => {
@@ -47,22 +44,6 @@ const handleYellowCard = async (tx, userId) => {
   }
 };
 
-// ตัวแปร Include กลางสำหรับตอน Query เพื่อให้ข้อมูลครบถ้วนและโค้ดไม่ซ้ำ
-const REPORT_INCLUDE_OPTIONS = {
-  reporter: { select: { id: true, username: true, email: true, firstName: true, lastName: true } },
-  reportedUser: { select: { id: true, username: true, email: true, firstName: true, lastName: true, yellowCardCount: true, yellowCardExpiresAt: true, isActive: true } },
-  booking: true,
-  route: true,
-  evidences: true, // ดึงก้อน Evidence มาตรงๆ
-  resolvedBy: { select: { id: true, firstName: true, lastName: true } },
-  statusHistory: { include: { changedBy: { select: { id: true, username: true } } }, orderBy: { createdAt: "desc" } }
-};
-
-
-// ==========================================
-// 🚀 MAIN SERVICE FUNCTIONS
-// ==========================================
-
 // 1. สร้าง Report
 const createReportCase = async (data) => {
   const { reporterId, reportedUserIds, bookingId, routeId, category, description } = data;
@@ -102,48 +83,72 @@ const createReportCase = async (data) => {
   };
 };
 
-// 2. ดึงรายการ Report ทั้งหมด (ยุบรวม Group ให้แล้ว ไม่ต้อง Merge หลักฐานให้วุ่นวาย)
-const getReports = async (where = {}, orderBy = { createdAt: "desc" }) => {
-  const records = await prisma.reportCase.findMany({ where, include: REPORT_INCLUDE_OPTIONS, orderBy });
-  const grouped = {};
-  const result = [];
-
-  for (const record of records) {
-    const key = record.groupId || record.id;
-    if (!grouped[key]) {
-      grouped[key] = {
-        ...record,
-        id: key, 
-        isGroup: !!record.groupId,
-        reportedUsers: [record.reportedUser]
-      };
-      result.push(grouped[key]);
-    } else {
-      grouped[key].reportedUsers.push(record.reportedUser);
-    }
-  }
-  return result;
+// 2. ดึงรายการ Report ทั้งหมด
+const getReports = async (where = {}) => {
+  return prisma.reportCase.findMany({
+    where,
+    include: {
+      reporter: {
+        select: { id: true, username: true, firstName: true, lastName: true }
+      },
+      reportedUser: {
+        select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
+      },
+      route: {
+        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+      },
+      evidences: true,
+      statusHistory: {
+        include: { changedBy: { select: { id: true, username: true } } },
+        orderBy: { createdAt: 'desc' }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
 };
 
 // 3. ดึง Report เคสเดี่ยว (ใช้ Report ID)
 const getReportById = async (id) => {
-  const report = await prisma.reportCase.findUnique({ where: { id }, include: REPORT_INCLUDE_OPTIONS });
-  if (!report) return null;
-  return { ...report, isGroup: false, reportedUsers: [report.reportedUser] };
+  return prisma.reportCase.findUnique({ where: { id }, include: {
+      reporter: {
+        select: { id: true, username: true, firstName: true, lastName: true }
+      },
+      reportedUser: {
+        select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
+      },
+      route: {
+        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+      },
+      evidences: true,
+      statusHistory: {
+        include: { changedBy: { select: { id: true, username: true } } },
+        orderBy: { createdAt: 'desc' }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
 };
 
-// 4. ดึง Report แบบกลุ่ม (ใช้ Group ID) - ส่งแบบดิบๆ ตามคำขอ
+// 4. ดึง Report แบบกลุ่ม (ใช้ Group ID)
 const getReportByGroupId = async (groupId) => {
-  const cases = await prisma.reportCase.findMany({ where: { groupId }, include: REPORT_INCLUDE_OPTIONS, orderBy: { createdAt: "asc" } });
-  if (!cases.length) return null;
-
-  return {
-    ...cases[0],
-    id: groupId,
-    isGroup: true,
-    reportedUsers: cases.map(c => c.reportedUser),
-    cases // ส่ง cases กลับไปตรงๆ ไม่ต้อง Merge Evidence แล้ว
-  };
+  return prisma.reportCase.findMany({ where: { groupId }, include: {
+      reporter: {
+        select: { id: true, username: true, firstName: true, lastName: true }
+      },
+      reportedUser: {
+        select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
+      },
+      route: {
+        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+      },
+      evidences: true,
+      statusHistory: {
+        include: { changedBy: { select: { id: true, username: true } } },
+        orderBy: { createdAt: 'desc' }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
 };
 
 // 5. แอดมินรับเรื่อง (PENDING -> UNDER_REVIEW)

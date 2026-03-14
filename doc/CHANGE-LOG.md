@@ -494,6 +494,13 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.0.0] - 2026-03-15 - Yodsanon_0215
+
+### Added
+- **Report System**: Added a get by routeID.
+
+---
+
 ## Version Guidelines
 
 ### Categories
