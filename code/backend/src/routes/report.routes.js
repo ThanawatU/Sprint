@@ -50,7 +50,14 @@ router.patch(
   reportController.cancelReport
 );
 
-// 6. ดูรายละเอียด Report รายเคส (ดึงผ่าน ID หลักของเคสนั้นๆ)
+// 6. ดึงรายงานทั้งหมดของ Trip นั้นๆ (ดึงผ่าน routeId)
+router.get(
+  '/route/:routeId', 
+  protect, 
+  reportController.getReportsByRouteId
+);
+
+// 7. ดูรายละเอียด Report รายเคส (ดึงผ่าน ID หลักของเคสนั้นๆ)
 router.get(
   '/:id', 
   protect, 
