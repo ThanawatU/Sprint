@@ -597,6 +597,31 @@ const getOtherParticipants = asyncHandler(async (req, res) => {
   });
 });
 
+const completeRoute = asyncHandler(async (req, res) => {
+  const driverId = req.user.id;
+  const { id } = req.params;
+
+  const result = await routeService.completeRoute(id, driverId);
+
+  await auditLog({
+    ...getUserFromRequest(req),
+    action: 'COMPLETE_ROUTE',
+    entity: 'Route',
+    entityId: id,
+    req,
+    metadata: {
+      status: result.status,
+      completedAt: result.completedAt
+    }
+  });
+
+  res.status(200).json({
+    success: true,
+    message: 'Route completed successfully',
+    data: result
+  });
+});
+
 module.exports = {
   getAllRoutes,
   listRoutes,
@@ -612,4 +637,5 @@ module.exports = {
   adminGetRoutesByDriver,
   cancelRoute,
   getOtherParticipants,
+  completeRoute,
 };
