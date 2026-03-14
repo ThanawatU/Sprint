@@ -114,7 +114,38 @@ exports.getReportById = async (req, res) => {
   }
 };
 
-// 4. แอดมินรับเรื่อง (PENDING -> UNDER_REVIEW)
+// 4. ดึงรายการ Report ทั้งหมดที่เกิดขึ้นใน Route (Trip) นั้น
+exports.getReportsByRouteId = async (req, res) => {
+  try {
+    const { routeId } = req.params;
+
+    const reports = await reportService.getReports({ routeId });
+
+    if (!reports || reports.length === 0) {
+      return res.status(200).json({ success: true, data: [] });
+    }
+
+    const allowedReports = req.user.role === 'ADMIN'
+      ? reports
+      : reports.filter(r => r.reporterId === req.user.id || r.reportedUserId === req.user.id);
+
+    await auditLog({
+      ...getUserFromRequest(req),
+      action: 'VIEW_ROUTE_REPORTS',
+      entity: 'Route',
+      entityId: routeId,
+      req,
+      metadata: { reportCount: allowedReports.length }
+    });
+
+    res.status(200).json({ success: true, data: allowedReports });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch reports for this route" });
+  }
+};
+
+// 5. แอดมินรับเรื่อง (PENDING -> UNDER_REVIEW)
 exports.assignReport = async (req, res) => {
   try {
     const { id } = req.params;
@@ -145,7 +176,7 @@ exports.assignReport = async (req, res) => {
   }
 };
 
-// 5. แอดมินอนุมัติเคส (RESOLVED + แจกใบเหลืองอัตโนมัติ)
+// 6. แอดมินอนุมัติเคส (RESOLVED + แจกใบเหลืองอัตโนมัติ)
 exports.resolveReport = async (req, res) => {
   try {
     const { id } = req.params;
@@ -171,7 +202,7 @@ exports.resolveReport = async (req, res) => {
   }
 };
 
-// 6. แอดมินปฏิเสธเคส (REJECTED)
+// 7. แอดมินปฏิเสธเคส (REJECTED)
 exports.rejectReport = async (req, res) => {
   try {
     const { id } = req.params;
@@ -197,7 +228,7 @@ exports.rejectReport = async (req, res) => {
   }
 };
 
-// 7. เพิ่มหลักฐาน และ Timestamp
+// 8. เพิ่มหลักฐาน และ Timestamp
 exports.addEvidence = async (req, res) => {
   try {
     const { id } = req.params; 
@@ -225,7 +256,7 @@ exports.addEvidence = async (req, res) => {
   }
 };
 
-// 8. ดึงประวัติการ Report ที่เราส่งเอง
+// 9. ดึงประวัติการ Report ที่เราส่งเอง
 exports.getMyReports = async (req, res) => {
   try {
     const records = await reportService.getReports({ reporterId: req.user.id });
@@ -245,7 +276,7 @@ exports.getMyReports = async (req, res) => {
   }
 };
 
-// 9. ดึงประวัติที่คนอื่นรีพอร์ตเรา
+// 10. ดึงประวัติที่คนอื่นรีพอร์ตเรา
 exports.getReportsAgainstMe = async (req, res) => {
   try {
     const records = await reportService.getReports({ reportedUserId: req.user.id });
@@ -265,7 +296,7 @@ exports.getReportsAgainstMe = async (req, res) => {
   }
 };
 
-// 10. ผู้ใช้ยกเลิก Report ด้วยตัวเอง
+// 11. ผู้ใช้ยกเลิก Report ด้วยตัวเอง
 exports.cancelReport = async (req, res) => {
   try {
     const { id } = req.params;
