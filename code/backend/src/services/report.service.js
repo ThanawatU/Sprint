@@ -124,7 +124,8 @@ const getReportById = async (id) => {
         include: { changedBy: { select: { id: true, username: true } } },
         orderBy: { createdAt: 'desc' }
       }
-    }
+    },
+    orderBy: { createdAt: 'desc' }
   });
 };
 
