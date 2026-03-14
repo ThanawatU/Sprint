@@ -615,6 +615,18 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [2.1.0] - 2026-03-14 - Yodsanon_0215
+
+### Added
+- **Incident Report System**: Added a complete incident reporting system.
+- **Route Participants API**: Added an API to fetch the list of passengers or the driver in a route, excluding the current user.
+- **API Tests**: Added API test sets for both the Incident Report and Route Participants systems.
+
+### Changed
+- **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
+
+---
+
 ## Version Guidelines
 
 ### Categories

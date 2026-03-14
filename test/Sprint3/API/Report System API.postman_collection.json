@@ -204,40 +204,10 @@
           "response": []
         },
         {
-          "name": "1.7 Get Other Participants in Route",
+          "name": "Get Other Participants in Route",
           "request": {
             "method": "GET",
             "header": []
-          },
-          "response": []
-        },
-        {
-          "name": "1.8 get report by tripId",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZng1NGkwMDBmNG9hdW83YWg1dnpiIiwicm9sZSI6IlBBU1NFTkdFUiIsImlhdCI6MTc3MzUwNzM1NSwiZXhwIjoxNzczNTEwOTU1fQ.ww6z1DVxoTmH0lLd-Ujnv4RtAVIgvf4t7B4WIZ43acw",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/reports/route/cmmqg1bd700374oau1dvyoetb",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "reports",
-                "route",
-                "cmmqg1bd700374oau1dvyoetb"
-              ]
-            }
           },
           "response": []
         }
@@ -254,7 +224,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNTEwMDk2LCJleHAiOjE3NzM1MTM2OTZ9.C-jFHzN5QC8j1SnA0JUwAaFxQll6ZwEXsx-wR-oeyZ0",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNTAxNjY5LCJleHAiOjE3NzM1MDUyNjl9.49MaJg3qXBu0RjBuksnkEED61HwniH_Gq99ie9a9dgc",
                   "type": "string"
                 }
               ]
@@ -262,7 +232,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/admin/all",
+              "raw": "{{baseUrl}}/api/reports/admin/all?status=PENDING",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -271,6 +241,12 @@
                 "reports",
                 "admin",
                 "all"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PENDING"
+                }
               ]
             }
           },
