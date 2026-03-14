@@ -306,12 +306,14 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Nattaphat_0126
 
 ### Added
+
 - Added Auto-approval logic for export requests by `ADMIN` role in `audit.controller.js`
 - Added PDF export generation logic and format support in `audit.service.js` and `audit.routes.js`
 - Implemented Export Request Management UI for administrators in `admin/exports/index.vue`
 - Added User Log Request History and submission form for regular users in `profile/logs.vue`
 
 ### Changed
+
 - Enhanced `ProfileSidebar.vue` and `AdminSidebar.vue` to include new log export navigation menus
 - Updated User Management table in `admin/users/index.vue` to display User IDs for better tracking
 
@@ -345,6 +347,7 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-01 - Wisit_2348
 
 ### Added
+
 - Added Audit Log for Passenger report system.
 - Added Audit Log support for exporting audit logs to file.
 - Extended Audit Log coverage in the following controllers:
@@ -359,11 +362,13 @@ All notable changes to this project will be documented in this file.
 - Added new environment variables related to Audit Log Key in .env (Docker environment)
 
 ### Fixed
+
 - Updated version for Sprint 2 (changed to version 2.0.0)
 
 ### Fixed
+
 - Fixed an issue where Logout action was not recorded in Access Log.
-- Fixed Audit Log configuration issue related to missing or incorrect AUDIT_LOG_KEY in Docker. 
+- Fixed Audit Log configuration issue related to missing or incorrect AUDIT_LOG_KEY in Docker.
 - Fixed Monitor Dashboard icon issue.
 
 ---
@@ -371,12 +376,14 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-01 - Yodsanon_0215
 
 ### Added
+
 - Added `yellowCardCount` and `yellowCardExpiresAt` fields to the `User` model in `schema.prisma`.
 - Implemented automatic yellow card issuance in `report.service.js` when an admin updates a report status to `RESOLVED`.
 - Added 30-day expiration tracking for yellow cards. If a user receives a new card within 30 days, the expiration extends; otherwise, it resets to zero.
 - Added logic to permanently blacklist users (`suspendedUntil: null`) and deactivate their accounts (`isActive: false`) upon receiving their 3rd yellow card.
 
 ### Changed
+
 - `src/services/report.service.js` - Modified `updateReportStatus` to trigger the Yellow/Red card.
 
 ---
@@ -384,6 +391,7 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-02 - Wisit_2348
 
 ### Added
+
 - Added Report Management page for report handling and monitoring.
 - Added a sidebar navigation link to the Report Management page.
 - Added 4LsRetroSpective File
@@ -391,12 +399,15 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [2.0.0] - 2026-03-03 - Yodsanon_0215
+
 ### Added
+
 - Added groupId field to the ReportCase model in schema.prisma for multi-user reporting.
 - Implemented addEvidencesToReportGroup in report.service.js to support bulk evidence uploads for grouped reports.
 - Added logic to automatically generate and assign groupId (e.g., REP-xxxx) when reporting multiple users.
 
 ### Changed
+
 - src/controllers/report.controller.js - Updated createReport and addEvidence to support group-based reporting and evidence distribution.
 
 - src/validations/report.validation.js - Updated createReportSchema to accept an array of reportedUserIds.
@@ -404,7 +415,9 @@ All notable changes to this project will be documented in this file.
 ---
 
 ## [2.0.0] - 2026-03-03 - Kanyapat_5037
+
 ### Added
+
 - Report Detail page for admin dashboard
 - Report grouping support (groupId) for multiple reported users.
 - Admin case management section (issue yellow card + resolution controls).
@@ -414,6 +427,7 @@ All notable changes to this project will be documented in this file.
 - Added reject button for admin case management.
 
 ### Fixed
+
 - Fixed routing path to admin report detail page.
 
 ---
@@ -421,37 +435,44 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Pimapsorn_5095
 
 ### Added
+
 - Report form page with multi-user selection support.
 - Report history page (My Reports) with search and filter.
 - Admin report detail page and case management system.
 - Yellow/Red card policy system (30-day expiration, auto-suspension after 3 yellow cards).
 - Group report support using `groupId` and `reportedUserIds[]`.
 - Evidence upload support with Cloudinary integration.
-- User Manual documentation 
+- User Manual documentation
 
 ### Changed
+
 - Refactored report structure to support multiple reported users.
 - Updated frontend to use checkbox multi-select for reporting.
 - Improved authentication handling (cookie-based token).
 - Unified UI styling for report-related pages.
 
 ### Fixed
+
 - Fixed single-user report limitation.
 - Fixed token 400 error issue.
 - Fixed duplicate/incorrect report display.
 - Fixed admin routing path issue.
 - Fixed Docker database connection issue.
 - Fixed passenger selection not appearing in report table.
+
 ## [2.0.0] - 2026-03-03 - Wisit_2348
 
 ### Added
+
 - Added automated API tests for the report module.
 - Added A-DAPT Blueprint FOR SPRINT 2
 
 ### Changed
+
 - Reorganized project documentation files for better structure and maintainability.
 
 ### Fixed
+
 - Fixed bugs related to the report system.
 
 ---
@@ -459,11 +480,12 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Kanyapat_5037
 
 ### Added
-- Added Admin Ban Report Robot 
-- Added Admin Reject Report Robot 
-- Added Passenger Report Robot 
-- Added Passenger Detail Report Robot 
-- Added Baned User Checked Robot 
+
+- Added Admin Ban Report Robot
+- Added Admin Reject Report Robot
+- Added Passenger Report Robot
+- Added Passenger Detail Report Robot
+- Added Baned User Checked Robot
 
 ---
 
@@ -485,12 +507,31 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-14 - Yodsanon_0215
 
 ### Added
+
 - **Incident Report System**: Added a complete incident reporting system.
 - **Route Participants API**: Added an API to fetch the list of passengers or the driver in a route, excluding the current user.
 - **API Tests**: Added API test sets for both the Incident Report and Route Participants systems.
 
 ### Changed
+
 - **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
+
+---
+
+## [2.0.0] - 2026-03-14 - Thanawat_2128
+
+### Added
+
+- **Review System**: Added a Review System api to backend
+- **API Tests**: Postman API Tests for Review System
+
+### Changed
+
+- **Prisma Schema**: Modified Prisma Schema to be compatible with Review System
+
+### Fixed
+
+- Fix conflicts on rebasing main branch
 
 ---
 
