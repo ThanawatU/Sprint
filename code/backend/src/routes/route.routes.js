@@ -121,6 +121,14 @@ router.patch(
   routeController.cancelRoute
 );
 
+router.patch(
+  "/:id/complete",
+  protect,
+  requireDriverVerified,
+  validate({ params: idParamSchema }),
+  routeController.completeRoute
+);
+
 // DELETE /routes/:id
 router.delete(
   "/:id",
