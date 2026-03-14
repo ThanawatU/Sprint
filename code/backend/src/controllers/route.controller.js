@@ -637,5 +637,5 @@ module.exports = {
   adminGetRoutesByDriver,
   cancelRoute,
   getOtherParticipants,
-  completeRoute,
+  completeRoute
 };
