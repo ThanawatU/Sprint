@@ -1,0 +1,439 @@
+{
+  "info": {
+    "name": "PaiNamnae — Review API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://deploy-production-88fa.up.railway.app/api" }
+  ],
+  "item": [
+    {
+      "name": "0. Setup — Login Passenger",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const d = pm.response.json();",
+              "if (d.token) pm.environment.set('passengerToken', d.token);",
+              "if (d.data?.token) pm.environment.set('passengerToken', d.data.token);",
+              "pm.test('Login success', () => pm.response.to.have.status(200));",
+              "pm.test('Got token', () => pm.expect(pm.environment.get('passengerToken')).to.not.be.empty);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"tester@ex.com\",\n  \"password\": \"yourpassword\"\n}"
+        }
+      }
+    },
+    {
+      "name": "0. Setup — Login Admin",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const d = pm.response.json();",
+              "if (d.token) pm.environment.set('adminToken', d.token);",
+              "if (d.data?.token) pm.environment.set('adminToken', d.data.token);",
+              "pm.test('Admin login success', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@ex.com\",\n  \"password\": \"yourpassword\"\n}"
+        }
+      }
+    },
+    {
+      "name": "1. POST /reviews — ✅ Passenger creates review",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const d = pm.response.json();",
+              "pm.test('success = true', () => pm.expect(d.success).to.be.true);",
+              "pm.test('Has review id', () => pm.expect(d.data.id).to.not.be.empty);",
+              "pm.test('Rating matches', () => pm.expect(d.data.rating).to.eql(5));",
+              "pm.environment.set('reviewId', d.data.id);",
+              "pm.environment.set('driverIdFromReview', d.data.driverId);",
+              "console.log('reviewId:', d.data.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{passengerToken}}" }
+        ],
+        "url": "{{baseUrl}}/reviews",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"rating\": 5,\n  \"comment\": \"คนขับสุภาพมาก ตรงต่อเวลา แนะนำเลย\"\n}"
+        }
+      }
+    },
+    {
+      "name": "2. POST /reviews — ❌ Duplicate booking (409)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));",
+              "const d = pm.response.json();",
+              "pm.test('Error message about duplicate', () => pm.expect(d.message).to.include('รีวิว'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{passengerToken}}" }
+        ],
+        "url": "{{baseUrl}}/reviews",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"rating\": 3,\n  \"comment\": \"ลองรีวิวซ้ำ\"\n}"
+        }
+      }
+    },
+    {
+      "name": "3. POST /reviews — ❌ Rating out of range (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));",
+              "pm.test('Rating error message', () => {",
+              "  const d = pm.response.json();",
+              "  pm.expect(d.message).to.include('rating');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{passengerToken}}" }
+        ],
+        "url": "{{baseUrl}}/reviews",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"some-other-booking-id\",\n  \"rating\": 6,\n  \"comment\": \"rating เกิน 5\"\n}"
+        }
+      }
+    },
+    {
+      "name": "4. POST /reviews — ❌ No token (401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/reviews",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"rating\": 4\n}"
+        }
+      }
+    },
+    {
+      "name": "5. POST /reviews — ❌ Driver tries to review (403)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));",
+              "const d = pm.response.json();",
+              "pm.test('Forbidden message', () => pm.expect(d.message).to.include('ผู้โดยสาร'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{driverToken}}" }
+        ],
+        "url": "{{baseUrl}}/reviews",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bookingId\": \"{{bookingId}}\",\n  \"rating\": 4\n}"
+        }
+      }
+    },
+    {
+      "name": "6. GET /reviews/driver/:driverId — ✅ Get driver reviews + avgRating",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('Has reviews array', () => pm.expect(d.reviews).to.be.an('array'));",
+              "pm.test('Has avgRating', () => pm.expect(d.avgRating).to.not.be.undefined);",
+              "pm.test('Has totalReviews', () => pm.expect(d.totalReviews).to.be.a('number'));",
+              "pm.test('Has pagination', () => pm.expect(d.pagination).to.be.an('object'));",
+              "if (d.reviews.length > 0) {",
+              "  pm.test('Review has rating 1-5', () => {",
+              "    d.reviews.forEach(r => {",
+              "      pm.expect(r.rating).to.be.within(1, 5);",
+              "    });",
+              "  });",
+              "  pm.test('Review has reviewer info', () => pm.expect(d.reviews[0].reviewer).to.be.an('object'));",
+              "}",
+              "console.log('avgRating:', d.avgRating, 'total:', d.totalReviews);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/reviews/driver/{{driverIdFromReview}}?page=1&limit=10"
+      }
+    },
+    {
+      "name": "7. GET /reviews/booking/:bookingId — ✅ Already reviewed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('Review exists', () => pm.expect(d.data).to.not.be.null);",
+              "pm.test('Correct bookingId', () => pm.expect(d.data.bookingId).to.eql(pm.environment.get('bookingId')));",
+              "pm.test('Has rating', () => pm.expect(d.data.rating).to.be.within(1, 5));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{passengerToken}}" }],
+        "url": "{{baseUrl}}/reviews/booking/{{bookingId}}"
+      }
+    },
+    {
+      "name": "8. GET /reviews/booking/:bookingId — ✅ Not yet reviewed (null)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('data is null = not reviewed yet', () => pm.expect(d.data).to.be.null);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{passengerToken}}" }],
+        "url": "{{baseUrl}}/reviews/booking/non-existent-booking-id-999"
+      }
+    },
+    {
+      "name": "9. GET /reviews/my — ✅ Passenger views own reviews",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('Has reviews array', () => pm.expect(d.reviews).to.be.an('array'));",
+              "pm.test('Has pagination', () => pm.expect(d.pagination).to.be.an('object'));",
+              "if (d.reviews.length > 0) {",
+              "  pm.test('Review has driver info', () => pm.expect(d.reviews[0].driver).to.be.an('object'));",
+              "  pm.test('Review has booking info', () => pm.expect(d.reviews[0].booking).to.be.an('object'));",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{passengerToken}}" }],
+        "url": "{{baseUrl}}/reviews/my"
+      }
+    },
+    {
+      "name": "10. GET /reviews/my — ❌ No token (401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/reviews/my"
+      }
+    },
+    {
+      "name": "11. GET /reviews — ✅ Admin gets all reviews",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('Has reviews array', () => pm.expect(d.reviews).to.be.an('array'));",
+              "pm.test('Has pagination', () => pm.expect(d.pagination).to.be.an('object'));",
+              "if (d.reviews.length > 0) {",
+              "  pm.test('Each review has reviewer+driver', () => {",
+              "    const r = d.reviews[0];",
+              "    pm.expect(r.reviewer).to.be.an('object');",
+              "    pm.expect(r.driver).to.be.an('object');",
+              "  });",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+        "url": "{{baseUrl}}/reviews?page=1&limit=20"
+      }
+    },
+    {
+      "name": "12. GET /reviews?rating=5 — ✅ Admin filters by rating",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('All reviews are rating 5', () => {",
+              "  d.reviews.forEach(r => pm.expect(r.rating).to.eql(5));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+        "url": "{{baseUrl}}/reviews?rating=5"
+      }
+    },
+    {
+      "name": "13. GET /reviews — ❌ Passenger cannot access admin route (403)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{passengerToken}}" }],
+        "url": "{{baseUrl}}/reviews"
+      }
+    },
+    {
+      "name": "14. DELETE /reviews/:id — ✅ Admin deletes review",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const d = pm.response.json();",
+              "pm.test('success = true', () => pm.expect(d.success).to.be.true);",
+              "pm.test('Has deleted data', () => pm.expect(d.data).to.be.an('object'));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+        "url": "{{baseUrl}}/reviews/{{reviewId}}"
+      }
+    },
+    {
+      "name": "15. DELETE /reviews/:id — ❌ Not found after delete (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+        "url": "{{baseUrl}}/reviews/{{reviewId}}"
+      }
+    },
+    {
+      "name": "16. DELETE /reviews/:id — ❌ Passenger cannot delete (403)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 403', () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{passengerToken}}" }],
+        "url": "{{baseUrl}}/reviews/any-review-id"
+      }
+    }
+  ]
+}
