@@ -541,6 +541,12 @@ All notable changes to this project will be documented in this file.
 
 - Fix conflicts on rebasing main branch
 
+## [2.0.0] - 2026-03-15 - Yodsanon_0215
+
+### Added
+
+- **Report System**: Added a get by routeID.
+
 ---
 
 ## [3.0.0] - 2026-03-15 - Wisit_2348
