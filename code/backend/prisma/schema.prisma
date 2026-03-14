@@ -103,6 +103,10 @@ model User {
   exportRequests        ExportRequest[]     @relation("ExportRequester")
   reviewedExportRequests ExportRequest[]    @relation("ExportReviewer")
 
+  // Review system
+  givenReviews    DriverReview[] @relation("ReviewAuthor")
+  receivedReviews DriverReview[] @relation("ReviewTarget")
+
   blacklists        Blacklist[]
   createdBlacklists Blacklist[] @relation("AdminBlacklist")
 
@@ -241,6 +245,8 @@ model Booking {
   dropoffLocation Json          @db.Json
   createdAt       DateTime      @default(now())
 
+  // Review 
+  review DriverReview?
   reportCases ReportCase[]
 }
 
@@ -617,4 +623,32 @@ model IncidentStatusHistory {
 
   note             String?
   createdAt        DateTime        @default(now())
+}
+
+model DriverReview {
+  id          String  @id @default(cuid())
+
+  reviewerId  String
+  reviewer    User    @relation("ReviewAuthor", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  driverId    String
+  driver      User    @relation("ReviewTarget", fields: [driverId], references: [id], onDelete: Cascade)
+
+  // ผูกกับ Booking เพื่อป้องกัน review ซ้ำ และยืนยันว่าเคยนั่งจริง
+  bookingId   String  @unique  // 1 booking = 1 review เท่านั้น
+  booking     Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  // คะแนน 1–5
+  rating      Int     
+
+  comment     String?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([driverId])
+  @@index([reviewerId])
+  @@index([bookingId])
+  @@index([rating])
+  @@index([createdAt])
 }
