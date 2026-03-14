@@ -467,7 +467,22 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [2.1.0] - 2026-03-14 - Yodsanon_0215
+## [2.0.0] - 2026-03-14 - Phakorn_2160
+
+### Added
+
+- Added trip completion endpoint `PATCH /api/routes/:id/complete` for drivers.
+- Added `src/services/reviewEligibility.service.js` with `validateTripCompletedBeforeReview(bookingId)` to enforce completed-trip review validation.
+- Added review system schema design document `doc/Sprint3/ReviewSystemSchemaDesign.md` for team implementation alignment.
+
+### Changed
+
+- Updated route completion flow in `route.service.js` and `route.controller.js` to set route status to `COMPLETED`, notify passengers, and write audit logs.
+- Updated route API docs in `src/docs/route.doc.js` to include `PATCH /api/routes/{id}/complete`.
+
+---
+
+## [2.0.0] - 2026-03-14 - Yodsanon_0215
 
 ### Added
 - **Incident Report System**: Added a complete incident reporting system.

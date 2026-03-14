@@ -318,8 +318,8 @@ const cancelRoute = async (routeId, driverId, opts = {}) => {
       }
     }
   });
-  if (!route) throw new ApiError(404, 'Route not found');
-  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+  if (!route) throw new ApiError(404, 'ไม่พบเส้นทาง');
+  if (route.driverId !== driverId) throw new ApiError(403, 'ไม่มีสิทธิ์เข้าถึง');
   if (![RouteStatus.AVAILABLE, RouteStatus.FULL].includes(route.status)) {
     throw new ApiError(400, 'Route cannot be cancelled at this stage');
   }
@@ -376,11 +376,9 @@ const getOtherParticipantsInRoute = async (routeId, currentUserId) => {
   const route = await prisma.route.findUnique({
     where: { id: routeId },
     include: {
-
       driver: {
         select: { id: true, firstName: true, lastName: true, role: true, profilePicture: true }
       },
-
       bookings: {
         where: { 
           status: 'CONFIRMED',
@@ -391,6 +389,42 @@ const getOtherParticipantsInRoute = async (routeId, currentUserId) => {
             select: { id: true, firstName: true, lastName: true, role: true, profilePicture: true }
           }
         }
+      }
+    }
+  });
+
+  if (!route) throw new ApiError(404, 'Route not found');
+
+  const participants = [];
+
+  if (route.driver && route.driver.id !== currentUserId) {
+    participants.push({
+      ...route.driver,
+      participantType: 'DRIVER'
+    });
+  }
+
+  if (route.bookings && Array.isArray(route.bookings)) {
+    route.bookings.forEach(booking => {
+      if (booking.passenger && booking.passenger.id !== currentUserId) {
+        participants.push({
+          ...booking.passenger,
+          participantType: 'PASSENGER'
+        });
+      }
+    });
+  }
+
+  return participants;
+};
+  
+const completeRoute = async (routeId, driverId) => {
+  const route = await prisma.route.findUnique({
+    where: { id: routeId },
+    include: {
+      bookings: {
+        where: { status: { in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] } },
+        select: { id: true, passengerId: true }
       }
     }
   });
@@ -411,11 +445,51 @@ const getOtherParticipantsInRoute = async (routeId, currentUserId) => {
       participants.push({
         ...booking.passenger,
         participantType: 'PASSENGER'
+              });
+    }
+  });
+  if (!route) throw new ApiError(404, 'Route not found');
+  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+
+  if (route.status === RouteStatus.CANCELLED) {
+    throw new ApiError(400, 'ไม่สามารถจบทริปได้ เนื่องจากเส้นทางถูกยกเลิกแล้ว');
+  }
+
+  if (route.status === RouteStatus.COMPLETED) {
+    throw new ApiError(400, 'ทริปนี้ถูกจบแล้ว');
+  }
+
+  const now = new Date();
+
+  await prisma.$transaction(async (tx) => {
+    await tx.route.update({
+      where: { id: routeId },
+      data: { status: RouteStatus.COMPLETED }
+    });
+
+    for (const booking of route.bookings) {
+      await tx.notification.create({
+        data: {
+          userId: booking.passengerId,
+          type: 'ROUTE',
+          title: 'ทริปเสร็จสิ้นแล้ว',
+          body: 'คนขับได้เปลี่ยนสถานะทริปของคุณเป็นเสร็จสิ้นแล้ว',
+          metadata: {
+            kind: 'ROUTE_COMPLETED',
+            routeId,
+            bookingId: booking.id,
+            completedAt: now.toISOString()
+          }
+        }
       });
     }
   });
 
-  return participants;
+  return {
+    id: routeId,
+    status: RouteStatus.COMPLETED,
+    completedAt: now
+  };
 };
 
 module.exports = {
@@ -427,5 +501,6 @@ module.exports = {
   updateRoute,
   deleteRoute,
   cancelRoute,
-  getOtherParticipantsInRoute
+  getOtherParticipantsInRoute,
+  completeRoute
 };
