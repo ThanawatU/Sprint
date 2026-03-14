@@ -435,6 +435,7 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Pimapsorn_5095
 
 ### Added
+
 - Report form page with multi-user selection support.
 - Report history page (My Reports) with search and filter.
 - Admin report detail page and case management system.
@@ -451,22 +452,27 @@ All notable changes to this project will be documented in this file.
 - Unified UI styling for report-related pages.
 
 ### Fixed
+
 - Fixed single-user report limitation.
 - Fixed token 400 error issue.
 - Fixed duplicate/incorrect report display.
 - Fixed admin routing path issue.
 - Fixed Docker database connection issue.
 - Fixed passenger selection not appearing in report table.
+
 ## [2.0.0] - 2026-03-03 - Wisit_2348
 
 ### Added
+
 - Added automated API tests for the report module.
 - Added A-DAPT Blueprint FOR SPRINT 2
 
 ### Changed
+
 - Reorganized project documentation files for better structure and maintainability.
 
 ### Fixed
+
 - Fixed bugs related to the report system.
 
 ## [2.0.0] - 2026-03-03 - Wisit_2348
@@ -607,11 +613,12 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-03 - Kanyapat_5037
 
 ### Added
-- Added Admin Ban Report Robot 
-- Added Admin Reject Report Robot 
-- Added Passenger Report Robot 
-- Added Passenger Detail Report Robot 
-- Added Baned User Checked Robot 
+
+- Added Admin Ban Report Robot
+- Added Admin Reject Report Robot
+- Added Passenger Report Robot
+- Added Passenger Detail Report Robot
+- Added Baned User Checked Robot
 
 ---
 
@@ -642,11 +649,13 @@ All notable changes to this project will be documented in this file.
 ## [2.0.0] - 2026-03-14 - Yodsanon_0215
 
 ### Added
+
 - **Incident Report System**: Added a complete incident reporting system.
 - **Route Participants API**: Added an API to fetch the list of passengers or the driver in a route, excluding the current user.
 - **API Tests**: Added API test sets for both the Incident Report and Route Participants systems.
 
 ### Changed
+
 - **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
 
 ---
@@ -655,6 +664,20 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Report System**: Added a get by routeID.
+## [2.0.0] - 2026-03-14 - Thanawat_2128
+
+### Added
+
+- **Review System**: Added a Review System api to backend
+- **API Tests**: Postman API Tests for Review System
+
+### Changed
+
+- **Prisma Schema**: Modified Prisma Schema to be compatible with Review System
+
+### Fixed
+
+- Fix conflicts on rebasing main branch
 
 ---
 
