@@ -30,9 +30,9 @@ const createReview = async ({ reviewerId, bookingId, rating, comment }) => {
   }
 
   // booking ต้อง CONFIRMED เท่านั้น
-  if (booking.status !== "CONFIRMED") {
+  if (booking.status !== "COMPLETED") {
     throw Object.assign(
-      new Error("สามารถรีวิวได้เฉพาะ booking ที่มีสถานะ CONFIRMED เท่านั้น"),
+      new Error("สามารถรีวิวได้เฉพาะ booking ที่มีสถานะ COMPLETED เท่านั้น"),
       { statusCode: 400 }
     );
   }

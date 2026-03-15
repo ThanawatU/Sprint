@@ -713,7 +713,7 @@ const fetchReports = async () => {
     }
 
     const response = await fetch(
-      `${baseUrl}/reports/my?${query.toString()}`,
+      `${baseUrl}reports/my?${query.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
