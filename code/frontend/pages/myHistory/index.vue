@@ -198,6 +198,7 @@
                   "
                   class="grid grid-cols-2 gap-3 md:grid-cols-3"
                 >
+                
                   <div v-for="ev in selectedReport.evidences" :key="ev.id">
                     <img
                       v-if="ev.type === 'IMAGE'"
@@ -486,7 +487,7 @@ const uploadEvidence = async (reportId) => {
 
     // บันทึกหลักฐานไปที่ backend
     const response = await fetch(
-      `http://localhost:3000/api/reports/${reportId}/evidence`,
+      `https://deploy-production-88fa.up.railway.app/api/reports/${reportId}/evidence`,
       {
         method: "POST",
         headers: {
@@ -507,7 +508,7 @@ const uploadEvidence = async (reportId) => {
       ...(targetReport.evidences || []),
       ...newEvidences,
     ];
-
+    
     // ล้างไฟล์และแสดงข้อความสำเร็จ
     selectedFiles.value = [];
     const fileInput = document.getElementById(`file-${reportId}`);
@@ -557,7 +558,7 @@ const fetchReports = async () => {
     }
 
     const response = await fetch(
-      `http://localhost:3000/api/reports/my?${query.toString()}`,
+      `https://deploy-production-88fa.up.railway.app/api/reports/my?${query.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
