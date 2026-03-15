@@ -518,8 +518,6 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-<<<<<<< HEAD
-=======
 ## [3.0.0] - 2026-03-15 - Yodsanon_0215
 
 ### Added
@@ -528,7 +526,6 @@ All notable changes to this project will be documented in this file.
 
 ---
 
->>>>>>> 19fa621 (passenger report uxui fix)
 ## [3.0.0] - 2026-03-14 - Thanawat_2128
 
 ### Added
