@@ -607,6 +607,24 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.0] - 2026-03-16 - Kanyapat_5037
+
+### Added 
+- Added Latest Report column in Trip Report table to display the most recent report timestamp for each trip.
+- Added Status summary cards showing the number of reports by status (Pending, Under Review, Resolved, Rejected).
+- Added status filter cards that allow quick filtering by report status.
+
+### Changed
+- Updated Total Reports calculation to count the total number of reports (reportCount) instead of the number of trips.
+- Improved Admin Report Dashboard layout for better readability and usability.
+- Updated table summary text to reflect the filtered trip list.
+- Trip ID search
+- Status filter
+
+### Fixed
+- Fixed status filtering logic for trips with reports in selected status.
+
+
 ## Version Guidelines
 
 ### Categories
