@@ -145,6 +145,61 @@ exports.getReportsByRouteId = async (req, res) => {
   }
 };
 
+// ดึง Trip ทั้งหมดที่มี Report (สำหรับ Admin Dashboard แบบ Trip-based)
+exports.getTripsWithReports = async (req, res) => {
+  try {
+
+    const trips = await prisma.reportCase.groupBy({
+      by: ['routeId'],
+      _count: {
+        id: true
+      }
+    });
+
+    const result = await Promise.all(
+      trips.map(async (trip) => {
+
+        const reports = await prisma.reportCase.findMany({
+          where: { routeId: trip.routeId },
+          select: {
+            id: true,
+            status: true,
+            category: true,
+            createdAt: true
+          }
+        });
+
+        const statusBreakdown = {
+          FILED: 0,
+          UNDER_REVIEW: 0,
+          RESOLVED: 0,
+          REJECTED: 0,
+          CLOSED: 0
+        };
+
+        reports.forEach(r => {
+          if (statusBreakdown[r.status] !== undefined) {
+            statusBreakdown[r.status]++;
+          }
+        });
+
+        return {
+          routeId: trip.routeId,
+          reportCount: trip._count.id,
+          statusBreakdown,
+          lastReportAt: reports.sort((a,b)=> new Date(b.createdAt)-new Date(a.createdAt))[0]?.createdAt
+        };
+      })
+    );
+
+    res.json(result);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to fetch trips with reports" });
+  }
+};
+
 // 5. แอดมินรับเรื่อง (PENDING -> UNDER_REVIEW)
 exports.assignReport = async (req, res) => {
   try {
