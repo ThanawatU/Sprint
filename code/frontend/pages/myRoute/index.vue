@@ -605,20 +605,27 @@ function reasonLabel(v) {
 }
 
 // จบทริป
-async function completeTrip(trip) {
+async function completeTrip(item) {
   try {
-    const routeId = trip.routeId;
-    if (!routeId) {
-      toast.error("ไม่พบ routeId ของเส้นทาง");
+    const targetRouteId = item.routeId || item.id; 
+    
+    if (!targetRouteId) {
+      toast.error("ไม่พบ ID ของเส้นทาง");
       return;
     }
-    await $api(`/routes/${routeId}/complete`, { method: "PATCH" });
+
+    await $api(`/routes/${targetRouteId}/complete`, { 
+      method: "PATCH",
+      body: {} 
+    });
+
     toast.success("การเดินทางเสร็จสิ้นแล้ว");
     await fetchMyRoutes();
   } catch (err) {
-    toast.error(err?.data?.message || "ไม่สามารถจบการเดินทางได้");
+    toast.error(err?.data?.message || err?.message || "เกิดข้อผิดพลาดจากเซิร์ฟเวอร์ ไม่สามารถจบการเดินทางได้");
   }
 }
+
 
 // --- Computed ---
 const filteredTrips = computed(() => {

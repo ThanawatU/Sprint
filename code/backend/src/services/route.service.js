@@ -429,27 +429,8 @@ const completeRoute = async (routeId, driverId) => {
     }
   });
 
-  if (!route) throw new Error("ไม่พบข้อมูลเส้นทาง/ทริปนี้ในระบบ");
-
-  const participants = [];
-
-  if (route.driverId !== currentUserId) {
-    participants.push({
-      ...route.driver,
-      participantType: 'DRIVER'
-    });
-  }
-
-  route.bookings.forEach(booking => {
-    if (booking.passengerId !== currentUserId) {
-      participants.push({
-        ...booking.passenger,
-        participantType: 'PASSENGER'
-              });
-    }
-  });
-  if (!route) throw new ApiError(404, 'Route not found');
-  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+  if (!route) throw new ApiError(404, 'ไม่พบข้อมูลเส้นทาง/ทริปนี้ในระบบ');
+  if (route.driverId !== driverId) throw new ApiError(403, 'ไม่มีสิทธิ์เข้าถึง Forbidden');
 
   if (route.status === RouteStatus.CANCELLED) {
     throw new ApiError(400, 'ไม่สามารถจบทริปได้ เนื่องจากเส้นทางถูกยกเลิกแล้ว');
