@@ -615,6 +615,24 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.0] - 2026-03-15 - Nattaphat_0126
+
+### Added
+
+* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
+* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
+* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
+
+### Changed
+
+* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
+
+### Fixed
+
+* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
+
+---
+
 ## Links
 
 ---
