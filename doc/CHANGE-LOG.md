@@ -445,7 +445,7 @@ All notable changes to this project will be documented in this file.
 - User Manual documentation
 
 ### Changed
-- Notification system for case resolution updates.
+
 - Refactored report structure to support multiple reported users.
 - Updated frontend to use checkbox multi-select for reporting.
 - Improved authentication handling (cookie-based token).
@@ -459,21 +459,6 @@ All notable changes to this project will be documented in this file.
 - Fixed admin routing path issue.
 - Fixed Docker database connection issue.
 - Fixed passenger selection not appearing in report table.
-
-## [2.0.0] - 2026-03-03 - Wisit_2348
-
-### Added
-
-- Added automated API tests for the report module.
-- Added A-DAPT Blueprint FOR SPRINT 2
-
-### Changed
-
-- Reorganized project documentation files for better structure and maintainability.
-
-### Fixed
-
-- Fixed bugs related to the report system.
 
 ## [2.0.0] - 2026-03-03 - Wisit_2348
 
@@ -610,74 +595,21 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [2.0.0] - 2026-03-03 - Kanyapat_5037
+## [3.0.0] - 2026-03-15 - Nattaphat_0126
 
 ### Added
 
-- Added Admin Ban Report Robot
-- Added Admin Reject Report Robot
-- Added Passenger Report Robot
-- Added Passenger Detail Report Robot
-- Added Baned User Checked Robot
-
----
-
-## [2.1.0] - 2026-03-14 - Yodsanon_0215
-
-### Added
-- **Incident Report System**: Added a complete incident reporting system.
-- **Route Participants API**: Added an API to fetch the list of passengers or the driver in a route, excluding the current user.
-- **API Tests**: Added API test sets for both the Incident Report and Route Participants systems.
-
-### Changed
-- **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
-## [2.0.0] - 2026-03-14 - Phakorn_2160
-
-### Added
-
-- Added trip completion endpoint `PATCH /api/routes/:id/complete` for drivers.
-- Added `src/services/reviewEligibility.service.js` with `validateTripCompletedBeforeReview(bookingId)` to enforce completed-trip review validation.
-- Added review system schema design document `doc/Sprint3/ReviewSystemSchemaDesign.md` for team implementation alignment.
+* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
+* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
+* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
 
 ### Changed
 
-- Updated route completion flow in `route.service.js` and `route.controller.js` to set route status to `COMPLETED`, notify passengers, and write audit logs.
-- Updated route API docs in `src/docs/route.doc.js` to include `PATCH /api/routes/{id}/complete`.
-
----
-
-## [2.0.0] - 2026-03-14 - Yodsanon_0215
-
-### Added
-
-- **Incident Report System**: Added a complete incident reporting system.
-- **Route Participants API**: Added an API to fetch the list of passengers or the driver in a route, excluding the current user.
-- **API Tests**: Added API test sets for both the Incident Report and Route Participants systems.
-
-### Changed
-
-- **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
-
----
-
-## [2.0.0] - 2026-03-15 - Yodsanon_0215
-
-### Added
-- **Report System**: Added a get by routeID.
-## [2.0.0] - 2026-03-14 - Thanawat_2128
-
-### Added
-
-- **Review System**: Added a Review System api to backend
-- **API Tests**: Postman API Tests for Review System
-
-### Changed
-
-- **Prisma Schema**: Modified Prisma Schema to be compatible with Review System
+* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
 
 ### Fixed
 
-- Fix conflicts on rebasing main branch
+* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
 
 ---
 
@@ -698,24 +630,6 @@ All notable changes to this project will be documented in this file.
 - **Security**: Security improvements
 
 - **Miscellaneous**: Explain what's been done
-
----
-
-## [3.0.0] - 2026-03-15 - Nattaphat_0126
-
-### Added
-
-* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
-* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
-* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
-
-### Changed
-
-* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
-
-### Fixed
-
-* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
 
 ---
 
