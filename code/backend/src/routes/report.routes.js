@@ -67,6 +67,14 @@ router.get(
 
 // --- Admin Routes ---
 
+// 0. ดึงรายการ Trip ทั้งหมดที่มี Report 
+router.get(
+  '/admin/trips',
+  protect,
+  requireAdmin,
+  reportController.getTripsWithReports
+);
+
 // 1. ดึงรายการรีพอร์ตทั้งหมดสำหรับแอดมิน
 router.get(
   '/admin/all', 
