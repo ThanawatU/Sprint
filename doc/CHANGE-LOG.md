@@ -518,6 +518,17 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+<<<<<<< HEAD
+=======
+## [3.0.0] - 2026-03-15 - Yodsanon_0215
+
+### Added
+
+- **Report System**: Added a get by routeID.
+
+---
+
+>>>>>>> 19fa621 (passenger report uxui fix)
 ## [3.0.0] - 2026-03-14 - Thanawat_2128
 
 ### Added
@@ -538,6 +549,29 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - **Report System**: Added a get by routeID.
+
+---
+
+## [3.0.0] - 2026-03-15 - Wisit_2348
+
+### Added
+
+- Trip-based report view showing route, date, and report count per trip
+- Evidence management: image preview before upload, pagination, timestamps, pending deletion
+
+### Changed
+
+- Improved evidence card display with upload timestamps
+- Increased visibility of report titles and status badges
+- Updated Passenger Report UX/UI to enable report creation based on the trip where the incident occurred
+
+### Fixed
+
+- Fixed Prisma query issue with invalid `orderBy`
+
+### Misc
+
+- Added `formatDateTime()` utility for compact timestamp formatting
 
 ---
 
