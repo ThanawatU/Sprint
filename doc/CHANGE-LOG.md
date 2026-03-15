@@ -498,7 +498,10 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - **Report System Refactoring**: Completely refactored and fixed the entire existing Report system (schema relations, status logic, and error handling).
-## [2.0.0] - 2026-03-14 - Phakorn_2160
+
+---
+
+## [3.0.0] - 2026-03-14 - Phakorn_2160
 
 ### Added
 
@@ -513,7 +516,7 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [2.0.0] - 2026-03-14 - Yodsanon_0215
+## [3.0.0] - 2026-03-14 - Yodsanon_0215
 
 ### Added
 
@@ -527,14 +530,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## [2.0.0] - 2026-03-15 - Yodsanon_0215
+## [3.0.0] - 2026-03-15 - Yodsanon_0215
 
 ### Added
 - **Report System**: Added a get by routeID.
 
 ---
 
-## [2.0.0] - 2026-03-14 - Thanawat_2128
+## [3.0.0] - 2026-03-14 - Thanawat_2128
 
 ### Added
 
@@ -548,6 +551,25 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fix conflicts on rebasing main branch
+
+---
+
+## [3.0.0] - 2026-03-15 - Wisit_2348
+
+### Added
+- Trip-based report view showing route, date, and report count per trip
+- Evidence management: image preview before upload, pagination, timestamps, pending deletion
+
+### Changed
+- Improved evidence card display with upload timestamps
+- Increased visibility of report titles and status badges
+- Updated Passenger Report UX/UI to enable report creation based on the trip where the incident occurred
+
+### Fixed
+- Fixed Prisma query issue with invalid `orderBy`
+
+### Misc
+- Added `formatDateTime()` utility for compact timestamp formatting
 
 ---
 
