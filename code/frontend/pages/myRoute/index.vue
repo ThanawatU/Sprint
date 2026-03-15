@@ -665,10 +665,11 @@ function reasonLabel(v) {
 //จบทริป
 async function completeTrip(trip) {
   try {
-    const routeId = trip.routeId || trip.id;
+    const routeId = trip.routeId;
 
     if (!routeId) {
-      toast.error("ไม่พบ routeId");
+      console.error("trip data:", trip);
+      toast.error("ไม่พบ routeId ของเส้นทาง");
       return;
     }
 
@@ -679,8 +680,9 @@ async function completeTrip(trip) {
     toast.success("การเดินทางเสร็จสิ้นแล้ว");
 
     await fetchMyRoutes();
+
   } catch (err) {
-    console.error(err);
+    console.error("completeTrip error:", err);
     toast.error(err?.data?.message || "ไม่สามารถจบการเดินทางได้");
   }
 }
@@ -926,10 +928,7 @@ async function fetchMyRoutes() {
     console.error("Failed to fetch routes:", error);
     allTrips.value = [];
     myRoutes.value = [];
-    toast.error(
-      "เกิดข้อผิดพลาด",
-      error?.data?.message || "ไม่สามารถโหลดข้อมูลได้",
-    );
+    toast.error(error?.data?.message || "ไม่สามารถโหลดข้อมูลได้");
   } finally {
     isLoading.value = false;
   }
