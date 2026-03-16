@@ -26,7 +26,7 @@
             </div>
 
             <!-- Trip Summary -->
-            <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-5">
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
                 <p class="text-sm text-gray-600">Total Reports</p>
@@ -56,12 +56,18 @@
                 </p>
             </div>
 
+            <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
+                <p class="text-sm text-gray-600">Rejected</p>
+                <p class="text-2xl font-bold text-red-600">
+                {{ rejectedCount }}
+                </p>
+            </div>
+
             </div>
 
             <!-- Card -->
             <div class="bg-white border border-gray-300 rounded-lg shadow-sm overflow-hidden">
 
-            
 
             <div v-if="isLoading" class="py-12 text-center text-gray-500">
                 กำลังโหลดข้อมูล...                
@@ -207,6 +213,10 @@ const reviewCount = computed(() =>
 
 const resolvedCount = computed(() =>
   reports.value.filter(r => r.status === "RESOLVED").length
+)
+
+const rejectedCount = computed(() =>
+  reports.value.filter(r => r.status === "REJECTED").length
 )
 
 const route = useRoute()
