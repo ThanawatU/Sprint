@@ -184,6 +184,7 @@
                       </h4>
                       <span v-if="trip.status === 'pending'" class="status-badge status-pending">รอดำเนินการ</span>
                       <span v-else-if="trip.status === 'confirmed'" class="status-badge status-confirmed">ยืนยันแล้ว</span>
+                      <span v-else-if="trip.status === 'completed'" class="status-badge status-completed">เสร็จสิ้น</span>
                       <span v-else-if="trip.status === 'rejected'" class="status-badge status-rejected">ปฏิเสธ</span>
                       <span v-else-if="trip.status === 'cancelled'" class="status-badge status-cancelled">ยกเลิก</span>
                     </div>
@@ -311,6 +312,13 @@
                   <button v-if="trip.status === 'confirmed'" @click.stop="completeTrip(trip)" class="px-4 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700">
                     เสร็จสิ้นการเดินทาง
                   </button>
+
+                  <template v-else-if="trip.status === 'completed'">
+                    <template v-if="!hasReportedPassenger(trip.routeId, trip.passenger)">
+                      <button @click.stop="openReportModal(trip.routeId, trip.id, trip.passenger.id, trip.passenger.name)" class="px-3 py-1 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50">รายงานผู้โดยสาร</button>
+                    </template>
+                    <button v-else disabled class="px-3 py-1 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed">รายงานไปแล้ว</button>
+                  </template>
 
                   <button v-else-if="['rejected', 'cancelled'].includes(trip.status)" @click.stop="openConfirmModal(trip, 'delete')" class="px-4 py-2 text-sm text-gray-600 transition duration-200 border border-gray-300 rounded-md hover:bg-gray-50">ลบรายการ</button>
                 </div>
@@ -575,6 +583,7 @@ let stopMarkers = [];
 const tabs = [
   { status: "pending", label: "รอดำเนินการ" },
   { status: "confirmed", label: "ยืนยันแล้ว" },
+  { status: "completed", label: "เสร็จสิ้น" },
   { status: "rejected", label: "ปฏิเสธ" },
   { status: "cancelled", label: "ยกเลิก" },
   { status: "all", label: "ทั้งหมด" },
@@ -647,7 +656,7 @@ async function fetchMyRoutes() {
   isLoading.value = true;
   try {
     const routes = await $api("/routes/me");
-    const allowedRouteStatuses = new Set(["AVAILABLE", "FULL", "IN_TRANSIT"]);
+    const allowedRouteStatuses = new Set(["AVAILABLE", "FULL", "IN_TRANSIT", "COMPLETED"]);
     const formatted = [];
     const ownRoutes = [];
 
@@ -688,10 +697,15 @@ async function fetchMyRoutes() {
       ).filter(Boolean);
 
       for (const b of r.bookings || []) {
+        // ถ้า route เสร็จสิ้นแล้ว ให้ booking ที่ confirmed แสดงเป็น completed ด้วย
+        const bookingStatus = routeStatus === "COMPLETED" && (b.status || "").toUpperCase() === "CONFIRMED"
+          ? "completed"
+          : (b.status || "").toLowerCase();
+
         formatted.push({
           id: b.id,
           routeId: r.id,
-          status: (b.status || "").toLowerCase(),
+          status: bookingStatus,
           origin: start?.name || `(${Number(start.lat).toFixed(2)}, ${Number(start.lng).toFixed(2)})`,
           destination: end?.name || `(${Number(end.lat).toFixed(2)}, ${Number(end.lng).toFixed(2)})`,
           originHasName: !!start?.name,
@@ -1167,6 +1181,11 @@ watch(activeTab, () => {
 .status-cancelled {
   background-color: #f3f4f6;
   color: #6b7280;
+}
+
+.status-completed {
+  background-color: #dbeafe;
+  color: #1d4ed8;
 }
 
 @keyframes slide-in-from-top {
