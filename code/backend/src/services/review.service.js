@@ -1,3 +1,4 @@
+const { BookingStatus } = require("@prisma/client");
 const { prisma } = require("../utils/prisma");
 
 /**
@@ -30,9 +31,10 @@ const createReview = async ({ reviewerId, bookingId, rating, comment }) => {
   }
 
   // booking ต้อง CONFIRMED เท่านั้น
-  if (booking.status !== "COMPLETED") {
+  if (booking.status !== BookingStatus.CONFIRMED) {
+    console.log("Booking status:", booking.status);
     throw Object.assign(
-      new Error("สามารถรีวิวได้เฉพาะ booking ที่มีสถานะ COMPLETED เท่านั้น"),
+      new Error("สามารถรีวิวได้เฉพาะ booking ที่มีสถานะ CONFIRMED เท่านั้น"),
       { statusCode: 400 }
     );
   }

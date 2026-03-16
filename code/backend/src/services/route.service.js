@@ -443,27 +443,40 @@ const completeRoute = async (routeId, driverId) => {
   const now = new Date();
 
   await prisma.$transaction(async (tx) => {
-    await tx.route.update({
-      where: { id: routeId },
-      data: { status: RouteStatus.COMPLETED }
-    });
 
-    for (const booking of route.bookings) {
-      await tx.notification.create({
-        data: {
-          userId: booking.passengerId,
-          type: 'ROUTE',
-          title: 'ทริปเสร็จสิ้นแล้ว',
-          body: 'คนขับได้เปลี่ยนสถานะทริปของคุณเป็นเสร็จสิ้นแล้ว',
-          metadata: {
-            kind: 'ROUTE_COMPLETED',
-            routeId,
-            bookingId: booking.id,
-            completedAt: now.toISOString()
-          }
-        }
-      });
+  //update route
+  await tx.route.update({
+    where: { id: routeId },
+    data: { status: RouteStatus.COMPLETED }
+  });
+
+  // update booking ของผู้โดยสาร
+  await tx.booking.updateMany({
+    where: {
+      routeId: routeId,
+      status: { in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] }
+    },
+    data: {
+      status: BookingStatus.COMPLETED
     }
+  });
+
+  for (const booking of route.bookings) {
+    await tx.notification.create({
+      data: {
+        userId: booking.passengerId,
+        type: 'ROUTE',
+        title: 'ทริปเสร็จสิ้นแล้ว',
+        body: 'คนขับได้เปลี่ยนสถานะทริปของคุณเป็นเสร็จสิ้นแล้ว',
+        metadata: {
+          kind: 'ROUTE_COMPLETED',
+          routeId,
+          bookingId: booking.id,
+          completedAt: now.toISOString()
+        }
+      }
+    });
+  }
   });
 
   return {

@@ -112,17 +112,35 @@
                     </h5>
                     <div class="flex items-center">
                       <div class="flex text-sm text-yellow-400">
-                        <span>
-                          {{ "★".repeat(Math.round(trip.driver.rating))
-                          }}{{ "☆".repeat(5 - Math.round(trip.driver.rating)) }}
+                        <span v-if="getDriverRating(trip.driverId).count">
+                          {{
+                            "★".repeat(
+                              Math.round(getDriverRating(trip.driverId).avg),
+                            )
+                          }}
+                          {{
+                            "☆".repeat(
+                              5 -
+                                Math.round(getDriverRating(trip.driverId).avg),
+                            )
+                          }}
                         </span>
+
+                        <span v-else> ☆☆☆☆☆ </span>
                       </div>
-                      <span class="ml-2 text-sm text-gray-600"
-                        >{{ trip.driver.rating }} ({{
-                          trip.driver.reviews
-                        }}
-                        รีวิว)</span
-                      >
+
+                      <span class="ml-2 text-sm text-gray-600">
+                        <span v-if="getDriverRating(trip.driverId).count">
+                          ⭐ {{ getDriverRating(trip.driverId).avg }} ({{
+                            getDriverRating(trip.driverId).count
+                          }}
+                          รีวิว)
+                        </span>
+
+                        <span v-else class="text-gray-400">
+                          ยังไม่มีรีวิว
+                        </span>
+                      </span>
                     </div>
                   </div>
                   <div class="text-right">
@@ -190,6 +208,42 @@
                           ยกเลิกการจอง
                         </button>
                       </ul>
+                      <div
+                        v-if="driverReviews[trip.driverId]?.length"
+                        class="mt-6"
+                      >
+                        <h5 class="mb-3 font-medium text-gray-900">
+                          รีวิวของคนขับ
+                        </h5>
+
+                        <div class="space-y-3">
+                          <div
+                            v-for="review in driverReviews[trip.driverId]"
+                            :key="review.id"
+                            class="p-3 border rounded-md bg-gray-50"
+                          >
+                            <div class="flex items-center justify-between">
+                              <div class="text-yellow-400">
+                                {{ "★".repeat(review.rating)
+                                }}{{ "☆".repeat(5 - review.rating) }}
+                              </div>
+
+                              <span class="text-xs text-gray-500">
+                                {{
+                                  dayjs(review.createdAt).format("D MMM YYYY")
+                                }}
+                              </span>
+                            </div>
+
+                            <p
+                              v-if="review.comment"
+                              class="mt-1 text-sm text-gray-700"
+                            >
+                              {{ review.comment }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -290,7 +344,7 @@
                   <!-- COMPLETED -->
                   <template v-else-if="trip.status === 'completed'">
                     <button
-                      v-if="!reviewedBookings?.[trip.id]"
+                      v-if="!reviewedBookings[trip.id]"
                       @click.stop="openReviewModal(trip)"
                       class="px-4 py-2 text-sm text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
                     >
@@ -299,10 +353,20 @@
 
                     <span
                       v-else
+                      disabled
                       class="px-4 py-2 text-sm text-green-600 border border-green-300 rounded-md"
                     >
                       รีวิวแล้ว
                     </span>
+
+                    <!-- ปุ่มรายงาน -->
+                    <button
+                      v-if="!hasActiveReport(trip)"
+                      @click.stop="openReportModal(trip)"
+                      class="px-4 py-2 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50"
+                    >
+                      รายงานปัญหา
+                    </button>
                   </template>
 
                   <!-- REJECTED / CANCELLED: ลบได้ -->
@@ -353,52 +417,100 @@
     <!-- REVIEW MODAL -->
     <div
       v-if="showReviewModal"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      @click.self="showReviewModal = false"
     >
-      <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <h2 class="mb-4 text-xl font-bold text-gray-900">รีวิวคนขับ</h2>
+      <div class="w-full max-w-2xl p-6 bg-white rounded-lg shadow-xl">
+        <h3 class="text-lg font-semibold text-gray-900">รีวิวการเดินทาง</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          กรุณาให้คะแนนและความคิดเห็นเกี่ยวกับคนขับ
+        </p>
 
-        <!-- Rating -->
-        <div class="mb-4">
-          <p class="mb-2 text-sm text-gray-600">ให้คะแนนการเดินทาง</p>
+        <div class="mt-4 space-y-4">
+          <!-- Rating -->
+          <div>
+            <label class="block mb-2 text-sm text-gray-700"> ให้คะแนน </label>
 
-          <div class="flex text-3xl">
-            <span
-              v-for="i in 5"
-              :key="i"
-              @click="rating = i"
-              class="cursor-pointer"
-              :class="i <= rating ? 'text-yellow-400' : 'text-gray-300'"
+            <div class="flex text-3xl">
+              <span
+                v-for="i in 5"
+                :key="i"
+                @click="rating = i"
+                class="cursor-pointer"
+                :class="i <= rating ? 'text-yellow-400' : 'text-gray-300'"
+              >
+                ★
+              </span>
+            </div>
+          </div>
+
+          <!-- Comment -->
+          <div>
+            <label class="block mb-1 text-sm text-gray-700">
+              ความคิดเห็น
+            </label>
+
+            <textarea
+              v-model="comment"
+              rows="4"
+              class="w-full px-3 py-2 border border-gray-300 rounded-md"
+              placeholder="เขียนความคิดเห็นเกี่ยวกับการเดินทาง..."
+            ></textarea>
+          </div>
+
+          <!-- Upload Images -->
+          <div>
+            <label class="block mb-1 text-sm text-gray-700">
+              แนบรูปภาพ (ไม่เกิน 3 รูป)
+            </label>
+
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              @change="handleReviewImages"
+              class="w-full text-sm"
+            />
+
+            <div
+              v-if="reviewImages.length"
+              class="grid grid-cols-2 gap-3 mt-3 md:grid-cols-3"
             >
-              ★
-            </span>
+              <div
+                v-for="(img, index) in reviewImages"
+                :key="index"
+                class="relative"
+              >
+                <img
+                  :src="img.preview"
+                  class="object-cover w-full border border-gray-300 rounded-lg aspect-video"
+                />
+
+                <button
+                  @click="removeReviewImage(index)"
+                  class="absolute top-1 right-1 px-2 py-1 text-xs text-white bg-red-500 rounded-full hover:bg-red-600"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Comment -->
-        <div class="mb-4">
-          <textarea
-            v-model="comment"
-            rows="3"
-            class="w-full p-2 border border-gray-300 rounded-md"
-            placeholder="เขียนความคิดเห็น..."
-          />
-        </div>
-
-        <!-- Buttons -->
-        <div class="flex justify-end gap-2">
+        <div class="flex justify-end gap-2 mt-6">
           <button
             @click="showReviewModal = false"
-            class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md"
+            class="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
           >
-            ยกเลิก
+            ปิด
           </button>
 
           <button
             @click="submitReview"
-            class="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600"
+            :disabled="isSubmittingReview"
+            class="px-4 py-2 text-sm text-white bg-yellow-600 rounded-md hover:bg-yellow-700 disabled:opacity-50"
           >
-            ส่งรีวิว
+            {{ isSubmittingReview ? "กำลังส่ง..." : "ส่งรีวิว" }}
           </button>
         </div>
       </div>
@@ -665,51 +777,158 @@ const userCookie = useCookie("user");
 
 // State สำหรับการรีวิว
 const showReviewModal = ref(false);
-const reviewTrip = ref(null)
+const reviewTrip = ref(null);
+const isSubmittingReview = ref(false);
 
 const rating = ref(5);
 const comment = ref("");
-const reviewedBookings = ref({})
+const reviewImages = ref([]);
+const reviewedBookings = ref({});
+const driverReviews = ref({});
 
-//เปิดรีวิว
+//
+function getDriverRating(driverId) {
+  const reviews = driverReviews.value[driverId] || [];
+
+  if (!reviews.length) {
+    return { avg: 0, count: 0 };
+  }
+
+  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+  const avg = (total / reviews.length).toFixed(1);
+
+  return {
+    avg,
+    count: reviews.length,
+  };
+}
+
+// เปิด modal รีวิว
 function openReviewModal(trip) {
-  reviewTrip.value = trip
+  reviewTrip.value = trip;
   rating.value = 5;
   comment.value = "";
+  reviewImages.value = [];
   showReviewModal.value = true;
 }
-//เช็ครีวิว
+
+// ดึงรีวิวของคนขับมาแสดง
+async function fetchDriverReviews(driverId) {
+  try {
+    const res = await $api(`/reviews/driver/${driverId}`);
+
+    driverReviews.value[driverId] = res.data || [];
+
+  } catch (err) {
+    console.error("โหลดรีวิวคนขับไม่สำเร็จ", err);
+    driverReviews.value[driverId] = [];
+  }
+}
+
+// เช็คว่ารีวิวแล้วหรือยัง
 async function checkReviewStatus(bookingId) {
   try {
     const res = await $api(`/reviews/booking/${bookingId}`);
-    reviewedBookings.value[bookingId] = !!res.data;
+
+    if (res.data) {
+      reviewedBookings.value[bookingId] = true;
+    } else {
+      reviewedBookings.value[bookingId] = false;
+    }
   } catch (err) {
-    reviewedBookings.value[bookingId] = false;
+    console.error("ตรวจสอบ review ไม่สำเร็จ", err);
   }
 }
 
 // ส่งรีวิว
 async function submitReview() {
+  if (isSubmittingReview.value) return;
+
   try {
+    if (!rating.value) {
+      alert("กรุณาให้คะแนน");
+      return;
+    }
+
+    isSubmittingReview.value = true;
+
+    const imageUrls = await Promise.all(
+      reviewImages.value.map(async (img) => {
+        const data = await uploadToCloudinary(img.file);
+        return data.secure_url;
+      }),
+    );
+
+    let finalComment = comment.value || "";
+
+    if (imageUrls.length > 0) {
+      finalComment += "\n\n[images]\n" + imageUrls.join("\n") + "\n[/images]";
+    }
+
     await $api("/reviews", {
       method: "POST",
       body: {
         bookingId: reviewTrip.value.id,
         rating: rating.value,
-        comment: comment.value,
+        comment: finalComment,
       },
     });
 
-    alert("รีวิวสำเร็จ");
+    toast.success("รีวิวสำเร็จ");
 
-    reviewedBookings.value[reviewTrip.value.id] = true;
+    // เปลี่ยนปุ่มเป็น "รีวิวแล้ว"
+    reviewedBookings.value[reviewTrip.value.b] = true;
+    await fetchDriverReviews(reviewTrip.value.driverId);
 
     showReviewModal.value = false;
 
-    await fetchMyTrips(); 
+    // reset form
+    comment.value = "";
+    rating.value = 5;
+    reviewImages.value = [];
+
+    // โหลด trips ใหม่
+    await fetchMyTrips();
+    // โหลดรีวิวของคนขับใหม่
+    await fetchDriverReviews(reviewTrip.value.driverId);
+
+    // ตรวจสอบว่า booking ไหนรีวิวแล้ว
+    for (const trip of allTrips.value) {
+      if (trip.status === "completed") {
+        await checkReviewStatus(trip.id);
+      }
+    }
   } catch (err) {
     alert(err?.data?.message || "ไม่สามารถรีวิวได้");
+  } finally {
+    isSubmittingReview.value = false;
   }
+}
+
+// จัดการอัปโหลดรูป
+function handleReviewImages(e) {
+  const files = Array.from(e.target.files);
+
+  if (reviewImages.value.length + files.length > 3) {
+    alert("อัปโหลดได้ไม่เกิน 3 รูป");
+    e.target.value = "";
+    return;
+  }
+
+  const newImages = files.map((file) => ({
+    file,
+    preview: URL.createObjectURL(file),
+  }));
+
+  reviewImages.value.push(...newImages);
+
+  // reset input
+  e.target.value = "";
+}
+
+// ลบรูปก่อน submit
+function removeReviewImage(index) {
+  reviewImages.value.splice(index, 1);
 }
 
 // ใช้ computed เพื่อให้ดึงค่าได้อย่างถูกต้องและปลอดภัยใน Nuxt
@@ -1236,11 +1455,15 @@ async function fetchMyTrips() {
 
       return {
         id: b.id,
+        bookingId: b.id,
         routeId: b.route.id,
         driverId: driverData.id,
         reportCases: b.reportCases || [],
 
-        status: String(b.status || "").toLowerCase(),
+        status:
+          b.route?.status === "COMPLETED"
+            ? "completed"
+            : String(b.status || "").toLowerCase(),
         origin:
           start?.name ||
           `(${Number(start.lat).toFixed(2)}, ${Number(start.lng).toFixed(2)})`,
@@ -1302,7 +1525,7 @@ async function fetchMyTrips() {
     allTrips.value = formatted;
 
     for (const trip of formatted) {
-      await checkReviewStatus(trip.id);
+      await checkReviewStatus(trip.bookingId);
     }
 
     // รอให้แผนที่พร้อมก่อน แล้วค่อย reverse geocode เพื่อได้ "ชื่อสถานที่" สวยๆ
@@ -1415,10 +1638,12 @@ const getTripCount = (status) => {
   return allTrips.value.filter((trip) => trip.status === status).length;
 };
 
-const toggleTripDetails = (tripId) => {
-  const tripForMap = allTrips.value.find((trip) => trip.id === tripId);
-  if (tripForMap) {
-    updateMap(tripForMap);
+const toggleTripDetails = async (tripId) => {
+  const trip = allTrips.value.find((t) => t.id === tripId);
+
+  if (trip) {
+    await fetchDriverReviews(trip.driverId);
+    updateMap(trip);
   }
 
   if (selectedTripId.value === tripId) {
@@ -1427,7 +1652,6 @@ const toggleTripDetails = (tripId) => {
     selectedTripId.value = tripId;
   }
 };
-
 async function updateMap(trip) {
   if (!trip) return;
   await waitMapReady();
