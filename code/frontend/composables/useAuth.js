@@ -7,8 +7,8 @@ export function useAuth() {
   const cookieOpts = {
     maxAge: 60 * 60 * 24 * 7,
     path: '/',
-    sameSite: 'none',
-    secure: process.env.NODE_ENV === 'production'
+    sameSite: 'lax',  // ปลอดภัยกับการพัฒนา แล้ว production
+    secure: process.env.NODE_ENV === 'production'  // true ใน production HTTPS เท่านั้น
   }
   const token = useCookie('token', cookieOpts)
   const user = useCookie('user', cookieOpts)

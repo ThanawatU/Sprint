@@ -117,7 +117,7 @@ const getReports = async (where = {}) => {
         select: { id: true, username: true, firstName: true, lastName: true, role: true, yellowCardCount: true }
       },
       route: {
-        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+        select: { id: true, driverId: true, startLocation: true, endLocation: true, departureTime: true } 
       },
       evidences: true,
       statusHistory: {
@@ -173,7 +173,7 @@ const getReportByGroupId = async (groupId) => {
         select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
       },
       route: {
-        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+        select: { id: true, driverId: true, startLocation: true, endLocation: true, departureTime: true } 
       },
       evidences: true,
       statusHistory: {
