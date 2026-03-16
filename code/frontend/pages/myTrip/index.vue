@@ -126,12 +126,14 @@
                           }}
                         </span>
 
-                        <span v-else> ☆☆☆☆☆ </span>
+                        <span v-else>
+                          {{ "★".repeat(Math.round(getDriverRating(trip.driverId).avg)) }}{{ "☆".repeat(5 - Math.round(getDriverRating(trip.driverId).avg)) }}
+                        </span>
                       </div>
 
                       <span class="ml-2 text-sm text-gray-600">
                         <span v-if="getDriverRating(trip.driverId).count">
-                          ⭐ {{ getDriverRating(trip.driverId).avg }} ({{
+                           {{ getDriverRating(trip.driverId).avg }} ({{
                             getDriverRating(trip.driverId).count
                           }}
                           รีวิว)
@@ -201,49 +203,8 @@
                         <li v-for="detail in trip.carDetails" :key="detail">
                           • {{ detail }}
                         </li>
-                        <button
-                          data-v-2f92c40d=""
-                          class="px-4 py-2 text-sm text-red-600 transition duration-200 border border-red-300 rounded-md hover:bg-red-50"
-                        >
-                          ยกเลิกการจอง
-                        </button>
                       </ul>
-                      <div
-                        v-if="driverReviews[trip.driverId]?.length"
-                        class="mt-6"
-                      >
-                        <h5 class="mb-3 font-medium text-gray-900">
-                          รีวิวของคนขับ
-                        </h5>
 
-                        <div class="space-y-3">
-                          <div
-                            v-for="review in driverReviews[trip.driverId]"
-                            :key="review.id"
-                            class="p-3 border rounded-md bg-gray-50"
-                          >
-                            <div class="flex items-center justify-between">
-                              <div class="text-yellow-400">
-                                {{ "★".repeat(review.rating)
-                                }}{{ "☆".repeat(5 - review.rating) }}
-                              </div>
-
-                              <span class="text-xs text-gray-500">
-                                {{
-                                  dayjs(review.createdAt).format("D MMM YYYY")
-                                }}
-                              </span>
-                            </div>
-
-                            <p
-                              v-if="review.comment"
-                              class="mt-1 text-sm text-gray-700"
-                            >
-                              {{ review.comment }}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
 
@@ -274,6 +235,108 @@
                             class="object-cover w-full transition-opacity rounded-lg shadow-sm cursor-pointer aspect-video hover:opacity-90"
                           />
                         </div>
+                      </div>
+                    </div>
+
+                    <div
+                      v-if="driverReviews[trip.driverId]?.length"
+                      class="mt-6"
+                    >
+                      <h5 class="mb-3 font-medium text-gray-900">
+                        รีวิวของคนขับ
+                      </h5>
+
+                      <div class="space-y-3">
+                        <div
+                          v-for="review in getDriverReviewsPage(trip.driverId)"
+                          :key="review.id"
+                          class="p-3 border border-gray-300 rounded-md bg-white"
+                        >
+                          <!-- Reviewer info row -->
+                          <div class="flex items-center gap-2 mb-2">
+                            <img
+                              v-if="review.reviewer?.profileImage || review.user?.profileImage"
+                              :src="review.reviewer?.profileImage || review.user?.profileImage"
+                              alt="รูปโปรไฟล์"
+                              class="object-cover w-8 h-8 rounded-full border border-gray-200"
+                            />
+                            <div
+                              v-else
+                              class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold border border-gray-200"
+                            >
+                              {{
+                                ((review.reviewer?.firstName || review.user?.firstName || review.reviewer?.name || review.user?.name || '?')[0] || '?').toUpperCase()
+                              }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                              <p class="text-sm font-medium text-gray-800 truncate">
+                                {{
+                                  review.reviewer
+                                    ? (review.reviewer.firstName && review.reviewer.lastName
+                                        ? `${review.reviewer.firstName} ${review.reviewer.lastName}`
+                                        : review.reviewer.firstName || review.reviewer.name || 'ไม่ระบุชื่อ')
+                                    : review.user
+                                      ? (review.user.firstName && review.user.lastName
+                                          ? `${review.user.firstName} ${review.user.lastName}`
+                                          : review.user.firstName || review.user.name || 'ไม่ระบุชื่อ')
+                                      : 'ไม่ระบุชื่อ'
+                                }}
+                              </p>
+                            </div>
+                            <span class="text-xs text-gray-500 shrink-0">
+                              {{ dayjs(review.createdAt).format("D MMM YYYY") }}
+                            </span>
+                          </div>
+
+                          <!-- Stars -->
+                          <div class="text-yellow-400 text-sm mb-1">
+                            {{ "★".repeat(review.rating) }}{{ "☆".repeat(5 - review.rating) }}
+                          </div>
+
+                          <p
+                            v-if="extractReviewText(review.comment)"
+                            class="mt-1 text-sm text-gray-700"
+                          >
+                            {{ extractReviewText(review.comment) }}
+                          </p>
+
+                          <div
+                            v-if="extractReviewImages(review.comment).length"
+                            class="grid grid-cols-3 gap-2 mt-2"
+                          >
+                            <img
+                              v-for="(imgUrl, imgIdx) in extractReviewImages(review.comment)"
+                              :key="imgIdx"
+                              :src="imgUrl"
+                              alt="รูปภาพในรีวิว"
+                              class="object-cover w-full rounded-lg shadow-sm aspect-video"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Pagination -->
+                      <div
+                        v-if="getDriverReviewTotalPages(trip.driverId) > 1"
+                        class="flex items-center justify-between mt-3"
+                      >
+                        <button
+                          @click.stop="prevReviewPage(trip.driverId)"
+                          :disabled="getDriverReviewPage(trip.driverId) === 0"
+                          class="px-3 py-1 text-xs text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          ← ก่อนหน้า
+                        </button>
+                        <span class="text-xs text-gray-500">
+                          หน้า {{ getDriverReviewPage(trip.driverId) + 1 }} / {{ getDriverReviewTotalPages(trip.driverId) }}
+                        </span>
+                        <button
+                          @click.stop="nextReviewPage(trip.driverId)"
+                          :disabled="getDriverReviewPage(trip.driverId) + 1 >= getDriverReviewTotalPages(trip.driverId)"
+                          class="px-3 py-1 text-xs text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          ถัดไป →
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -507,10 +570,10 @@
 
           <button
             @click="submitReview"
-            :disabled="isSubmittingReview"
-            class="px-4 py-2 text-sm text-white bg-yellow-600 rounded-md hover:bg-yellow-700 disabled:opacity-50"
+            :disabled="isSubmittingReview || !!reviewedBookings[reviewTrip?.id]"
+            class="px-4 py-2 text-sm text-white bg-yellow-600 rounded-md hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {{ isSubmittingReview ? "กำลังส่ง..." : "ส่งรีวิว" }}
+            {{ isSubmittingReview ? "กำลังส่ง..." : reviewedBookings[reviewTrip?.id] ? "รีวิวแล้ว" : "ส่งรีวิว" }}
           </button>
         </div>
       </div>
@@ -785,6 +848,8 @@ const comment = ref("");
 const reviewImages = ref([]);
 const reviewedBookings = ref({});
 const driverReviews = ref({});
+const reviewPage = ref({});  // { [driverId]: currentPage (0-indexed) }
+const REVIEWS_PER_PAGE = 3;
 
 //
 function getDriverRating(driverId) {
@@ -803,7 +868,35 @@ function getDriverRating(driverId) {
   };
 }
 
-// เปิด modal รีวิว
+function getDriverReviewPage(driverId) {
+  return reviewPage.value[driverId] || 0;
+}
+
+function getDriverReviewsPage(driverId) {
+  const all = driverReviews.value[driverId] || [];
+  const page = getDriverReviewPage(driverId);
+  return all.slice(page * REVIEWS_PER_PAGE, (page + 1) * REVIEWS_PER_PAGE);
+}
+
+function getDriverReviewTotalPages(driverId) {
+  const all = driverReviews.value[driverId] || [];
+  return Math.ceil(all.length / REVIEWS_PER_PAGE);
+}
+
+function nextReviewPage(driverId) {
+  const total = getDriverReviewTotalPages(driverId);
+  const cur = getDriverReviewPage(driverId);
+  if (cur + 1 < total) {
+    reviewPage.value = { ...reviewPage.value, [driverId]: cur + 1 };
+  }
+}
+
+function prevReviewPage(driverId) {
+  const cur = getDriverReviewPage(driverId);
+  if (cur > 0) {
+    reviewPage.value = { ...reviewPage.value, [driverId]: cur - 1 };
+  }
+}
 function openReviewModal(trip) {
   reviewTrip.value = trip;
   rating.value = 5;
@@ -819,7 +912,7 @@ async function fetchDriverReviews(driverId) {
 
     driverReviews.value = {
       ...driverReviews.value,
-      [driverId]: res.data || [],
+  [driverId]: res.reviews || [],
     };
 
   } catch (err) {
@@ -834,16 +927,24 @@ async function fetchDriverReviews(driverId) {
 // เช็คว่ารีวิวแล้วหรือยัง
 async function checkReviewStatus(bookingId) {
   try {
-    const res = await $api(`/reviews/booking/${bookingId}`)
+    const res = await $api(`/reviews/booking/${bookingId}`);
+
+    // รองรับหลายรูปแบบของ API response:
+    const hasReview =
+      (res && res.data != null && res.data !== false) ||
+      (Array.isArray(res) && res.length > 0) ||
+      (res && !Array.isArray(res) && res.id != null);
+
     reviewedBookings.value = {
       ...reviewedBookings.value,
-      [bookingId]: !!(res?.id || (Array.isArray(res) && res.length > 0)),
-    }
+      [bookingId]: !!hasReview,
+    };
   } catch (err) {
+    // ถ้า 404 = ยังไม่ได้รีวิว, error อื่น = ไม่แน่ใจ ให้ default เป็น false
     reviewedBookings.value = {
       ...reviewedBookings.value,
       [bookingId]: false,
-    }
+    };
   }
 }
 
@@ -888,9 +989,6 @@ async function submitReview() {
 
     // บันทึก driverId ก่อนที่ reviewTrip จะถูก reset
     const reviewedDriverId = reviewTrip.value.driverId;
-
-    await fetchDriverReviews(reviewedDriverId);
-
     showReviewModal.value = false;
 
     // reset form
@@ -940,6 +1038,23 @@ function handleReviewImages(e) {
 // ลบรูปก่อน submit
 function removeReviewImage(index) {
   reviewImages.value.splice(index, 1);
+}
+
+// แยกข้อความออกจาก comment (ตัด [images]...[/images] ออก)
+function extractReviewText(comment) {
+  if (!comment) return "";
+  return comment.replace(/\[images\][\s\S]*?\[\/images\]/g, "").trim();
+}
+
+// แยก URL รูปภาพออกจาก comment
+function extractReviewImages(comment) {
+  if (!comment) return [];
+  const match = comment.match(/\[images\]([\s\S]*?)\[\/images\]/);
+  if (!match) return [];
+  return match[1]
+    .split("\n")
+    .map((url) => url.trim())
+    .filter((url) => url.length > 0);
 }
 
 // ใช้ computed เพื่อให้ดึงค่าได้อย่างถูกต้องและปลอดภัยใน Nuxt
@@ -1398,7 +1513,7 @@ async function fetchMyTrips() {
     // map ข้อมูลพื้นฐานก่อน (ตั้งชื่อชั่วคราวเป็นพิกัด แล้วไป reverse geocode ภายหลัง)
     const formatted = bookings.map((b) => {
       const driverData = {
-        id: b.route.driver.id, // เพิ่มบรรทัดนี้
+        id: b.route.driver.id, 
         name: `${b.route.driver.firstName} ${b.route.driver.lastName}`.trim(),
         image:
           b.route.driver.profilePicture ||
@@ -1535,9 +1650,16 @@ async function fetchMyTrips() {
 
     allTrips.value = formatted;
 
-    for (const trip of formatted) {
-      await checkReviewStatus(trip.id);
-    }
+    // ตรวจสอบสถานะรีวิวของทุก trip พร้อมกัน (parallel) เพื่อความเร็ว
+    await Promise.all(
+      formatted
+        .filter((trip) => trip.status === 'completed')
+        .map((trip) => checkReviewStatus(trip.id))
+    );
+
+    // โหลดรีวิวของคนขับทุกคนในทุกสถานะ (deduplicate โดย driverId)
+    const uniqueDriverIds = [...new Set(formatted.map((trip) => trip.driverId).filter(Boolean))];
+    await Promise.all(uniqueDriverIds.map((driverId) => fetchDriverReviews(driverId)));
 
     // รอให้แผนที่พร้อมก่อน แล้วค่อย reverse geocode เพื่อได้ "ชื่อสถานที่" สวยๆ
     await waitMapReady();
