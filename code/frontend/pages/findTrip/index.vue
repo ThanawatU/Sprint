@@ -331,7 +331,127 @@
                         </div>
                       </div>
                     </div>
+                    <!-- รีวิวของคนขับ -->
+                    <div
+                      v-if="driverReviews[route.driverId]?.length"
+                      class="mt-6"
+                    >
+                      <h5 class="mb-3 font-medium text-gray-900">
+                        รีวิวของคนขับ
+                      </h5>
+
+                      <div class="space-y-3">
+                        <div
+                          v-for="review in getDriverReviewsPage(route.driverId)"
+                          :key="review.id"
+                          class="p-3 border border-gray-300 rounded-md bg-white hover:bg-gray-50"
+                        >
+                          <!-- Reviewer -->
+                          <div class="flex items-center gap-2 mb-2">
+                            <img
+                              v-if="
+                                review.reviewer?.profileImage ||
+                                review.user?.profileImage
+                              "
+                              :src="
+                                review.reviewer?.profileImage ||
+                                review.user?.profileImage
+                              "
+                              class="object-cover w-8 h-8 rounded-full border border-gray-200"
+                            />
+
+                            <div
+                              v-else
+                              class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold border"
+                            >
+                              {{
+                                (
+                                  (review.reviewer?.firstName ||
+                                    review.user?.firstName ||
+                                    review.reviewer?.name ||
+                                    review.user?.name ||
+                                    "?")[0] || "?"
+                                ).toUpperCase()
+                              }}
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+                              <p
+                                class="text-sm font-medium text-gray-800 truncate"
+                              >
+                                {{
+                                  review.reviewer
+                                    ? `${review.reviewer.firstName || ""} ${review.reviewer.lastName || ""}`
+                                    : review.user
+                                      ? `${review.user.firstName || ""} ${review.user.lastName || ""}`
+                                      : "ไม่ระบุชื่อ"
+                                }}
+                              </p>
+                            </div>
+
+                            <span class="text-xs text-gray-500">
+                              {{ dayjs(review.createdAt).format("D MMM YYYY") }}
+                            </span>
+                          </div>
+
+                          <!-- ดาว -->
+                          <div class="text-yellow-400 text-sm mb-1">
+                            {{ "★".repeat(review.rating)
+                            }}{{ "☆".repeat(5 - review.rating) }}
+                          </div>
+
+                          <!-- ข้อความ -->
+                          <p
+                            v-if="extractReviewText(review.comment)"
+                            class="mt-1 text-sm text-gray-700"
+                          >
+                            {{ extractReviewText(review.comment) }}
+                          </p>
+
+                          <!-- รูปรีวิว -->
+                          <div
+                            v-if="extractReviewImages(review.comment).length"
+                            class="grid grid-cols-3 gap-2 mt-2"
+                          >
+                            <img
+                              v-for="(imgUrl, imgIdx) in extractReviewImages(
+                                review.comment,
+                              )"
+                              :key="imgIdx"
+                              :src="imgUrl"
+                              class="object-cover w-full rounded-lg shadow-sm aspect-video"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Pagination -->
+                      <div
+                        v-if="getDriverReviewTotalPages(route.driverId) > 1"
+                        class="flex items-center justify-between mt-3"
+                      >
+                        <button
+                          @click.stop="prevReviewPage(route.driverId)"
+                          class="px-3 py-1 text-xs text-gray-600 border rounded-md hover:bg-gray-100"
+                        >
+                          ← ก่อนหน้า
+                        </button>
+
+                        <span class="text-xs text-gray-500">
+                          หน้า {{ reviewPage[route.driverId] || 1 }} /
+                          {{ getDriverReviewTotalPages(route.driverId) }}
+                        </span>
+
+                        <button
+                          @click.stop="nextReviewPage(route.driverId)"
+                          class="px-3 py-1 text-xs text-gray-600 border rounded-md hover:bg-gray-100"
+                        >
+                          ถัดไป →
+                        </button>
+                      </div>
+                    </div>
                   </div>
+                  
                   <div class="flex justify-end mt-4">
                     <button
                       @click.stop="openModal(route)"
