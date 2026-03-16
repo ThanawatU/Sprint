@@ -22,9 +22,15 @@ _KKU College of Computing · Software Engineer_
 ![Repo Size](https://img.shields.io/github/repo-size/ThanawatU/Sprint?style=flat-square)
 ![License](https://img.shields.io/github/license/ThanawatU/Sprint?style=flat-square)
 
-<img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnF2eGt0Mms1dHJ6N3Y3aDZxdDN1MDN1anBpbzZpMDBocGM0c3d6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NSzHiAwAcazs7dcDr9/giphy.gif" height=200 weight=200>
+![Jokes](https://readme-jokes.vercel.app/api?theme=dracula&hideBorder)
 
-[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=ThanawatU&layout=compact&theme=dracula&hide_border=true)](https://github.com/ThanawatU)
+<!-- <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnF2eGt0Mms1dHJ6N3Y3aDZxdDN1MDN1anBpbzZpMDBocGM0c3d6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NSzHiAwAcazs7dcDr9/giphy.gif" height=200 weight=200> -->
+
+<div align="center">
+
+![Alt](https://repobeats.axiom.co/api/embed/e5de78151c6215e5fb94098341050b750bd1d28c.svg "Repobeats analytics image")
+
+</div>
 
 </div>
 
