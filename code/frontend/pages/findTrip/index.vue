@@ -446,6 +446,7 @@
                           @click.stop="nextReviewPage(route.driverId)"
                           class="px-3 py-1 text-xs text-gray-600 border rounded-md hover:bg-gray-100"
                         >
+
                           ถัดไป →
                         </button>
                       </div>
@@ -966,10 +967,7 @@ const searchForm = ref({
 });
 const RADIUS_METERS = 500;
 
-// ===== DRIVER REVIEWS =====
-const driverReviews = ref({});
-const reviewPage = ref({});
-const REVIEWS_PER_PAGE = 3;
+
 
 const routes = ref([]);
 const selectedRoute = ref(null);
@@ -995,61 +993,70 @@ const bookingTotalPrice = computed(() => {
   if (!bookingRoute.value) return 0;
   return bookingSeats.value * bookingRoute.value.price;
 });
+const driverReviews = ref({});
+const reviewPage = ref({}); // เก็บหน้าปัจจุบันของรีวิวแยกตามคนขับ { [driverId]: 0 }
+const REVIEWS_PER_PAGE = 3;
 
-// ฟังก์ชันสำหรับจัดการการแบ่งหน้ารีวิวของคนขับ
-function getDriverReviewsPage(driverId) {
-  const page = reviewPage.value[driverId] || 1;
-  const start = (page - 1) * REVIEWS_PER_PAGE;
-  const end = start + REVIEWS_PER_PAGE;
-
-  return (driverReviews.value[driverId] || []).slice(start, end);
-}
-
-function getDriverReviewTotalPages(driverId) {
-  const total = (driverReviews.value[driverId] || []).length;
-  return Math.ceil(total / REVIEWS_PER_PAGE);
-}
-
-function nextReviewPage(driverId) {
-  const total = getDriverReviewTotalPages(driverId);
-  if (reviewPage.value[driverId] < total) {
-    reviewPage.value[driverId]++;
-  }
-}
-
-function prevReviewPage(driverId) {
-  if (reviewPage.value[driverId] > 1) {
-    reviewPage.value[driverId]--;
-  }
-}
-
-// ฟังก์ชันคำนวณคะแนนเฉลี่ยและจำนวนรีวิวของคนขับ
-function getDriverRating(driverId) {
-  const reviews = driverReviews.value[driverId] || [];
-  if (!reviews.length) return { avg: 0, count: 0 };
-
-  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
-  const avg = total / reviews.length;
-
-  return {
-    avg: avg.toFixed(1),
-    count: reviews.length,
-  };
-}
-
-// ฟังก์ชันโหลดรีวิวของคนขับ
+// ฟังก์ชันดึงรีวิวจาก API
 async function fetchDriverReviews(driverId) {
-  if (!driverId) return;
-
+  if (!driverId || driverReviews.value[driverId]) return; // ถ้ามีแล้วไม่ต้องดึงซ้ำ
   try {
     const res = await $api(`/reviews/driver/${driverId}`);
-    driverReviews.value[driverId] = res.data || [];
-    reviewPage.value[driverId] = 1;
+    driverReviews.value = {
+      ...driverReviews.value,
+      [driverId]: res.reviews || res.data || [] // ปรับตาม format API ของคุณ
+    };
   } catch (err) {
     console.error("โหลดรีวิวคนขับไม่สำเร็จ", err);
     driverReviews.value[driverId] = [];
   }
 }
+
+// ฟังก์ชันคำนวณคะแนนดาว
+function getDriverRating(driverId) {
+  const reviews = driverReviews.value[driverId] || [];
+  if (!reviews.length) return { avg: 0, count: 0 };
+  const total = reviews.reduce((sum, r) => sum + r.rating, 0);
+  return { 
+    avg: (total / reviews.length).toFixed(1), 
+    count: reviews.length 
+  };
+}
+
+// ฟังก์ชันสำหรับแบ่งหน้า (Pagination)
+function getDriverReviewsPage(driverId) {
+  const all = driverReviews.value[driverId] || [];
+  const page = reviewPage.value[driverId] || 0;
+  return all.slice(page * REVIEWS_PER_PAGE, (page + 1) * REVIEWS_PER_PAGE);
+}
+
+function getDriverReviewTotalPages(driverId) {
+  return Math.ceil((driverReviews.value[driverId]?.length || 0) / REVIEWS_PER_PAGE);
+}
+
+function nextReviewPage(driverId) {
+  const total = getDriverReviewTotalPages(driverId);
+  const cur = reviewPage.value[driverId] || 0;
+  if (cur + 1 < total) reviewPage.value[driverId] = cur + 1;
+}
+
+function prevReviewPage(driverId) {
+  const cur = reviewPage.value[driverId] || 0;
+  if (cur > 0) reviewPage.value[driverId] = cur - 1;
+}
+
+// ฟังก์ชันจัดการข้อความและรูปภาพในรีวิว
+function extractReviewText(comment) {
+  if (!comment) return "";
+  return comment.replace(/\[images\][\s\S]*?\[\/images\]/g, "").trim();
+}
+
+function extractReviewImages(comment) {
+  if (!comment) return [];
+  const match = comment.match(/\[images\]([\s\S]*?)\[\/images\]/);
+  return match ? match[1].split("\n").map(u => u.trim()).filter(u => u) : [];
+}
+
 
 function cleanAddr(a) {
   return (a || "")
@@ -1304,19 +1311,24 @@ async function extractNameParts(geocodeResult) {
 }
 
 const toggleDetails = async (route) => {
+  // 1. ถ้าคลิกซ้ำที่เส้นทางเดิม ให้ปิด (Toggle Off)
   if (selectedRoute.value && selectedRoute.value.id === route.id) {
     selectedRoute.value = null;
-    clearMapDrawing();
   } else {
+    // 2. ถ้าคลิกเส้นทางใหม่ ให้เปิด (Toggle On)
     selectedRoute.value = route;
-    updateMapForRoute(route);
 
-    // โหลดรีวิวคนขับ
+    // 3. โหลดรีวิวคนขับ (เช็คก่อนว่าในตัวแปรมีข้อมูลหรือยัง เพื่อไม่ให้เรียก API ซ้ำซ้อน)
     if (!driverReviews.value[route.driverId]) {
-      await fetchDriverReviews(route.driverId);
+      try {
+        await fetchDriverReviews(route.driverId);
+      } catch (error) {
+        console.error("ไม่สามารถโหลดข้อมูลรีวิวได้:", error);
+      }
     }
   }
 };
+
 
 function waitMapReady() {
   return new Promise((resolve) => {
