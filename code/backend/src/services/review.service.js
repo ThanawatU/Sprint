@@ -29,12 +29,14 @@ const createReview = async ({ reviewerId, bookingId, rating, comment }) => {
   if (booking.passengerId !== reviewerId) {
     throw Object.assign(new Error("คุณไม่ใช่ผู้โดยสารของ booking นี้"), { statusCode: 403 });
   }
-
-  // booking ต้อง CONFIRMED เท่านั้น
-  if (booking.status !== BookingStatus.CONFIRMED) {
-    console.log("Booking status:", booking.status);
+    const route = await prisma.route.findUnique({
+    where: { id: booking.routeId }
+  });
+  
+  // route ต้อง CONFIRMED เท่านั้น
+  if (route.status !== "COMPLETED") {
     throw Object.assign(
-      new Error("สามารถรีวิวได้เฉพาะ booking ที่มีสถานะ CONFIRMED เท่านั้น"),
+      new Error("สามารถรีวิวได้เฉพาะ route ที่มีสถานะ COMPLETED เท่านั้น"),
       { statusCode: 400 }
     );
   }
