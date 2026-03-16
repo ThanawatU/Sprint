@@ -7,7 +7,7 @@ ${LOGIN_BUTTON}      xpath=//button[@type='submit']
 ${IGNORE_POPUP}    xpath=//button[contains(.,'Ignore')]
 
 ${TAB_ALL_TRIPS}     xpath=//button[contains(.,'ทั้งหมด')]
-${TRIP_CARD}         xpath=//div[contains(@class,'trip-card')]
+${TRIP_CARD}    css:.trip-card
 
 ${REPORT_BUTTON}     xpath=//button[normalize-space()='รายงานปัญหา']
 ${REPORT_MODAL}      xpath=//h3[normalize-space()='รายงานปัญหาการเดินทาง']
