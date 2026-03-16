@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.9.6 on darwin)" generated="2026-03-16T22:22:36.540132" rpa="false" schemaversion="5">
+<suite id="s1" name="Report Tests" source="/Users/cherryp/Documents/software en/Sprint/test/Sprint3/ReportTest/tests/report_tests.robot">
+<kw name="Open Browser And Login" owner="keywords" type="SETUP">
+<kw name="Open Login Page" owner="login_page">
+<kw name="Evaluate" owner="BuiltIn">
+<msg time="2026-03-16T22:22:36.674673" level="INFO">${options} = &lt;selenium.webdriver.chrome.options.Options object at 0x1045f3790&gt;</msg>
+<var>${options}</var>
+<arg>sys.modules['selenium.webdriver'].ChromeOptions()</arg>
+<arg>sys, selenium.webdriver</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<status status="PASS" start="2026-03-16T22:22:36.674389" elapsed="0.000313"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-notifications</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2026-03-16T22:22:36.674802" elapsed="0.000184"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-infobars</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2026-03-16T22:22:36.675067" elapsed="0.000160"/>
+</kw>
+<kw name="Call Method" owner="BuiltIn">
+<arg>${options}</arg>
+<arg>add_argument</arg>
+<arg>--disable-geolocation</arg>
+<doc>Calls the named method of the given object with the provided arguments.</doc>
+<status status="PASS" start="2026-03-16T22:22:36.675303" elapsed="0.000146"/>
+</kw>
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:36.675728" level="INFO">Opening browser 'Chrome' to base url 'http://localhost:3001/login'.</msg>
+<arg>${FRONT_URL}/login</arg>
+<arg>${BROWSER}</arg>
+<arg>options=${options}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2026-03-16T22:22:36.675545" elapsed="1.525482"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.203227" elapsed="0.327049"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:36.673967" elapsed="1.856637"/>
+</kw>
+<kw name="Login" owner="login_page">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>${LOGIN_USERNAME}</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.531193" elapsed="0.014716"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:38.546380" level="INFO">Typing text 'passenger3' into text field 'id=identifier'.</msg>
+<arg>${LOGIN_USERNAME}</arg>
+<arg>${USERNAME}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.546097" elapsed="0.086122"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:38.632707" level="INFO">Typing text '123456789' into text field 'id=password'.</msg>
+<arg>${LOGIN_PASSWORD}</arg>
+<arg>${PASSWORD}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.632400" elapsed="0.038498"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:38.671292" level="INFO">Clicking button 'xpath=//button[@type='submit']'.</msg>
+<arg>${LOGIN_BUTTON}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.671103" elapsed="0.040264"/>
+</kw>
+<kw name="Wait Until Location Does Not Contain" owner="SeleniumLibrary">
+<arg>/login</arg>
+<doc>Waits until the current URL does not contains ``location``.</doc>
+<status status="PASS" start="2026-03-16T22:22:38.711603" elapsed="1.458379"/>
+</kw>
+<kw name="Close Popup If Exists" owner="login_page">
+<kw name="Run Keyword And Ignore Error" owner="BuiltIn">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:40.170944" level="INFO">Clicking button 'xpath=//button[contains(.,'Ignore')]'.</msg>
+<msg time="2026-03-16T22:22:40.307042" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-14.png"&gt;&lt;img src="selenium-screenshot-14.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-16T22:22:40.307196" level="FAIL">Button with locator 'xpath=//button[contains(.,'Ignore')]' not found.</msg>
+<arg>${IGNORE_POPUP}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2026-03-16T22:22:40.170763" elapsed="0.141773">Button with locator 'xpath=//button[contains(.,'Ignore')]' not found.</status>
+</kw>
+<arg>Click Button</arg>
+<arg>${IGNORE_POPUP}</arg>
+<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
+<status status="PASS" start="2026-03-16T22:22:40.170398" elapsed="0.142221"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:40.170185" elapsed="0.142491"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:38.530948" elapsed="1.781764"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:36.673715" elapsed="3.639036"/>
+</kw>
+<test id="s1-t1" name="Passenger Can Submit Report Successfully" line="15">
+<kw name="Open Trip And Report" owner="keywords">
+<kw name="Open My Trip Page" owner="trip_page">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:40.313626" level="INFO">Opening url 'http://localhost:3001/myTrip'</msg>
+<arg>${FRONT_URL}/myTrip</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-16T22:22:40.313515" elapsed="0.425262"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>การเดินทางของฉัน</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-16T22:22:40.739077" elapsed="0.009947"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:40.313359" elapsed="0.435762"/>
+</kw>
+<kw name="Select All Trips Tab" owner="trip_page">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:40.749728" level="INFO">Clicking button 'xpath=//button[contains(.,'ทั้งหมด')]'.</msg>
+<msg time="2026-03-16T22:22:40.908468" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-15.png"&gt;&lt;img src="selenium-screenshot-15.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-16T22:22:40.908640" level="FAIL">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+0   chromedriver                        0x000000010489d6b4 cxxbridge1$str$ptr + 3127600
+1   chromedriver                        0x0000000104895a50 cxxbridge1$str$ptr + 3095756
+2   chromedriver                        0x000000010437256c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75432
+3   chromedriver                        0x00000001043787ac _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 100584
+4   chromedriver                        0x000000010437aa2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109416
+5   chromedriver                        0x000000010437aae4 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109600
+6   chromedriver                        0x00000001043b6c2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 355688
+7   chromedriver                        0x00000001043b125c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 332696
+8   chromedriver                        0x00000001043fa620 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 632668
+9   chromedriver                        0x00000001043afb9c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326872
+10  chromedriver                        0x000000010485c680 cxxbridge1$str$ptr + 2861308
+11  chromedriver                        0x000000010485fdd4 cxxbridge1$str$ptr + 2875472
+12  chromedriver                        0x0000000104841a7c cxxbridge1$str$ptr + 2751736
+13  chromedriver                        0x0000000104860658 cxxbridge1$str$ptr + 2877652
+14  chromedriver                        0x0000000104831ffc cxxbridge1$str$ptr + 2687608
+15  chromedriver                        0x0000000104884d78 cxxbridge1$str$ptr + 3026932
+16  chromedriver                        0x0000000104884ef4 cxxbridge1$str$ptr + 3027312
+17  chromedriver                        0x00000001048956a8 cxxbridge1$str$ptr + 3094820
+18  libsystem_pthread.dylib             0x0000000187fa3bc8 _pthread_start + 136
+19  libsystem_pthread.dylib             0x0000000187f9eb80 thread_start + 8
+</msg>
+<arg>${TAB_ALL_TRIPS}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2026-03-16T22:22:40.749547" elapsed="0.163933">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+0   chromedriver                        0x000000010489d6b4 cxxbridge1$str$ptr + 3127600
+1   chromedriver                        0x0000000104895a50 cxxbridge1$str$ptr + 3095756
+2   chromedriver                        0x000000010437256c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75432
+3   chromedriver                        0x00000001043787ac _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 100584
+4   chromedriver                        0x000000010437aa2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109416
+5   chromedriver                        0x000000010437aae4 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109600
+6   chromedriver                        0x00000001043b6c2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 355688
+    [ Message content over the limit has been removed. ]
+... _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326872
+10  chromedriver                        0x000000010485c680 cxxbridge1$str$ptr + 2861308
+11  chromedriver                        0x000000010485fdd4 cxxbridge1$str$ptr + 2875472
+12  chromedriver                        0x0000000104841a7c cxxbridge1$str$ptr + 2751736
+13  chromedriver                        0x0000000104860658 cxxbridge1$str$ptr + 2877652
+14  chromedriver                        0x0000000104831ffc cxxbridge1$str$ptr + 2687608
+15  chromedriver                        0x0000000104884d78 cxxbridge1$str$ptr + 3026932
+16  chromedriver                        0x0000000104884ef4 cxxbridge1$str$ptr + 3027312
+17  chromedriver                        0x00000001048956a8 cxxbridge1$str$ptr + 3094820
+18  libsystem_pthread.dylib             0x0000000187fa3bc8 _pthread_start + 136
+19  libsystem_pthread.dylib             0x0000000187f9eb80 thread_start + 8</status>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:40.749261" elapsed="0.164441">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+0   chromedriver                        0x000000010489d6b4 cxxbridge1$str$ptr + 3127600
+1   chromedriver                        0x0000000104895a50 cxxbridge1$str$ptr + 3095756
+2   chromedriver                        0x000000010437256c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75432
+3   chromedriver                        0x00000001043787ac _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 100584
+4   chromedriver                        0x000000010437aa2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109416
+5   chromedriver                        0x000000010437aae4 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109600
+6   chromedriver                        0x00000001043b6c2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 355688
+    [ Message content over the limit has been removed. ]
+... _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326872
+10  chromedriver                        0x000000010485c680 cxxbridge1$str$ptr + 2861308
+11  chromedriver                        0x000000010485fdd4 cxxbridge1$str$ptr + 2875472
+12  chromedriver                        0x0000000104841a7c cxxbridge1$str$ptr + 2751736
+13  chromedriver                        0x0000000104860658 cxxbridge1$str$ptr + 2877652
+14  chromedriver                        0x0000000104831ffc cxxbridge1$str$ptr + 2687608
+15  chromedriver                        0x0000000104884d78 cxxbridge1$str$ptr + 3026932
+16  chromedriver                        0x0000000104884ef4 cxxbridge1$str$ptr + 3027312
+17  chromedriver                        0x00000001048956a8 cxxbridge1$str$ptr + 3094820
+18  libsystem_pthread.dylib             0x0000000187fa3bc8 _pthread_start + 136
+19  libsystem_pthread.dylib             0x0000000187f9eb80 thread_start + 8</status>
+</kw>
+<kw name="Open First Trip" owner="trip_page">
+<status status="NOT RUN" start="2026-03-16T22:22:40.913893" elapsed="0.000032"/>
+</kw>
+<kw name="Open Report Modal" owner="report_modal">
+<status status="NOT RUN" start="2026-03-16T22:22:40.914020" elapsed="0.000018"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:40.313158" elapsed="0.600997">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+0   chromedriver                        0x000000010489d6b4 cxxbridge1$str$ptr + 3127600
+1   chromedriver                        0x0000000104895a50 cxxbridge1$str$ptr + 3095756
+2   chromedriver                        0x000000010437256c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75432
+3   chromedriver                        0x00000001043787ac _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 100584
+4   chromedriver                        0x000000010437aa2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109416
+5   chromedriver                        0x000000010437aae4 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109600
+6   chromedriver                        0x00000001043b6c2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 355688
+    [ Message content over the limit has been removed. ]
+... _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326872
+10  chromedriver                        0x000000010485c680 cxxbridge1$str$ptr + 2861308
+11  chromedriver                        0x000000010485fdd4 cxxbridge1$str$ptr + 2875472
+12  chromedriver                        0x0000000104841a7c cxxbridge1$str$ptr + 2751736
+13  chromedriver                        0x0000000104860658 cxxbridge1$str$ptr + 2877652
+14  chromedriver                        0x0000000104831ffc cxxbridge1$str$ptr + 2687608
+15  chromedriver                        0x0000000104884d78 cxxbridge1$str$ptr + 3026932
+16  chromedriver                        0x0000000104884ef4 cxxbridge1$str$ptr + 3027312
+17  chromedriver                        0x00000001048956a8 cxxbridge1$str$ptr + 3094820
+18  libsystem_pthread.dylib             0x0000000187fa3bc8 _pthread_start + 136
+19  libsystem_pthread.dylib             0x0000000187f9eb80 thread_start + 8</status>
+</kw>
+<kw name="Submit Valid Report" owner="keywords">
+<status status="NOT RUN" start="2026-03-16T22:22:40.914399" elapsed="0.000029"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>ส่งรายงานสำเร็จ</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="NOT RUN" start="2026-03-16T22:22:40.914589" elapsed="0.000033"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary" type="TEARDOWN">
+<msg time="2026-03-16T22:22:41.046776" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-16.png"&gt;&lt;img src="selenium-screenshot-16.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-03-16T22:22:40.914882" elapsed="0.132104"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:40.312811" elapsed="0.734351">StaleElementReferenceException: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#staleelementreferenceexception
+Stacktrace:
+0   chromedriver                        0x000000010489d6b4 cxxbridge1$str$ptr + 3127600
+1   chromedriver                        0x0000000104895a50 cxxbridge1$str$ptr + 3095756
+2   chromedriver                        0x000000010437256c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 75432
+3   chromedriver                        0x00000001043787ac _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 100584
+4   chromedriver                        0x000000010437aa2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109416
+5   chromedriver                        0x000000010437aae4 _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 109600
+6   chromedriver                        0x00000001043b6c2c _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 355688
+    [ Message content over the limit has been removed. ]
+... _RNvCsdExgN8vFLbb_7___rustc35___rust_no_alloc_shim_is_unstable_v2 + 326872
+10  chromedriver                        0x000000010485c680 cxxbridge1$str$ptr + 2861308
+11  chromedriver                        0x000000010485fdd4 cxxbridge1$str$ptr + 2875472
+12  chromedriver                        0x0000000104841a7c cxxbridge1$str$ptr + 2751736
+13  chromedriver                        0x0000000104860658 cxxbridge1$str$ptr + 2877652
+14  chromedriver                        0x0000000104831ffc cxxbridge1$str$ptr + 2687608
+15  chromedriver                        0x0000000104884d78 cxxbridge1$str$ptr + 3026932
+16  chromedriver                        0x0000000104884ef4 cxxbridge1$str$ptr + 3027312
+17  chromedriver                        0x00000001048956a8 cxxbridge1$str$ptr + 3094820
+18  libsystem_pthread.dylib             0x0000000187fa3bc8 _pthread_start + 136
+19  libsystem_pthread.dylib             0x0000000187f9eb80 thread_start + 8</status>
+</test>
+<test id="s1-t2" name="Passenger Cannot Submit Without Selecting User" line="23">
+<kw name="Open Trip And Report" owner="keywords">
+<kw name="Open My Trip Page" owner="trip_page">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:41.048355" level="INFO">Opening url 'http://localhost:3001/myTrip'</msg>
+<arg>${FRONT_URL}/myTrip</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.048257" elapsed="0.130674"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>การเดินทางของฉัน</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.179149" elapsed="0.009926"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:41.048112" elapsed="0.141070"/>
+</kw>
+<kw name="Select All Trips Tab" owner="trip_page">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:41.189725" level="INFO">Clicking button 'xpath=//button[contains(.,'ทั้งหมด')]'.</msg>
+<msg time="2026-03-16T22:22:41.327702" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-17.png"&gt;&lt;img src="selenium-screenshot-17.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-16T22:22:41.327910" level="FAIL">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</msg>
+<arg>${TAB_ALL_TRIPS}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2026-03-16T22:22:41.189554" elapsed="0.138552">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.189337" elapsed="0.138929">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<kw name="Open First Trip" owner="trip_page">
+<status status="NOT RUN" start="2026-03-16T22:22:41.328460" elapsed="0.000028"/>
+</kw>
+<kw name="Open Report Modal" owner="report_modal">
+<status status="NOT RUN" start="2026-03-16T22:22:41.328581" elapsed="0.000018"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.047926" elapsed="0.280725">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<kw name="Select Problem Type" owner="report_modal">
+<arg>DANGEROUS_DRIVING</arg>
+<status status="NOT RUN" start="2026-03-16T22:22:41.328823" elapsed="0.000022"/>
+</kw>
+<kw name="Input Description" owner="report_modal">
+<arg>automation report testing</arg>
+<status status="NOT RUN" start="2026-03-16T22:22:41.328952" elapsed="0.000020"/>
+</kw>
+<kw name="Element Should Be Disabled" owner="SeleniumLibrary">
+<arg>xpath=//button[normalize-space()='ส่งรายงาน']</arg>
+<doc>Verifies that element identified by ``locator`` is disabled.</doc>
+<status status="NOT RUN" start="2026-03-16T22:22:41.329111" elapsed="0.000020"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary" type="TEARDOWN">
+<msg time="2026-03-16T22:22:41.441429" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-18.png"&gt;&lt;img src="selenium-screenshot-18.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.329375" elapsed="0.112149"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.047610" elapsed="0.394004">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</test>
+<test id="s1-t3" name="Passenger Cannot Submit With Short Description" line="35">
+<kw name="Open Trip And Report" owner="keywords">
+<kw name="Open My Trip Page" owner="trip_page">
+<kw name="Go To" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:41.442656" level="INFO">Opening url 'http://localhost:3001/myTrip'</msg>
+<arg>${FRONT_URL}/myTrip</arg>
+<doc>Navigates the current browser window to the provided ``url``.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.442544" elapsed="0.118122"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>การเดินทางของฉัน</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.560907" elapsed="0.007948"/>
+</kw>
+<status status="PASS" start="2026-03-16T22:22:41.442376" elapsed="0.126593"/>
+</kw>
+<kw name="Select All Trips Tab" owner="trip_page">
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2026-03-16T22:22:41.569484" level="INFO">Clicking button 'xpath=//button[contains(.,'ทั้งหมด')]'.</msg>
+<msg time="2026-03-16T22:22:41.708020" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-19.png"&gt;&lt;img src="selenium-screenshot-19.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2026-03-16T22:22:41.708182" level="FAIL">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</msg>
+<arg>${TAB_ALL_TRIPS}</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="FAIL" start="2026-03-16T22:22:41.569330" elapsed="0.139006">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.569122" elapsed="0.139406">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<kw name="Open First Trip" owner="trip_page">
+<status status="NOT RUN" start="2026-03-16T22:22:41.708763" elapsed="0.000044"/>
+</kw>
+<kw name="Open Report Modal" owner="report_modal">
+<status status="NOT RUN" start="2026-03-16T22:22:41.708902" elapsed="0.000018"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.442161" elapsed="0.266813">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</kw>
+<kw name="Select First User" owner="report_modal">
+<status status="NOT RUN" start="2026-03-16T22:22:41.709121" elapsed="0.000021"/>
+</kw>
+<kw name="Select Problem Type" owner="report_modal">
+<arg>DANGEROUS_DRIVING</arg>
+<status status="NOT RUN" start="2026-03-16T22:22:41.709253" elapsed="0.000054"/>
+</kw>
+<kw name="Input Description" owner="report_modal">
+<arg>สั้น</arg>
+<status status="NOT RUN" start="2026-03-16T22:22:41.709458" elapsed="0.000020"/>
+</kw>
+<kw name="Element Should Be Disabled" owner="SeleniumLibrary">
+<arg>xpath=//button[normalize-space()='ส่งรายงาน']</arg>
+<doc>Verifies that element identified by ``locator`` is disabled.</doc>
+<status status="NOT RUN" start="2026-03-16T22:22:41.709770" elapsed="0.000076"/>
+</kw>
+<kw name="Capture Page Screenshot" owner="SeleniumLibrary" type="TEARDOWN">
+<msg time="2026-03-16T22:22:41.824530" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-20.png"&gt;&lt;img src="selenium-screenshot-20.png" width="800px"&gt;&lt;/a&gt;</msg>
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.710324" elapsed="0.114343"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:41.441787" elapsed="0.383002">Button with locator 'xpath=//button[contains(.,'ทั้งหมด')]' not found.</status>
+</test>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2026-03-16T22:22:41.825349" elapsed="0.110551"/>
+</kw>
+<status status="FAIL" start="2026-03-16T22:22:36.540850" elapsed="5.395119"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="3" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Report Tests" id="s1" pass="0" fail="3" skip="0">Report Tests</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
