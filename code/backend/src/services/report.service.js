@@ -139,7 +139,6 @@ const getReportById = async (id) => {
         select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
       },
       route: {
-        select: { id: true, driverId: true, startLocation: true, endLocation: true, departureTime: true } 
         include: {
           driver: {
             select: { id: true, firstName: true, lastName: true, yellowCardCount: true, driverSuspendedUntil: true
