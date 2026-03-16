@@ -7,8 +7,10 @@
         <main id="main-content" class="main-content mt-16 ml-0 lg:ml-[280px] p-6">
             <!-- Back -->
             <div class="mb-8">
-                <NuxtLink to="/admin/reports-dashboard"
-                    class="inline-flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                <NuxtLink
+                :to="`/admin/reports-dashboard/trip/${report?.routeId}`"
+                class="inline-flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
+                >
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>ย้อนกลับ</span>
                 </NuxtLink>
@@ -47,8 +49,8 @@
                                 <span class="text-gray-600">{{ report?.routeId }}</span>
                             </p>
                             <p>
-                                <span class="font-semibold">Case Status ID : </span>
-                                <span class="text-gray-600">{{ report?.routeId }}</span>
+                                <span class="font-semibold">Case Status : </span>
+                                <span class="text-gray-600">{{ report?.status }} </span>
                             </p>
                             <p>
                                 <span class="font-semibold">ผู้รับเรื่อง : </span>
@@ -64,21 +66,10 @@
                             <!-- ปุ่มรับเรื่อง -->
                             <button
                             @click="assignReport"
-                            :disabled="assigning || report?.resolvedById"
-                            :class="[
-                                'w-full mt-4 py-2 rounded transition text-white',
-                                report?.resolvedById
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-green-600 hover:bg-green-700'
-                            ]"
+                            :disabled="assigning || report?.status !== 'PENDING'"
+                            class="w-full mt-4 py-2 rounded transition text-white bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
                             >
-                                {{
-                                    assigning
-                                    ? 'กำลังรับเรื่อง...'
-                                    : report?.resolvedById
-                                        ? 'มีผู้รับเรื่องแล้ว'
-                                        : 'รับเรื่อง'
-                                }}
+                                {{ assigning ? 'กำลังรับเรื่อง...' : 'รับเรื่อง' }}
                             </button>
                         </div>
 
@@ -92,25 +83,29 @@
                                     <span class="font-semibold">สร้างเมื่อ : </span>
                                     <span class="text-gray-600">{{ formatDateTime(report?.createdAt) }}</span>
                                 </p>
-                                <p>
+
+                                <p v-if="report?.updatedAt">
                                     <span class="font-semibold">แก้ไขเมื่อ : </span>
                                     <span class="text-gray-600">{{ formatDateTime(report?.updatedAt) }}</span>
                                 </p>
-                                <p>
+
+                                <p v-if="report?.resolvedAt">
                                     <span class="font-semibold">ดำเนินการเสร็จสิ้นเมื่อ : </span>
                                     <span class="text-gray-600">{{ formatDateTime(report?.resolvedAt) }}</span>
                                 </p>
-                                <p>
+
+                                <p v-if="report?.closedAt">
                                     <span class="font-semibold">ปิดเคสเมื่อ : </span>
                                     <span class="text-gray-600">{{ formatDateTime(report?.closedAt) }}</span>
                                 </p>
-                                <button
+
+                                <!-- <button
                                 class="px-4 py-2 text-white bg-gray-700 rounded-md hover:bg-gray-800 disabled:bg-gray-400"
                                 :disabled="report?.status !== 'RESOLVED' && report?.status !== 'REJECTED'"
                                 @click="closeReport"
                                 >
                                     ปิดเคส
-                                </button>
+                                </button> -->
                             </div>
                         </div>
 
@@ -125,25 +120,44 @@
                     
                     <!-- ฝั่งขวา: แสดงรายละเอียดการ Report -->
                     <div class="lg:col-span-3 p-6 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+
                         <div>
-                            <p>
-                                <span class="font-semibold">หัวข้อ : </span>
-                                <span class="text-gray-600">
-                                {{ formatCategory(report?.category) }}
-                                </span>
+                            <p class="text-gray-500">หัวข้อ</p>
+                            <p class="font-medium text-gray-900">
+                            {{ formatCategory(report?.category) }}
                             </p>
-                            <p>
-                                <span class="font-semibold">ผู้ใช้ที่แจ้งรายงาน : </span>
-                                <span class="text-gray-600">
-                                    {{ report?.reporter?.firstName }} {{ report?.reporter?.lastName }}
-                                </span>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500">สถานะการรายงาน</p>
+                            <span
+                            class="inline-flex px-2 py-1 text-xs font-medium rounded-full"
+                            :class="{
+                                'bg-yellow-100 text-yellow-700': report?.status === 'PENDING',
+                                'bg-blue-100 text-blue-700': report?.status === 'UNDER_REVIEW',
+                                'bg-green-100 text-green-700': report?.status === 'RESOLVED',
+                                'bg-red-100 text-red-700': report?.status === 'REJECTED'
+                            }"
+                            >
+                            {{ report?.status }}
+                            </span>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500">ผู้ใช้ที่แจ้งรายงาน</p>
+                            <p class="font-medium text-gray-900">
+                            {{ report?.reporter?.firstName }} {{ report?.reporter?.lastName }}
                             </p>
-                            <p>
-                                <span class="font-semibold">สถานะการรายงาน : </span>
-                                <span class="text-gray-600">
-                                    {{ report?.status }}
-                                </span>
+                        </div>
+
+                        <div>
+                            <p class="text-gray-500">ผู้ใช้ที่ถูกรายงาน</p>
+                            <p class="font-medium text-gray-900">
+                            {{ report?.reportedUser?.firstName }} {{ report?.reportedUser?.lastName }}
                             </p>
+                        </div>
+
                         </div>
                         <div class="border-t border-gray-300 my-6"></div>
                         <div>
@@ -205,16 +219,16 @@
                                     v-for="file in report.evidences"
                                     :key="file.id"
                                     class="p-4 border-2 border-gray-300 border-dashed rounded-md"
-                                >
+                                >        
 
-                                    <!-- 🖼 IMAGE -->
+                                    <!-- IMAGE -->
                                     <img
                                     v-if="file.mimeType?.startsWith('image/')"
                                     :src="file.url"
                                     class="w-full rounded max-h-96 object-contain"
                                     />
 
-                                    <!-- 🎥 VIDEO -->
+                                    <!-- VIDEO -->
                                     <video
                                     v-else-if="file.mimeType?.startsWith('video/')"
                                     :src="file.url"
@@ -222,7 +236,7 @@
                                     class="w-full rounded max-h-96"
                                     />
 
-                                    <!-- 🎵 AUDIO -->
+                                    <!-- AUDIO -->
                                     <audio
                                     v-else-if="file.mimeType?.startsWith('audio/')"
                                     :src="file.url"
@@ -230,14 +244,14 @@
                                     class="w-full"
                                     />
 
-                                    <!-- 📄 PDF -->
+                                    <!-- PDF -->
                                     <iframe
                                     v-else-if="file.mimeType === 'application/pdf'"
                                     :src="file.url"
                                     class="w-full h-96 rounded"
                                     ></iframe>
 
-                                    <!-- ❗ Other -->
+                                    <!-- Other -->
                                     <div v-else class="text-center text-gray-500">
                                     <i class="text-3xl fa-regular fa-file"></i>
                                     <p class="mt-2 text-sm">
@@ -245,6 +259,9 @@
                                     </p>
                                     </div>
 
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        อัปโหลดเมื่อ {{ formatDateTime(file.createdAt) }}
+                                    </p>
                                 </div>
                                 </div>
 
@@ -279,9 +296,6 @@
                                 <thead class="bg-gray-50">
                                     <tr>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        เลือก
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
                                         ชื่อ-นามสกุล
                                     </th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
@@ -293,25 +307,15 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
 
                                     <!-- แสดงรายการผู้ใช้ที่ไม่ซ้ำกัน -->
-                                    <tr
-                                    v-for="user in uniqueUsers"
-                                    :key="user.id"
-                                    >
-                                    <td class="px-4 py-3">
-                                        <input
-                                        type="checkbox"
-                                        :value="user.id"
-                                        v-model="selectedUsers"
-                                        class="w-4 h-4 text-yellow-600 border-gray-300 rounded"
-                                        />
-                                    </td>
+                                    <tr v-if="report?.reportedUser">
                                     <td class="px-4 py-3 font-medium text-gray-900">
-                                        {{ user.firstName }}
-                                        {{ user.lastName }}
+                                        {{ report.reportedUser.firstName }}
+                                        {{ report.reportedUser.lastName }}
                                     </td>
+
                                     <td class="px-4 py-3">
-                                        <span :class="statusClass(user)">
-                                        {{ getDisciplinaryStatus(user).label }}
+                                        <span :class="statusClass(report.reportedUser)">
+                                        {{ getDisciplinaryStatus(report.reportedUser).label }}
                                         </span>
                                     </td>
                                     </tr>
@@ -351,26 +355,21 @@
                             <div class="flex justify-end gap-3 pt-4">
 
                                 <button
-                                class="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-100"
-                                @click="showManageSection = false"
-                                >
-                                    ยกเลิก
-                                </button>
-
-                                <button
                                 class="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600"
+                                :disabled="report?.status !== 'UNDER_REVIEW'"
                                 @click="rejectReport"
                                 >
                                     ปฏิเสธเคส
                                 </button>
 
                                 <button
-                                class="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600 disabled:bg-gray-400"
-                                :disabled="!selectedUsers.length"
-                                @click="issueYellowCard"
+                                class="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 disabled:bg-gray-400"
+                                :disabled="report?.status !== 'UNDER_REVIEW'"
+                                @click="resolveReport"
                                 >
-                                    มอบใบเหลือง
+                                    ดำเนินการเคส
                                 </button>
+
                             </div>
                         </div>
                     </div>
@@ -390,6 +389,7 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/th'
 import { computed } from 'vue'
 
+
 dayjs.locale('th')
 definePageMeta({ middleware: ['admin-auth'] })
 useHead({
@@ -407,90 +407,80 @@ const assigning = ref(false)
 const currentAdmin = ref(null)
 
 const showManageSection = ref(false)
-const selectedUsers = ref([])
 const adminComment = ref('')
 const selectedPreset = ref('')
 
 const uniquePassengers = computed(() => {
-  if (!report.value?.route?.bookings) return []
-  
-  const passengers = []
-  const seen = new Set()
-
-  report.value.route.bookings.forEach(booking => {
-    if (booking.passenger && !seen.has(booking.passenger.id)) {
-      seen.add(booking.passenger.id)
-      passengers.push(booking.passenger)
-    }
-  })
-
-  return passengers
+    if (!report.value?.route?.bookings) return []
+    
+    const passengers = []
+    const seen = new Set()
+    
+    report.value.route.bookings.forEach(booking => {
+        if (booking.passenger && !seen.has(booking.passenger.id)) {
+            seen.add(booking.passenger.id)
+            passengers.push(booking.passenger)
+        }
+    })
+    
+    return passengers
 })
 
 // คำนวณรายการผู้ใช้ที่ถูกรายงานเท่านั้น (แสดงเฉพาะคนที่ถูก report จริงๆ)
-const uniqueUsers = computed(() => {
-  // console.log("🟡 [FRONTEND DEBUG] กำลังคำนวณ uniqueUsers, ข้อมูลต้นทาง:", report.value);
+// const uniqueUsers = computed(() => {
 
-  if (!report.value) return [];
-  
-  if (report.value.reportedUsers && report.value.reportedUsers.length > 0) {
-    // console.log("🟡 [FRONTEND DEBUG] เข้าเงื่อนไขที่ 1 (แบบ Group มีหลายคน):", report.value.reportedUsers.length, "คน");
-    return report.value.reportedUsers.map(user => ({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      ...user
-    }));
-  }
-  
-  if (report.value.driver) {
-    // console.log("🟡 [FRONTEND DEBUG] เข้าเงื่อนไขที่ 2 (แบบเดี่ยว / ของเก่า): 1 คน");
-    return [{
-      id: report.value.driver.id,
-      firstName: report.value.driver.firstName,
-      lastName: report.value.driver.lastName,
-      ...report.value.driver
-    }];
-  }
-  
-  // console.log("🟡 [FRONTEND DEBUG] หาใครไม่เจอเลย คืนค่า Array ว่าง");
-  return [];
-});
+//   if (!report.value) return []
+
+//   const users = []
+
+//   // case เดี่ยว
+//   if (report.value.reportedUser) {
+//     users.push(report.value.reportedUser)
+//   }
+
+//   // case แบบ group
+//   if (report.value.reportedUsers) {
+//     report.value.reportedUsers.forEach(u => users.push(u))
+//   }
+
+//   return users
+// })
 
 const formatDateTime = (date) => {
-  if (!date) return '-'
-
-  return dayjs(date)
+    if (!date) return '-'
+    
+    return dayjs(date)
     .locale('th')
     .format('D MMMM YYYY เวลา HH:mm น.')
 }
 
 const getDisciplinaryStatus = (u) => {
-  if (!u) return { label: '-', color: 'gray' }
-
-  const now = dayjs()
-
-  if (
-    (u.driverSuspendedUntil && dayjs(u.driverSuspendedUntil).isAfter(now)) ||
-    (u.passengerSuspendedUntil && dayjs(u.passengerSuspendedUntil).isAfter(now))
-  ) {
-    return { label: 'แดง (ถูกแบน)', color: 'red' }
-  }
-
-  if (u.yellowCardCount > 0) {
-    return { label: `ใบเหลือง ${u.yellowCardCount} ใบ`, color: 'yellow' }
-  }
-
-  return { label: 'ไม่มี', color: 'gray' }
+    if (!u) return { label: '-', color: 'gray' }
+    
+    const now = dayjs()
+    
+    if (
+        (u.driverSuspendedUntil && dayjs(u.driverSuspendedUntil).isAfter(now)) ||
+        (u.passengerSuspendedUntil && dayjs(u.passengerSuspendedUntil).isAfter(now))
+    ) {
+        return { label: 'แดง (ถูกแบน)', color: 'red' }
+    }
+    
+    if (u.yellowCardCount > 0) {
+        return { label: `ใบเหลือง ${u.yellowCardCount} ใบ`, color: 'yellow' }
+    }
+    
+    return { label: 'ไม่มี', color: 'gray' }
 }
 
 const statusClass = (u) => {
-  const status = getDisciplinaryStatus(u)
-
-  return {
-    'text-red-600 font-semibold': status.color === 'red',
-    'text-yellow-600 font-semibold': status.color === 'yellow',
-    'text-gray-500': status.color === 'gray'
+    const status = getDisciplinaryStatus(u)
+    
+    return {
+        'text-red-600 font-semibold': status.color === 'red',
+        'text-yellow-600 font-semibold': status.color === 'yellow',
+        'text-gray-500': status.color === 'gray'
+        
   }
 }
 
@@ -543,59 +533,58 @@ const fetchCurrentAdmin = async () => {
     currentAdmin.value = res
 }
 
-const issueYellowCard = async () => {
-    if (!selectedUsers.value.length) {
-        toast.error('กรุณาเลือกผู้ใช้')
-        return
-    }
+// const issueYellowCard = async () => {
+//     if (!selectedUsers.value.length) {
+//         toast.error('กรุณาเลือกผู้ใช้')
+//         return
+//     }
 
-    try {
-        const config = useRuntimeConfig()
-        const token = useCookie('token')
+//     try {
+//         const config = useRuntimeConfig()
+//         const token = useCookie('token')
 
-        await $fetch(`/reports/admin/${report.value.id}/issue-yellow`, {
-        method: 'POST',
-        baseURL: config.public.apiBase,
-        headers: {
-            Authorization: `Bearer ${token.value}`
-        },
-        body: {
-            userIds: selectedUsers.value,
-            adminComment: adminComment.value,
-            notificationType: selectedPreset.value
-        }
-        })
+//         await $fetch(`/reports/admin/${report.value.id}/issue-yellow`, {
+//         method: 'POST',
+//         baseURL: config.public.apiBase,
+//         headers: {
+//             Authorization: `Bearer ${token.value}`
+//         },
+//         body: {
+//             userIds: selectedUsers.value,
+//             adminComment: adminComment.value,
+//             notificationType: selectedPreset.value
+//         }
+//         })
 
-        toast.success('มอบใบเหลืองเรียบร้อย')
-        selectedUsers.value = []
-        adminComment.value = ''
-        selectedPreset.value = ''
+//         toast.success('มอบใบเหลืองเรียบร้อย')
+//         selectedUsers.value = []
+//         adminComment.value = ''
+//         selectedPreset.value = ''
 
-        console.log('selectedUsers:', selectedUsers.value)
+//         console.log('selectedUsers:', selectedUsers.value)
 
-        await fetchReport()
+//         await fetchReport()
 
-    } catch (err) {
-        console.error('ISSUE YELLOW ERROR:', err)
-        toast.error('ไม่สามารถมอบใบเหลืองได้')
-    }
-}
+//     } catch (err) {
+//         console.error('ISSUE YELLOW ERROR:', err)
+//         toast.error('ไม่สามารถมอบใบเหลืองได้')
+//     }
+// }
 
 const rejectReport = async () => {
     try {
         const config = useRuntimeConfig()
         const token = useCookie('token')
 
-        await $fetch(`/reports/admin/${report.value.id}/status`, {
-        method: 'PATCH',
-        baseURL: config.public.apiBase,
-        headers: {
-            Authorization: `Bearer ${token.value}`
-        },
-        body: {
-            status: 'REJECTED',
-            adminNotes: adminComment.value || 'เคสถูกปฏิเสธ'
-        }
+        await $fetch(`/reports/admin/${report.value.id}/reject`, {
+            method: 'PATCH',
+            baseURL: config.public.apiBase,
+            headers: {
+                Authorization: `Bearer ${token.value}`
+            },
+            body: {
+                adminNotes: adminComment.value || 'เคสถูกปฏิเสธ'
+            }
         })
 
         toast.success('ปฏิเสธเคสเรียบร้อย')
@@ -610,34 +599,69 @@ const rejectReport = async () => {
     }
     }
 
-const closeReport = async () => {
-    try {
-        const config = useRuntimeConfig()
-        const token = useCookie('token')
+// const closeReport = async () => {
+//     try {
+//         const config = useRuntimeConfig()
+//         const token = useCookie('token')
 
-        await $fetch(`/reports/admin/${report.value.id}/status`, {
-        method: 'PATCH',
-        baseURL: config.public.apiBase,
-        headers: {
-            Authorization: `Bearer ${token.value}`
-        },
-        body: {
-            status: 'CLOSED',
-            adminNotes: adminComment.value || 'เคสถูกปิดแล้ว'
-        }
-        })
+//         await $fetch(`/reports/admin/${report.value.id}/status`, {
+//         method: 'PATCH',
+//         baseURL: config.public.apiBase,
+//         headers: {
+//             Authorization: `Bearer ${token.value}`
+//         },
+//         body: {
+//             status: 'CLOSED',
+//             adminNotes: adminComment.value || 'เคสถูกปิดแล้ว'
+//         }
+//         })
 
-        toast.success('ปิดเคสเรียบร้อย')
-        showManageSection.value = false
+//         toast.success('ปิดเคสเรียบร้อย')
+//         showManageSection.value = false
 
-        await fetchReport()
+//         await fetchReport()
 
-    } catch (err) {
-        console.error(err)
-        toast.error('ไม่สามารถปิดเคสได้')
-    }
-    }
-    
+//     } catch (err) {
+//         console.error(err)
+//         toast.error('ไม่สามารถปิดเคสได้')
+//     }
+//     }
+
+const resolveReport = async () => {
+
+  try {
+
+    const config = useRuntimeConfig()
+    const token = useCookie('token')
+
+    await $fetch(`/reports/admin/${report.value.id}/resolve`, {
+      method: 'PATCH',
+      baseURL: config.public.apiBase,
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      },
+      body: {
+        adminNotes: adminComment.value,
+        notificationType: selectedPreset.value
+      }
+    })
+
+    toast.success('ดำเนินการเคสเรียบร้อย')
+
+    showManageSection.value = false
+    adminComment.value = ''
+
+    await fetchReport()
+
+  } catch (err) {
+
+    console.error(err)
+    toast.error('ไม่สามารถดำเนินการเคสได้')
+
+  }
+
+}
+
 async function fetchReport() {
     const config = useRuntimeConfig()
     const token = useCookie('token')

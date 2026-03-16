@@ -8,7 +8,7 @@ export function useAuth() {
     maxAge: 60 * 60 * 24 * 7,
     path: '/',
     sameSite: 'none',
-    secure: true
+    secure: process.env.NODE_ENV === 'production'
   }
   const token = useCookie('token', cookieOpts)
   const user = useCookie('user', cookieOpts)

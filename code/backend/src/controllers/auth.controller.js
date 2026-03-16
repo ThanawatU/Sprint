@@ -94,7 +94,7 @@ const login = asyncHandler(async (req, res) => {
     res.cookie('token', token, {
         httpOnly: true,
         secure: false,        // ต้อง true เพราะ https
-        sameSite: 'none',    // อนุญาต cross-site
+        sameSite: 'lax',    // อนุญาต cross-site
         maxAge: 7 * 24 * 60 * 60 * 1000
     });
     

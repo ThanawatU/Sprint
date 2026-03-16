@@ -121,6 +121,7 @@ router.patch(
   routeController.cancelRoute
 );
 
+// PATCH /routes/:id/complete
 router.patch(
   "/:id/complete",
   protect,

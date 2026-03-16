@@ -1,3 +1,5 @@
+// myHistory/index.vue
+
 <template>
   <div>
     <div class="px-4 py-8 mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -713,7 +715,7 @@ const fetchReports = async () => {
     }
 
     const response = await fetch(
-      `${baseUrl}/reports/my?${query.toString()}`,
+      `${baseUrl}reports/my?${query.toString()}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

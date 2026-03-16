@@ -521,6 +521,7 @@ All notable changes to this project will be documented in this file.
 ## [3.0.0] - 2026-03-15 - Yodsanon_0215
 
 ### Added
+
 - **Report System**: Added a get by routeID.
 
 ---
@@ -540,24 +541,103 @@ All notable changes to this project will be documented in this file.
 
 - Fix conflicts on rebasing main branch
 
+## [3.0.0] - 2026-03-15 - Yodsanon_0215
+
+### Added
+
+- **Report System**: Added a get by routeID.
+
 ---
 
 ## [3.0.0] - 2026-03-15 - Wisit_2348
 
 ### Added
+
 - Trip-based report view showing route, date, and report count per trip
 - Evidence management: image preview before upload, pagination, timestamps, pending deletion
 
 ### Changed
+
 - Improved evidence card display with upload timestamps
 - Increased visibility of report titles and status badges
 - Updated Passenger Report UX/UI to enable report creation based on the trip where the incident occurred
 
 ### Fixed
+
 - Fixed Prisma query issue with invalid `orderBy`
 
 ### Misc
+
 - Added `formatDateTime()` utility for compact timestamp formatting
+
+---
+
+## [3.0.0] - 2026-03-15 - Wisit_2348
+
+### Added
+
+- Trip-based report view showing route, date, and report count per trip
+- Evidence management: image preview before upload, pagination, timestamps, pending deletion
+
+### Changed
+
+- Improved evidence card display with upload timestamps
+- Increased visibility of report titles and status badges
+- Updated Passenger Report UX/UI to enable report creation based on the trip where the incident occurred
+
+### Fixed
+
+- Fixed Prisma query issue with invalid `orderBy`
+
+### Misc
+
+- Added `formatDateTime()` utility for compact timestamp formatting
+
+---
+
+## [3.0.0] - 2026-03-15 - Nattaphat_0126
+
+### Added
+
+* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
+* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
+* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
+
+### Changed
+
+* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
+
+### Fixed
+
+* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
+
+---
+
+## [3.0.0] - 2026-03-16 - Kanyapat_5037
+
+### Added 
+- Added Latest Report column in Trip Report table to display the most recent report timestamp for each trip.
+- Added Status summary cards showing the number of reports by status (Pending, Under Review, Resolved, Rejected).
+- Added status filter cards that allow quick filtering by report status.
+- Implemented Admin API endpoints for managing reports, including assigning, resolving, and rejecting cases.
+- Added API to retrieve all reports for the Admin Dashboard.
+
+### Changed
+- Implemented Admin Report Management UI to allow administrators to review and manage individual reports.
+- Added Trip-based report listing in the Admin Dashboard to group reports under the same trip.
+
+---
+
+## [3.0.0] - 2026-03-16 - Kanyapat_5037
+
+### Added 
+
+- Implemented Admin UI to display all users in a trip, including driver and passengers involved in the report.
+- Added Admin Case Detail Page to display detailed report information, evidence files, and report history.
+
+### Changed
+- Updated Admin Dashboard to list reports as separate entries for each reported user, even when multiple users are reported in the same submission.
+- Improved Admin Case Detail Page to group reports under the same trip and show who submitted each report.
 
 ---
 

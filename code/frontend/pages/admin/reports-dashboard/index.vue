@@ -16,7 +16,7 @@
                     <!-- Quick Search -->
                     <div class="flex items-center gap-2">
                         <input v-model.trim="filters.q" @keyup.enter="applyFilters" type="text"
-                            placeholder="ค้นหา : รายละเอียด / Reporter / Driver"
+                            placeholder="ค้นหา Trip ID"
                             class="max-w-full px-3 py-2 border border-gray-300 rounded-md w-72 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                         <button @click="applyFilters"
                             class="px-4 py-2 text-white bg-blue-600 rounded-md cursor-pointer hover:bg-blue-700">
@@ -25,96 +25,71 @@
                     </div>
                 </div>
 
-                <!-- Statistics Cards -->
-                <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <!-- Total Reports -->
-                    <div class="bg-white border border-gray-300 rounded-lg shadow-sm p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Report ทั้งหมด</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.total }}</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-2">
 
-                    <!-- Today Reports -->
-                    <div class="bg-white border border-gray-300 rounded-lg shadow-sm p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">Report วันนี้</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.today }}</p>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Total Reports -->
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <p class="text-sm text-gray-500">Total Reports</p>
+                <p class="text-3xl font-bold text-gray-900 mt-2">
+                {{ stats.total }}
+                </p>
+                </div>
 
-                    <!-- Closed Today -->
-                    <div class="bg-white border border-gray-300 rounded-lg shadow-sm p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-sm font-medium text-gray-600">ปิด Case วันนี้</p>
-                                <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.closedToday }}</p>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Closed Today -->
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                <p class="text-sm text-gray-500">Resolved Today</p>
+                <p class="text-3xl font-bold text-green-600 mt-2">
+                {{ stats.resolvedToday }}
+                </p>
+                </div>
+
                 </div>
 
                 <!-- Status Distribution Bar -->
                 <div class="bg-white border border-gray-300 rounded-lg shadow-sm mb-6 p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">สถานะ Report</h3>
-                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5"> 
-                        <div v-for="status in statusList" :key="status.value"
-                            class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-                            @click="filterByStatus(status.value)">
-                            <p class="text-xs font-medium text-gray-600 mb-1">{{ status.label }}</p>
-                            <p class="text-2xl font-bold" :class="status.color">{{ stats.byStatus[status.value] || 0
-                                }}</p>
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                        <div v-for="status in statusList"
+                        :key="status.value"
+                        class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer"
+                        @click="filterByStatus(status.value)"
+                        >
+                            <p class="text-xs font-medium text-gray-600 mb-1">
+                                {{ status.label }}
+                            </p>
+                            <p class="text-2xl font-bold" :class="status.color">
+                                {{ stats.byStatus[status.value] || 0 }}
+                            </p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Filters -->
                 <div class="mb-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                    <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-4">
+                    <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-3">
                         <!-- Status Filter -->
                         <div>
                             <label class="block mb-1 text-xs font-medium text-gray-600">สถานะ</label>
                             <select v-model="filters.status"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
                                 <option value="">ทั้งหมด</option>
-                                <option value="FILED">FILED</option>
+                                <option value="PENDING">PENDING</option>
                                 <option value="UNDER_REVIEW">UNDER_REVIEW</option>
-                                <!-- <option value="INVESTIGATING">INVESTIGATING</option> -->
                                 <option value="RESOLVED">RESOLVED</option>
                                 <option value="REJECTED">REJECTED</option>
-                                <option value="CLOSED">CLOSED</option>
-                            </select>
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div>
-                            <label class="block mb-1 text-xs font-medium text-gray-600">หมวดหมู่</label>
-                            <select v-model="filters.category"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
-                                <option value="">ทั้งหมด</option>
-                                <option value="DANGEROUS_DRIVING">DANGEROUS_DRIVING</option>
-                                <option value="AGGRESSIVE_BEHAVIOR">AGGRESSIVE_BEHAVIOR</option>
-                                <option value="HARASSMENT">HARASSMENT</option>
-                                <option value="NO_SHOW">NO_SHOW</option>
-                                <option value="FRAUD_OR_SCAM">FRAUD_OR_SCAM</option>
-                                <option value="OTHER">OTHER</option>
                             </select>
                         </div>
 
                         <!-- Sort -->
                         <div>
                             <label class="block mb-1 text-xs font-medium text-gray-600">เรียงตาม</label>
-                            <select v-model="filters.sort"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
-                                <option value="">ค่าเริ่มต้น (createdAt desc)</option>
-                                <option value="createdAt:asc">สร้างเมื่อ (เก่า → ใหม่)</option>
-                                <option value="createdAt:desc">สร้างเมื่อ (ใหม่ → เก่า)</option>
-                                <option value="updatedAt:asc">อัปเดต (เก่า → ใหม่)</option>
-                                <option value="updatedAt:desc">อัปเดต (ใหม่ → เก่า)</option>
+                            <select
+                                v-model="filters.sort"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500"
+                            >
+                                <option value="">ค่าเริ่มต้น (Report ล่าสุด)</option>
+                                <option value="lastReportAt:desc">Report ล่าสุด → เก่าสุด</option>
+                                <option value="lastReportAt:asc">Report เก่าสุด → ล่าสุด</option>
                             </select>
                         </div>
 
@@ -136,7 +111,7 @@
                 <div class="bg-white border border-gray-300 rounded-lg shadow-sm">
                     <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 sm:px-6">
                         <div class="text-sm text-gray-600">
-                            ทั้งหมด {{ pagination.total }} รายการ
+                            ทั้งหมด {{ filteredTrips.length }} รายการ
                         </div>
                     </div>
 
@@ -151,85 +126,70 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ID</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Reporter
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Driver
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        หมวดหมู่</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        รายละเอียด</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">สถานะ
-                                    </th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        สร้างเมื่อ</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                                        การกระทำ</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Trip ID</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Total Reports</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Pending</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Under Review</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Resolved</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Rejected</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Latest Report</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Action</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <tr v-for="report in reports" :key="report.id" class="hover:bg-gray-50">
-                                    <td class="px-4 py-3 text-xs text-gray-500 font-mono">
-                                        {{ report.id.slice(0, 8) }}...
-                                    </td>
-                                    <td class="px-4 py-3">
+                                <tr v-for="trip in filteredTrips" :key="trip.routeId" class="hover:bg-gray-50">
+                                    <td class="px-4 py-3 text-sm text-gray-700">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ report.reporter?.username || '-' }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            {{ report.reporter?.email || '-' }}
+                                            {{ trip.routeId || '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 text-sm text-gray-700">
                                         <div class="text-sm font-medium text-gray-900">
-                                            {{ report.driver?.username || '-' }}
-                                        </div>
-                                        <div class="text-xs text-gray-500">
-                                            {{ report.driver?.email || '-' }}
+                                            {{ trip.reportCount || '-' }}
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
-                                            :class="categoryBadge(report.category)">
-                                            {{ formatCategory(report.category) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 max-w-xs">
-                                        <div class="text-sm text-gray-700 truncate" :title="report.description">
-                                            {{ report.description }}
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ trip.statusBreakdown?.PENDING || 0 }}
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full"
-                                            :class="statusBadge(report.status)">
-                                            {{ formatStatus(report.status) }}
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <div class="text-sm text-gray-700">{{ formatDate(report.createdAt) }}</div>
-                                        <div v-if="report.updatedAt !== report.createdAt"
-                                            class="text-xs text-gray-500">
-                                            อัปเดต {{ formatDate(report.updatedAt) }}
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ trip.statusBreakdown.UNDER_REVIEW || '0' }}
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ trip.statusBreakdown.RESOLVED || '0' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ trip.statusBreakdown.REJECTED || '0' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ formatDate(trip.lastReportAt) }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">
                                         <div class="flex items-center gap-2">
-                                            <button @click="onViewReport(report)"
+                                            <button @click="navigateTo(`/admin/reports-dashboard/trip/${trip.routeId}`)"
                                                 class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-blue-600"
                                                 title="ดูรายละเอียด" aria-label="ดูรายละเอียด">
                                                 <i class="text-lg fa-regular fa-eye"></i>
                                             </button>
-                                            <button @click="onExportReport(report)"
+                                            <!-- <button @click="onExportReport(report)"
                                                 class="p-2 text-gray-500 transition-colors cursor-pointer hover:text-green-600"
                                                 title="Export" aria-label="Export">
                                                 <i class="text-lg fa-solid fa-download"></i>
-                                            </button>
+                                            </button> -->
                                         </div>
                                     </td>
                                 </tr>
 
-                                <tr v-if="!reports.length">
+                                <tr v-if="!trips.length">
                                     <td colspan="8" class="px-4 py-10 text-center text-gray-500">
                                         ไม่มีข้อมูล Report
                                     </td>
@@ -304,27 +264,24 @@ const { toast } = useToast()
 
 const isLoading = ref(false)
 const loadError = ref('')
-const reports = ref([])
+const trips = ref([])
 
 const stats = reactive({
     total: 0,
-    today: 0,
-    closedToday: 0,
+    resolvedToday : 0,
     byStatus: {
-        FILED: 0,
+        PENDING: 0,
         UNDER_REVIEW: 0,
         RESOLVED: 0,
-        REJECTED: 0,
-        CLOSED: 0
+        REJECTED: 0
     }
 })
 
 const statusList = [
-    { value: 'FILED', label: 'Filed', color: 'text-blue-600' },
-    { value: 'UNDER_REVIEW', label: 'Under Review', color: 'text-yellow-600' },
-    { value: 'RESOLVED', label: 'Resolved', color: 'text-green-600' },
-    { value: 'REJECTED', label: 'Rejected', color: 'text-red-600' },
-    { value: 'CLOSED', label: 'Closed', color: 'text-gray-600' }
+  { value: 'PENDING', label: 'Pending', color: 'text-blue-600' },
+  { value: 'UNDER_REVIEW', label: 'Under Review', color: 'text-yellow-600' },
+  { value: 'RESOLVED', label: 'Resolved', color: 'text-green-600' },
+  { value: 'REJECTED', label: 'Rejected', color: 'text-red-600' }
 ]
 
 const pagination = reactive({
@@ -362,39 +319,80 @@ const pageButtons = computed(() => {
     return out
 })
 
-function statusBadge(status) {
-    const map = {
-        FILED: 'bg-blue-100 text-blue-700',
-        UNDER_REVIEW: 'bg-yellow-100 text-yellow-700',
-        RESOLVED: 'bg-green-100 text-green-700',
-        REJECTED: 'bg-red-100 text-red-700',
-        CLOSED: 'bg-gray-100 text-gray-700'
-    }
-    return map[status] || 'bg-gray-100 text-gray-700'
-}
+const filteredTrips = computed(() => {
 
-function categoryBadge(category) {
-    const map = {
-        DANGEROUS_DRIVING: 'bg-red-100 text-red-700',
-        AGGRESSIVE_BEHAVIOR: 'bg-orange-100 text-orange-700',
-        HARASSMENT: 'bg-purple-100 text-purple-700',
-        NO_SHOW: 'bg-yellow-100 text-yellow-700',
-        FRAUD_OR_SCAM: 'bg-pink-100 text-pink-700',
-        OTHER: 'bg-gray-100 text-gray-700'
-    }
-    return map[category] || 'bg-gray-100 text-gray-700'
-}
+    let data = [...trips.value]
 
-function formatStatus(status) {
-    const map = {
-        FILED: 'Filed',
-        UNDER_REVIEW: 'Under Review',
-        RESOLVED: 'Resolved',
-        REJECTED: 'Rejected',
-        CLOSED: 'Closed'
+    // Search Trip ID
+    if (filters.q) {
+        const q = filters.q.toLowerCase()
+
+        data = data.filter(trip =>
+        trip.routeId?.toLowerCase().includes(q)
+        )
     }
-    return map[status] || status
-}
+
+    // Filter Status
+    if (filters.status) {
+        data = data.filter(trip =>
+        trip.statusBreakdown?.[filters.status] > 0
+        )
+    }
+
+    // Sort
+    if (filters.sort) {
+
+        const [field, order] = filters.sort.split(":")
+
+        data.sort((a, b) => {
+
+        const aVal = new Date(a[field] || 0)
+        const bVal = new Date(b[field] || 0)
+
+        return order === "asc"
+            ? aVal - bVal
+            : bVal - aVal
+        })
+
+    }
+
+    return data
+
+})
+
+// function statusBadge(status) {
+//     const map = {
+//         FILED: 'bg-blue-100 text-blue-700',
+//         UNDER_REVIEW: 'bg-yellow-100 text-yellow-700',
+//         RESOLVED: 'bg-green-100 text-green-700',
+//         REJECTED: 'bg-red-100 text-red-700',
+//         CLOSED: 'bg-gray-100 text-gray-700'
+//     }
+//     return map[status] || 'bg-gray-100 text-gray-700'
+// }
+
+// function categoryBadge(category) {
+//     const map = {
+//         DANGEROUS_DRIVING: 'bg-red-100 text-red-700',
+//         AGGRESSIVE_BEHAVIOR: 'bg-orange-100 text-orange-700',
+//         HARASSMENT: 'bg-purple-100 text-purple-700',
+//         NO_SHOW: 'bg-yellow-100 text-yellow-700',
+//         FRAUD_OR_SCAM: 'bg-pink-100 text-pink-700',
+//         OTHER: 'bg-gray-100 text-gray-700'
+//     }
+//     return map[category] || 'bg-gray-100 text-gray-700'
+// }
+
+// function formatStatus(status) {
+//     const map = {
+//         FILED: 'Filed',
+//         UNDER_REVIEW: 'Under Review',
+//         RESOLVED: 'Resolved',
+//         REJECTED: 'Rejected',
+//         CLOSED: 'Closed'
+//     }
+//     return map[status] || status
+// }
 
 function formatCategory(category) {
     const map = {
@@ -408,89 +406,110 @@ function formatCategory(category) {
     return map[category] || category
 }
 
-function formatDate(iso) {
-    if (!iso) return '-'
-    return dayjs(iso).format('D MMM BBBB HH:mm')
-}
+// function formatDate(iso) {
+//     if (!iso) return '-'
+//     return dayjs(iso).format('D MMM BBBB HH:mm')
+// }
 
-async function fetchReports(page = 1) {
-    const config = useRuntimeConfig()
-    const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
+async function fetchTrips(page = 1) {
 
-    if (!token) {
-        loadError.value = 'กรุณาเข้าสู่ระบบก่อนใช้งาน'
-        return
-    }
+  const config = useRuntimeConfig()
+  const token = useCookie('token').value
 
-    isLoading.value = true
-    loadError.value = ''
+  isLoading.value = true
 
-    try {
-        const res = await $fetch('/reports/admin/all', {
-            baseURL: config.public.apiBase,
-            headers: {
-                Accept: 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {})
-            },
-            query: {
-                page,
-                limit: pagination.limit,
-                q: filters.q || undefined,
-                status: filters.status || undefined,
-                category: filters.category || undefined,
-                sort: filters.sort || undefined
-            }
-        })
+  try {
 
-        reports.value = res || []
-        pagination.total = reports.value.length
-        
-        // Calculate statistics
-        calculateStats()
+    const res = await $fetch('/reports/admin/trips', {
+      baseURL: config.public.apiBase,
 
-    } catch (err) {
-        console.error(err)
-        loadError.value = err?.data?.message || 'ไม่สามารถโหลดข้อมูลได้'
-        toast.error('เกิดข้อผิดพลาด', loadError.value)
-        reports.value = []
-    } finally {
-        isLoading.value = false
-    }
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+
+      query: {
+        page,
+        limit: pagination.limit,
+        q: filters.q || undefined,
+        status: filters.status || undefined,
+        category: filters.category || undefined,
+        sort: filters.sort || undefined
+      }
+
+    })
+
+    console.log("API RESPONSE:", res)
+
+    trips.value = res.data || res || []
+    pagination.total = res.total || trips.value.length
+
+    calculateStats()
+
+  } catch (err) {
+
+    console.error(err)
+    loadError.value = 'โหลดข้อมูลไม่ได้'
+
+  } finally {
+
+    isLoading.value = false
+
+  }
 }
 
 function calculateStats() {
-    stats.total = reports.value.length
-    
-    const today = dayjs().format('YYYY-MM-DD')
-    stats.today = reports.value.filter(r => dayjs(r.createdAt).format('YYYY-MM-DD') === today).length
-    stats.closedToday = reports.value.filter(r => 
-        r.status === 'CLOSED' && r.closedAt && dayjs(r.closedAt).format('YYYY-MM-DD') === today
-    ).length
 
-    // Calculate by status
-    stats.byStatus = {
-        FILED: 0,
-        UNDER_REVIEW: 0,
-        RESOLVED: 0,
-        REJECTED: 0,
-        CLOSED: 0
+  const data = filteredTrips.value
+
+  stats.total = data.reduce(
+    (sum, trip) => sum + (trip.reportCount || 0),
+    0
+  )
+
+  stats.resolvedToday = 0
+
+  stats.byStatus = {
+    PENDING: 0,
+    UNDER_REVIEW: 0,
+    RESOLVED: 0,
+    REJECTED: 0
+  }
+
+  const today = dayjs().startOf('day')
+
+  data.forEach(trip => {
+
+    if (trip.statusBreakdown) {
+
+      stats.byStatus.PENDING += trip.statusBreakdown.PENDING || 0
+      stats.byStatus.UNDER_REVIEW += trip.statusBreakdown.UNDER_REVIEW || 0
+      stats.byStatus.RESOLVED += trip.statusBreakdown.RESOLVED || 0
+      stats.byStatus.REJECTED += trip.statusBreakdown.REJECTED || 0
+
     }
 
-    reports.value.forEach(r => {
-        if (stats.byStatus.hasOwnProperty(r.status)) {
-            stats.byStatus[r.status]++
-        }
-    })
+    // check resolved today
+    if (trip.lastReportAt && trip.statusBreakdown?.RESOLVED > 0) {
+
+      const reportDate = dayjs(trip.lastReportAt)
+
+      if (reportDate.isAfter(today)) {
+        stats.resolvedToday += trip.statusBreakdown.RESOLVED
+      }
+
+    }
+
+  })
+
 }
 
 function changePage(next) {
     if (next < 1 || next > totalPages.value) return
-    fetchReports(next)
+    fetchTrips(next)
 }
 
 function applyFilters() {
     pagination.page = 1
-    fetchReports(1)
 }
 
 function clearFilters() {
@@ -499,7 +518,7 @@ function clearFilters() {
     filters.category = ''
     filters.sort = ''
     pagination.page = 1
-    fetchReports(1)
+    fetchTrips(1)
 }
 
 function filterByStatus(status) {
@@ -507,57 +526,65 @@ function filterByStatus(status) {
     applyFilters()
 }
 
-function onViewReport(report) {
-    // TODO: Navigate to report detail page when it's created
-    navigateTo(`/admin/reports-dashboard/${report.id}`).catch(() => { })
-    console.log('View report:', report.id)
+function formatDate(date) {
+
+  if (!date) return "-"
+
+  return dayjs(date).format("D MMM YYYY HH:mm")
+
 }
 
-async function onExportReport(report) {
-    try {
-        // Format report data for export
-        const exportData = {
-            id: report.id,
-            reporter: {
-                username: report.reporter?.username,
-                email: report.reporter?.email,
-                name: `${report.reporter?.firstName || ''} ${report.reporter?.lastName || ''}`.trim()
-            },
-            driver: {
-                username: report.driver?.username,
-                email: report.driver?.email,
-                name: `${report.driver?.firstName || ''} ${report.driver?.lastName || ''}`.trim()
-            },
-            category: formatCategory(report.category),
-            status: formatStatus(report.status),
-            description: report.description,
-            adminNotes: report.adminNotes || '-',
-            createdAt: formatDate(report.createdAt),
-            updatedAt: formatDate(report.updatedAt),
-            resolvedAt: report.resolvedAt ? formatDate(report.resolvedAt) : '-',
-            closedAt: report.closedAt ? formatDate(report.closedAt) : '-'
-        }
+// function onViewReport(report) {
+//     // TODO: Navigate to report detail page when it's created
+//     navigateTo(`/admin/reports-dashboard/${report.id}`).catch(() => { })
+//     console.log('View report:', report.id)
+// }
 
-        // Convert to JSON string
-        const jsonStr = JSON.stringify(exportData, null, 2)
+// async function onExportReport(report) {
+//     try {
+//         // Format report data for export
+//         const exportData = {
+//             id: report.id,
+//             reporter: {
+//                 username: report.reporter?.username,
+//                 email: report.reporter?.email,
+//                 name: `${report.reporter?.firstName || ''} ${report.reporter?.lastName || ''}`.trim()
+//             },
+//             driver: {
+//                 username: report.driver?.username,
+//                 email: report.driver?.email,
+//                 name: `${report.driver?.firstName || ''} ${report.driver?.lastName || ''}`.trim()
+//             },
+//             category: formatCategory(report.category),
+//             status: formatStatus(report.status),
+//             description: report.description,
+//             adminNotes: report.adminNotes || '-',
+//             createdAt: formatDate(report.createdAt),
+//             updatedAt: formatDate(report.updatedAt),
+//             resolvedAt: report.resolvedAt ? formatDate(report.resolvedAt) : '-',
+//             closedAt: report.closedAt ? formatDate(report.closedAt) : '-'
+//         }
+
+//         // Convert to JSON string
+//         const jsonStr = JSON.stringify(exportData, null, 2)
         
-        // Create blob and download
-        const blob = new Blob([jsonStr], { type: 'application/json' })
-        const url = URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.download = `report-${report.id.slice(0, 8)}-${Date.now()}.json`
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-        URL.revokeObjectURL(url)
+//         // Create blob and download
+//         const blob = new Blob([jsonStr], { type: 'application/json' })
+//         const url = URL.createObjectURL(blob)
+//         const link = document.createElement('a')
+//         link.href = url
+//         link.download = `report-${report.id.slice(0, 8)}-${Date.now()}.json`
+//         document.body.appendChild(link)
+//         link.click()
+//         document.body.removeChild(link)
+//         URL.revokeObjectURL(url)
 
-        toast.success('Export สำเร็จ', 'ดาวน์โหลดไฟล์เรียบร้อยแล้ว')
-    } catch (err) {
-        console.error(err)
-        toast.error('Export ไม่สำเร็จ', 'เกิดข้อผิดพลาดในการ export')
-    }
-}
+//         toast.success('Export สำเร็จ', 'ดาวน์โหลดไฟล์เรียบร้อยแล้ว')
+//     } catch (err) {
+//         console.error(err)
+//         toast.error('Export ไม่สำเร็จ', 'เกิดข้อผิดพลาดในการ export')
+//     }
+// }
 
 useHead({
     title: 'Report Management - Admin Dashboard',
@@ -650,14 +677,19 @@ function cleanupGlobalScripts() {
 }
 
 onMounted(() => {
-    defineGlobalScripts()
-    if (typeof window.__adminResizeHandler__ === 'function') window.__adminResizeHandler__()
-    fetchReports(1)
+  defineGlobalScripts()
+
+  if (typeof window.__adminResizeHandler__ === 'function') {
+    window.__adminResizeHandler__()
+  }
+
+  fetchTrips()
 })
 
 onUnmounted(() => {
-    cleanupGlobalScripts()
+  cleanupGlobalScripts()
 })
+
 </script>
 
 <style scoped>

@@ -53,8 +53,30 @@ const createReportCase = async (data) => {
   const isInTrip = await checkUserInTrip(reporterId, routeId);
   if (!isInTrip) throw new Error("คุณไม่สามารถ Report ได้เนื่องจากคุณไม่ได้อยู่ใน Trip นี้");
 
-  const existingReport = await prisma.reportCase.findFirst({ where: { reporterId, routeId } });
-  if (existingReport) throw new Error("คุณได้ทำการ Report สำหรับ Trip นี้ไปแล้ว (จำกัด 1 ครั้งต่อ 1 Trip)");
+  const route = await prisma.route.findUnique({ where: { id: routeId } });
+  const isDriver = route && route.driverId === reporterId;
+
+  if (isDriver) {
+    const existingReports = await prisma.reportCase.findMany({
+      where: {
+        reporterId,
+        routeId,
+        reportedUserId: { in: reportedUserIds }
+      }
+    });
+
+    if (existingReports.length > 0) {
+      throw new Error("คุณได้ทำการ Report ผู้ใช้รายนี้ใน Trip นี้ไปแล้ว");
+    }
+  } else {
+    const existingReport = await prisma.reportCase.findFirst({ 
+      where: { reporterId, routeId } 
+    });
+
+    if (existingReport) {
+      throw new Error("คุณได้ทำการ Report สำหรับ Trip นี้ไปแล้ว (จำกัด 1 ครั้งต่อ 1 Trip)");
+    }
+  }
 
   const generatedGroupId = reportedUserIds.length > 1 ? `REP-${crypto.randomBytes(4).toString('hex')}` : null;
 
@@ -89,10 +111,10 @@ const getReports = async (where = {}) => {
     where,
     include: {
       reporter: {
-        select: { id: true, username: true, firstName: true, lastName: true }
+        select: { id: true, username: true, firstName: true, lastName: true, role: true }
       },
       reportedUser: {
-        select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
+        select: { id: true, username: true, firstName: true, lastName: true, role: true, yellowCardCount: true }
       },
       route: {
         select: { id: true, driverId: true, startLocation: true, endLocation: true, departureTime: true } 
@@ -117,7 +139,20 @@ const getReportById = async (id) => {
         select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
       },
       route: {
-        select: { id: true, driverId: true, startLocation: true, endLocation: true, departureTime: true } 
+        include: {
+          driver: {
+            select: { id: true, firstName: true, lastName: true, yellowCardCount: true, driverSuspendedUntil: true
+            }
+          },
+          bookings: {
+            include: {
+              passenger: {
+                select: {id: true, firstName: true, lastName: true, yellowCardCount: true, passengerSuspendedUntil: true
+                }
+              }
+            }
+          }
+        }
       },
       evidences: true,
       statusHistory: {
