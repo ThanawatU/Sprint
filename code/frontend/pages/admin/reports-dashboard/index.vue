@@ -37,9 +37,9 @@
 
                 <!-- Closed Today -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <p class="text-sm text-gray-500">Closed Today</p>
+                <p class="text-sm text-gray-500">Resolved Today</p>
                 <p class="text-3xl font-bold text-green-600 mt-2">
-                {{ stats.closedToday }}
+                {{ stats.resolvedToday }}
                 </p>
                 </div>
 
@@ -66,7 +66,7 @@
 
                 <!-- Filters -->
                 <div class="mb-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                    <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-4">
+                    <div class="grid grid-cols-1 gap-3 px-4 py-4 sm:px-6 lg:grid-cols-3">
                         <!-- Status Filter -->
                         <div>
                             <label class="block mb-1 text-xs font-medium text-gray-600">สถานะ</label>
@@ -80,31 +80,16 @@
                             </select>
                         </div>
 
-                        <!-- Category Filter -->
-                        <div>
-                            <label class="block mb-1 text-xs font-medium text-gray-600">หมวดหมู่</label>
-                            <select v-model="filters.category"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
-                                <option value="">ทั้งหมด</option>
-                                <option value="DANGEROUS_DRIVING">DANGEROUS_DRIVING</option>
-                                <option value="AGGRESSIVE_BEHAVIOR">AGGRESSIVE_BEHAVIOR</option>
-                                <option value="HARASSMENT">HARASSMENT</option>
-                                <option value="NO_SHOW">NO_SHOW</option>
-                                <option value="FRAUD_OR_SCAM">FRAUD_OR_SCAM</option>
-                                <option value="OTHER">OTHER</option>
-                            </select>
-                        </div>
-
                         <!-- Sort -->
                         <div>
                             <label class="block mb-1 text-xs font-medium text-gray-600">เรียงตาม</label>
-                            <select v-model="filters.sort"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
-                                <option value="">ค่าเริ่มต้น (createdAt desc)</option>
-                                <option value="createdAt:asc">สร้างเมื่อ (เก่า → ใหม่)</option>
-                                <option value="createdAt:desc">สร้างเมื่อ (ใหม่ → เก่า)</option>
-                                <option value="updatedAt:asc">อัปเดต (เก่า → ใหม่)</option>
-                                <option value="updatedAt:desc">อัปเดต (ใหม่ → เก่า)</option>
+                            <select
+                                v-model="filters.sort"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500"
+                            >
+                                <option value="">ค่าเริ่มต้น (Report ล่าสุด)</option>
+                                <option value="lastReportAt:desc">Report ล่าสุด → เก่าสุด</option>
+                                <option value="lastReportAt:asc">Report เก่าสุด → ล่าสุด</option>
                             </select>
                         </div>
 
@@ -146,6 +131,7 @@
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Pending</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Under Review</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Resolved</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Rejected</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Latest Report</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Action</th>
                                 </tr>
@@ -175,6 +161,11 @@
                                     <td class="px-4 py-3 text-sm text-gray-700">
                                         <div class="text-sm font-medium text-gray-900">
                                             {{ trip.statusBreakdown.RESOLVED || '0' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-sm text-gray-700">
+                                        <div class="text-sm font-medium text-gray-900">
+                                            {{ trip.statusBreakdown.REJECTED || '0' }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-3 text-sm text-gray-700">
@@ -277,8 +268,7 @@ const trips = ref([])
 
 const stats = reactive({
     total: 0,
-    today: 0,
-    closedToday: 0,
+    resolvedToday : 0,
     byStatus: {
         PENDING: 0,
         UNDER_REVIEW: 0,
@@ -476,12 +466,16 @@ function calculateStats() {
     0
   )
 
+  stats.resolvedToday = 0
+
   stats.byStatus = {
     PENDING: 0,
     UNDER_REVIEW: 0,
     RESOLVED: 0,
     REJECTED: 0
   }
+
+  const today = dayjs().startOf('day')
 
   data.forEach(trip => {
 
@@ -491,6 +485,17 @@ function calculateStats() {
       stats.byStatus.UNDER_REVIEW += trip.statusBreakdown.UNDER_REVIEW || 0
       stats.byStatus.RESOLVED += trip.statusBreakdown.RESOLVED || 0
       stats.byStatus.REJECTED += trip.statusBreakdown.REJECTED || 0
+
+    }
+
+    // check resolved today
+    if (trip.lastReportAt && trip.statusBreakdown?.RESOLVED > 0) {
+
+      const reportDate = dayjs(trip.lastReportAt)
+
+      if (reportDate.isAfter(today)) {
+        stats.resolvedToday += trip.statusBreakdown.RESOLVED
+      }
 
     }
 
