@@ -1,3 +1,4 @@
+const { BookingStatus } = require("@prisma/client");
 const { prisma } = require("../utils/prisma");
 
 /**

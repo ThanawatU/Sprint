@@ -429,27 +429,8 @@ const completeRoute = async (routeId, driverId) => {
     }
   });
 
-  if (!route) throw new Error("ไม่พบข้อมูลเส้นทาง/ทริปนี้ในระบบ");
-
-  const participants = [];
-
-  if (route.driverId !== currentUserId) {
-    participants.push({
-      ...route.driver,
-      participantType: 'DRIVER'
-    });
-  }
-
-  route.bookings.forEach(booking => {
-    if (booking.passengerId !== currentUserId) {
-      participants.push({
-        ...booking.passenger,
-        participantType: 'PASSENGER'
-              });
-    }
-  });
-  if (!route) throw new ApiError(404, 'Route not found');
-  if (route.driverId !== driverId) throw new ApiError(403, 'Forbidden');
+  if (!route) throw new ApiError(404, 'ไม่พบข้อมูลเส้นทาง/ทริปนี้ในระบบ');
+  if (route.driverId !== driverId) throw new ApiError(403, 'ไม่มีสิทธิ์เข้าถึง Forbidden');
 
   if (route.status === RouteStatus.CANCELLED) {
     throw new ApiError(400, 'ไม่สามารถจบทริปได้ เนื่องจากเส้นทางถูกยกเลิกแล้ว');
@@ -462,27 +443,40 @@ const completeRoute = async (routeId, driverId) => {
   const now = new Date();
 
   await prisma.$transaction(async (tx) => {
-    await tx.route.update({
-      where: { id: routeId },
-      data: { status: RouteStatus.COMPLETED }
-    });
 
-    for (const booking of route.bookings) {
-      await tx.notification.create({
-        data: {
-          userId: booking.passengerId,
-          type: 'ROUTE',
-          title: 'ทริปเสร็จสิ้นแล้ว',
-          body: 'คนขับได้เปลี่ยนสถานะทริปของคุณเป็นเสร็จสิ้นแล้ว',
-          metadata: {
-            kind: 'ROUTE_COMPLETED',
-            routeId,
-            bookingId: booking.id,
-            completedAt: now.toISOString()
-          }
-        }
-      });
+  //update route
+  await tx.route.update({
+    where: { id: routeId },
+    data: { status: RouteStatus.COMPLETED }
+  });
+
+  // update booking ของผู้โดยสาร
+  await tx.booking.updateMany({
+    where: {
+      routeId: routeId,
+      status: { in: [BookingStatus.PENDING, BookingStatus.CONFIRMED] }
+    },
+    data: {
+      status: BookingStatus.COMPLETED
     }
+  });
+
+  for (const booking of route.bookings) {
+    await tx.notification.create({
+      data: {
+        userId: booking.passengerId,
+        type: 'ROUTE',
+        title: 'ทริปเสร็จสิ้นแล้ว',
+        body: 'คนขับได้เปลี่ยนสถานะทริปของคุณเป็นเสร็จสิ้นแล้ว',
+        metadata: {
+          kind: 'ROUTE_COMPLETED',
+          routeId,
+          bookingId: booking.id,
+          completedAt: now.toISOString()
+        }
+      }
+    });
+  }
   });
 
   return {
