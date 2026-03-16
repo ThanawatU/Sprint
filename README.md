@@ -21,7 +21,6 @@ _KKU College of Computing · Software Engineer_
 ![Contributors](https://img.shields.io/github/contributors/ThanawatU/Sprint?style=flat-square)
 ![Repo Size](https://img.shields.io/github/repo-size/ThanawatU/Sprint?style=flat-square)
 ![License](https://img.shields.io/github/license/ThanawatU/Sprint?style=flat-square)
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=ThanawatU.Sprint)
 
 <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnF2eGt0Mms1dHJ6N3Y3aDZxdDN1MDN1anBpbzZpMDBocGM0c3d6dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NSzHiAwAcazs7dcDr9/giphy.gif" height=200 weight=200>
 
