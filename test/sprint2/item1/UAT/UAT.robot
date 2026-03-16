@@ -232,10 +232,21 @@ Verify AccessLog Has At Least 1 Row
 
 Select Export Format
     [Arguments]    ${format}
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 59f68a5 (Yodsanon_0215: add incident report system and refactor existing report module)
     ${select_xpath}=    Set Variable    xpath=(//select)[last()]
     
     Wait Until Element Is Visible    ${select_xpath}    10s
     Select From List By Label        ${select_xpath}    ${format}
+<<<<<<< HEAD
+=======
+    Wait Until Element Is Visible    xpath=//select    10s
+    Select From List By Label        xpath=//select    ${format}
+>>>>>>> 60c32bc (Yodsanon_0215 :add test sprint 2)
+=======
+>>>>>>> 59f68a5 (Yodsanon_0215: add incident report system and refactor existing report module)
 
 Click Export JSON Button And Verify Download
     Create Directory    ${DOWNLOAD_DIR}

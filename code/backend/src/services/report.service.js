@@ -111,10 +111,10 @@ const getReports = async (where = {}) => {
     where,
     include: {
       reporter: {
-        select: { id: true, username: true, firstName: true, lastName: true }
+        select: { id: true, username: true, firstName: true, lastName: true, role: true }
       },
       reportedUser: {
-        select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
+        select: { id: true, username: true, firstName: true, lastName: true, role: true, yellowCardCount: true }
       },
       route: {
         select: { id: true, driverId: true, startLocation: true, endLocation: true } 
@@ -139,7 +139,20 @@ const getReportById = async (id) => {
         select: { id: true, username: true, firstName: true, lastName: true, yellowCardCount: true }
       },
       route: {
-        select: { id: true, driverId: true, startLocation: true, endLocation: true } 
+        include: {
+          driver: {
+            select: { id: true, firstName: true, lastName: true, yellowCardCount: true, driverSuspendedUntil: true
+            }
+          },
+          bookings: {
+            include: {
+              passenger: {
+                select: {id: true, firstName: true, lastName: true, yellowCardCount: true, passengerSuspendedUntil: true
+                }
+              }
+            }
+          }
+        }
       },
       evidences: true,
       statusHistory: {
