@@ -848,7 +848,7 @@ const comment = ref("");
 const reviewImages = ref([]);
 const reviewedBookings = ref({});
 const driverReviews = ref({});
-const reviewPage = ref({});  // { [driverId]: currentPage (0-indexed) }
+const reviewPage = ref({}); 
 const REVIEWS_PER_PAGE = 3;
 
 //
