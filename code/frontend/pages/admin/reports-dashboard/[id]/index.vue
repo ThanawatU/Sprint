@@ -49,8 +49,18 @@
                                 <span class="text-gray-600">{{ report?.routeId }}</span>
                             </p>
                             <p>
-                                <span class="font-semibold">Case Status : </span>
-                                <span class="text-gray-600">{{ report?.status }} </span>
+                                <span class="font-semibold">สถานะ : </span>
+                                <span
+                                class="inline-flex px-2 py-1 text-xs font-medium rounded-full"
+                                :class="{
+                                    'bg-yellow-100 text-yellow-700': report?.status === 'PENDING',
+                                    'bg-blue-100 text-blue-700': report?.status === 'UNDER_REVIEW',
+                                    'bg-green-100 text-green-700': report?.status === 'RESOLVED',
+                                    'bg-red-100 text-red-700': report?.status === 'REJECTED'
+                                }"
+                                >
+                                {{ report?.status }}
+                                </span>
                             </p>
                             <p>
                                 <span class="font-semibold">ผู้รับเรื่อง : </span>
@@ -77,7 +87,7 @@
 
                         <!-- Report History -->
                         <div>
-                            <p class="font-semibold mb-2">Report History</p>
+                            <p class="font-semibold mb-2">ประวัติการรายงาน</p>
                             <div>
                                 <p>
                                     <span class="font-semibold">สร้างเมื่อ : </span>
@@ -130,7 +140,7 @@
                         </div>
 
                         <div>
-                            <p class="text-gray-500">สถานะการรายงาน</p>
+                            <!-- <p class="text-gray-500">สถานะการรายงาน</p>
                             <span
                             class="inline-flex px-2 py-1 text-xs font-medium rounded-full"
                             :class="{
@@ -141,18 +151,18 @@
                             }"
                             >
                             {{ report?.status }}
-                            </span>
+                            </span> -->
                         </div>
 
                         <div>
-                            <p class="text-gray-500">ผู้ใช้ที่แจ้งรายงาน</p>
+                            <p class="text-gray-500">ผู้รายงาน</p>
                             <p class="font-medium text-gray-900">
                             {{ report?.reporter?.firstName }} {{ report?.reporter?.lastName }}
                             </p>
                         </div>
 
                         <div>
-                            <p class="text-gray-500">ผู้ใช้ที่ถูกรายงาน</p>
+                            <p class="text-gray-500">ผู้ถูกรายงาน</p>
                             <p class="font-medium text-gray-900">
                             {{ report?.reportedUser?.firstName }} {{ report?.reportedUser?.lastName }}
                             </p>

@@ -29,35 +29,35 @@
             <div class="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 lg:grid-cols-5">
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <p class="text-sm text-gray-600">Total Reports</p>
+                <p class="text-sm text-gray-600">จำนวนการรายงานทั้งหมด</p>
                 <p class="text-2xl font-bold text-gray-900">
                 {{ reports.length }}
                 </p>
             </div>
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <p class="text-sm text-gray-600">Pending</p>
+                <p class="text-sm text-gray-600">ดำเนินการแล้ว</p>
                 <p class="text-2xl font-bold text-blue-600">
                     {{ pendingCount }}
                 </p>
             </div>
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <p class="text-sm text-gray-600">Under Review</p>
+                <p class="text-sm text-gray-600">อยู่ระหว่างการตรวจสอบ</p>
                 <p class="text-2xl font-bold text-yellow-600">
                 {{ reviewCount }}
                 </p>
             </div>
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <p class="text-sm text-gray-600">Resolved</p>
+                <p class="text-sm text-gray-600">ดำเนินการแล้ว</p>
                 <p class="text-2xl font-bold text-green-600">
                 {{ resolvedCount }}
                 </p>
             </div>
 
             <div class="p-4 bg-white border border-gray-300 rounded-lg shadow-sm">
-                <p class="text-sm text-gray-600">Rejected</p>
+                <p class="text-sm text-gray-600">ปฏิเสธรายงาน</p>
                 <p class="text-2xl font-bold text-red-600">
                 {{ rejectedCount }}
                 </p>
@@ -79,27 +79,27 @@
                 <thead class="bg-gray-50">
                 <tr>
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                    Reporter
+                      ผู้รายงาน
                     </th>
 
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                        Reported User
+                        ผู้ถูกรายงาน
                     </th>
 
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                    Category
+                    ประเภทรายงาน
                     </th>
 
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                    Status
+                    สถานะ
                     </th>
 
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                    Created
+                    วันที่รายงาน
                     </th>
 
                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">
-                    Action
+                    จัดการ
                     </th>
                 </tr>
                 </thead>
@@ -141,14 +141,12 @@
                         </td>
 
                         <td class="px-4 py-3">
-
-                        <span
-                        class="px-2 py-1 text-xs font-medium rounded-full"
-                        :class="statusBadge(report.status)"
-                        >
-                            {{ report.status }}
-                        </span>
-
+                          <span
+                            class="px-2 py-1 text-xs font-medium rounded-full"
+                            :class="statusBadge(report.status)"
+                          >
+                            {{ statusList.find(s => s.value === report.status)?.label }}
+                          </span>
                         </td>
 
                         <td class="px-4 py-3">
@@ -222,7 +220,16 @@ const rejectedCount = computed(() =>
 const route = useRoute()
 const config = useRuntimeConfig()
 
+const statusList = [
+  { value: 'PENDING', label: 'รอดำเนินการ', color: 'text-blue-600' },
+  { value: 'UNDER_REVIEW', label: 'อยู่ระหว่างการตรวจสอบ', color: 'text-yellow-600' },
+  { value: 'RESOLVED', label: 'ดำเนินการแล้ว', color: 'text-green-600' },
+  { value: 'REJECTED', label: 'ปฏิเสธรายงาน', color: 'text-red-600' }
+]
 
+const getStatus = (status) => {
+  return statusList.find(s => s.value === status)
+}
 
 async function fetchReports() {
 

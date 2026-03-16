@@ -29,7 +29,7 @@
 
                 <!-- Total Reports -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <p class="text-sm text-gray-500">Total Reports</p>
+                <p class="text-sm text-gray-500">จำนวนการรายงานทั้งหมด</p>
                 <p class="text-3xl font-bold text-gray-900 mt-2">
                 {{ stats.total }}
                 </p>
@@ -37,7 +37,7 @@
 
                 <!-- Closed Today -->
                 <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
-                <p class="text-sm text-gray-500">Resolved Today</p>
+                <p class="text-sm text-gray-500">ดำเนินการแล้ววันนี้</p>
                 <p class="text-3xl font-bold text-green-600 mt-2">
                 {{ stats.resolvedToday }}
                 </p>
@@ -47,7 +47,7 @@
 
                 <!-- Status Distribution Bar -->
                 <div class="bg-white border border-gray-300 rounded-lg shadow-sm mb-6 p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">สถานะ Report</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">สถานะการรายงาน</h3>
                     <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                         <div v-for="status in statusList"
                         :key="status.value"
@@ -73,10 +73,10 @@
                             <select v-model="filters.status"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500">
                                 <option value="">ทั้งหมด</option>
-                                <option value="PENDING">PENDING</option>
-                                <option value="UNDER_REVIEW">UNDER_REVIEW</option>
-                                <option value="RESOLVED">RESOLVED</option>
-                                <option value="REJECTED">REJECTED</option>
+                                <option value="PENDING">รอดำเนินการ</option>
+                                <option value="UNDER_REVIEW">อยู่ระหว่างการตรวจสอบ</option>
+                                <option value="RESOLVED">ดำเนินการแล้ว</option>
+                                <option value="REJECTED">ปฏิเสธรายงาน</option>
                             </select>
                         </div>
 
@@ -128,12 +128,12 @@
                                 <tr>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Trip ID</th>
                                     <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Total Reports</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Pending</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Under Review</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Resolved</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Rejected</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Latest Report</th>
-                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">Action</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">รอดำเนินการ</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">อยู่ระหว่างการตรวจสอบ</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ดำเนินการแล้ว</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ปฏิเสธรายงาน</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">รายงานล่าสุด</th>
+                                    <th class="px-4 py-3 text-xs font-medium text-left text-gray-500 uppercase">ดูรายละเอียด</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -277,11 +277,12 @@ const stats = reactive({
     }
 })
 
+
 const statusList = [
-  { value: 'PENDING', label: 'Pending', color: 'text-blue-600' },
-  { value: 'UNDER_REVIEW', label: 'Under Review', color: 'text-yellow-600' },
-  { value: 'RESOLVED', label: 'Resolved', color: 'text-green-600' },
-  { value: 'REJECTED', label: 'Rejected', color: 'text-red-600' }
+  { value: 'PENDING', label: 'รอดำเนินการ', color: 'text-blue-600' },
+  { value: 'UNDER_REVIEW', label: 'อยู่ระหว่างการตรวจสอบ', color: 'text-yellow-600' },
+  { value: 'RESOLVED', label: 'ดำเนินการแล้ว', color: 'text-green-600' },
+  { value: 'REJECTED', label: 'ปฏิเสธรายงาน', color: 'text-red-600' }
 ]
 
 const pagination = reactive({
