@@ -20,6 +20,7 @@
       </div>
 
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        
         <div class="lg:col-span-2">
           <div class="bg-white border border-gray-300 rounded-lg shadow-md">
             <div class="p-6 border-b border-gray-300">
@@ -40,6 +41,7 @@
               <div v-for="route in myRoutes" :key="route.id"
                 class="p-6 transition-colors duration-200 cursor-pointer trip-card hover:bg-gray-50"
                 @click="toggleTripDetails(route.id)">
+                
                 <div class="flex items-start justify-between mb-4">
                   <div class="flex-1">
                     <div class="flex items-center justify-between">
@@ -79,19 +81,15 @@
                       <h5 class="mb-2 font-medium text-gray-900">รายละเอียดเส้นทาง</h5>
                       <ul class="space-y-1 text-sm text-gray-600">
                         <li>
-                          • จุดเริ่มต้น:
-                          <span class="font-medium text-gray-900">{{ route.origin }}</span>
+                          • จุดเริ่มต้น: <span class="font-medium text-gray-900">{{ route.origin }}</span>
                           <span v-if="route.originAddress"> — {{ route.originAddress }}</span>
                         </li>
-
                         <template v-if="route.stops && route.stops.length">
                           <li class="mt-2 text-gray-700">• จุดแวะระหว่างทาง ({{ route.stops.length }} จุด):</li>
                           <li v-for="(stop, idx) in route.stops" :key="idx">  - จุดแวะ {{ idx + 1 }}: {{ stop }}</li>
                         </template>
-
                         <li class="mt-1">
-                          • จุดปลายทาง:
-                          <span class="font-medium text-gray-900">{{ route.destination }}</span>
+                          • จุดปลายทาง: <span class="font-medium text-gray-900">{{ route.destination }}</span>
                           <span v-if="route.destinationAddress"> — {{ route.destinationAddress }}</span>
                         </li>
                       </ul>
@@ -116,7 +114,8 @@
                       <h5 class="mb-2 font-medium text-gray-900">รูปภาพรถยนต์</h5>
                       <div class="grid grid-cols-3 gap-2 mt-2">
                         <div v-for="(photo, index) in route.photos.slice(0, 3)" :key="index">
-                          <img :src="photo" alt="Vehicle photo" class="object-cover w-full transition-opacity rounded-lg shadow-sm cursor-pointer aspect-video hover:opacity-90" />
+                          <img :src="photo" alt="Vehicle photo"
+                            class="object-cover w-full transition-opacity rounded-lg shadow-sm cursor-pointer aspect-video hover:opacity-90" />
                         </div>
                       </div>
                     </div>
@@ -160,7 +159,19 @@
                   </div>
                 </div>
 
-                <div class="flex justify-end" :class="{ 'mt-4': selectedTripId !== route.id }">
+                <div class="flex justify-end space-x-3" :class="{ 'mt-4': selectedTripId !== route.id }">
+                  <button v-if="pendingIncidents[route.id] && pendingIncidents[route.id].length > 0" @click.stop="openCancelIncidentModal(route.id)" class="px-4 py-2 text-sm text-gray-700 transition duration-200 border border-gray-300 rounded-md hover:bg-gray-100">
+                    ยกเลิกการแจ้งเหตุ ({{ pendingIncidents[route.id].length }})
+                  </button>
+
+                  <button @click.stop="openIncidentModal(route.id)" class="px-4 py-2 text-sm text-red-600 transition duration-200 border border-red-300 rounded-md hover:bg-red-50">
+                    แจ้งอุบัติเหตุ
+                  </button>
+
+                  <button v-if="route.status === 'available' || route.status === 'full' || route.status === 'in_transit'" @click.stop="completeTrip(route)" class="px-4 py-2 text-sm text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">
+                    เสร็จสิ้นการเดินทาง
+                  </button>
+
                   <NuxtLink :to="`/myRoute/${route.id}/edit`" class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700" @click.stop>
                     แก้ไขเส้นทาง
                   </NuxtLink>
@@ -176,6 +187,7 @@
               <div v-for="trip in filteredTrips" :key="trip.id"
                 class="p-6 transition-colors duration-200 cursor-pointer trip-card hover:bg-gray-50"
                 @click="toggleTripDetails(trip.id)">
+                
                 <div class="flex items-start justify-between mb-4">
                   <div class="flex-1">
                     <div class="flex items-center justify-between">
@@ -213,7 +225,6 @@
                   <div class="flex-1">
                     <div class="flex items-center">
                       <h5 class="font-medium text-gray-900">{{ trip.passenger.name }}</h5>
-
                       <div v-if="trip.passenger.isVerified" class="relative group ml-1.5 flex items-center">
                         <svg class="w-5 h-5 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
                           <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12c0 1.357-.6 2.573-1.549 3.397a4.49 4.49 0 01-1.307 3.498 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.07-.01l3.5-4.875z" clip-rule="evenodd" />
@@ -223,7 +234,6 @@
                         </span>
                       </div>
                     </div>
-
                     <div class="flex">
                       <p v-if="trip.passenger.email" class="text-xs text-gray-500 mt-0.5">
                         อีเมล:
@@ -238,7 +248,6 @@
                         </svg>
                       </button>
                     </div>
-                    
                   </div>
                   <div class="text-right">
                     <div class="text-lg font-bold text-blue-600">{{ trip.price }} บาท</div>
@@ -252,8 +261,7 @@
                       <h5 class="mb-2 font-medium text-gray-900">รายละเอียดเส้นทาง</h5>
                       <ul class="space-y-1 text-sm text-gray-600">
                         <li>
-                          • จุดเริ่มต้น:
-                          <span class="font-medium text-gray-900">{{ trip.origin }}</span>
+                          • จุดเริ่มต้น: <span class="font-medium text-gray-900">{{ trip.origin }}</span>
                           <span v-if="trip.originAddress"> — {{ trip.originAddress }}</span>
                         </li>
                         <template v-if="trip.stops && trip.stops.length">
@@ -261,8 +269,7 @@
                           <li v-for="(stop, idx) in trip.stops" :key="idx">  - จุดแวะ {{ idx + 1 }}: {{ stop }}</li>
                         </template>
                         <li class="mt-1">
-                          • จุดปลายทาง:
-                          <span class="font-medium text-gray-900">{{ trip.destination }}</span>
+                          • จุดปลายทาง: <span class="font-medium text-gray-900">{{ trip.destination }}</span>
                           <span v-if="trip.destinationAddress"> — {{ trip.destinationAddress }}</span>
                         </li>
                       </ul>
@@ -296,16 +303,27 @@
                     <button @click.stop="openConfirmModal(trip, 'reject')" class="px-4 py-2 text-sm text-red-600 transition duration-200 border border-red-300 rounded-md hover:bg-red-50">ปฏิเสธ</button>
                     
                     <template v-if="!hasReportedPassenger(trip.routeId, trip.passenger)">
-                      <button @click.stop="openReportModal(trip.routeId, trip.id, trip.passenger.id, trip.passenger.name)" class="px-3 py-1 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50">รายงานผู้โดยสาร</button>
+                      <button @click.stop="openReportModal(trip.routeId, trip.id, trip.passenger.id, trip.passenger.name)" class="px-3 py-1 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50">
+                        รายงานผู้โดยสาร
+                      </button>
                     </template>
-                    <button v-else disabled class="px-3 py-1 text-sm text-gray-500 transition duration-200 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed">รายงานไปแล้ว</button>
+                    <button v-else disabled class="px-3 py-1 text-sm text-gray-500 transition duration-200 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed">
+                      รายงานไปแล้ว
+                    </button>
                   </template>
 
-                  <button v-else-if="trip.status === 'confirmed'" class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">แชทกับผู้โดยสาร</button>
-
-                  <button v-if="trip.status === 'confirmed'" @click.stop="completeTrip(trip)" class="px-4 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700">
-                    เสร็จสิ้นการเดินทาง
-                  </button>
+                  <template v-else-if="trip.status === 'confirmed'">
+                    <button class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">
+                      แชทกับผู้โดยสาร
+                    </button>
+                    <button @click.stop="completeTrip(trip)" class="px-4 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700">
+                      เสร็จสิ้นการเดินทาง
+                    </button>
+                    <template v-if="!hasReportedPassenger(trip.routeId, trip.passenger)">
+                      <button @click.stop="openReportModal(trip.routeId, trip.id, trip.passenger.id, trip.passenger.name)" class="px-3 py-1 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50">รายงานผู้โดยสาร</button>
+                    </template>
+                    <button v-else disabled class="px-3 py-1 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed">รายงานไปแล้ว</button>
+                  </template>
 
                   <template v-else-if="trip.status === 'completed'">
                     <template v-if="!hasReportedPassenger(trip.routeId, trip.passenger)">
@@ -314,7 +332,9 @@
                     <button v-else disabled class="px-3 py-1 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-100 cursor-not-allowed">รายงานไปแล้ว</button>
                   </template>
 
-                  <button v-else-if="['rejected', 'cancelled'].includes(trip.status)" @click.stop="openConfirmModal(trip, 'delete')" class="px-4 py-2 text-sm text-gray-600 transition duration-200 border border-gray-300 rounded-md hover:bg-gray-50">ลบรายการ</button>
+                  <button v-else-if="['rejected', 'cancelled'].includes(trip.status)" @click.stop="openConfirmModal(trip, 'delete')" class="px-4 py-2 text-sm text-gray-600 transition duration-200 border border-gray-300 rounded-md hover:bg-gray-50">
+                    ลบรายการ
+                  </button>
                 </div>
               </div>
             </div>
@@ -381,11 +401,104 @@
         </div>
       </div>
     </div>
+
+    <div v-if="isIncidentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @click.self="closeIncidentModal">
+      <div class="w-full max-w-xl p-6 mx-4 bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+
+        <h3 class="text-xl font-bold text-gray-900">แจ้งอุบัติเหตุ</h3>
+
+        <p class="mt-1 text-sm text-gray-600">ข้อมูลและพิกัดของคุณจะถูกส่งไปยังผู้ดูแลระบบเพื่อประสานงานให้ความช่วยเหลือ</p>
+
+        <div class="mt-4 space-y-4">
+          <div>
+            <label class="block mb-1 text-sm text-gray-700">ประเภทเหตุฉุกเฉิน <span class="text-red-500">*</span></label>
+            <select v-model="incidentForm.category" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+              <option disabled value="">-- โปรดเลือกประเภท --</option>
+              <option value="ACCIDENT">อุบัติเหตุทางถนน</option>
+              <option value="VEHICLE_BREAKDOWN">รถเสีย / ขัดข้อง</option>
+              <option value="MEDICAL_EMERGENCY">เหตุฉุกเฉินทางการแพทย์</option>
+              <option value="NATURAL_DISASTER">ภัยธรรมชาติ</option>
+              <option value="CRIME_INCIDENT">อาชญากรรม / ถูกคุกคาม</option>
+              <option value="OTHER">อื่นๆ</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-1 text-sm text-gray-700">รายละเอียดสถานการณ์ <span class="text-red-500">*</span></label>
+            <textarea v-model="incidentForm.description" rows="3" minlength="10" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none" placeholder="ระบุเหตุการณ์"></textarea>
+            <p class="mt-1 text-xs text-gray-500 text-right">{{ incidentForm.description.length }}/10 ตัวอักษรขั้นต่ำ</p>
+          </div>
+
+          <div>
+            <button @click="toggleLocation" class="flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition">
+              <span class="mr-2">{{ showLocationInput ? '▶ ซ่อนแผนที่พิกัด' : '▼ แนบพิกัดสถานที่เกิดเหตุ (ไม่บังคับ)' }}</span>
+            </button>
+            
+            <div v-if="showLocationInput" class="mt-3 relative">
+              <label class="block mb-1 text-sm text-gray-700">ตำแหน่งที่เกิดเหตุ</label>
+              
+              <input id="incident-map-search" type="text" placeholder="ค้นหาสถานที่" class="absolute top-[32px] left-2 z-10 w-2/3 md:w-1/2 px-3 py-2 text-sm border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              
+              <div class="relative w-full h-auto aspect-square overflow-hidden bg-gray-200 border border-gray-300 rounded-md shadow-inner mt-1" ref="incidentMapContainer">
+                <div class="flex items-center justify-center w-full h-full text-gray-400">กำลังโหลดแผนที่...</div>
+              </div>
+              <p class="mt-1 text-xs text-blue-600 truncate">
+                <i class="fa-solid fa-location-dot"></i> {{ incidentForm.location?.address || 'กำลังค้นหาพิกัด...' }}
+              </p>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-gray-100">
+            <label class="block mb-1 text-sm text-gray-700">แนบหลักฐาน (รูปภาพและวิดีโอ แต่ละชนิดไม่เกิน 3 ไฟล์)</label>
+            <input type="file" multiple accept="image/*,video/*" @change="handleIncidentEvidenceUpload" class="w-full text-sm" />
+            <p class="mt-1 text-xs text-gray-500">รองรับ: รูปภาพและวิดีโอ (แต่ละชนิดไม่เกิน 3 ไฟล์, ขนาดไม่เกิน 10MB/ไฟล์)</p>
+            <div v-if="incidentForm.evidences.length > 0" class="grid grid-cols-3 gap-2 mt-3">
+              <div v-for="(evidence, index) in incidentForm.evidences" :key="index" class="relative">
+                <img v-if="evidence.type === 'IMAGE'" :src="evidence.previewUrl" class="object-cover w-full border border-gray-300 rounded-lg aspect-square" />
+                <video v-else-if="evidence.type === 'VIDEO'" :src="evidence.previewUrl" class="object-cover w-full border border-gray-300 rounded-lg aspect-square"></video>
+                <button @click="removeIncidentEvidence(index)" class="absolute top-1 right-1 px-2 py-1 text-xs text-white bg-red-500 rounded-full hover:bg-red-600 shadow-sm">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 mt-6">
+          <button @click="closeIncidentModal" class="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition">ยกเลิก</button>
+          <button @click="submitIncident" :disabled="isSubmittingIncident" class="px-4 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50 transition flex items-center">
+             <span v-if="isSubmittingIncident" class="w-4 h-4 mr-2 border-2 border-white rounded-full border-t-transparent animate-spin"></span>
+            {{ isSubmittingIncident ? 'กำลังส่งข้อมูล...' : 'ยืนยันการแจ้งเหตุ' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="isCancelIncidentModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40" @click.self="closeCancelIncidentModal">
+      <div class="w-full max-w-lg p-6 mx-4 bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
+
+        <h3 class="mb-4 text-lg font-semibold text-gray-900 flex items-center gap-2">รายการแจ้งอุบัติเหตุที่กำลังดำเนินการ</h3>
+        
+        <div class="space-y-3">
+          <div v-for="incident in pendingIncidents[activeCancelRouteId]" :key="incident.id" class="flex items-center justify-between p-3 border border-gray-200 rounded-md bg-gray-50">
+            <div class="flex-1 min-w-0 pr-4">
+              <p class="text-sm font-semibold text-gray-800">{{ incidentCategoryMap[incident.category] || incident.category }}</p>
+              <p class="text-xs text-gray-600 truncate">{{ incident.description }}</p>
+            </div>
+            <button @click="confirmCancelIncident(incident.id)" class="px-3 py-1 text-xs text-red-600 transition bg-white border border-red-300 rounded hover:bg-red-50 whitespace-nowrap">
+              ยกเลิกเคสนี้
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <button @click="closeCancelIncidentModal" class="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition">ปิดหน้าต่าง</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, nextTick } from "vue";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
 import buddhistEra from "dayjs/plugin/buddhistEra";
@@ -452,6 +565,284 @@ function openReportModal(routeId, bookingId, passengerId, passengerName) {
 function closeReportModal() {
   isReportModalOpen.value = false;
   selectedPassengerToReport.value = null;
+}
+
+// --- Incident Management State ---
+const isIncidentModalOpen = ref(false);
+const isSubmittingIncident = ref(false);
+const showLocationInput = ref(false);
+
+const pendingIncidents = ref({}); 
+const isCancelIncidentModalOpen = ref(false);
+const activeCancelRouteId = ref(null);
+
+const incidentMapContainer = ref(null);
+let incidentGmap = null;
+let incidentMarker = null;
+
+const incidentForm = ref({
+  routeId: null,
+  category: "",
+  description: "",
+  evidences: [],
+  location: null
+});
+
+const incidentCategoryMap = {
+  ACCIDENT: "อุบัติเหตุทางถนน",
+  VEHICLE_BREAKDOWN: "รถเสีย / ขัดข้อง",
+  MEDICAL_EMERGENCY: "เหตุฉุกเฉินทางการแพทย์",
+  NATURAL_DISASTER: "ภัยธรรมชาติ",
+  CRIME_INCIDENT: "อาชญากรรม / ถูกคุกคาม",
+  OTHER: "อื่นๆ"
+};
+
+async function fetchMyIncidents() {
+  try {
+    const res = await $api('/incidents/my');
+    const incidents = Array.isArray(res?.data) ? res.data : (Array.isArray(res) ? res : []);
+    const newPending = {};
+    
+    incidents.forEach(inc => {
+      if (inc.status === 'PENDING') {
+        if (!newPending[inc.routeId]) newPending[inc.routeId] = [];
+        newPending[inc.routeId].push({
+          id: inc.id,
+          category: inc.category,
+          description: inc.description
+        });
+      }
+    });
+    pendingIncidents.value = newPending;
+  } catch (err) {
+    console.error("Failed to fetch incidents:", err);
+  }
+}
+
+function openCancelIncidentModal(routeId) {
+  activeCancelRouteId.value = routeId;
+  isCancelIncidentModalOpen.value = true;
+}
+
+function closeCancelIncidentModal() {
+  isCancelIncidentModalOpen.value = false;
+  activeCancelRouteId.value = null;
+}
+
+async function confirmCancelIncident(incidentId) {
+  if (!confirm("คุณต้องการยกเลิกการแจ้งอุบัติเหตุนี้ใช่หรือไม่?")) return;
+
+  try {
+    await $api(`/incidents/${incidentId}/cancel`, { method: "PATCH" });
+    toast.success("ยกเลิกการแจ้งเหตุเรียบร้อยแล้ว");
+    
+    const routeId = activeCancelRouteId.value;
+    if (pendingIncidents.value[routeId]) {
+      pendingIncidents.value[routeId] = pendingIncidents.value[routeId].filter(i => i.id !== incidentId);
+      
+      if (pendingIncidents.value[routeId].length === 0) {
+        delete pendingIncidents.value[routeId];
+        closeCancelIncidentModal();
+      }
+    }
+  } catch (err) {
+    toast.error(err?.data?.message || "ไม่สามารถยกเลิกการแจ้งเหตุได้");
+  }
+}
+
+function openIncidentModal(routeId) {
+  incidentForm.value = {
+    routeId, 
+    category: "",
+    description: "",
+    evidences: [],
+    location: null
+  };
+
+  showLocationInput.value = false; 
+  isIncidentModalOpen.value = true;
+}
+
+function closeIncidentModal() {
+  isIncidentModalOpen.value = false;
+}
+
+function toggleLocation() {
+  showLocationInput.value = !showLocationInput.value;
+  if (showLocationInput.value) {
+    nextTick(() => initIncidentMap()); 
+  } else {
+    incidentForm.value.location = null;
+  }
+}
+
+function handleIncidentEvidenceUpload(event) {
+  const files = Array.from(event.target.files);
+  const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+  for (const file of files) {
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(`ไฟล์ ${file.name} มีขนาดใหญ่เกิน 10MB`);
+      event.target.value = "";
+      return;
+    }
+  }
+
+  const newEvidences = files.map((file) => {
+    const type = file.type.startsWith("image") ? "IMAGE" : file.type.startsWith("video") ? "VIDEO" : "FILE";
+    return { type, file, previewUrl: URL.createObjectURL(file), fileName: file.name };
+  });
+
+  const allEvidences = [...incidentForm.value.evidences, ...newEvidences];
+  if (allEvidences.filter((e) => e.type === "IMAGE").length > 3) return toast.error("รูปภาพไม่เกิน 3 ไฟล์");
+  if (allEvidences.filter((e) => e.type === "VIDEO").length > 3) return toast.error("วิดีโอไม่เกิน 3 ไฟล์");
+
+  incidentForm.value.evidences = allEvidences;
+  event.target.value = "";
+}
+
+function removeIncidentEvidence(index) {
+  incidentForm.value.evidences.splice(index, 1);
+}
+
+function initIncidentMap() {
+  if (!incidentMapContainer.value || !window.google?.maps) return;
+
+  const defaultCenter = { lat: 13.7563, lng: 100.5018 }; 
+  incidentGmap = new google.maps.Map(incidentMapContainer.value, {
+    center: defaultCenter,
+    zoom: 6,
+    mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
+  });
+
+  incidentMarker = new google.maps.Marker({
+    map: incidentGmap, draggable: true, animation: google.maps.Animation.DROP,
+    visible: false 
+  });
+
+  incidentMarker.addListener("dragend", async () => {
+    const pos = incidentMarker.getPosition();
+    await updateIncidentLocation(pos.lat(), pos.lng());
+  });
+
+  incidentGmap.addListener("click", async (e) => {
+    const pos = e.latLng;
+    incidentMarker.setPosition(pos);
+    incidentMarker.setVisible(true); 
+    await updateIncidentLocation(pos.lat(), pos.lng());
+  });
+
+  const input = document.getElementById("incident-map-search");
+  if (input && google.maps.places) {
+    const searchBox = new google.maps.places.SearchBox(input);
+    searchBox.addListener("places_changed", () => {
+      const places = searchBox.getPlaces();
+      if (places.length === 0) return;
+      const place = places[0];
+      if (!place.geometry || !place.geometry.location) return;
+      
+      incidentGmap.setCenter(place.geometry.location);
+      incidentGmap.setZoom(16);
+      incidentMarker.setPosition(place.geometry.location);
+      incidentMarker.setVisible(true);
+      updateIncidentLocation(place.geometry.location.lat(), place.geometry.location.lng());
+    });
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        incidentGmap.setCenter(userPos);
+        incidentGmap.setZoom(15);
+        incidentMarker.setPosition(userPos);
+        incidentMarker.setVisible(true);
+        await updateIncidentLocation(userPos.lat, userPos.lng);
+      },
+      () => {
+        // ถ้าไม่อนุญาต GPS ปล่อยฟอร์มพิกัดให้เป็น null ไม่ต้องทำอะไร
+      }
+    );
+  }
+}
+
+async function updateIncidentLocation(lat, lng) {
+  incidentForm.value.location = { lat, lng, address: "กำลังค้นหาที่อยู่..." };
+  const res = await reverseGeocode(lat, lng);
+  if (res) {
+    incidentForm.value.location.address = res.formatted_address;
+  }
+  else {
+    incidentForm.value.location.address = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  }
+}
+
+async function submitIncident() {
+  if (isSubmittingIncident.value) return;
+  if (!incidentForm.value.category) return toast.error("กรุณาเลือกประเภทเหตุฉุกเฉิน");
+  if (!incidentForm.value.description || incidentForm.value.description.trim().length < 10) return toast.error("กรุณาระบุรายละเอียดอย่างน้อย 10 ตัวอักษร");
+
+  isSubmittingIncident.value = true;
+  try {
+    const uploadedEvidences = [];
+    if (incidentForm.value.evidences.length > 0) {
+      toast.info("กำลังอัปโหลดไฟล์หลักฐาน...");
+      for (const evidence of incidentForm.value.evidences) {
+        const cloudData = await uploadToCloudinary(evidence.file);
+        
+        uploadedEvidences.push({
+          type: evidence.type,
+          url: cloudData.secure_url,
+          fileName: evidence.fileName
+        });
+      }
+    }
+
+    const payload = {
+      routeId: incidentForm.value.routeId,
+      category: incidentForm.value.category,
+      description: incidentForm.value.description.trim(),
+      location: incidentForm.value.location ? {
+        lat: incidentForm.value.location.lat,
+        lng: incidentForm.value.location.lng,
+        address: incidentForm.value.location.address || undefined
+      } : undefined
+    };
+
+    const response = await $api("/incidents", { method: "POST", body: payload });
+    const incidentData = Array.isArray(response?.data) ? response.data[0] : (response?.data || response);
+    const incidentId = incidentData?.id;
+
+    if (uploadedEvidences.length > 0 && incidentId) {
+      await $api(`/incidents/${incidentId}/evidence`, {
+        method: "POST",
+        body: { evidences: uploadedEvidences }, 
+      });
+    }
+
+    const rId = incidentForm.value.routeId;
+    
+    const currentPending = { ...pendingIncidents.value }; 
+    
+    if (!currentPending[rId]) {
+      currentPending[rId] = [];
+    }
+    
+    currentPending[rId].push({
+      id: incidentId,
+      category: incidentForm.value.category,
+      description: incidentForm.value.description
+    });
+
+    pendingIncidents.value = currentPending;
+
+    toast.success("แจ้งเหตุฉุกเฉินสำเร็จ ทางแอดมินได้รับข้อมูลเรียบร้อยแล้ว");
+    closeIncidentModal();
+  } catch (error) {
+    toast.error(error?.data?.message || "ไม่สามารถแจ้งเหตุได้ กรุณาลองใหม่อีกครั้ง");
+  } finally {
+    isSubmittingIncident.value = false;
+  }
 }
 
 function handleEvidenceUpload(event) {
@@ -1059,6 +1450,7 @@ onMounted(() => {
   if (window.google?.maps) {
     initializeMap();
     fetchMyReportedCases();
+    fetchMyIncidents();
     fetchMyRoutes().then(() => {
       if (activeTab.value === "myRoutes") {
         if (myRoutes.value.length) updateMap(myRoutes.value[0]);
@@ -1075,6 +1467,7 @@ onMounted(() => {
     } catch {}
     initializeMap();
     fetchMyReportedCases();
+    fetchMyIncidents();
     fetchMyRoutes().then(() => {
       if (activeTab.value === "myRoutes") {
         if (myRoutes.value.length) updateMap(myRoutes.value[0]);
@@ -1110,14 +1503,12 @@ watch(activeTab, () => {
 </script>
 
 <style scoped>
-/* (สไตล์ทั้งหมดคงเดิม) */
 .trip-card {
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .trip-card:hover {
-  /* transform: translateY(-2px); */
   box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
 }
 

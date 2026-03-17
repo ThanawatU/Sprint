@@ -362,6 +362,235 @@
       >
         {{ errorMessage }}
       </div>
+    
+    <div class="mt-8 bg-white border border-gray-300 rounded-lg shadow-md">
+        <div class="p-6 border-b border-gray-300">
+          <h3 class="text-lg font-semibold text-gray-900">
+            อุบัติเหตุและเหตุฉุกเฉิน ({{ groupedIncidents.length }} เส้นทาง)
+          </h3>
+        </div>
+
+        <div v-if="isLoading" class="p-6 text-center text-gray-500">
+          กำลังโหลดข้อมูล...
+        </div>
+
+        <div v-else class="divide-y divide-gray-200">
+          <div
+            v-if="groupedIncidents.length === 0"
+            class="p-6 text-center text-gray-500"
+          >
+            ยังไม่มีประวัติการแจ้งอุบัติเหตุ
+          </div>
+
+          <div
+            v-for="incidentGroup in groupedIncidents"
+            :key="incidentGroup.routeId"
+            class="transition-all duration-300"
+          >
+            <div
+              class="p-6 cursor-pointer trip-card hover:bg-gray-50 transition-colors"
+            >
+              <div class="space-y-4">
+                <div>
+                  <h4 class="text-xl font-bold text-gray-900">
+                    {{ getLocationName(incidentGroup.startLocation) }} 
+                    <span class="text-gray-400 mx-2 text-lg">→</span> 
+                    {{ getLocationName(incidentGroup.endLocation) }}
+                  </h4>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 md:grid-cols-3 text-sm">
+                  <div>
+                    <p class="text-gray-600 font-medium">วันเดินทาง</p>
+                    <p class="text-gray-900 font-semibold">{{ formatTripDate(incidentGroup.departureTime) }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 font-medium">รหัสทริป</p>
+                    <p class="text-gray-900 font-semibold text-xs break-all">{{ incidentGroup.routeId }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-600 font-medium">การแจ้งเหตุ</p>
+                    <p class="text-gray-900 font-semibold">{{ incidentGroup.incidents.length }} รายการ</p>
+                  </div>
+                </div>
+
+                <div class="flex justify-end pt-2">
+                  <button
+                    @click="toggleIncidentSelection(incidentGroup.routeId)"
+                    class="inline-flex items-center gap-2 text-red-600 font-medium hover:text-red-700 transition"
+                  >
+                    {{ selectedIncidentRouteId === incidentGroup.routeId ? '▼' : '▶' }} {{ selectedIncidentRouteId === incidentGroup.routeId ? 'ปิด' : 'ดู' }} รายละเอียด
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div
+              v-if="selectedIncidentRouteId === incidentGroup.routeId"
+              class="border-t border-gray-200 bg-gray-50 divide-y divide-gray-200"
+            >
+              <div
+                v-for="incident in incidentGroup.incidents"
+                :key="incident.id"
+                class="p-6 transition-all duration-200 hover:bg-gray-100"
+              >
+                <div class="flex items-start justify-between gap-4 mb-4">
+                  <div>
+                    <h5 class="font-bold text-2xl text-gray-900 flex items-center gap-2">
+                      {{ formatIncidentCategory(incident.category) }}
+                    </h5>
+                    <p class="text-sm text-gray-600 mt-1 font-medium">
+                      พิกัด: {{ incident.location?.address || 'ไม่ระบุพิกัดสถานที่' }}
+                    </p>
+                  </div>
+                  <span :class="incidentStatusClass(incident.status)" class="flex-shrink-0 px-4 py-2 text-sm font-bold whitespace-nowrap">
+                    {{ formatIncidentStatus(incident.status) }}
+                  </span>
+                </div>
+
+                <div class="space-y-3 pb-4 border-b border-gray-200 mb-4">
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+                    <div>
+                      <p class="text-gray-600 font-medium">วันที่แจ้งเหตุ</p>
+                      <p class="text-gray-900">{{ formatTripDate(incident.createdAt) }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-600 font-medium">รหัสการแจ้ง</p>
+                      <p class="text-gray-900 text-xs break-all">{{ incident.id }}</p>
+                    </div>
+                    <div>
+                      <p class="text-gray-600 font-medium">หลักฐาน</p>
+                      <p class="text-gray-900 font-semibold">{{ incident.evidences?.length || 0 }} ไฟล์</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t-2 border-gray-200 space-y-4">
+                  <div class="bg-gradient-to-r from-red-50 to-orange-50 p-4 rounded-lg border border-red-200">
+                    <h6 class="font-semibold text-gray-900 mb-2">รายละเอียดเหตุการณ์</h6>
+                    <p class="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                      {{ incident.description || 'ไม่มีรายละเอียด' }}
+                    </p>
+                  </div>
+
+                  <div v-if="incident.adminNotes" class="bg-white p-4 rounded-lg border border-gray-300">
+                    <h6 class="font-semibold text-gray-900 mb-2">บันทึกจากผู้ดูแลระบบ</h6>
+                    <p class="text-gray-700 text-sm leading-relaxed whitespace-pre-line">
+                      {{ incident.adminNotes }}
+                    </p>
+                  </div>
+
+                  <div class="space-y-3">
+                    <h6 class="font-semibold text-gray-900">
+                      หลักฐาน ({{ incident.evidences?.length || 0 }})
+                    </h6>
+
+                    <div v-if="incident.evidences?.length > 0" class="space-y-4">
+                      <div class="grid grid-cols-2 gap-3">
+                        <div
+                          v-for="(evidence, idx) in incident.evidences"
+                          :key="idx"
+                          class="relative bg-white rounded-lg overflow-hidden border border-gray-300 hover:border-red-400 transition-colors shadow-sm hover:shadow-md"
+                        >
+                          <div class="aspect-video bg-gray-200 flex items-center justify-center relative group">
+                            <template v-if="evidence.type === 'IMAGE'">
+                              <img :src="evidence.url" :alt="`Evidence ${idx + 1}`" class="w-full h-full object-cover" />
+                            </template>
+                            <template v-else-if="evidence.type === 'VIDEO'">
+                              <video :src="evidence.url" class="w-full h-full object-cover" />
+                              <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors">
+                                <span class="text-white text-2xl font-bold">เล่น</span>
+                              </div>
+                            </template>
+                            <template v-else>
+                              <div class="flex flex-col items-center justify-center w-full h-full bg-red-50">
+                                <div class="text-4xl font-bold text-red-600 mb-2">PDF</div>
+                                <p class="text-xs text-gray-600 text-center px-2 line-clamp-2">{{ evidence.fileName }}</p>
+                              </div>
+                            </template>
+                          </div>
+
+                          <div class="p-3 bg-white border-t border-gray-200">
+                            <p class="text-xs font-semibold text-gray-800 truncate mb-1">{{ evidence.fileName }}</p>
+                            <div class="flex justify-between items-start mb-2">
+                              <p class="text-xs text-gray-500">-</p>
+                              <p class="text-xs text-red-600 font-medium">{{ formatDateTime(evidence.createdAt) || '-' }}</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-else class="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                      <p class="text-sm text-gray-500">ยังไม่มีหลักฐาน</p>
+                    </div>
+                  </div>
+
+                  <div v-if="canAddIncidentEvidence(incident.status)" class="p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg border-2 border-red-200">
+                    <h6 class="font-semibold text-gray-900 mb-3">เพิ่มหลักฐานเพิ่มเติม</h6>
+
+                    <div v-if="errorMessage" class="p-3 mb-3 text-sm text-red-700 bg-red-100 border border-red-300 rounded-md">
+                      ข้อผิดพลาด: {{ errorMessage }}
+                    </div>
+
+                    <div v-if="pendingIncidentEvidences[incident.id]?.length > 0" class="mb-4">
+                      <h6 class="text-sm font-semibold text-gray-900 mb-2">ตัวอย่างภาพ ({{ pendingIncidentEvidences[incident.id].length }}/3)</h6>
+                      <div class="grid grid-cols-3 gap-2">
+                        <div v-for="(file, idx) in pendingIncidentEvidences[incident.id]" :key="idx" class="relative group">
+                          <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                            <template v-if="file.type?.startsWith('image')">
+                              <img :src="getPreviewUrl(file)" :alt="`Preview ${idx + 1}`" class="w-full h-full object-cover" />
+                            </template>
+                            <template v-else>
+                              <div class="text-center">
+                                <div class="text-gray-500 text-xs">{{ file.name.split('.').pop() }}</div>
+                              </div>
+                            </template>
+                          </div>
+                          <button
+                            @click="removePendingIncidentEvidence(incident.id, idx)"
+                            class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity text-xs hover:bg-red-600"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                      <input
+                        type="file"
+                        multiple
+                        @change="(e) => handleAddPendingIncidentEvidence(incident.id, e)"
+                        accept="image/*,video/*,.pdf,.doc,.docx"
+                        class="flex-1 px-3 py-2 text-sm file:px-3 file:py-1 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white cursor-pointer border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                      />
+                      <button
+                        @click="uploadIncidentEvidence(incident.id)"
+                        :disabled="!pendingIncidentEvidences[incident.id]?.length || uploadingIncidentId === incident.id"
+                        class="px-5 py-2 text-sm font-semibold text-white transition-all bg-gradient-to-r from-red-600 to-red-700 rounded-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {{ uploadingIncidentId === incident.id ? 'กำลังอัปโหลด...' : 'อัปโหลด' }}
+                      </button>
+                    </div>
+
+                    <p class="mt-2 text-xs text-gray-600">
+                      รองรับ: รูป, วิดีโอ, PDF (สูงสุด 10MB) | อัปโหลดได้สูงสุด 3 ไฟล์ต่อครั้ง
+                    </p>
+                  </div>
+
+                  <div v-else class="p-4 bg-gray-50 rounded-lg border border-gray-300">
+                    <p class="text-sm text-gray-600">
+                      เคสนี้อยู่ในสถานะ <span class="font-semibold">{{ formatIncidentStatus(incident.status) }}</span> ไม่สามารถเพิ่มหลักฐานได้แล้ว
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -381,6 +610,10 @@ const selectedEvidenceFile = ref({});
 const evidenceNotes = ref({});
 const pendingEvidences = ref({}); // ไฟล์ที่ยังไม่ได้อัปโหลด
 const evidencePage = ref({}); // Pagination สำหรับหลักฐาน
+
+// --- Incident State ---
+const allIncidentCases = ref([]);
+const selectedIncidentRouteId = ref(null);
 
 // Group reports by trip
 const groupedTrips = computed(() => {
@@ -873,7 +1106,212 @@ const deleteEvidence = async (reportId, pageIdx) => {
   }
 };
 
+// --- Incident Grouping Logic ---
+const groupedIncidents = computed(() => {
+  let filtered = [...allIncidentCases.value];
+
+  // นำคำค้นหาและสถานะมาช่วยกรองด้วย (ถ้าต้องการให้หาครอบคลุม)
+  if (searchForm.value.keyword?.trim()) {
+    const keyword = searchForm.value.keyword.toLowerCase();
+    filtered = filtered.filter((i) => i.description?.toLowerCase().includes(keyword));
+  }
+  if (searchForm.value.status) {
+    // Map สถานะให้ตรงกันระหว่าง Report และ Incident
+    let targetStatus = searchForm.value.status;
+    if (targetStatus === 'UNDER_REVIEW') targetStatus = 'UNDER_INVESTIGATION';
+    filtered = filtered.filter((i) => i.status === targetStatus);
+  }
+
+  const grouped = {};
+  filtered.forEach((incident) => {
+    const routeId = incident.route?.id;
+    if (!routeId) return;
+
+    if (!grouped[routeId]) {
+      grouped[routeId] = {
+        routeId,
+        startLocation: incident.route.startLocation,
+        endLocation: incident.route.endLocation,
+        departureTime: incident.route.departureTime,
+        incidents: []
+      };
+    }
+    grouped[routeId].incidents.push(incident);
+  });
+
+  return Object.values(grouped).sort((a, b) => new Date(b.departureTime) - new Date(a.departureTime));
+});
+
+// --- Incident Helpers ---
+const toggleIncidentSelection = (routeId) => {
+  selectedIncidentRouteId.value = selectedIncidentRouteId.value === routeId ? null : routeId;
+};
+
+const formatIncidentCategory = (cat) => {
+  const map = {
+    ACCIDENT: "อุบัติเหตุทางถนน",
+    VEHICLE_BREAKDOWN: "รถเสีย / ขัดข้อง",
+    MEDICAL_EMERGENCY: "เหตุฉุกเฉินทางการแพทย์",
+    NATURAL_DISASTER: "ภัยธรรมชาติ",
+    CRIME_INCIDENT: "อาชญากรรม / ถูกคุกคาม",
+    OTHER: "อื่นๆ"
+  };
+  return map[cat] || cat;
+};
+
+const formatIncidentStatus = (status) => {
+  const map = {
+    PENDING: "รอการตรวจสอบ",
+    UNDER_INVESTIGATION: "กำลังตรวจสอบ",
+    RESOLVED: "แก้ไขเรียบร้อยแล้ว",
+    REJECTED: "ปฏิเสธ / ยกเลิกเคส"
+  };
+  return map[status] || status;
+};
+
+const incidentStatusClass = (status) => {
+  const map = {
+    PENDING: "px-4 py-2 text-sm font-bold bg-blue-200 text-blue-900 rounded-lg",
+    UNDER_INVESTIGATION: "px-4 py-2 text-sm font-bold bg-yellow-200 text-yellow-900 rounded-lg",
+    RESOLVED: "px-4 py-2 text-sm font-bold bg-green-200 text-green-900 rounded-lg",
+    REJECTED: "px-4 py-2 text-sm font-bold bg-gray-200 text-gray-800 rounded-lg",
+  };
+  return map[status] || "px-4 py-2 text-sm font-bold bg-gray-200 text-gray-900 rounded-lg";
+};
+
+// --- Fetch API Incidents ---
+const fetchIncidents = async () => {
+  try {
+    const token = useCookie("token").value;
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBase;
+    
+    if (!token) return;
+
+    const response = await fetch(`${baseUrl}incidents/my`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      allIncidentCases.value = data.data || data;
+    }
+  } catch (err) {
+    console.error("Failed to fetch incidents:", err);
+  }
+};
+
+// --- Incident Evidence Upload Logic ---
+const pendingIncidentEvidences = ref({}); 
+const uploadingIncidentId = ref(null);
+
+const canAddIncidentEvidence = (status) => {
+  return !["RESOLVED", "REJECTED", "CLOSED"].includes(status);
+};
+
+const handleAddPendingIncidentEvidence = (incidentId, event) => {
+  const files = Array.from(event.target.files);
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+  const MAX_FILES = 3;
+
+  errorMessage.value = '';
+  if (files.length === 0) return;
+
+  const existingCount = pendingIncidentEvidences.value[incidentId]?.length || 0;
+  if (existingCount + files.length > MAX_FILES) {
+    errorMessage.value = `สามารถอัปโหลดได้สูงสุด ${MAX_FILES} ไฟล์ต่อครั้ง (มีอยู่แล้ว ${existingCount} ไฟล์)`;
+    event.target.value = '';
+    return;
+  }
+
+  for (const file of files) {
+    if (file.size > MAX_FILE_SIZE) {
+      errorMessage.value = `ไฟล์ "${file.name}" มีขนาด ${(file.size / (1024 * 1024)).toFixed(2)}MB ซึ่งใหญ่เกิน 10MB`;
+      event.target.value = '';
+      return;
+    }
+  }
+
+  if (!pendingIncidentEvidences.value[incidentId]) {
+    pendingIncidentEvidences.value[incidentId] = [];
+  }
+
+  pendingIncidentEvidences.value[incidentId].push(...files);
+  event.target.value = '';
+};
+
+const removePendingIncidentEvidence = (incidentId, idx) => {
+  if (pendingIncidentEvidences.value[incidentId]) {
+    pendingIncidentEvidences.value[incidentId].splice(idx, 1);
+  }
+};
+
+const uploadIncidentEvidence = async (incidentId) => {
+  try {
+    const token = useCookie("token").value;
+    const config = useRuntimeConfig();
+    const baseUrl = config.public.apiBase;
+    
+    const files = pendingIncidentEvidences.value[incidentId];
+    if (!token || !files?.length) return;
+
+    const targetIncident = allIncidentCases.value.find((i) => i.id === incidentId);
+    if (!targetIncident) return;
+
+    if (!canAddIncidentEvidence(targetIncident.status)) {
+      errorMessage.value = "ไม่สามารถเพิ่มหลักฐานในสถานะนี้ได้";
+      return;
+    }
+
+    uploadingIncidentId.value = incidentId;
+    errorMessage.value = '';
+
+    const newEvidences = [];
+
+    for (const file of files) {
+      const cloudinaryData = await uploadToCloudinary(file);
+      newEvidences.push({
+        type: file.type.startsWith("video") ? "VIDEO" : file.type.startsWith("image") ? "IMAGE" : "FILE",
+        url: cloudinaryData.secure_url,
+        fileName: file.name,
+        mimeType: file.type,
+        fileSize: file.size,
+        description: "",
+      });
+    }
+
+    const response = await fetch(`${baseUrl}/incidents/${incidentId}/evidence`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ evidences: newEvidences }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "บันทึกหลักฐานอุบัติเหตุไม่สำเร็จ");
+    }
+
+    targetIncident.evidences = [...(targetIncident.evidences || []), ...newEvidences];
+    pendingIncidentEvidences.value[incidentId] = [];
+    
+    const successDiv = document.createElement('div');
+    successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    successDiv.textContent = `อัปโหลดหลักฐานเหตุฉุกเฉิน ${files.length} ไฟล์สำเร็จ`;
+    document.body.appendChild(successDiv);
+    setTimeout(() => { successDiv.remove(); }, 3000);
+
+  } catch (err) {
+    errorMessage.value = err.message;
+  } finally {
+    uploadingIncidentId.value = null;
+  }
+};
+
 onMounted(() => {
   fetchReports();
+  fetchIncidents();
 });
 </script>
