@@ -799,6 +799,20 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [3.0.0] - 2026-03-17 - Nattaphat_0126
+
+### Added
+- **Incident Reporting System**: Implemented a comprehensive incident reporting flow for drivers, including category selection and detailed descriptions.
+- **Interactive Incident Map**: Integrated Google Maps with search box and geolocation support to allow precise incident location tagging without forced default coordinates.
+- **Incident History View**: Added a new section in the "My History" page to display grouped incident reports per trip, including status tracking and admin notes.
+- **Post-Report Evidence Management**: Enabled drivers to upload additional evidence to existing incident cases that are not yet resolved.
+
+### Changed
+- **Standardized UI Layout**: Refactored the Incident history section to use a standardized Card UI, ensuring visual consistency with the Passenger Report section.
+- **Enhanced Route Management**: Updated the "My Route" interface to include quick-action buttons for reporting emergencies and marking trips as completed.
+
+---
+
 ## Version Guidelines
 
 ### Categories
