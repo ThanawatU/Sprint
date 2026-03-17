@@ -892,6 +892,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+## [3.0.0] - 2026-03-17 - Yodsanon_0215
+
+### Added
 - **Report Test**: Added an automated API test suite using Robot Framework for the Report system, covering both User and Admin flows.
 - **Test Documentation**: Added a formal UAT test scenario document for the Report API.
 
