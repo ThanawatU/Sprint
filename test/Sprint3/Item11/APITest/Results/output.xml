@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.13.5 on win32)" generated="2026-03-17T13:56:44.220049" rpa="false" schemaversion="5">
+<suite id="s1" name="Incident Report Api Test" source="C:\Users\ROG\Documents\Dev\SE\Sprint\test\Sprint3\Item11\APITest\incident_report_api_test.robot">
+<kw name="Setup Tokens For Testing" type="SETUP">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:44.810695" level="INFO">Creating Session using : alias=api, url=http://localhost:3000/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>api</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-03-17T13:56:44.810398" elapsed="0.000704"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:44.811932" level="INFO">${user_payload} = {'email': 'tester1@gmail.com', 'password': '123456789'}</msg>
+<var>${user_payload}</var>
+<arg>email=${DRIVER_USER}</arg>
+<arg>password=${DRIVER_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:44.811347" elapsed="0.000639"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.056151" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ body=b'{"email": "tester1@gmail.com", "password": "123456789"}' 
+ </msg>
+<msg time="2026-03-17T13:56:45.056660" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '284a3513-888e-47ef-9dd3-f666e8061540', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 06:56:45 GMT; SameSite=Lax', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '482', 'ETag': 'W/"1e2-S/1VapZBGSCgYAvMoZmeo5LK4QI"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU","user":{"id":"cmmqfuzea00034oau1medpiu1","firstName":"tester","lastName":"1","profilePicture":null,"role":"DRIVER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-17T13:56:45.057027" level="INFO">${user_resp} = &lt;Response [200]&gt;</msg>
+<var>${user_resp}</var>
+<arg>api</arg>
+<arg>${AUTH_URL}</arg>
+<arg>json=${user_payload}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:44.812225" elapsed="0.244854"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.059100" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU</msg>
+<var>${USER_TOKEN}</var>
+<arg>${user_resp.json()}[data][token]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.057562" elapsed="0.001608"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.059845" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU</msg>
+<arg>${USER_TOKEN}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.059444" elapsed="0.000486"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.060619" level="INFO">${admin_payload} = {'email': 'admin@example.com', 'password': '123456789'}</msg>
+<var>${admin_payload}</var>
+<arg>email=${ADMIN_USER}</arg>
+<arg>password=${ADMIN_PASSWORD}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.060155" elapsed="0.000509"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.234226" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ body=b'{"email": "admin@example.com", "password": "123456789"}' 
+ </msg>
+<msg time="2026-03-17T13:56:45.234516" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'b2397a41-c2dc-458e-8b8b-ab461f352bee', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 06:56:45 GMT; SameSite=Lax', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '491', 'ETag': 'W/"1eb-GjX/gIRwl/OKJ5dFg5g1nBrJwLk"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE","user":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-17T13:56:45.235201" level="INFO">${admin_resp} = &lt;Response [200]&gt;</msg>
+<var>${admin_resp}</var>
+<arg>api</arg>
+<arg>${AUTH_URL}</arg>
+<arg>json=${admin_payload}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.060890" elapsed="0.174365"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.236837" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE</msg>
+<var>${ADMIN_TOKEN}</var>
+<arg>${admin_resp.json()}[data][token]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.235496" elapsed="0.001399"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.237407" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE</msg>
+<arg>${ADMIN_TOKEN}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.237114" elapsed="0.000364"/>
+</kw>
+<status status="PASS" start="2026-03-17T13:56:44.809464" elapsed="0.428123"/>
+</kw>
+<test id="s1-t1" name="1. User Should Be Able To Create An Incident" line="44">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.240142" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.239628" elapsed="0.000574"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.241581" level="INFO">${payload} = {'category': 'ACCIDENT', 'description': 'รถชนท้ายกัน'}</msg>
+<var>${payload}</var>
+<arg>category=ACCIDENT</arg>
+<arg>description=รถชนท้ายกัน</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.240990" elapsed="0.000688"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.308867" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+ path_url=/api/incidents/ 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '109'} 
+ body=b'{"category": "ACCIDENT", "description": "\\u0e23\\u0e16\\u0e0a\\u0e19\\u0e17\\u0e49\\u0e32\\u0e22\\u0e01\\u0e31\\u0e19"}' 
+ </msg>
+<msg time="2026-03-17T13:56:45.309216" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+ status=201, reason=Created 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'd8f9ac70-2ae3-44ed-8701-4a365e253c39', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1276', 'ETag': 'W/"4fc-tlJIxQL1jzPk7U1JVTje2xoTDWE"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-17T13:56:45.309664" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=201</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.242268" elapsed="0.067485"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.313485" level="INFO">${INCIDENT_ID} = cmmu9em6f0063cvoa8gvp2sqs</msg>
+<var>${INCIDENT_ID}</var>
+<arg>${response.json()}[data][id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.310555" elapsed="0.003041"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.314936" level="INFO">${INCIDENT_ID} = cmmu9em6f0063cvoa8gvp2sqs</msg>
+<arg>${INCIDENT_ID}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.314419" elapsed="0.000636"/>
+</kw>
+<doc>ผู้ใช้สร้างการแจ้งเหตุใหม่ (POST /) โดยไม่ส่ง Location</doc>
+<status status="PASS" start="2026-03-17T13:56:45.237788" elapsed="0.077779"/>
+</test>
+<test id="s1-t2" name="2. User Should Be Able To Get Their Own Incidents" line="55">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.321473" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.320386" elapsed="0.001204"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.408997" level="INFO">GET Request : url=http://localhost:3000/api/incidents/my 
+ path_url=/api/incidents/my 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+ body=None 
+ </msg>
+<msg time="2026-03-17T13:56:45.409419" level="INFO">GET Response : url=http://localhost:3000/api/incidents/my 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'c1f1d152-fe07-408c-acd0-d012172af2a7', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '10258', 'ETag': 'W/"2812-qqT7yxb4RtBEv4cSML5XlLJ+CDc"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"data":[{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsdi005gcvoazu3bmvvr","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:54:33.375Z","createdAt":"2026-03-17T06:54:33.318Z","updatedAt":"2026-03-17T06:54:33.376Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9bsfb005ocvoaxks03ma5","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:54:33.383Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9bsdi005icvoael35bkmc","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.318Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsaa0051cvoaosloyc6z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:54:33.268Z","createdAt":"2026-03-17T06:54:33.202Z","updatedAt":"2026-03-17T06:54:33.270Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bsce0059cvoafb7ofom7","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:54:33.278Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bsaa0053cvoalyth3h9g","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.202Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9brwc0043cvoav1xk8j3z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:54:33.153Z","createdAt":"2026-03-17T06:54:32.700Z","updatedAt":"2026-03-17T06:54:33.154Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9bs2w004fcvoab33t0qk3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:54:32.936Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bs95004ucvoadl4l7ep3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:54:33.162Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bs7l004ocvoagyyh29yk","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:54:33.105Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9brwc0045cvoathxo8ex4","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:32.700Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aldj003gcvoa0jon5swb","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:53:37.656Z","createdAt":"2026-03-17T06:53:37.591Z","updatedAt":"2026-03-17T06:53:37.657Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9alfn003ocvoaer9xqvku","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:53:37.667Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9aldj003icvoanlp8k8a8","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.591Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9al9k0031cvoa8ocidkmd","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:53:37.532Z","createdAt":"2026-03-17T06:53:37.448Z","updatedAt":"2026-03-17T06:53:37.533Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9alc40039cvoa3g1ik4dw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:53:37.540Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al9k0033cvoagnem5hgw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.448Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aktp0023cvoa3mgep7lq","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:53:37.365Z","createdAt":"2026-03-17T06:53:36.878Z","updatedAt":"2026-03-17T06:53:37.368Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9al07002fcvoajpcxwt81","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:53:37.111Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9al7o002ucvoaqlhiqtbp","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:53:37.380Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al5h002ocvoayje3f0v3","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:53:37.301Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9aktq0025cvoalmtkusn7","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:36.878Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]}]} 
+ </msg>
+<msg time="2026-03-17T13:56:45.410460" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/my</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.322504" elapsed="0.088050"/>
+</kw>
+<doc>ผู้ใช้ดึงประวัติการแจ้งเหตุของตัวเอง (GET /my)</doc>
+<status status="PASS" start="2026-03-17T13:56:45.317162" elapsed="0.097266"/>
+</test>
+<test id="s1-t3" name="3. User Should Be Able To Get Incident By ID" line="60">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.430017" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.429035" elapsed="0.001088"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.527763" level="INFO">GET Request : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
+ path_url=/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+ body=None 
+ </msg>
+<msg time="2026-03-17T13:56:45.528561" level="INFO">GET Response : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '95d2b43b-0c9c-4f85-bddd-ee2dc9fd287f', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '856', 'ETag': 'W/"358-lZEQrqXI+ggXC8hg3wQoqHM+ToQ"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]} 
+ </msg>
+<msg time="2026-03-17T13:56:45.529273" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/${INCIDENT_ID}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.439874" elapsed="0.089543"/>
+</kw>
+<doc>ผู้ใช้ดูรายละเอียดเคสรายตัว (GET /:id)</doc>
+<status status="PASS" start="2026-03-17T13:56:45.422475" elapsed="0.110460"/>
+</test>
+<test id="s1-t4" name="4. User Should Be Able To Add Evidence To Incident" line="65">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.568630" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.566512" elapsed="0.002364"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.575122" level="INFO">${evidence} = {'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}</msg>
+<var>${evidence}</var>
+<arg>url=https://example.com/image.jpg</arg>
+<arg>type=IMAGE</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.572349" elapsed="0.003042"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.581884" level="INFO">${evidence_list} = [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]</msg>
+<var>${evidence_list}</var>
+<arg>${evidence}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.580125" elapsed="0.002257"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.587864" level="INFO">${payload} = {'evidences': [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]}</msg>
+<var>${payload}</var>
+<arg>evidences=${evidence_list}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.585619" elapsed="0.002441"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.714102" level="INFO">POST Request : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
+ path_url=/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '74'} 
+ body=b'{"evidences": [{"url": "https://example.com/image.jpg", "type": "IMAGE"}]}' 
+ </msg>
+<msg time="2026-03-17T13:56:45.714480" level="INFO">POST Response : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
+ status=201, reason=Created 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'a2e32d04-35dd-4d0a-8b6e-ce1abf65922d', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1112', 'ETag': 'W/"458-LkvBnYYek1GJQJWkVUvocPJUFJY"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Evidence uploaded successfully","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9emgt006fcvoamsc155or","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:56:45.630Z"}],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]}} 
+ </msg>
+<msg time="2026-03-17T13:56:45.715404" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/${INCIDENT_ID}/evidence</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=201</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.591934" elapsed="0.123761"/>
+</kw>
+<doc>ผู้ใช้อัปโหลดหลักฐานเพิ่มเติม (POST /:id/evidence)</doc>
+<status status="PASS" start="2026-03-17T13:56:45.560821" elapsed="0.162792"/>
+</test>
+<test id="s1-t5" name="5. Admin Should Be Able To Get All Incidents" line="76">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.739821" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.738190" elapsed="0.001795"/>
+</kw>
+<kw name="GET On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:45.873201" level="INFO">GET Request : url=http://localhost:3000/api/incidents/admin/all 
+ path_url=/api/incidents/admin/all 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+ body=None 
+ </msg>
+<msg time="2026-03-17T13:56:45.873860" level="INFO">GET Response : url=http://localhost:3000/api/incidents/admin/all 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '2d175c1e-2ba2-4cee-8f6a-954149ae2b0b', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22382', 'ETag': 'W/"576e-PpcU6ylHytgJt+RWMqPNvyEm7sk"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body=[{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9emgt006fcvoamsc155or","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:56:45.630Z"}],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsdi005gcvoazu3bmvvr","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:54:33.375Z","createdAt":"2026-03-17T06:54:33.318Z","updatedAt":"2026-03-17T06:54:33.376Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9bsfb005ocvoaxks03ma5","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:54:33.383Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9bsdi005icvoael35bkmc","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.318Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsaa0051cvoaosloyc6z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:54:33.268Z","createdAt":"2026-03-17T06:54:33.202Z","updatedAt":"2026-03-17T06:54:33.270Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bsce0059cvoafb7ofom7","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:54:33.278Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bsaa0053cvoalyth3h9g","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.202Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9brwc0043cvoav1xk8j3z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:54:33.153Z","createdAt":"2026-03-17T06:54:32.700Z","updatedAt":"2026-03-17T06:54:33.154Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9bs2w004fcvoab33t0qk3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:54:32.936Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bs95004ucvoadl4l7ep3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:54:33.162Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bs7l004ocvoagyyh29yk","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:54:33.105Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9brwc0045cvoathxo8ex4","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:32.700Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aldj003gcvoa0jon5swb","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:53:37.656Z","createdAt":"2026-03-17T06:53:37.591Z","updatedAt":"2026-03-17T06:53:37.657Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9alfn003ocvoaer9xqvku","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:53:37.667Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9aldj003icvoanlp8k8a8","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.591Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9al9k0031cvoa8ocidkmd","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:53:37.532Z","createdAt":"2026-03-17T06:53:37.448Z","updatedAt":"2026-03-17T06:53:37.533Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9alc40039cvoa3g1ik4dw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:53:37.540Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al9k0033cvoagnem5hgw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.448Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aktp0023cvoa3mgep7lq","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:53:37.365Z","createdAt":"2026-03-17T06:53:36.878Z","updatedAt":"2026-03-17T06:53:37.368Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9al07002fcvoajpcxwt81","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:53:37.111Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9al7o002ucvoaqlhiqtbp","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:53:37.380Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al5h002ocvoayje3f0v3","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:53:37.301Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9aktq0025cvoalmtkusn7","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:36.878Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmqjrt4m0001kp89kzn12c8d","reporterId":"cmmqfw2n900094oauyfcqxzlb","routeId":"cmmqg1bd700374oau1dvyoetb","category":"ACCIDENT","description":"เกิดอุบัติเหตุรถชนที่แยกไฟแดง มีผู้บาดเจ็บเล็กน้อย ต้องการความช่วยเหลือด่วน","status":"RESOLVED","location":{"lat":15.27077892932... (set the log level to DEBUG or TRACE to see the full content) 
+ </msg>
+<msg time="2026-03-17T13:56:45.876274" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/admin/all</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a GET request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.742125" elapsed="0.134413"/>
+</kw>
+<kw name="Get Length" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.884561" level="INFO">Length is 8.</msg>
+<msg time="2026-03-17T13:56:45.885100" level="INFO">${length} = 8</msg>
+<var>${length}</var>
+<arg>${response.json()}</arg>
+<doc>Returns and logs the length of the given item as an integer.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.881167" elapsed="0.004029"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${length} &gt; 0</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.892876" elapsed="0.001303"/>
+</kw>
+<doc>แอดมินดึงรายการการแจ้งเหตุทั้งหมด (GET /admin/all)</doc>
+<status status="PASS" start="2026-03-17T13:56:45.730532" elapsed="0.166135"/>
+</test>
+<test id="s1-t6" name="6. Admin Should Be Able To Assign Incident" line="84">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:45.907676" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.906081" elapsed="0.001792"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.005540" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
+ path_url=/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-03-17T13:56:46.005988" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'd3857c65-cbbb-4216-bea3-28092d3a510c', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '435', 'ETag': 'W/"1b3-97PxIJ7r2aNwFpoJNy1jF97eubE"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident assigned to investigate","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"UNDER_INVESTIGATION","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.948Z"}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.006696" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/admin/${INCIDENT_ID}/assign</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:45.909862" elapsed="0.096962"/>
+</kw>
+<doc>แอดมินรับเรื่องเคส (PATCH /admin/:id/assign)</doc>
+<status status="PASS" start="2026-03-17T13:56:45.898543" elapsed="0.110387"/>
+</test>
+<test id="s1-t7" name="7. Admin Should Be Able To Resolve Incident" line="89">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.021486" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.019066" elapsed="0.002679"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.025034" level="INFO">${payload} = {'adminNotes': 'ตรวจสอบและจัดการเรียบร้อยแล้ว'}</msg>
+<var>${payload}</var>
+<arg>adminNotes=ตรวจสอบและจัดการเรียบร้อยแล้ว</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.023321" elapsed="0.002178"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.136195" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
+ path_url=/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '192'} 
+ body=b'{"adminNotes": "\\u0e15\\u0e23\\u0e27\\u0e08\\u0e2a\\u0e2d\\u0e1a\\u0e41\\u0e25\\u0e30\\u0e08\\u0e31\\u0e14\\u0e01\\u0e32\\u0e23\\u0e40\\u0e23\\u0e35\\u0e22\\u0e1a\\u0e23\\u0e49\\u0e2d\\u0e22\\u0e41\\u0e25\\u0e49\\u0e27"}' 
+ </msg>
+<msg time="2026-03-17T13:56:46.136692" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'f6b50b9b-974d-44af-89f1-3f435bbccaea', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '516', 'ETag': 'W/"204-smKgK15ppF0c5jkjWN5fZgu1PjY"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident resolved","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:56:46.063Z","createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:46.065Z"}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.138140" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/admin/${INCIDENT_ID}/resolve</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.026828" elapsed="0.111557"/>
+</kw>
+<doc>แอดมินปิดเคส (PATCH /admin/:id/resolve)</doc>
+<status status="PASS" start="2026-03-17T13:56:46.014462" elapsed="0.125610"/>
+</test>
+<test id="s1-t8" name="8. Create Another Incident For Cancel And Reject Tests" line="97">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.157738" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.156120" elapsed="0.001901"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.161119" level="INFO">${payload} = {'category': 'OTHER', 'description': 'เคสสำหรับยกเลิก'}</msg>
+<var>${payload}</var>
+<arg>category=OTHER</arg>
+<arg>description=เคสสำหรับยกเลิก</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.160033" elapsed="0.001237"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.232011" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+ path_url=/api/incidents/ 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '130'} 
+ body=b'{"category": "OTHER", "description": "\\u0e40\\u0e04\\u0e2a\\u0e2a\\u0e33\\u0e2b\\u0e23\\u0e31\\u0e1a\\u0e22\\u0e01\\u0e40\\u0e25\\u0e34\\u0e01"}' 
+ </msg>
+<msg time="2026-03-17T13:56:46.232394" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+ status=201, reason=Created 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '28480145-7bf5-40d4-8839-14923ac8fe17', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1285', 'ETag': 'W/"505-JhpWw7U7RnQXz7RljyHmtLC3IEk"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9emw90071cvoanexi6b1o","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:46.185Z","updatedAt":"2026-03-17T06:56:46.185Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.233049" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=201</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.162660" elapsed="0.070463"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.236535" level="INFO">${INCIDENT_ID_2} = cmmu9emw90071cvoanexi6b1o</msg>
+<var>${INCIDENT_ID_2}</var>
+<arg>${response.json()}[data][id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.234008" elapsed="0.002687"/>
+</kw>
+<kw name="Set Suite Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.238989" level="INFO">${INCIDENT_ID_2} = cmmu9emw90071cvoanexi6b1o</msg>
+<arg>${INCIDENT_ID_2}</arg>
+<doc>Makes a variable available everywhere within the scope of the current suite.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.237861" elapsed="0.001592"/>
+</kw>
+<doc>สร้างเคสที่ 2 เพื่อเอาไว้เทสต์การ Cancel/Reject</doc>
+<status status="PASS" start="2026-03-17T13:56:46.149434" elapsed="0.094218"/>
+</test>
+<test id="s1-t9" name="9. Admin Should Be Able To Reject Incident" line="108">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.253153" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.252328" elapsed="0.000958"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.255953" level="INFO">${payload} = {'adminNotes': 'ข้อมูลไม่เพียงพอ'}</msg>
+<var>${payload}</var>
+<arg>adminNotes=ข้อมูลไม่เพียงพอ</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.255163" elapsed="0.000887"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.337007" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
+ path_url=/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '114'} 
+ body=b'{"adminNotes": "\\u0e02\\u0e49\\u0e2d\\u0e21\\u0e39\\u0e25\\u0e44\\u0e21\\u0e48\\u0e40\\u0e1e\\u0e35\\u0e22\\u0e07\\u0e1e\\u0e2d"}' 
+ </msg>
+<msg time="2026-03-17T13:56:46.338901" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '14d857ff-e93a-4655-b880-41bf56a3bf1b', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '486', 'ETag': 'W/"1e6-4gTewUpTEkbeKbGwRhl/s5YaaXk"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident rejected","data":{"id":"cmmu9emw90071cvoanexi6b1o","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:56:46.290Z","createdAt":"2026-03-17T06:56:46.185Z","updatedAt":"2026-03-17T06:56:46.291Z"}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.339566" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/admin/${INCIDENT_ID_2}/reject</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.256822" elapsed="0.082847"/>
+</kw>
+<doc>แอดมินปัดตกเคส (PATCH /admin/:id/reject)</doc>
+<status status="PASS" start="2026-03-17T13:56:46.248704" elapsed="0.092171"/>
+</test>
+<test id="s1-t10" name="10. User Should Be Able To Cancel Their Own Incident" line="114">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.347057" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<var>${headers}</var>
+<arg>Authorization=Bearer ${USER_TOKEN}</arg>
+<arg>Content-Type=application/json</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.346296" elapsed="0.000849"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.348056" level="INFO">${payload} = {'category': 'OTHER', 'description': 'ผู้ใช้กดยกเลิกเอง'}</msg>
+<var>${payload}</var>
+<arg>category=OTHER</arg>
+<arg>description=ผู้ใช้กดยกเลิกเอง</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.347694" elapsed="0.000444"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.397522" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+ path_url=/api/incidents/ 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '142'} 
+ body=b'{"category": "OTHER", "description": "\\u0e1c\\u0e39\\u0e49\\u0e43\\u0e0a\\u0e49\\u0e01\\u0e14\\u0e22\\u0e01\\u0e40\\u0e25\\u0e34\\u0e01\\u0e40\\u0e2d\\u0e07"}' 
+ </msg>
+<msg time="2026-03-17T13:56:46.398001" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+ status=201, reason=Created 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'c717ad19-7486-4638-beea-6d1ba606602f', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1291', 'ETag': 'W/"50b-3Z5of2Q45iAPstZTj5yALEpXLz8"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9en19007gcvoayp6s5ws1","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:46.365Z","updatedAt":"2026-03-17T06:56:46.365Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.398364" level="INFO">${create_resp} = &lt;Response [201]&gt;</msg>
+<var>${create_resp}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/</arg>
+<arg>json=${payload}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=201</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.348634" elapsed="0.049823"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2026-03-17T13:56:46.401226" level="INFO">${cancel_id} = cmmu9en19007gcvoayp6s5ws1</msg>
+<var>${cancel_id}</var>
+<arg>${create_resp.json()}[data][id]</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.399924" elapsed="0.001352"/>
+</kw>
+<kw name="PATCH On Session" owner="RequestsLibrary">
+<msg time="2026-03-17T13:56:46.446309" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
+ path_url=/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '0'} 
+ body=None 
+ </msg>
+<msg time="2026-03-17T13:56:46.447041" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
+ status=200, reason=OK 
+ headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '3864c651-9c2b-40d8-91e6-030ddbbaeb15', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '542', 'ETag': 'W/"21e-rdD4hu4bXoE6xGukqXImNuYWS/o"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
+ body={"success":true,"message":"Incident has been cancelled","data":{"id":"cmmu9en19007gcvoayp6s5ws1","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:56:46.417Z","createdAt":"2026-03-17T06:56:46.365Z","updatedAt":"2026-03-17T06:56:46.418Z"}} 
+ </msg>
+<msg time="2026-03-17T13:56:46.448142" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${INCIDENT_URL}/${cancel_id}/cancel</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=200</arg>
+<doc>Sends a PATCH request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-17T13:56:46.401832" elapsed="0.046471"/>
+</kw>
+<doc>ผู้ใช้ยกเลิกการแจ้งเหตุของตัวเอง (PATCH /:id/cancel)</doc>
+<status status="PASS" start="2026-03-17T13:56:46.342861" elapsed="0.106636"/>
+</test>
+<doc>API Test Suite for Incident Report System</doc>
+<status status="PASS" start="2026-03-17T13:56:44.223747" elapsed="2.228640"/>
+</suite>
+<statistics>
+<total>
+<stat pass="10" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Incident Report Api Test" id="s1" pass="10" fail="0" skip="0">Incident Report Api Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
