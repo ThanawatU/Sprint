@@ -892,6 +892,16 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+## [3.0.0] - 2026-03-17 - Wisit_2348
+
+### Added
+
+- Added A-DAPT Blueprint document
+- Added Sprint Backlog document
+- Added API testing for review (documentation and test cases)
+- Added UAT and TESTCASE testing for review (documentation and test cases)
+
+---
 ## [3.0.0] - 2026-03-17 - Yodsanon_0215
 
 ### Added

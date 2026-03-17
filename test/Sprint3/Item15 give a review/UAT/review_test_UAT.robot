@@ -12,13 +12,13 @@ Suite Teardown    Close All Browser Windows
 
 *** Variables ***
 ${BROWSER}              Chrome
-${LOGIN_URL}            http://localhost:3003/login
-${BASE_URL}             http://localhost:3003
+${LOGIN_URL}            https://csse1469.cpkku.com/login
+${BASE_URL}             https://csse1469.cpkku.com
 ${TIMEOUT}              15s
 
-${DRIVER_EMAIL}         user1@example.com
+${DRIVER_EMAIL}         review1@example.com
 ${DRIVER_PASS}          123456789
-${PASSENGER_EMAIL}      user4@example.com
+${PASSENGER_EMAIL}      review2@example.com
 ${PASSENGER_PASS}       123456789
 
 ${START_LOCATION}       กรุงเทพมหานคร
