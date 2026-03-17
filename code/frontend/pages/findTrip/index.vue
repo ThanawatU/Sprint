@@ -627,16 +627,29 @@
                   </div>
                   <div class="flex items-center">
                     <div class="flex text-sm text-yellow-400">
-                      <span v-for="star in 5" :key="star">{{
-                        star <= bookingRoute.driver.rating ? "★" : "☆"
-                      }}</span>
-                    </div>
-                    <span class="ml-2 text-sm text-gray-600"
-                      >{{ bookingRoute.driver.rating }} ({{
-                        bookingRoute.driver.reviews
-                      }}
-                      รีวิว)</span
-                    >
+                    <span>
+                              {{
+                                "★".repeat(
+                                  Math.round(
+                                    getDriverRating(bookingRoute.driverId).avg,
+                                  ),
+                                )
+                              }}
+                              {{
+                                "☆".repeat(
+                                  5 -
+                                    Math.round(
+                                      getDriverRating(bookingRoute.driverId).avg,
+                                    ),
+                                )
+                              }}
+                            </span>
+                          </div>
+
+                          <span class="ml-2 text-sm text-gray-600">
+                            {{ getDriverRating(bookingRoute.driverId).avg }}
+                            ({{ getDriverRating(bookingRoute.driverId).count }} รีวิว)
+                          </span>
                   </div>
                 </div>
               </div>
