@@ -7,13 +7,13 @@ Library           JSONLibrary
 Suite Setup       Setup Tokens For Testing
 
 *** Variables ***
-${BASE_URL}         http://localhost:3000/api
+${BASE_URL}         https://deploy-production-88fa.up.railway.app/api
 ${INCIDENT_URL}     ${BASE_URL}/incidents
 ${AUTH_URL}         ${BASE_URL}/auth/login
 
 ${ADMIN_USER}       admin@example.com          
 ${ADMIN_PASSWORD}   123456789
-${DRIVER_USER}      tester1@gmail.com
+${DRIVER_USER}      tester1@ex.com
 ${DRIVER_PASSWORD}  123456789
 
 ${ADMIN_TOKEN}      ${EMPTY}

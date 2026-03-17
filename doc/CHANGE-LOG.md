@@ -599,23 +599,24 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
-* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
-* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
+- **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
+- **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
+- **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
 
 ### Changed
 
-* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
+- **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
 
 ### Fixed
 
-* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
+- **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
 
 ---
 
 ## [3.0.0] - 2026-03-16 - Kanyapat_5037
 
-### Added 
+### Added
+
 - Added Latest Report column in Trip Report table to display the most recent report timestamp for each trip.
 - Added Status summary cards showing the number of reports by status (Pending, Under Review, Resolved, Rejected).
 - Added status filter cards that allow quick filtering by report status.
@@ -623,6 +624,7 @@ All notable changes to this project will be documented in this file.
 - Added API to retrieve all reports for the Admin Dashboard.
 
 ### Changed
+
 - Implemented Admin Report Management UI to allow administrators to review and manage individual reports.
 - Added Trip-based report listing in the Admin Dashboard to group reports under the same trip.
 
@@ -630,19 +632,21 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0] - 2026-03-16 - Kanyapat_5037
 
-### Added 
+### Added
 
 - Implemented Admin UI to display all users in a trip, including driver and passengers involved in the report.
 - Added Admin Case Detail Page to display detailed report information, evidence files, and report history.
 
 ### Changed
+
 - Updated Admin Dashboard to list reports as separate entries for each reported user, even when multiple users are reported in the same submission.
 - Improved Admin Case Detail Page to group reports under the same trip and show who submitted each report.
 
 ---
+
 ## [3.0.0] - 2026-03-17 - Pimapsorn_5095
 
-### Added 
+### Added
 
 - Implemented Driver Trip Completion Button allowing drivers to mark trips as completed.
 - Developed UI for displaying Trip status (Active / Completed).
@@ -655,10 +659,12 @@ All notable changes to this project will be documented in this file.
 - Created User Manual describing system usage for passengers, drivers, and administrators.
 
 ### Changed
+
 - Updated Trip Detail page to display complete driver review information, including ratings and comments.
 - Improved UI to present driver rating summaries and review lists more clearly.
 
 ### Fixed
+
 - Fixed issues related to review loading and display synchronization.
 - Fixed bugs affecting trip completion button behavior for drivers.
 - Fixed minor UI and data binding issues in the Trip and Review pages.
@@ -668,6 +674,7 @@ All notable changes to this project will be documented in this file.
 ## [3.0.0] - 2026-03-17 - Kanyapat_5037
 
 ### Changed
+
 - Improve Report Detail UI layout
 - Add status badge with color indicator
 - Translate report status and table labels to Thai
@@ -676,7 +683,7 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0] - 2026-03-17 - Pimapsorn_5095
 
-### Added 
+### Added
 
 - Implemented Driver Trip Completion Button allowing drivers to mark trips as completed.
 - Developed UI for displaying Trip status (Active / Completed).
@@ -689,10 +696,12 @@ All notable changes to this project will be documented in this file.
 - Created User Manual describing system usage for passengers, drivers, and administrators.
 
 ### Changed
+
 - Updated Trip Detail page to display complete driver review information, including ratings and comments.
 - Improved UI to present driver rating summaries and review lists more clearly.
 
 ### Fixed
+
 - Fixed issues related to review loading and display synchronization.
 - Fixed bugs affecting trip completion button behavior for drivers.
 - Fixed minor UI and data binding issues in the Trip and Review pages.
@@ -757,23 +766,24 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-* **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
-* **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
-* **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
+- **Driver Report System**: Added the ability for drivers to report passengers directly from the "My Routes" and "Booking Requests" tabs.
+- **Evidence Management for Drivers**: Implemented a report form modal supporting image and video uploads, accurately tracking `mimeType` and `fileSize` to ensure correct rendering on the Admin Dashboard.
+- **Real-time Report State**: Implemented `reportedCasesSet` to fetch and store user report history on mount, immediately changing the UI button to "รายงานไปแล้ว" to prevent duplicate reporting.
 
 ### Changed
 
-* **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
+- **Report Creation Logic**: Refactored `createReportCase` in `report.service.js` to distinguish between roles. Drivers can now report multiple different passengers within the same trip, while passengers remain restricted to one report per trip.
 
 ### Fixed
 
-* **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
+- **Admin Booking CORS Issue**: Resolved a Cross-Origin Resource Sharing (CORS) error in the Admin Dashboard by replacing a hardcoded production URL with the `config.public.apiBase` environment variable.
 
 ---
 
 ## [3.0.0] - 2026-03-16 - Kanyapat_5037
 
-### Added 
+### Added
+
 - Added Latest Report column in Trip Report table to display the most recent report timestamp for each trip.
 - Added Status summary cards showing the number of reports by status (Pending, Under Review, Resolved, Rejected).
 - Added status filter cards that allow quick filtering by report status.
@@ -781,6 +791,7 @@ All notable changes to this project will be documented in this file.
 - Added API to retrieve all reports for the Admin Dashboard.
 
 ### Changed
+
 - Implemented Admin Report Management UI to allow administrators to review and manage individual reports.
 - Added Trip-based report listing in the Admin Dashboard to group reports under the same trip.
 
@@ -788,12 +799,13 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0] - 2026-03-16 - Kanyapat_5037
 
-### Added 
+### Added
 
 - Implemented Admin UI to display all users in a trip, including driver and passengers involved in the report.
 - Added Admin Case Detail Page to display detailed report information, evidence files, and report history.
 
 ### Changed
+
 - Updated Admin Dashboard to list reports as separate entries for each reported user, even when multiple users are reported in the same submission.
 - Improved Admin Case Detail Page to group reports under the same trip and show who submitted each report.
 
@@ -801,7 +813,7 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0] - 2026-03-17 - Pimapsorn_5095
 
-### Added 
+### Added
 
 - Implemented Driver Trip Completion Button allowing drivers to mark trips as completed.
 - Developed UI for displaying Trip status (Active / Completed).
@@ -814,10 +826,12 @@ All notable changes to this project will be documented in this file.
 - Created User Manual describing system usage for passengers, drivers, and administrators.
 
 ### Changed
+
 - Updated Trip Detail page to display complete driver review information, including ratings and comments.
 - Improved UI to present driver rating summaries and review lists more clearly.
 
 ### Fixed
+
 - Fixed issues related to review loading and display synchronization.
 - Fixed bugs affecting trip completion button behavior for drivers.
 - Fixed minor UI and data binding issues in the Trip and Review pages.
@@ -827,6 +841,7 @@ All notable changes to this project will be documented in this file.
 ## [3.0.0] - 2026-03-17 - Yodsanon_0215
 
 ### Added
+
 - **Incident Report Test**: Added an automated API test suite using Robot Framework for the Incident Report system, covering both User and Admin flows.
 - **Test Documentation**: Added a formal UAT test scenario document (API-INCIDENT-001) for the Incident Report API.
 
@@ -835,12 +850,14 @@ All notable changes to this project will be documented in this file.
 ## [3.0.0] - 2026-03-17 - Nattaphat_0126
 
 ### Added
+
 - **Incident Reporting System**: Implemented a comprehensive incident reporting flow for drivers, including category selection and detailed descriptions.
 - **Interactive Incident Map**: Integrated Google Maps with search box and geolocation support to allow precise incident location tagging without forced default coordinates.
 - **Incident History View**: Added a new section in the "My History" page to display grouped incident reports per trip, including status tracking and admin notes.
 - **Post-Report Evidence Management**: Enabled drivers to upload additional evidence to existing incident cases that are not yet resolved.
 
 ### Changed
+
 - **Standardized UI Layout**: Refactored the Incident history section to use a standardized Card UI, ensuring visual consistency with the Passenger Report section.
 - **Enhanced Route Management**: Updated the "My Route" interface to include quick-action buttons for reporting emergencies and marking trips as completed.
 
@@ -848,7 +865,7 @@ All notable changes to this project will be documented in this file.
 
 ## [3.0.0] - 2026-03-17 - Pimapsorn_5095
 
-### Added 
+### Added
 
 - Implemented Driver Trip Completion Button allowing drivers to mark trips as completed.
 - Developed UI for displaying Trip status (Active / Completed).
@@ -861,13 +878,22 @@ All notable changes to this project will be documented in this file.
 - Created User Manual describing system usage for passengers, drivers, and administrators.
 
 ### Changed
+
 - Updated Trip Detail page to display complete driver review information, including ratings and comments.
 - Improved UI to present driver rating summaries and review lists more clearly.
 
 ### Fixed
+
 - Fixed issues related to review loading and display synchronization.
 - Fixed bugs affecting trip completion button behavior for drivers.
 - Fixed minor UI and data binding issues in the Trip and Review pages.
+
+## [3.0.0] - 2026-03-17 - Yodsanon_0215
+
+### Added
+
+- **Report Test**: Added an automated API test suite using Robot Framework for the Report system, covering both User and Admin flows.
+- **Test Documentation**: Added a formal UAT test scenario document for the Report API.
 
 ---
 

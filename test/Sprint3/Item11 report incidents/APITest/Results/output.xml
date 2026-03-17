@@ -1,127 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.3.2 (Python 3.13.5 on win32)" generated="2026-03-17T13:56:44.220049" rpa="false" schemaversion="5">
-<suite id="s1" name="Incident Report Api Test" source="C:\Users\ROG\Documents\Dev\SE\Sprint\test\Sprint3\Item11\APITest\incident_report_api_test.robot">
+<robot generator="Robot 7.3.2 (Python 3.13.5 on win32)" generated="2026-03-17T21:30:08.731256" rpa="false" schemaversion="5">
+<suite id="s1" name="Incident Report Api Test" source="C:\Users\ROG\Documents\Dev\SE\Sprint\test\Sprint3\Item11 report incidents\APITest\incident_report_api_test.robot">
 <kw name="Setup Tokens For Testing" type="SETUP">
 <kw name="Create Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:44.810695" level="INFO">Creating Session using : alias=api, url=http://localhost:3000/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<msg time="2026-03-17T21:30:09.455900" level="INFO">Creating Session using : alias=api, url=https://deploy-production-88fa.up.railway.app/api, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
 <arg>api</arg>
 <arg>${BASE_URL}</arg>
 <doc>Create Session: create a HTTP session to a server</doc>
-<status status="PASS" start="2026-03-17T13:56:44.810398" elapsed="0.000704"/>
+<status status="PASS" start="2026-03-17T21:30:09.455588" elapsed="0.000651"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:44.811932" level="INFO">${user_payload} = {'email': 'tester1@gmail.com', 'password': '123456789'}</msg>
+<msg time="2026-03-17T21:30:09.457053" level="INFO">${user_payload} = {'email': 'tester1@ex.com', 'password': '123456789'}</msg>
 <var>${user_payload}</var>
 <arg>email=${DRIVER_USER}</arg>
 <arg>password=${DRIVER_PASSWORD}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:44.811347" elapsed="0.000639"/>
+<status status="PASS" start="2026-03-17T21:30:09.456476" elapsed="0.000631"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.056151" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-17T21:30:13.925901" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '55', 'Content-Type': 'application/json'} 
- body=b'{"email": "tester1@gmail.com", "password": "123456789"}' 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '52', 'Content-Type': 'application/json'} 
+ body=b'{"email": "tester1@ex.com", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-17T13:56:45.056660" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-17T21:30:13.926105" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '284a3513-888e-47ef-9dd3-f666e8061540', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 06:56:45 GMT; SameSite=Lax', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '482', 'ETag': 'W/"1e2-S/1VapZBGSCgYAvMoZmeo5LK4QI"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU","user":{"id":"cmmqfuzea00034oau1medpiu1","firstName":"tester","lastName":"1","profilePicture":null,"role":"DRIVER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '489', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:13 GMT', 'Etag': 'W/"1e9-pF8m2kz3hD+5qYuND/MSxeUpzes"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 14:30:13 GMT; SameSite=Lax', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'l843UA05Qbuf9UwxAQeqjw', 'X-Request-Id': '4eaeb8ec-6f72-40e0-873c-0bb26efcb544', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM","user":{"id":"cmmuossu1001afnclx7qyb045","firstName":"tester1","lastName":"tester1","profilePicture":null,"role":"DRIVER","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-17T13:56:45.057027" level="INFO">${user_resp} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:13.926261" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:13.926740" level="INFO">${user_resp} = &lt;Response [200]&gt;</msg>
 <var>${user_resp}</var>
 <arg>api</arg>
 <arg>${AUTH_URL}</arg>
 <arg>json=${user_payload}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:44.812225" elapsed="0.244854"/>
+<status status="PASS" start="2026-03-17T21:30:09.457297" elapsed="4.469502"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.059100" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU</msg>
+<msg time="2026-03-17T21:30:13.927845" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM</msg>
 <var>${USER_TOKEN}</var>
 <arg>${user_resp.json()}[data][token]</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.057562" elapsed="0.001608"/>
+<status status="PASS" start="2026-03-17T21:30:13.927038" elapsed="0.000857"/>
 </kw>
 <kw name="Set Suite Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.059845" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU</msg>
+<msg time="2026-03-17T21:30:13.928394" level="INFO">${USER_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM</msg>
 <arg>${USER_TOKEN}</arg>
 <doc>Makes a variable available everywhere within the scope of the current suite.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.059444" elapsed="0.000486"/>
+<status status="PASS" start="2026-03-17T21:30:13.928084" elapsed="0.000388"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.060619" level="INFO">${admin_payload} = {'email': 'admin@example.com', 'password': '123456789'}</msg>
+<msg time="2026-03-17T21:30:13.929042" level="INFO">${admin_payload} = {'email': 'admin@example.com', 'password': '123456789'}</msg>
 <var>${admin_payload}</var>
 <arg>email=${ADMIN_USER}</arg>
 <arg>password=${ADMIN_PASSWORD}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.060155" elapsed="0.000509"/>
+<status status="PASS" start="2026-03-17T21:30:13.928636" elapsed="0.000451"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.234226" level="INFO">POST Request : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-17T21:30:16.610225" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  path_url=/api/auth/login 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Length': '55', 'Content-Type': 'application/json'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Length': '55', 'Content-Type': 'application/json'} 
  body=b'{"email": "admin@example.com", "password": "123456789"}' 
  </msg>
-<msg time="2026-03-17T13:56:45.234516" level="INFO">POST Response : url=http://localhost:3000/api/auth/login 
+<msg time="2026-03-17T21:30:16.610405" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'b2397a41-c2dc-458e-8b8b-ab461f352bee', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 06:56:45 GMT; SameSite=Lax', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '491', 'ETag': 'W/"1eb-GjX/gIRwl/OKJ5dFg5g1nBrJwLk"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE","user":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '491', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:16 GMT', 'Etag': 'W/"1eb-bcSMS4T8uUph2n5p70rK18iQVu4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Set-Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA; Max-Age=604800; Path=/; Expires=Tue, 24 Mar 2026 14:30:16 GMT; SameSite=Lax', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'J891LeBuTJCw9ykaAQeqjw', 'X-Request-Id': 'abae4aa4-2c15-4c78-955d-dd7e9eaea8f0', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Login successful","data":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA","user":{"id":"cmm74s46k0000hkosqomftetw","firstName":"System","lastName":"Administrator","profilePicture":null,"role":"ADMIN","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-17T13:56:45.235201" level="INFO">${admin_resp} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:16.610878" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:16.611437" level="INFO">${admin_resp} = &lt;Response [200]&gt;</msg>
 <var>${admin_resp}</var>
 <arg>api</arg>
 <arg>${AUTH_URL}</arg>
 <arg>json=${admin_payload}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.060890" elapsed="0.174365"/>
+<status status="PASS" start="2026-03-17T21:30:13.929251" elapsed="2.682271"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.236837" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE</msg>
+<msg time="2026-03-17T21:30:16.612801" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA</msg>
 <var>${ADMIN_TOKEN}</var>
 <arg>${admin_resp.json()}[data][token]</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.235496" elapsed="0.001399"/>
+<status status="PASS" start="2026-03-17T21:30:16.611798" elapsed="0.001097"/>
 </kw>
 <kw name="Set Suite Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.237407" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE</msg>
+<msg time="2026-03-17T21:30:16.613531" level="INFO">${ADMIN_TOKEN} = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA</msg>
 <arg>${ADMIN_TOKEN}</arg>
 <doc>Makes a variable available everywhere within the scope of the current suite.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.237114" elapsed="0.000364"/>
+<status status="PASS" start="2026-03-17T21:30:16.613186" elapsed="0.000428"/>
 </kw>
-<status status="PASS" start="2026-03-17T13:56:44.809464" elapsed="0.428123"/>
+<status status="PASS" start="2026-03-17T21:30:09.454731" elapsed="7.159006"/>
 </kw>
 <test id="s1-t1" name="1. User Should Be Able To Create An Incident" line="44">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.240142" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:16.616960" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.239628" elapsed="0.000574"/>
+<status status="PASS" start="2026-03-17T21:30:16.615926" elapsed="0.001094"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.241581" level="INFO">${payload} = {'category': 'ACCIDENT', 'description': 'รถชนท้ายกัน'}</msg>
+<msg time="2026-03-17T21:30:16.617972" level="INFO">${payload} = {'category': 'ACCIDENT', 'description': 'รถชนท้ายกัน'}</msg>
 <var>${payload}</var>
 <arg>category=ACCIDENT</arg>
 <arg>description=รถชนท้ายกัน</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.240990" elapsed="0.000688"/>
+<status status="PASS" start="2026-03-17T21:30:16.617453" elapsed="0.000619"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.308867" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:20.555110" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  path_url=/api/incidents/ 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '109'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '109'} 
  body=b'{"category": "ACCIDENT", "description": "\\u0e23\\u0e16\\u0e0a\\u0e19\\u0e17\\u0e49\\u0e32\\u0e22\\u0e01\\u0e31\\u0e19"}' 
  </msg>
-<msg time="2026-03-17T13:56:45.309216" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:20.555269" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'd8f9ac70-2ae3-44ed-8701-4a365e253c39', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1276', 'ETag': 'W/"4fc-tlJIxQL1jzPk7U1JVTje2xoTDWE"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '1282', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:20 GMT', 'Etag': 'W/"502-3UWNQPFfr7DKEV+I7dIWKBGfDNM"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'DSpv_7ETTaWLViDuAQeqjw', 'X-Request-Id': 'd8ba1ed7-8def-415e-b4f0-6a1c61e6e4c3', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:17.318Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","password":"$2b$10$k59ldnKNBYI4Pf6mzUUYoOn.TC.pNFdzO1kAWgUcpzMUqXfn4K0gG","firstName":"tester1","lastName":"tester1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1111111111111","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/national_ids/wntl1wldcqhthpxhxsie.webp","nationalIdExpiryDate":"3000-03-21T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/selfies/yi6tagsxg6zjrgtgz5kk.avif","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-17T14:07:41.305Z","updatedAt":"2026-03-17T14:13:13.513Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-17T13:56:45.309664" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-17T21:30:20.555412" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:20.555905" level="INFO">${response} = &lt;Response [201]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/</arg>
@@ -129,129 +135,135 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=201</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.242268" elapsed="0.067485"/>
+<status status="PASS" start="2026-03-17T21:30:16.618918" elapsed="3.937044"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.313485" level="INFO">${INCIDENT_ID} = cmmu9em6f0063cvoa8gvp2sqs</msg>
+<msg time="2026-03-17T21:30:20.557311" level="INFO">${INCIDENT_ID} = cmmuplv52006sj0hdnqguub3p</msg>
 <var>${INCIDENT_ID}</var>
 <arg>${response.json()}[data][id]</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.310555" elapsed="0.003041"/>
+<status status="PASS" start="2026-03-17T21:30:20.556393" elapsed="0.000971"/>
 </kw>
 <kw name="Set Suite Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.314936" level="INFO">${INCIDENT_ID} = cmmu9em6f0063cvoa8gvp2sqs</msg>
+<msg time="2026-03-17T21:30:20.558069" level="INFO">${INCIDENT_ID} = cmmuplv52006sj0hdnqguub3p</msg>
 <arg>${INCIDENT_ID}</arg>
 <doc>Makes a variable available everywhere within the scope of the current suite.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.314419" elapsed="0.000636"/>
+<status status="PASS" start="2026-03-17T21:30:20.557769" elapsed="0.000374"/>
 </kw>
 <doc>ผู้ใช้สร้างการแจ้งเหตุใหม่ (POST /) โดยไม่ส่ง Location</doc>
-<status status="PASS" start="2026-03-17T13:56:45.237788" elapsed="0.077779"/>
+<status status="PASS" start="2026-03-17T21:30:16.613871" elapsed="3.944858"/>
 </test>
 <test id="s1-t2" name="2. User Should Be Able To Get Their Own Incidents" line="55">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.321473" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:20.561923" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.320386" elapsed="0.001204"/>
+<status status="PASS" start="2026-03-17T21:30:20.561370" elapsed="0.000607"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.408997" level="INFO">GET Request : url=http://localhost:3000/api/incidents/my 
+<msg time="2026-03-17T21:30:24.118443" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/my 
  path_url=/api/incidents/my 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA'} 
  body=None 
  </msg>
-<msg time="2026-03-17T13:56:45.409419" level="INFO">GET Response : url=http://localhost:3000/api/incidents/my 
+<msg time="2026-03-17T21:30:24.118603" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/my 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'c1f1d152-fe07-408c-acd0-d012172af2a7', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '10258', 'ETag': 'W/"2812-qqT7yxb4RtBEv4cSML5XlLJ+CDc"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"data":[{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsdi005gcvoazu3bmvvr","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:54:33.375Z","createdAt":"2026-03-17T06:54:33.318Z","updatedAt":"2026-03-17T06:54:33.376Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9bsfb005ocvoaxks03ma5","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:54:33.383Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9bsdi005icvoael35bkmc","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.318Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsaa0051cvoaosloyc6z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:54:33.268Z","createdAt":"2026-03-17T06:54:33.202Z","updatedAt":"2026-03-17T06:54:33.270Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bsce0059cvoafb7ofom7","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:54:33.278Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bsaa0053cvoalyth3h9g","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.202Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9brwc0043cvoav1xk8j3z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:54:33.153Z","createdAt":"2026-03-17T06:54:32.700Z","updatedAt":"2026-03-17T06:54:33.154Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9bs2w004fcvoab33t0qk3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:54:32.936Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bs95004ucvoadl4l7ep3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:54:33.162Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bs7l004ocvoagyyh29yk","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:54:33.105Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9brwc0045cvoathxo8ex4","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:32.700Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aldj003gcvoa0jon5swb","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:53:37.656Z","createdAt":"2026-03-17T06:53:37.591Z","updatedAt":"2026-03-17T06:53:37.657Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9alfn003ocvoaer9xqvku","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:53:37.667Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9aldj003icvoanlp8k8a8","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.591Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9al9k0031cvoa8ocidkmd","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:53:37.532Z","createdAt":"2026-03-17T06:53:37.448Z","updatedAt":"2026-03-17T06:53:37.533Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9alc40039cvoa3g1ik4dw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:53:37.540Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al9k0033cvoagnem5hgw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.448Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aktp0023cvoa3mgep7lq","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:53:37.365Z","createdAt":"2026-03-17T06:53:36.878Z","updatedAt":"2026-03-17T06:53:37.368Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9al07002fcvoajpcxwt81","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:53:37.111Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9al7o002ucvoaqlhiqtbp","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:53:37.380Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al5h002ocvoayje3f0v3","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:53:37.301Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9aktq0025cvoalmtkusn7","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:36.878Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]}]} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '886', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:24 GMT', 'Etag': 'W/"376-MF+RyrTsiRGK7ciIpj57y7WFRRE"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'SifB3EeVRQG68kiYAQeqjw', 'X-Request-Id': '755b1c99-3232-4fa8-9f93-a877e3a7fc9e', 'X-Xss-Protection': '0'} 
+ body={"success":true,"data":[{"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:17.318Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","firstName":"tester1","lastName":"tester1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmuplv52006uj0hddv2853ss","incidentReportId":"cmmuplv52006sj0hdnqguub3p","fromStatus":null,"toStatus":"PENDING","changedById":"cmmuossu1001afnclx7qyb045","note":"Initial incident report filed","createdAt":"2026-03-17T14:30:17.318Z","changedBy":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1"}}]}]} 
  </msg>
-<msg time="2026-03-17T13:56:45.410460" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:24.118780" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:24.119368" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/my</arg>
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.322504" elapsed="0.088050"/>
+<status status="PASS" start="2026-03-17T21:30:20.562369" elapsed="3.557114"/>
 </kw>
 <doc>ผู้ใช้ดึงประวัติการแจ้งเหตุของตัวเอง (GET /my)</doc>
-<status status="PASS" start="2026-03-17T13:56:45.317162" elapsed="0.097266"/>
+<status status="PASS" start="2026-03-17T21:30:20.559841" elapsed="3.560175"/>
 </test>
 <test id="s1-t3" name="3. User Should Be Able To Get Incident By ID" line="60">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.430017" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:24.123659" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.429035" elapsed="0.001088"/>
+<status status="PASS" start="2026-03-17T21:30:24.123214" elapsed="0.000498"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.527763" level="INFO">GET Request : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
- path_url=/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+<msg time="2026-03-17T21:30:27.363571" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmuplv52006sj0hdnqguub3p 
+ path_url=/api/incidents/cmmuplv52006sj0hdnqguub3p 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA'} 
  body=None 
  </msg>
-<msg time="2026-03-17T13:56:45.528561" level="INFO">GET Response : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs 
+<msg time="2026-03-17T21:30:27.363749" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmuplv52006sj0hdnqguub3p 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '95d2b43b-0c9c-4f85-bddd-ee2dc9fd287f', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '856', 'ETag': 'W/"358-lZEQrqXI+ggXC8hg3wQoqHM+ToQ"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '860', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:27 GMT', 'Etag': 'W/"35c-3Tk4f3g3euHqqXIo42tuc78Gx9A"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'dCC9XGuyTVSdcbwrAQeqjw', 'X-Request-Id': '519f2d96-d272-42b8-adcb-89d593a1c35d', 'X-Xss-Protection': '0'} 
+ body={"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:17.318Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","firstName":"tester1","lastName":"tester1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmuplv52006uj0hddv2853ss","incidentReportId":"cmmuplv52006sj0hdnqguub3p","fromStatus":null,"toStatus":"PENDING","changedById":"cmmuossu1001afnclx7qyb045","note":"Initial incident report filed","createdAt":"2026-03-17T14:30:17.318Z","changedBy":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1"}}]} 
  </msg>
-<msg time="2026-03-17T13:56:45.529273" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:27.364073" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:27.364654" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/${INCIDENT_ID}</arg>
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.439874" elapsed="0.089543"/>
+<status status="PASS" start="2026-03-17T21:30:24.124136" elapsed="3.240599"/>
 </kw>
 <doc>ผู้ใช้ดูรายละเอียดเคสรายตัว (GET /:id)</doc>
-<status status="PASS" start="2026-03-17T13:56:45.422475" elapsed="0.110460"/>
+<status status="PASS" start="2026-03-17T21:30:24.121100" elapsed="3.244123"/>
 </test>
 <test id="s1-t4" name="4. User Should Be Able To Add Evidence To Incident" line="65">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.568630" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:27.368578" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.566512" elapsed="0.002364"/>
+<status status="PASS" start="2026-03-17T21:30:27.367778" elapsed="0.000898"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.575122" level="INFO">${evidence} = {'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}</msg>
+<msg time="2026-03-17T21:30:27.369343" level="INFO">${evidence} = {'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}</msg>
 <var>${evidence}</var>
 <arg>url=https://example.com/image.jpg</arg>
 <arg>type=IMAGE</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.572349" elapsed="0.003042"/>
+<status status="PASS" start="2026-03-17T21:30:27.369062" elapsed="0.000327"/>
 </kw>
 <kw name="Create List" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.581884" level="INFO">${evidence_list} = [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]</msg>
+<msg time="2026-03-17T21:30:27.370103" level="INFO">${evidence_list} = [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]</msg>
 <var>${evidence_list}</var>
 <arg>${evidence}</arg>
 <doc>Returns a list containing given items.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.580125" elapsed="0.002257"/>
+<status status="PASS" start="2026-03-17T21:30:27.369778" elapsed="0.000369"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.587864" level="INFO">${payload} = {'evidences': [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]}</msg>
+<msg time="2026-03-17T21:30:27.370917" level="INFO">${payload} = {'evidences': [{'url': 'https://example.com/image.jpg', 'type': 'IMAGE'}]}</msg>
 <var>${payload}</var>
 <arg>evidences=${evidence_list}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.585619" elapsed="0.002441"/>
+<status status="PASS" start="2026-03-17T21:30:27.370558" elapsed="0.000404"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.714102" level="INFO">POST Request : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
- path_url=/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '74'} 
+<msg time="2026-03-17T21:30:31.190169" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmuplv52006sj0hdnqguub3p/evidence 
+ path_url=/api/incidents/cmmuplv52006sj0hdnqguub3p/evidence 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '74'} 
  body=b'{"evidences": [{"url": "https://example.com/image.jpg", "type": "IMAGE"}]}' 
  </msg>
-<msg time="2026-03-17T13:56:45.714480" level="INFO">POST Response : url=http://localhost:3000/api/incidents/cmmu9em6f0063cvoa8gvp2sqs/evidence 
+<msg time="2026-03-17T21:30:31.190343" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmuplv52006sj0hdnqguub3p/evidence 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'a2e32d04-35dd-4d0a-8b6e-ce1abf65922d', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1112', 'ETag': 'W/"458-LkvBnYYek1GJQJWkVUvocPJUFJY"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Evidence uploaded successfully","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9emgt006fcvoamsc155or","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:56:45.630Z"}],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '1116', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:31 GMT', 'Etag': 'W/"45c-/QMxWayAtnvxwELjcUxY69jioWs"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Uv1Wcie9SdqQ6XmIAQeqjw', 'X-Request-Id': 'f7aa68d2-bf95-4bb2-babf-d5d7d743e864', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Evidence uploaded successfully","data":{"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:17.318Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","firstName":"tester1","lastName":"tester1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmupm3t60074j0hdpkk079a4","incidentReportId":"cmmuplv52006sj0hdnqguub3p","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T14:30:28.554Z"}],"resolvedBy":null,"history":[{"id":"cmmuplv52006uj0hddv2853ss","incidentReportId":"cmmuplv52006sj0hdnqguub3p","fromStatus":null,"toStatus":"PENDING","changedById":"cmmuossu1001afnclx7qyb045","note":"Initial incident report filed","createdAt":"2026-03-17T14:30:17.318Z","changedBy":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1"}}]}} 
  </msg>
-<msg time="2026-03-17T13:56:45.715404" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-17T21:30:31.190482" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:31.191802" level="INFO">${response} = &lt;Response [201]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/${INCIDENT_ID}/evidence</arg>
@@ -259,114 +271,120 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=201</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.591934" elapsed="0.123761"/>
+<status status="PASS" start="2026-03-17T21:30:27.371352" elapsed="3.820632"/>
 </kw>
 <doc>ผู้ใช้อัปโหลดหลักฐานเพิ่มเติม (POST /:id/evidence)</doc>
-<status status="PASS" start="2026-03-17T13:56:45.560821" elapsed="0.162792"/>
+<status status="PASS" start="2026-03-17T21:30:27.366383" elapsed="3.826128"/>
 </test>
 <test id="s1-t5" name="5. Admin Should Be Able To Get All Incidents" line="76">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.739821" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<msg time="2026-03-17T21:30:31.195628" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZ...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.738190" elapsed="0.001795"/>
+<status status="PASS" start="2026-03-17T21:30:31.195190" elapsed="0.000490"/>
 </kw>
 <kw name="GET On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:45.873201" level="INFO">GET Request : url=http://localhost:3000/api/incidents/admin/all 
+<msg time="2026-03-17T21:30:36.485085" level="INFO">GET Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/all 
  path_url=/api/incidents/admin/all 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA'} 
  body=None 
  </msg>
-<msg time="2026-03-17T13:56:45.873860" level="INFO">GET Response : url=http://localhost:3000/api/incidents/admin/all 
+<msg time="2026-03-17T21:30:36.485521" level="INFO">GET Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/all 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '2d175c1e-2ba2-4cee-8f6a-954149ae2b0b', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '22382', 'ETag': 'W/"576e-PpcU6ylHytgJt+RWMqPNvyEm7sk"', 'Date': 'Tue, 17 Mar 2026 06:56:45 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body=[{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.255Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9emgt006fcvoamsc155or","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:56:45.630Z"}],"resolvedBy":null,"history":[{"id":"cmmu9em6f0065cvoanec779eo","incidentReportId":"cmmu9em6f0063cvoa8gvp2sqs","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:56:45.255Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsdi005gcvoazu3bmvvr","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:54:33.375Z","createdAt":"2026-03-17T06:54:33.318Z","updatedAt":"2026-03-17T06:54:33.376Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9bsfb005ocvoaxks03ma5","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:54:33.383Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9bsdi005icvoael35bkmc","incidentReportId":"cmmu9bsdi005gcvoazu3bmvvr","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.318Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9bsaa0051cvoaosloyc6z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:54:33.268Z","createdAt":"2026-03-17T06:54:33.202Z","updatedAt":"2026-03-17T06:54:33.270Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bsce0059cvoafb7ofom7","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:54:33.278Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bsaa0053cvoalyth3h9g","incidentReportId":"cmmu9bsaa0051cvoaosloyc6z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:33.202Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9brwc0043cvoav1xk8j3z","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:54:33.153Z","createdAt":"2026-03-17T06:54:32.700Z","updatedAt":"2026-03-17T06:54:33.154Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9bs2w004fcvoab33t0qk3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:54:32.936Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9bs95004ucvoadl4l7ep3","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:54:33.162Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9bs7l004ocvoagyyh29yk","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:54:33.105Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9brwc0045cvoathxo8ex4","incidentReportId":"cmmu9brwc0043cvoav1xk8j3z","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:54:32.700Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aldj003gcvoa0jon5swb","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:53:37.656Z","createdAt":"2026-03-17T06:53:37.591Z","updatedAt":"2026-03-17T06:53:37.657Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":null,"history":[{"id":"cmmu9alfn003ocvoaer9xqvku","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfuzea00034oau1medpiu1","note":"User manually cancelled the incident report","createdAt":"2026-03-17T06:53:37.667Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}},{"id":"cmmu9aldj003icvoanlp8k8a8","incidentReportId":"cmmu9aldj003gcvoa0jon5swb","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.591Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9al9k0031cvoa8ocidkmd","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:53:37.532Z","createdAt":"2026-03-17T06:53:37.448Z","updatedAt":"2026-03-17T06:53:37.533Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9alc40039cvoa3g1ik4dw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":"PENDING","toStatus":"REJECTED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ข้อมูลไม่เพียงพอ","createdAt":"2026-03-17T06:53:37.540Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al9k0033cvoagnem5hgw","incidentReportId":"cmmu9al9k0031cvoa8ocidkmd","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:37.448Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmu9aktp0023cvoa3mgep7lq","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:53:37.365Z","createdAt":"2026-03-17T06:53:36.878Z","updatedAt":"2026-03-17T06:53:37.368Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","firstName":"tester","lastName":"1","phoneNumber":"0999999999"},"route":null,"evidences":[{"id":"cmmu9al07002fcvoajpcxwt81","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","type":"IMAGE","url":"https://example.com/image.jpg","fileName":null,"createdAt":"2026-03-17T06:53:37.111Z"}],"resolvedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","firstName":"System","lastName":"Administrator"},"history":[{"id":"cmmu9al7o002ucvoaqlhiqtbp","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"UNDER_INVESTIGATION","toStatus":"RESOLVED","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"ตรวจสอบและจัดการเรียบร้อยแล้ว","createdAt":"2026-03-17T06:53:37.380Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9al5h002ocvoayje3f0v3","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":"PENDING","toStatus":"UNDER_INVESTIGATION","changedById":"cmmqfkv9j00004oau56v8ifrl","note":"Admin is currently investigating the incident","createdAt":"2026-03-17T06:53:37.301Z","changedBy":{"id":"cmmqfkv9j00004oau56v8ifrl","username":"admin123"}},{"id":"cmmu9aktq0025cvoalmtkusn7","incidentReportId":"cmmu9aktp0023cvoa3mgep7lq","fromStatus":null,"toStatus":"PENDING","changedById":"cmmqfuzea00034oau1medpiu1","note":"Initial incident report filed","createdAt":"2026-03-17T06:53:36.878Z","changedBy":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1"}}]},{"id":"cmmqjrt4m0001kp89kzn12c8d","reporterId":"cmmqfw2n900094oauyfcqxzlb","routeId":"cmmqg1bd700374oau1dvyoetb","category":"ACCIDENT","description":"เกิดอุบัติเหตุรถชนที่แยกไฟแดง มีผู้บาดเจ็บเล็กน้อย ต้องการความช่วยเหลือด่วน","status":"RESOLVED","location":{"lat":15.27077892932... (set the log level to DEBUG or TRACE to see the full content) 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '43944', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:36 GMT', 'Etag': 'W/"aba8-LlUSBsJEJ1dW64RYBd1+9naVy2U"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Z374TpriQRmqvGtFAQeqjw', 'X-Request-Id': '5d16cf90-bc24-4a76-a4ab-ae43f9af81aa', 'X-Xss-Protection': '0'} 
+ body=[{"id":"1","reporterId":"cmmrv3w3d00gbnl134vnksszj","routeId":"cmmt9t197000s5sgbttj9ogt3","category":"ACCIDENT","description":"Test","status":"RESOLVED","location":null,"resolvedById":"cmm74s46k0000hkosqomftetw","adminNotes":"กำลังช่วยเหลือ","resolvedAt":"2026-03-17T12:28:03.598Z","createdAt":"2026-03-17T15:13:09.000Z","updatedAt":"2026-03-17T12:28:03.601Z","reporter":{"id":"cmmrv3w3d00gbnl134vnksszj","username":"passenger3","email":"pass3@email.com","firstName":"Passenger3","lastName":"Passenger3","phoneNumber":"1234567890"},"route":{"id":"cmmt9t197000s5sgbttj9ogt3","driverId":"cmma9bihy00135mbi2wyrrr5v","vehicleId":"cmma9o7jh00271xt74tx3guov","startLocation":{"lat":13.7563309,"lng":100.5017651,"name":"Bangkok","address":"Bangkok"},"endLocation":{"lat":16.490256,"lng":104.5655273,"name":"Mukdahan","address":"Mukdahan"},"departureTime":"2026-09-09T04:11:00.000Z","availableSeats":4,"pricePerSeat":250,"conditions":null,"status":"AVAILABLE","cancelledAt":null,"cancelledBy":null,"routePolyline":"_x}rA_gldRq\\}mAdSmn@aeAkh@{}DcgAysAa~@osArd@qqBfcAafDcIasEau@_vAuUi}AqdAkiF{jA}|ClRimBam@crDie@s`EbJeeE`Km~Bph@unBttAob@rCkhAocCql@mlCiEg}Au`@gOil@qf@soFacMgmBaoEqEuy@gsB}sEqdCwrFmhCe`BmiC__BopAouAyvBgtBeuCw{@}{F_r@icFo`AacFukA}}CdGgGoeA{j@i_Aq_Bq{Bc`DawCukE{bMyjAokD_jAgzBwp@el@cYg_BFudDbJkgBjj@ea@gCobAid@_uAnB}`AdZq_BoHiqAwn@odFwZybC}j@svAuf@_zE~`@qoBeh@}vCc\\}sDcZwhD}\\qvAkk@oe@gcBmgAaiBacB_eCeuB_oDudAosBi_@qjAaTee@wl@yyA{m@ulAwX_|BoeBafA_rCwyC_dDm~AgfGyfEc}PamLkje@|Z}nCubDwcBogFqoC_hBkoFkwCmaKy~D}|LfYsqBxxB_eDd`A}fA~m@ib@qZys@ma@{cCsYklBwgFqhDyi@{`AydA}b@yjDqeAerAk~@_zB{x@ijBejBsjBo{CoTaiAsqAsZmbDfJmjFulCifAg\\_ZoNuQ}~AyWa}Amx@ulBmjAexAycBolAwsB{wCkaAg`Dg_Ei`B_cBuzBws@esCgGcpAok@a|@}_Eo|FalA}vBo`BkwC}j@yiATqhAwNwgD{s@ipDgZifBz@eeB_CqsEbiAmgHm@epF{[iaBp{@_vDpl@q{Dh^ohEvy@o~Bl~BcpMeFq{Del@{aD}A}qQgQeiJkf@m}@khB{n@abDugD_rEcqEsjBytCaYenC_g@aqFex@cgBmaA_jD}RkmBz[gtE`l@ypIxPegCaKefBsbBiqDsAexAjlA}b@bhC}m@pwAkt@bLyy@wKcxAw_By|G{}CwnIcg@ohE}GehCc_F}eEsiG_sD{uBgkAenAohAm}B_jFyfCkdCkb@chBjF{eBlI{OqF}Skj@oZa}B_qAqnEanDmuFugDuuD_aDc|DkuCmdAyeBgcDodBoq@aU|C_c@fB}|@mJgb@gm@eAavBsx@kp@gP__Agk@iTghC_v@ghC{oBweBakCmxBkf@_~@cpAseAmzBmmBykBkgB}eAm`@g~@kbActBhGsdCoI_vBua@{M_Ooe@rFm|C`Pc_Cwi@kqBuV_|AfJicB_l@q{BcgDatBgzAasBsaAsV{BeXtXoMp]iYsN{SyKi\\o\\ogAeg@q`AvBqaCh_Aaw@fN{@bU_HxK","distanceMeters":634783,"durationSeconds":31269,"routeSummary":"ถนนหมายเลข 202","distance":"635 กม.","duration":"8 ชั่วโมง 41 นาที","waypoints":{"used":[],"optimize":true,"requested":[],"optimizedOrder":[]},"landmarks":{"overview_polyline":"_x}rA_gldRq\\}mAdSmn@aeAkh@{}DcgAysAa~@osArd@qqBfcAafDcIasEau@_vAuUi}AqdAkiF{jA}|ClRimBam@crDie@s`EbJeeE`Km~Bph@unBttAob@rCkhAocCql@mlCiEg}Au`@gOil@qf@soFacMgmBaoEqEuy@gsB}sEqdCwrFmhCe`BmiC__BopAouAyvBgtBeuCw{@}{F_r@icFo`AacFukA}}CdGgGoeA{j@i_Aq_Bq{Bc`DawCukE{bMyjAokD_jAgzBwp@el@cYg_BFudDbJkgBjj@ea@gCobAid@_uAnB}`AdZq_BoHiqAwn@odFwZybC}j@svAuf@_zE~`@qoBeh@}vCc\\}sDcZwhD}\\qvAkk@oe@gcBmgAaiBacB_eCeuB_oDudAosBi_@qjAaTee@wl@yyA{m@ulAwX_|BoeBafA_rCwyC_dDm~AgfGyfEc}PamLkje@|Z}nCubDwcBogFqoC_hBkoFkwCmaKy~D}|LfYsqBxxB_eDd`A}fA~m@ib@qZys@ma@{cCsYklBwgFqhDyi@{`AydA}b@yjDqeAerAk~@_zB{x@ijBejBsjBo{CoTaiAsqAsZmbDfJmjFulCifAg\\_ZoNuQ}~AyWa}Amx@ulBmjAexAycBolAwsB{wCkaAg`Dg_Ei`B_cBuzBws@esCgGcpAok@a|@}_Eo|FalA}vBo`BkwC}j@yiATqhAwNwgD{s@ipDgZifBz@eeB_CqsEbiAmgHm@epF{[iaBp{@_vDpl@q{Dh^ohEvy@o~Bl~BcpMeFq{Del@{aD}A}qQgQeiJkf@m}@khB{n@abDugD_rEcqEsjBytCaYenC_g@aqFex@cgBmaA_jD}RkmBz[gtE`l@ypIxPegCaKefBsbBiqDsAexAjlA}b@bhC}m@pwAkt@bLyy@wKcxAw_By|G{}CwnIcg@ohE}GehCc_F}eEsiG_sD{uBgkAenAohAm}B_jFyfCkdCkb@chBjF{eBlI{OqF}Skj@oZa}B_qAqnEanDmuFugDuuD_aDc|DkuCmdAyeBgcDodBoq@aU|C_c@fB}|@mJgb@gm@eAavBsx@kp@gP__Agk@iTghC_v@ghC{oBweBakCmxBkf@_~@cpAseAmzBmmBykBkgB}eAm`@g~@kbActBhGsdCoI_vBua@{M_Ooe@rFm|C`Pc_Cwi@kqBuV_|AfJicB_l@q{BcgDatBgzAasBsaAsV{BeXtXoMp]iYsN{SyKi\\o\\ogAeg@q`AvBqaCh_Aaw@fN{@bU_HxK"},"steps":[{"distance":"0.5 กม.","duration":"2 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":13.7561294,"lng":100.5050991},"start_location":{"lat":13.756323,"lng":100.5017626},"html_instructions":"มุ่งหน้าทาง&lt;b&gt;ตะวันตกเฉียงเหนือ&lt;/b&gt; ไปยัง &lt;b&gt;ถ. ดินสอ&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ผ่าน บริษัท เทเวศประกันภัย จำกัด (มหาชน) สำนักงานใหญ่ (อีก 400ม. ทางซ้าย)&lt;/div&gt;"},{"distance":"0.1 กม.","duration":"1 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":13.7564637,"lng":100.5059939},"start_location":{"lat":13.7561294,"lng":100.5050991},"html_instructions":"ขับต่อไปยัง &lt;b&gt;AH123&lt;/b&gt;"},{"distance":"1.2 กม.","duration":"3 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":13.7616622,"lng":100.5154179},"start_location":{"lat":13.7564637,"lng":100.5059939},"html_instructions":"ขับต่อไปยัง &lt;b&gt;ถ. นครสวรรค์&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ผ่าน 7-Eleven สาขา พะเนียง (02853) (อีก 550ม. ทางซ้าย)&lt;/div&gt;"},{"distance":"0.7 กม.","duration":"1 นาที","maneuver":"turn-right","travel_mode":"DRIVING","end_location":{"lat":13.7574069,"lng":100.520599},"start_location":{"lat":13.7616622,"lng":100.5154179},"html_instructions":"เลี้ยว&lt;b&gt;ขวา&lt;/b&gt; เข้าสู่ &lt;b&gt;ถ. พิษณุโลก&lt;/b&gt;"},{"distance":"77 ม.","duration":"1 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":13.7570677,"lng":100.5212186},"start_location":{"lat":13.7574069,"lng":100.520599},"html_instructions":"ขับต่อไปยัง &lt;b&gt;AH123&lt;/b&gt;"},{"distance":"0.1 กม.","duration":"1 นาที","maneuver":"ramp-left","travel_mode":"DRIVING","end_location":{"lat":13.7579623,"lng":100.5221461},"start_location":{"lat":13.7570677,"lng":100.5212186},"html_instructions":"เลี้ยว&lt;b&gt;ซ้าย&lt;/b&gt; เข้าสู่ทางลาด &lt;b&gt;Phetchaburi Road&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"0.4 กม.","duration":"1 นาที","maneuver":"ramp-right","travel_mode":"DRIVING","end_location":{"lat":13.7601149,"lng":100.5249854},"start_location":{"lat":13.7579623,"lng":100.5221461},"html_instructions":"เบี่ยง&lt;b&gt;ขวา&lt;/b&gt; เข้าสู่ทางลาดไปยัง &lt;b&gt;ดินแดง&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ถนนพระราม ๙&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;แจ้งวัฒนะ&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"1.3 กม.","duration":"1 นาที","maneuver":"merge","travel_mode":"DRIVING","end_location":{"lat":13.7710432,"lng":100.5294843},"start_location":{"lat":13.7601149,"lng":100.5249854},"html_instructions":"ตัดเข้าไปยัง &lt;b&gt;ทางพิเศษศรีรัช&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"16.1 กม.","duration":"12 นาที","maneuver":"turn-slight-left","travel_mode":"DRIVING","end_location":{"lat":13.90368,"lng":100.5435116},"start_location":{"lat":13.7710432,"lng":100.5294843},"html_instructions":"เลี้ยว&lt;b&gt;ซ้าย&lt;/b&gt;เล็กน้อย เพื่อวิ่งบน &lt;b&gt;ทางพิเศษศรีรัช&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"28.3 กม.","duration":"18 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":14.1439615,"lng":100.5574257},"start_location":{"lat":13.90368,"lng":100.5435116},"html_instructions":"ขับต่อไปยัง &lt;b&gt;ทางด่วนสายบางปะอิน-ปากเกร็ด&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ทางพิเศษอุดรรัถยา&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"0.2 กม.","duration":"1 นาที","maneuver":"ramp","travel_mode":"DRIVING","end_location":{"lat":14.1449982,"lng":100.5565184},"start_location":{"lat":14.1439615,"lng":100.5574257},"html_instructions":"ใช้ทางออก &lt;b&gt;2-16&lt;/b&gt; ไปยัง &lt;b&gt;9&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;วงแหวนรอบนอกตะวันตก&lt;/b&gt; เข้าสู่ &lt;b&gt;บางไทร-บางปะอิน&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"2.0 กม.","duration":"2 นาที","maneuver":"ramp-right","travel_mode":"DRIVING","end_location":{"lat":14.154848,"lng":100.5639939},"start_location":{"lat":14.1449982,"lng":100.5565184},"html_instructions":"เบี่ยง&lt;b&gt;ขวา&lt;/b&gt; เข้าสู่ทางลาดไปยัง &lt;b&gt;บางปะอิน&lt;/b&gt;&lt;div style=\"font-size:0.9em\"&gt;ทางพิเศษ&lt;/div&gt;"},{"distance":"0.3 กม.","duration":"1 นาที","maneuver":"keep-right","travel_mode":"DRIVING","end_location":{"lat":14.1561962,"lng":100.5663061},"start_location":{"lat":14.154848,"lng":100.5639939},"html_instructions":"ชิด&lt;b&gt;ขวา&lt;/b&gt; ตามป้ายบอกทาง &lt;b&gt;ถนนหมายเลข 347&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;อยุธยา&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;Ayutthaya&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;บางปะหัน&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;Bang Pahan&lt;/b&gt;"},{"distance":"0.2 กม.","duration":"1 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":14.1572128,"lng":100.568109},"start_location":{"lat":14.1561962,"lng":100.5663061},"html_instructions":"ใช้ทางลาด &lt;b&gt;ถนนหมายเลข 347&lt;/b&gt; ไปยัง &lt;b&gt;ปทุมธานี&lt;/b&gt;"},{"distance":"0.4 กม.","duration":"1 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":14.1589149,"lng":100.5712703},"start_location":{"lat":14.1572128,"lng":100.568109},"html_instructions":"ใช้ทางลาดไปยัง &lt;b&gt;บางปะหัน&lt;/b&gt;"},{"distance":"1.3 กม.","duration":"1 นาที","maneuver":"ramp-right","travel_mode":"DRIVING","end_location":{"lat":14.1646273,"lng":100.5816541},"start_location":{"lat":14.1589149,"lng":100.5712703},"html_instructions":"เบี่ยง&lt;b&gt;ขวา&lt;/b&gt;เล็กน้อย เพื่อตัดเข้าสู่ &lt;b&gt;ถ. กาญจนาภิเษก&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ทางพิเศษกาญจนาภิเษก&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ทางหลวงหมายเลข 9&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;วงแหวนรอบนอกกรุงเทพมหานครฝั่งตะวันตก&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;AH2&lt;/b&gt;"},{"distance":"4.8 กม.","duration":"4 นาที","maneuver":"keep-left","travel_mode":"DRIVING","end_location":{"lat":14.178869,"lng":100.619002},"start_location":{"lat":14.1646273,"lng":100.5816541},"html_instructions":"ชิด&lt;b&gt;ซ้าย&lt;/b&gt; เพื่อวิ่งต่อบน &lt;b&gt;ถ. กาญจนาภิเษก&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ทางพิเศษกาญจนาภิเษก&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ทางหลวงหมายเลข 9&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;วงแหวนรอบนอกกรุงเทพมหานครฝั่งตะวันตก&lt;/b&gt;"},{"distance":"1.0 กม.","duration":"1 นาที","maneuver":null,"travel_mode":"DRIVING","end_location":{"lat":14.1842216,"lng":100.626235},"start_location":{"lat":14.178869,"lng":100.619002},"html_instructions":"ขับต่อไปยัง &lt;b&gt;ทางคู่ขนาน ถ. พหลโยธิน&lt;/b&gt;"},{"distance":"0.3 กม.","duration":"1 นาที","maneuver":"merge","travel_mode":"DRIVING","end_location":{"lat":14.1855495,"lng":100.6287094},"start_location":{"lat":14.1842216,"lng":100.626235},"html_instructions":"ตัดเข้าไปยัง &lt;b&gt;ทางคู่ขนาน ถ. พหลโยธิน&lt;/b&gt;/&lt;wbr/&gt;&lt;b&gt;ถนนหมายเลข 1&lt;/b&gt;"},{"distance":"51.9 กม.","duration":"39 นาที","maneuver":"keep-right","travel_mode":"DRIVING","end_location":{"lat":14.5158929,"lng":100.9154934},"start_location":{"lat":14.1855495,"lng":100.6287094},"html_instructions":"ชิด&lt;b&gt;... (set the log level to DEBUG or TRACE to see the full content) 
  </msg>
-<msg time="2026-03-17T13:56:45.876274" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:36.485909" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:36.486528" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/admin/all</arg>
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a GET request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.742125" elapsed="0.134413"/>
+<status status="PASS" start="2026-03-17T21:30:31.196179" elapsed="5.290406"/>
 </kw>
 <kw name="Get Length" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.884561" level="INFO">Length is 8.</msg>
-<msg time="2026-03-17T13:56:45.885100" level="INFO">${length} = 8</msg>
+<msg time="2026-03-17T21:30:36.488639" level="INFO">Length is 3.</msg>
+<msg time="2026-03-17T21:30:36.488828" level="INFO">${length} = 3</msg>
 <var>${length}</var>
 <arg>${response.json()}</arg>
 <doc>Returns and logs the length of the given item as an integer.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.881167" elapsed="0.004029"/>
+<status status="PASS" start="2026-03-17T21:30:36.487102" elapsed="0.001769"/>
 </kw>
 <kw name="Should Be True" owner="BuiltIn">
 <arg>${length} &gt; 0</arg>
 <doc>Fails if the given condition is not true.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.892876" elapsed="0.001303"/>
+<status status="PASS" start="2026-03-17T21:30:36.489257" elapsed="0.000306"/>
 </kw>
 <doc>แอดมินดึงรายการการแจ้งเหตุทั้งหมด (GET /admin/all)</doc>
-<status status="PASS" start="2026-03-17T13:56:45.730532" elapsed="0.166135"/>
+<status status="PASS" start="2026-03-17T21:30:31.193752" elapsed="5.296197"/>
 </test>
 <test id="s1-t6" name="6. Admin Should Be Able To Assign Incident" line="84">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:45.907676" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<msg time="2026-03-17T21:30:36.492559" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZ...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.906081" elapsed="0.001792"/>
+<status status="PASS" start="2026-03-17T21:30:36.492176" elapsed="0.000436"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.005540" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
- path_url=/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '0'} 
+<msg time="2026-03-17T21:30:39.056552" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/assign 
+ path_url=/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/assign 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '0'} 
  body=None 
  </msg>
-<msg time="2026-03-17T13:56:46.005988" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/assign 
+<msg time="2026-03-17T21:30:39.056728" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/assign 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'd3857c65-cbbb-4216-bea3-28092d3a510c', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '435', 'ETag': 'W/"1b3-97PxIJ7r2aNwFpoJNy1jF97eubE"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident assigned to investigate","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"UNDER_INVESTIGATION","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:45.948Z"}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '435', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:39 GMT', 'Etag': 'W/"1b3-aq6C/IsJjRVZWyw+b2HqueYro1g"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'JT2tKKJ2RieYjpzVAQeqjw', 'X-Request-Id': '3325c241-2932-4f0a-a864-02cb53e496b1', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident assigned to investigate","data":{"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"UNDER_INVESTIGATION","location":null,"resolvedById":"cmm74s46k0000hkosqomftetw","adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:37.420Z"}} 
  </msg>
-<msg time="2026-03-17T13:56:46.006696" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:39.056862" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:39.057361" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/admin/${INCIDENT_ID}/assign</arg>
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:45.909862" elapsed="0.096962"/>
+<status status="PASS" start="2026-03-17T21:30:36.493009" elapsed="2.564400"/>
 </kw>
 <doc>แอดมินรับเรื่องเคส (PATCH /admin/:id/assign)</doc>
-<status status="PASS" start="2026-03-17T13:56:45.898543" elapsed="0.110387"/>
+<status status="PASS" start="2026-03-17T21:30:36.491028" elapsed="2.566889"/>
 </test>
 <test id="s1-t7" name="7. Admin Should Be Able To Resolve Incident" line="89">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.021486" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<msg time="2026-03-17T21:30:39.060339" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZ...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.019066" elapsed="0.002679"/>
+<status status="PASS" start="2026-03-17T21:30:39.059907" elapsed="0.000485"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.025034" level="INFO">${payload} = {'adminNotes': 'ตรวจสอบและจัดการเรียบร้อยแล้ว'}</msg>
+<msg time="2026-03-17T21:30:39.061078" level="INFO">${payload} = {'adminNotes': 'ตรวจสอบและจัดการเรียบร้อยแล้ว'}</msg>
 <var>${payload}</var>
 <arg>adminNotes=ตรวจสอบและจัดการเรียบร้อยแล้ว</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.023321" elapsed="0.002178"/>
+<status status="PASS" start="2026-03-17T21:30:39.060797" elapsed="0.000328"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.136195" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
- path_url=/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '192'} 
+<msg time="2026-03-17T21:30:42.156983" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/resolve 
+ path_url=/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/resolve 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '192'} 
  body=b'{"adminNotes": "\\u0e15\\u0e23\\u0e27\\u0e08\\u0e2a\\u0e2d\\u0e1a\\u0e41\\u0e25\\u0e30\\u0e08\\u0e31\\u0e14\\u0e01\\u0e32\\u0e23\\u0e40\\u0e23\\u0e35\\u0e22\\u0e1a\\u0e23\\u0e49\\u0e2d\\u0e22\\u0e41\\u0e25\\u0e49\\u0e27"}' 
  </msg>
-<msg time="2026-03-17T13:56:46.136692" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9em6f0063cvoa8gvp2sqs/resolve 
+<msg time="2026-03-17T21:30:42.157262" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmuplv52006sj0hdnqguub3p/resolve 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'f6b50b9b-974d-44af-89f1-3f435bbccaea', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '516', 'ETag': 'W/"204-smKgK15ppF0c5jkjWN5fZgu1PjY"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident resolved","data":{"id":"cmmu9em6f0063cvoa8gvp2sqs","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T06:56:46.063Z","createdAt":"2026-03-17T06:56:45.255Z","updatedAt":"2026-03-17T06:56:46.065Z"}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '516', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:42 GMT', 'Etag': 'W/"204-g9aWM+RHz8w401AsfwffVdgw+Nw"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'xuMtxC5_R6alGSocAQeqjw', 'X-Request-Id': 'f0df1e55-b526-4594-a07d-7f9769f13a17', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident resolved","data":{"id":"cmmuplv52006sj0hdnqguub3p","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"ACCIDENT","description":"รถชนท้ายกัน","status":"RESOLVED","location":null,"resolvedById":"cmm74s46k0000hkosqomftetw","adminNotes":"ตรวจสอบและจัดการเรียบร้อยแล้ว","resolvedAt":"2026-03-17T14:30:40.011Z","createdAt":"2026-03-17T14:30:17.318Z","updatedAt":"2026-03-17T14:30:40.012Z"}} 
  </msg>
-<msg time="2026-03-17T13:56:46.138140" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:42.157396" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:42.157957" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/admin/${INCIDENT_ID}/resolve</arg>
@@ -374,40 +392,42 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.026828" elapsed="0.111557"/>
+<status status="PASS" start="2026-03-17T21:30:39.061523" elapsed="3.096538"/>
 </kw>
 <doc>แอดมินปิดเคส (PATCH /admin/:id/resolve)</doc>
-<status status="PASS" start="2026-03-17T13:56:46.014462" elapsed="0.125610"/>
+<status status="PASS" start="2026-03-17T21:30:39.058951" elapsed="3.099695"/>
 </test>
 <test id="s1-t8" name="8. Create Another Incident For Cancel And Reject Tests" line="97">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.157738" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:42.162101" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.156120" elapsed="0.001901"/>
+<status status="PASS" start="2026-03-17T21:30:42.161461" elapsed="0.000698"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.161119" level="INFO">${payload} = {'category': 'OTHER', 'description': 'เคสสำหรับยกเลิก'}</msg>
+<msg time="2026-03-17T21:30:42.163098" level="INFO">${payload} = {'category': 'OTHER', 'description': 'เคสสำหรับยกเลิก'}</msg>
 <var>${payload}</var>
 <arg>category=OTHER</arg>
 <arg>description=เคสสำหรับยกเลิก</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.160033" elapsed="0.001237"/>
+<status status="PASS" start="2026-03-17T21:30:42.162683" elapsed="0.000468"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.232011" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:44.489088" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  path_url=/api/incidents/ 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '130'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '130'} 
  body=b'{"category": "OTHER", "description": "\\u0e40\\u0e04\\u0e2a\\u0e2a\\u0e33\\u0e2b\\u0e23\\u0e31\\u0e1a\\u0e22\\u0e01\\u0e40\\u0e25\\u0e34\\u0e01"}' 
  </msg>
-<msg time="2026-03-17T13:56:46.232394" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:44.489247" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '28480145-7bf5-40d4-8839-14923ac8fe17', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1285', 'ETag': 'W/"505-JhpWw7U7RnQXz7RljyHmtLC3IEk"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9emw90071cvoanexi6b1o","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:46.185Z","updatedAt":"2026-03-17T06:56:46.185Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '1291', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:44 GMT', 'Etag': 'W/"50b-ZxwlaeVv6E1rQGE7lZDBjEdXWUc"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': '_SVlk_3rSpuGYa05AQeqjw', 'X-Request-Id': '2825cbb6-4a01-4d0a-945a-3f8286d727dd', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmupmeoa007qj0hdjj5nxuau","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:42.634Z","updatedAt":"2026-03-17T14:30:42.634Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","password":"$2b$10$k59ldnKNBYI4Pf6mzUUYoOn.TC.pNFdzO1kAWgUcpzMUqXfn4K0gG","firstName":"tester1","lastName":"tester1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1111111111111","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/national_ids/wntl1wldcqhthpxhxsie.webp","nationalIdExpiryDate":"3000-03-21T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/selfies/yi6tagsxg6zjrgtgz5kk.avif","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-17T14:07:41.305Z","updatedAt":"2026-03-17T14:13:13.513Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-17T13:56:46.233049" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-17T21:30:44.489388" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:44.489844" level="INFO">${response} = &lt;Response [201]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/</arg>
@@ -415,52 +435,54 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=201</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.162660" elapsed="0.070463"/>
+<status status="PASS" start="2026-03-17T21:30:42.163503" elapsed="2.326629"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.236535" level="INFO">${INCIDENT_ID_2} = cmmu9emw90071cvoanexi6b1o</msg>
+<msg time="2026-03-17T21:30:44.492084" level="INFO">${INCIDENT_ID_2} = cmmupmeoa007qj0hdjj5nxuau</msg>
 <var>${INCIDENT_ID_2}</var>
 <arg>${response.json()}[data][id]</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.234008" elapsed="0.002687"/>
+<status status="PASS" start="2026-03-17T21:30:44.490761" elapsed="0.001374"/>
 </kw>
 <kw name="Set Suite Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.238989" level="INFO">${INCIDENT_ID_2} = cmmu9emw90071cvoanexi6b1o</msg>
+<msg time="2026-03-17T21:30:44.493236" level="INFO">${INCIDENT_ID_2} = cmmupmeoa007qj0hdjj5nxuau</msg>
 <arg>${INCIDENT_ID_2}</arg>
 <doc>Makes a variable available everywhere within the scope of the current suite.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.237861" elapsed="0.001592"/>
+<status status="PASS" start="2026-03-17T21:30:44.492855" elapsed="0.000465"/>
 </kw>
 <doc>สร้างเคสที่ 2 เพื่อเอาไว้เทสต์การ Cancel/Reject</doc>
-<status status="PASS" start="2026-03-17T13:56:46.149434" elapsed="0.094218"/>
+<status status="PASS" start="2026-03-17T21:30:42.159605" elapsed="2.334056"/>
 </test>
 <test id="s1-t9" name="9. Admin Should Be Able To Reject Incident" line="108">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.253153" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6Yma...</msg>
+<msg time="2026-03-17T21:30:44.496973" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZ...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${ADMIN_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.252328" elapsed="0.000958"/>
+<status status="PASS" start="2026-03-17T21:30:44.496353" elapsed="0.000691"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.255953" level="INFO">${payload} = {'adminNotes': 'ข้อมูลไม่เพียงพอ'}</msg>
+<msg time="2026-03-17T21:30:44.497763" level="INFO">${payload} = {'adminNotes': 'ข้อมูลไม่เพียงพอ'}</msg>
 <var>${payload}</var>
 <arg>adminNotes=ข้อมูลไม่เพียงพอ</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.255163" elapsed="0.000887"/>
+<status status="PASS" start="2026-03-17T21:30:44.497470" elapsed="0.000340"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.337007" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
- path_url=/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '114'} 
+<msg time="2026-03-17T21:30:47.138086" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmupmeoa007qj0hdjj5nxuau/reject 
+ path_url=/api/incidents/admin/cmmupmeoa007qj0hdjj5nxuau/reject 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '114'} 
  body=b'{"adminNotes": "\\u0e02\\u0e49\\u0e2d\\u0e21\\u0e39\\u0e25\\u0e44\\u0e21\\u0e48\\u0e40\\u0e1e\\u0e35\\u0e22\\u0e07\\u0e1e\\u0e2d"}' 
  </msg>
-<msg time="2026-03-17T13:56:46.338901" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/admin/cmmu9emw90071cvoanexi6b1o/reject 
+<msg time="2026-03-17T21:30:47.138240" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/admin/cmmupmeoa007qj0hdjj5nxuau/reject 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '14d857ff-e93a-4655-b880-41bf56a3bf1b', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '486', 'ETag': 'W/"1e6-4gTewUpTEkbeKbGwRhl/s5YaaXk"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident rejected","data":{"id":"cmmu9emw90071cvoanexi6b1o","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmmqfkv9j00004oau56v8ifrl","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T06:56:46.290Z","createdAt":"2026-03-17T06:56:46.185Z","updatedAt":"2026-03-17T06:56:46.291Z"}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '486', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:47 GMT', 'Etag': 'W/"1e6-6xMP4Bj0+ISZS7ZhJ/OgK2txvC4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'Nl7DsywCRNKv_KMXAQeqjw', 'X-Request-Id': 'eec3330b-4e4d-4682-bc1a-2826519a87df', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident rejected","data":{"id":"cmmupmeoa007qj0hdjj5nxuau","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"OTHER","description":"เคสสำหรับยกเลิก","status":"REJECTED","location":null,"resolvedById":"cmm74s46k0000hkosqomftetw","adminNotes":"ข้อมูลไม่เพียงพอ","resolvedAt":"2026-03-17T14:30:45.682Z","createdAt":"2026-03-17T14:30:42.634Z","updatedAt":"2026-03-17T14:30:45.683Z"}} 
  </msg>
-<msg time="2026-03-17T13:56:46.339566" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:47.138369" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:47.138864" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/admin/${INCIDENT_ID_2}/reject</arg>
@@ -468,40 +490,42 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.256822" elapsed="0.082847"/>
+<status status="PASS" start="2026-03-17T21:30:44.498158" elapsed="2.640762"/>
 </kw>
 <doc>แอดมินปัดตกเคส (PATCH /admin/:id/reject)</doc>
-<status status="PASS" start="2026-03-17T13:56:46.248704" elapsed="0.092171"/>
+<status status="PASS" start="2026-03-17T21:30:44.494517" elapsed="2.644842"/>
 </test>
 <test id="s1-t10" name="10. User Should Be Able To Cancel Their Own Incident" line="114">
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.347057" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0Fay...</msg>
+<msg time="2026-03-17T21:30:47.142461" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHn...</msg>
 <var>${headers}</var>
 <arg>Authorization=Bearer ${USER_TOKEN}</arg>
 <arg>Content-Type=application/json</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.346296" elapsed="0.000849"/>
+<status status="PASS" start="2026-03-17T21:30:47.141991" elapsed="0.000527"/>
 </kw>
 <kw name="Create Dictionary" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.348056" level="INFO">${payload} = {'category': 'OTHER', 'description': 'ผู้ใช้กดยกเลิกเอง'}</msg>
+<msg time="2026-03-17T21:30:47.143290" level="INFO">${payload} = {'category': 'OTHER', 'description': 'ผู้ใช้กดยกเลิกเอง'}</msg>
 <var>${payload}</var>
 <arg>category=OTHER</arg>
 <arg>description=ผู้ใช้กดยกเลิกเอง</arg>
 <doc>Creates and returns a dictionary based on the given ``items``.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.347694" elapsed="0.000444"/>
+<status status="PASS" start="2026-03-17T21:30:47.142966" elapsed="0.000376"/>
 </kw>
 <kw name="POST On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.397522" level="INFO">POST Request : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:49.697192" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  path_url=/api/incidents/ 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '142'} 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '142'} 
  body=b'{"category": "OTHER", "description": "\\u0e1c\\u0e39\\u0e49\\u0e43\\u0e0a\\u0e49\\u0e01\\u0e14\\u0e22\\u0e01\\u0e40\\u0e25\\u0e34\\u0e01\\u0e40\\u0e2d\\u0e07"}' 
  </msg>
-<msg time="2026-03-17T13:56:46.398001" level="INFO">POST Response : url=http://localhost:3000/api/incidents/ 
+<msg time="2026-03-17T21:30:49.697434" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/ 
  status=201, reason=Created 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': 'c717ad19-7486-4638-beea-6d1ba606602f', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '1291', 'ETag': 'W/"50b-3Z5of2Q45iAPstZTj5yALEpXLz8"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmu9en19007gcvoayp6s5ws1","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T06:56:46.365Z","updatedAt":"2026-03-17T06:56:46.365Z","reporter":{"id":"cmmqfuzea00034oau1medpiu1","username":"tester1","email":"tester1@gmail.com","password":"$2b$10$BkJNd.eDsaK4OE6HFxKmLObtdRVYjxDyqMFDoKScRNa2mdxsQIY9W","firstName":"tester","lastName":"1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1409903367621","nationalIdPhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499714/painamnae/national_ids/uwakxghaukzqsmbuih6c.png","nationalIdExpiryDate":"2572-11-11T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dvz4oxinb/image/upload/v1773499715/painamnae/selfies/xwzjjbgdpyjhmwsn5lac.png","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-14T14:46:21.874Z","updatedAt":"2026-03-14T14:50:53.791Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '1297', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:49 GMT', 'Etag': 'W/"511-TJ0nFoVzNk73TQg9TyT9kJIIcAI"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'EIFBLLCeRT6_8yyQAQeqjw', 'X-Request-Id': 'e28231c9-afa2-4f82-a7ab-efd11a91953a', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident reported successfully","data":{"id":"cmmupmioz0085j0hd1w4w4yk1","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"PENDING","location":null,"resolvedById":null,"adminNotes":null,"resolvedAt":null,"createdAt":"2026-03-17T14:30:47.843Z","updatedAt":"2026-03-17T14:30:47.843Z","reporter":{"id":"cmmuossu1001afnclx7qyb045","username":"tester1","email":"tester1@ex.com","password":"$2b$10$k59ldnKNBYI4Pf6mzUUYoOn.TC.pNFdzO1kAWgUcpzMUqXfn4K0gG","firstName":"tester1","lastName":"tester1","gender":"MALE","phoneNumber":"0999999999","profilePicture":null,"nationalIdNumber":"1111111111111","nationalIdPhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/national_ids/wntl1wldcqhthpxhxsie.webp","nationalIdExpiryDate":"3000-03-21T00:00:00.000Z","selfiePhotoUrl":"https://res.cloudinary.com/dhcmh7hci/image/upload/v1773756459/painamnae/selfies/yi6tagsxg6zjrgtgz5kk.avif","role":"DRIVER","isVerified":true,"isActive":true,"otpCode":null,"lastLogin":null,"createdAt":"2026-03-17T14:07:41.305Z","updatedAt":"2026-03-17T14:13:13.513Z","passengerSuspendedUntil":null,"driverSuspendedUntil":null,"yellowCardCount":0,"yellowCardExpiresAt":null}}} 
  </msg>
-<msg time="2026-03-17T13:56:46.398364" level="INFO">${create_resp} = &lt;Response [201]&gt;</msg>
+<msg time="2026-03-17T21:30:49.697577" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:49.698067" level="INFO">${create_resp} = &lt;Response [201]&gt;</msg>
 <var>${create_resp}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/</arg>
@@ -509,40 +533,42 @@
 <arg>headers=${headers}</arg>
 <arg>expected_status=201</arg>
 <doc>Sends a POST request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.348634" elapsed="0.049823"/>
+<status status="PASS" start="2026-03-17T21:30:47.143768" elapsed="2.554358"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2026-03-17T13:56:46.401226" level="INFO">${cancel_id} = cmmu9en19007gcvoayp6s5ws1</msg>
+<msg time="2026-03-17T21:30:49.699487" level="INFO">${cancel_id} = cmmupmioz0085j0hd1w4w4yk1</msg>
 <var>${cancel_id}</var>
 <arg>${create_resp.json()}[data][id]</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.399924" elapsed="0.001352"/>
+<status status="PASS" start="2026-03-17T21:30:49.698597" elapsed="0.000937"/>
 </kw>
 <kw name="PATCH On Session" owner="RequestsLibrary">
-<msg time="2026-03-17T13:56:46.446309" level="INFO">PATCH Request : url=http://localhost:3000/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
- path_url=/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
- headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZnV6ZWEwMDAzNG9hdTFtZWRwaXUxIiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3MzczMDYwNSwiZXhwIjoxNzczNzM0MjA1fQ.7xLzPUZEDnpBmczkUX0FayOL-Jef4Y9o1vUUvZqpfjU', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW1xZmt2OWowMDAwNG9hdTU2djhpZnJsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzMwNjA1LCJleHAiOjE3NzM3MzQyMDV9.h0RiL5QX5GmoAK4NaZLA6YmawMO_eNoifk7hkS4sYoE', 'Content-Length': '0'} 
+<msg time="2026-03-17T21:30:52.087789" level="INFO">PATCH Request : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmupmioz0085j0hd1w4w4yk1/cancel 
+ path_url=/api/incidents/cmmupmioz0085j0hd1w4w4yk1/cancel 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW11b3NzdTEwMDFhZm5jbHg3cXliMDQ1Iiwicm9sZSI6IkRSSVZFUiIsImlhdCI6MTc3Mzc1NzgxMiwiZXhwIjoxNzczNzYxNDEyfQ.r6Sq9nvPbxO8L4kwSI1XHnLuvdm3sIJxWaohQ5RnqnM', 'Content-Type': 'application/json', 'Cookie': 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbW03NHM0NmswMDAwaGtvc3FvbWZ0ZXR3Iiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzczNzU3ODE0LCJleHAiOjE3NzM3NjE0MTR9.6HuY_WnRPh6P7tSKvOn-D3AZTXe9IRDvfTaDk1QtbQA', 'Content-Length': '0'} 
  body=None 
  </msg>
-<msg time="2026-03-17T13:56:46.447041" level="INFO">PATCH Response : url=http://localhost:3000/api/incidents/cmmu9en19007gcvoayp6s5ws1/cancel 
+<msg time="2026-03-17T21:30:52.087942" level="INFO">PATCH Response : url=https://deploy-production-88fa.up.railway.app/api/incidents/cmmupmioz0085j0hd1w4w4yk1/cancel 
  status=200, reason=OK 
- headers={'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-DNS-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-XSS-Protection': '0', 'Vary': 'Origin', 'Access-Control-Allow-Credentials': 'true', 'X-Request-ID': '3864c651-9c2b-40d8-91e6-030ddbbaeb15', 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': '542', 'ETag': 'W/"21e-rdD4hu4bXoE6xGukqXImNuYWS/o"', 'Date': 'Tue, 17 Mar 2026 06:56:46 GMT', 'Connection': 'keep-alive', 'Keep-Alive': 'timeout=5'} 
- body={"success":true,"message":"Incident has been cancelled","data":{"id":"cmmu9en19007gcvoayp6s5ws1","reporterId":"cmmqfuzea00034oau1medpiu1","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T06:56:46.417Z","createdAt":"2026-03-17T06:56:46.365Z","updatedAt":"2026-03-17T06:56:46.418Z"}} 
+ headers={'Access-Control-Allow-Credentials': 'true', 'Content-Length': '542', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Date': 'Tue, 17 Mar 2026 14:30:52 GMT', 'Etag': 'W/"21e-ecsFlQgkDeftK+nH8IGwJmlZfz4"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'Vary': 'Origin', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'ZwxNgcMaSNm4DWWQAQeqjw', 'X-Request-Id': 'fe95ac14-e2c1-4a47-8716-41528364504a', 'X-Xss-Protection': '0'} 
+ body={"success":true,"message":"Incident has been cancelled","data":{"id":"cmmupmioz0085j0hd1w4w4yk1","reporterId":"cmmuossu1001afnclx7qyb045","routeId":null,"category":"OTHER","description":"ผู้ใช้กดยกเลิกเอง","status":"REJECTED","location":null,"resolvedById":null,"adminNotes":"ผู้ใช้ทำการยกเลิกการแจ้งเหตุด้วยตนเอง","resolvedAt":"2026-03-17T14:30:50.649Z","createdAt":"2026-03-17T14:30:47.843Z","updatedAt":"2026-03-17T14:30:50.650Z"}} 
  </msg>
-<msg time="2026-03-17T13:56:46.448142" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<msg time="2026-03-17T21:30:52.088067" level="INFO">C:\Users\ROG\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-17T21:30:52.088576" level="INFO">${response} = &lt;Response [200]&gt;</msg>
 <var>${response}</var>
 <arg>api</arg>
 <arg>${INCIDENT_URL}/${cancel_id}/cancel</arg>
 <arg>headers=${headers}</arg>
 <arg>expected_status=200</arg>
 <doc>Sends a PATCH request on a previously created HTTP Session.</doc>
-<status status="PASS" start="2026-03-17T13:56:46.401832" elapsed="0.046471"/>
+<status status="PASS" start="2026-03-17T21:30:49.699940" elapsed="2.388718"/>
 </kw>
 <doc>ผู้ใช้ยกเลิกการแจ้งเหตุของตัวเอง (PATCH /:id/cancel)</doc>
-<status status="PASS" start="2026-03-17T13:56:46.342861" elapsed="0.106636"/>
+<status status="PASS" start="2026-03-17T21:30:47.140501" elapsed="4.948527"/>
 </test>
 <doc>API Test Suite for Incident Report System</doc>
-<status status="PASS" start="2026-03-17T13:56:44.223747" elapsed="2.228640"/>
+<status status="PASS" start="2026-03-17T21:30:08.734136" elapsed="43.356572"/>
 </suite>
 <statistics>
 <total>
