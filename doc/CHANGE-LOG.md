@@ -640,6 +640,39 @@ All notable changes to this project will be documented in this file.
 - Improved Admin Case Detail Page to group reports under the same trip and show who submitted each report.
 
 ---
+## [3.0.0] - 2026-03-17 - Pimapsorn_5095
+
+### Added 
+
+- Implemented Driver Trip Completion Button allowing drivers to mark trips as completed.
+- Developed UI for displaying Trip status (Active / Completed).
+- Developed Passenger Review Page for rating drivers and writing comments.
+- Added Review button in Trip History when a trip is marked as completed.
+- Implemented Driver Review Display System to show all passenger reviews for each driver.
+- Displayed Average Rating and Total Review Count for drivers.
+- Added Driver rating and review section in the Profile page.
+- Implemented Pagination for Driver Reviews to improve readability when many reviews exist.
+- Created User Manual describing system usage for passengers, drivers, and administrators.
+
+### Changed
+- Updated Trip Detail page to display complete driver review information, including ratings and comments.
+- Improved UI to present driver rating summaries and review lists more clearly.
+
+### Fixed
+- Fixed issues related to review loading and display synchronization.
+- Fixed bugs affecting trip completion button behavior for drivers.
+- Fixed minor UI and data binding issues in the Trip and Review pages.
+
+---
+
+## [3.0.0] - 2026-03-17 - Kanyapat_5037
+
+### Changed
+- Improve Report Detail UI layout
+- Add status badge with color indicator
+- Translate report status and table labels to Thai
+
+---
 
 ## [3.0.0] - 2026-03-17 - Pimapsorn_5095
 
