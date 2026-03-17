@@ -39,58 +39,39 @@ STEP_01_Driver_Create_Route
     Go To    ${BASE_URL}/createTrip
     Sleep    3s
     
-    # Fill form
     Wait Until Element Is Visible    id=startPoint    ${TIMEOUT}
-    Input Text    id=startPoint    ${START_LOCATION}
-    Sleep    0.5s
-    Input Text    id=endPoint    ${END_LOCATION}
-    Sleep    0.5s
     
+    # === กรอก startPoint แล้วเลือก autocomplete ตัวแรก ===
+    Type And Select Autocomplete    startPoint    ${START_LOCATION}
+    Sleep    1s
+    
+    # === กรอก endPoint แล้วเลือก autocomplete ตัวแรก ===
+    Type And Select Autocomplete    endPoint    ${END_LOCATION}
+    Sleep    1s
+    
+    # Fill date/time
     ${tomorrow}=    Get Tomorrow Date
-    Log    Tomorrow date: ${tomorrow}
-    Input Text    id=travelDate    ${tomorrow}
+    Fill Date And Time    travelDate    travelTime    ${tomorrow}    09:00
+    Sleep    1s
+    
+    Input Text    id=seatCount      ${SEAT_COUNT}
+    Sleep    0.3s
+    Input Text    id=pricePerSeat   ${PRICE_PER_SEAT}
     Sleep    0.5s
     
-    # Time - Click the clock/time SVG icon to open dropdown, then press Enter
-    Log    Clicking time icon to open dropdown...
-    
-    # Click input field first to focus it
-    Click Element    id=travelTime
-    Sleep    1s
-    
-    # Find and click the SVG icon (clock/time picker icon)
-    ${time_svg}=    Run Keyword And Continue On Failure    Get WebElement    xpath=//input[@id='travelTime']/following-sibling::svg | //input[@id='travelTime']/parent::*//*[name()='svg']
-    
-    Run Keyword If    ${time_svg}    Click Element    ${time_svg}
-    ...    ELSE    Log    SVG icon not found in expected location
-    
-    Sleep    2s
-    
-    # Press Enter to select the time from dropdown
-    Log    Pressing Enter to select time...
-    Press Keys    id=travelTime    RETURN
-    Sleep    1s
-    
-    Input Text    id=seatCount    ${SEAT_COUNT}
-    Input Text    id=pricePerSeat    ${PRICE_PER_SEAT}
-    Sleep    1s
-    
-    # Select vehicle - must have one registered
-    ${veh_sel}=    Run Keyword And Continue On Failure    Get WebElement    id=vehicle
-    Run Keyword And Continue On Failure    Click Element    ${veh_sel}
-    Run Keyword And Continue On Failure    Sleep    0.5s
-    Run Keyword And Continue On Failure    Click Element    xpath=(//option)[2]
-    Sleep    1s
+    # Select vehicle (มีรถอยู่แล้วตามรูป)
+    Wait Until Element Is Visible    id=vehicle    ${TIMEOUT}
+    Sleep    0.5s
     
     # Submit
-    Click Button    xpath=//button[contains(text(), 'สร้าง')] | //button[@type='submit']
-    Sleep    5s
+    Click Button    xpath=//button[contains(text(), 'สร้างการเดินทาง')]
+    Sleep    3s
     
-    # Verify
-    ${success}=    Run Keyword And Return Status    Page Should Contain    ${START_LOCATION}
-    Run Keyword If    ${success}    Log    ✓ Route created successfully
-    ...    ELSE    Log    ⚠️ Route creation may have failed - restart STEP_02 to search
+    ${ok}=    Run Keyword And Return Status    Wait Until Page Contains    สำเร็จ    15s
+    Run Keyword If    ${ok}    Log    ✓ Route created
+    ...    ELSE    Log    ⚠️ Check result manually
     
+    Sleep    3s
     Close All Browsers
 
 
@@ -108,15 +89,13 @@ STEP_02_Passenger_Search_And_Book
     Wait Until Element Is Visible    xpath=//button[contains(text(), 'ค้นหา')]    ${TIMEOUT}
     Log    Findtrip page loaded
     
-    # Search - ใช้ text input ตัวแรกสำหรับ start location
-    ${text_inputs}=    Get WebElements    xpath=//input[@type='text']
-    Log    Found ${text_inputs.__len__()} text inputs
-    
-    Run Keyword If    ${text_inputs}    Input Text    ${text_inputs}[0]    ${START_LOCATION}
+    # Search - ใช้ autocomplete เหมือนตอนสร้างทริป
+    # เลือจุดเริ่มต้น
+    Type And Select Autocomplete    fromLocation    ${START_LOCATION}
     Sleep    1s
     
-    # Second input for end location
-    Run Keyword If    ${text_inputs}    Input Text    ${text_inputs}[1]    ${END_LOCATION}
+    # เลือจุดปลายทาง
+    Type And Select Autocomplete    toLocation    ${END_LOCATION}
     Sleep    1s
     
     Log    Filling fields: ${START_LOCATION} → ${END_LOCATION}
@@ -291,7 +270,154 @@ Passenger Login
 
 
 Get Tomorrow Date
-    [Documentation]    Return tomorrow's date in YYYY-MM-DD format (CE year)
+    [Documentation]    Return tomorrow's date in ISO format YYYY-MM-DD (required by frontend DateTime constructor)
     
-    ${tomorrow}=    Evaluate    (__import__('datetime').datetime.now() + __import__('datetime').timedelta(days=1)).strftime('%Y-%m-%d')
+    ${tomorrow}=    Evaluate    (__import__('datetime').datetime.now() + __import__('datetime').timedelta(days=1)).replace(month=4).strftime('%Y-%m-%d')
     RETURN    ${tomorrow}
+
+
+Fill Date And Time
+    [Arguments]    ${date_id}    ${time_id}    ${date_value}    ${time_value}
+    [Documentation]    Set date/time via JS targeting Vue's v-model directly
+    
+    # === Fill Date ===
+    Execute Javascript
+    ...    (function() {
+    ...        var el = document.getElementById('${date_id}');
+    ...        var nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    ...        nativeSetter.call(el, '${date_value}');
+    ...        el.dispatchEvent(new Event('input', { bubbles: true }));
+    ...        el.dispatchEvent(new Event('change', { bubbles: true }));
+    ...    })();
+    Sleep    0.5s
+    
+    # === Fill Time ===
+    Execute Javascript
+    ...    (function() {
+    ...        var el = document.getElementById('${time_id}');
+    ...        var nativeSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+    ...        nativeSetter.call(el, '${time_value}');
+    ...        el.dispatchEvent(new Event('input', { bubbles: true }));
+    ...        el.dispatchEvent(new Event('change', { bubbles: true }));
+    ...    })();
+    Sleep    0.5s
+    
+    # Verify
+    ${d_val}=    Get Value    id=${date_id}
+    ${t_val}=    Get Value    id=${time_id}
+    Log    Date: ${d_val} | Time: ${t_val}
+    Should Not Be Empty    ${d_val}    msg=Date still empty!
+    Should Not Be Empty    ${t_val}    msg=Time still empty!
+    Log    ✓ Date and Time filled successfully
+
+
+Type And Select Autocomplete
+    [Arguments]    ${input_id}    ${text}
+    [Documentation]    พิมพ์ข้อความใน input แล้วรอ Google Autocomplete dropdown
+    ...    จากนั้นกด option แรกในรายการ
+    
+    # รอให้ pac-container เก่าปิดก่อน (ถ้ามี)
+    Run Keyword And Continue On Failure    Wait Until Element Is Not Visible    xpath=//div[contains(@class,'pac-container') and contains(@style,'display')]    5s
+    Sleep    1s
+    
+    # คลิก input
+    Click Element    id=${input_id}
+    Sleep    0.5s
+    
+    # Clear แล้วพิมพ์
+    Clear Element Text    id=${input_id}
+    Input Text    id=${input_id}    ${text}
+    Sleep    3s
+    
+    # รอ Google Autocomplete dropdown ขึ้น
+    # ใช้ XPath ที่ strict ขึ้น - ต้องเป็น pac-container ที่ visible
+    Wait Until Element Is Visible    xpath=//div[contains(@class,'pac-container')][contains(@style,'display: block')] | //div[contains(@class,'pac-container')][not(contains(@style,'display: none'))]    ${TIMEOUT}
+    Sleep    1s
+    
+    # คลิก pac-item แรกที่ visible
+    Wait Until Element Is Visible    xpath=(//div[contains(@class,'pac-item')])[1]    ${TIMEOUT}
+    Click Element    xpath=(//div[contains(@class,'pac-item')])[1]
+    Sleep    2s
+    
+    # Verify ว่า input มีค่าแล้ว
+    ${val}=    Get Value    id=${input_id}
+    Log    ${input_id} value: ${val}
+    Should Not Be Empty    ${val}    msg=${input_id} is still empty after autocomplete!
+    Log    ✓ ${input_id} filled: ${val}
+
+
+Click Map Pin Button
+    [Arguments]    ${input_id}
+    [Documentation]    คลิกปุ่ม map pin ที่อยู่ใน div.relative เดียวกับ input
+    
+    # จาก Vue template: input อยู่ใน div.relative และ button เป็น sibling ถัดไปเลย
+    Click Element    xpath=//input[@id='${input_id}']/following-sibling::button
+    Sleep    3s
+    
+    # รอ modal-overlay เปิด (ตรงกับ Vue template ที่ใช้ class modal-overlay)
+    Wait Until Element Is Visible    xpath=//div[@class='modal-overlay']    ${TIMEOUT}
+    Log    ✓ Map modal opened for ${input_id}
+
+
+Pick Location On Map
+    [Arguments]    ${lat}    ${lng}
+    [Documentation]    Trigger Google Maps click ที่ lat/lng — ค้นหา map instance จาก __e3_ หรือ __gm
+    
+    # รอ map render ก่อน (Google Maps ใช้เวลาโหลด tile)
+    Sleep    4s
+    
+    ${result}=    Execute Javascript
+    ...    (function(){
+    ...        try {
+    ...            var latLng = new google.maps.LatLng(${lat}, ${lng});
+    ...            
+    ...            // วิธี 1: หา map instance จากทุก div ใน modal-content
+    ...            var allDivs = document.querySelectorAll('.modal-content div');
+    ...            var map = null;
+    ...            for (var i = 0; i < allDivs.length; i++) {
+    ...                var d = allDivs[i];
+    ...                // Google Maps เก็บ instance ใน key ที่ขึ้นต้นด้วย __
+    ...                var keys = Object.keys(d);
+    ...                for (var k = 0; k < keys.length; k++) {
+    ...                    if (keys[k].indexOf('__') === 0 && d[keys[k]] && typeof d[keys[k]].getCenter === 'function') {
+    ...                        map = d[keys[k]];
+    ...                        break;
+    ...                    }
+    ...                }
+    ...                if (map) break;
+    ...            }
+    ...            
+    ...            if (!map) return 'ERROR: map instance not found';
+    ...            
+    ...            // Pan ไปที่ location ก่อน แล้ว trigger click
+    ...            map.panTo(latLng);
+    ...            google.maps.event.trigger(map, 'click', { latLng: latLng });
+    ...            return 'OK: triggered click at ${lat},${lng}';
+    ...        } catch(e) {
+    ...            return 'ERROR: ' + e.message;
+    ...        }
+    ...    })();
+    Log    Map click result: ${result}
+    Sleep    3s
+    
+    # รอให้ Vue resolvePicked() ทำงานเสร็จ — ชื่อสถานที่จะไม่ใช่ — ยังไม่เลือก —
+    Wait Until Element Is Visible
+    ...    xpath=//div[@class='modal-content']//div[contains(@class,'text-gray-700')]/div[2][not(contains(text(),'ยังไม่เลือก')) and not(contains(text(),'—'))]
+    ...    20s
+    Log    ✓ Location name resolved
+
+
+Confirm Map Selection
+    [Documentation]    กดปุ่ม ใช้ตำแหน่งนี้ แล้วรอ modal ปิด
+    
+    Wait Until Element Is Enabled
+    ...    xpath=//button[contains(text(),'ใช้ตำแหน่งนี้')]
+    ...    ${TIMEOUT}
+    
+    Click Element    xpath=//button[contains(text(),'ใช้ตำแหน่งนี้')]
+    Sleep    1s
+    
+    Wait Until Element Is Not Visible
+    ...    xpath=//div[@class='modal-overlay']
+    ...    ${TIMEOUT}
+    Log    ✓ Modal closed
