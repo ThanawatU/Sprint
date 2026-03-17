@@ -171,7 +171,7 @@
                   <button v-if="route.status === 'available' || route.status === 'full' || route.status === 'in_transit'" @click.stop="completeTrip(route)" class="px-4 py-2 text-sm text-white transition duration-200 bg-green-600 rounded-md hover:bg-green-700">
                     เสร็จสิ้นการเดินทาง
                   </button>
-
+                  
                   <NuxtLink :to="`/myRoute/${route.id}/edit`" class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700" @click.stop>
                     แก้ไขเส้นทาง
                   </NuxtLink>
@@ -316,9 +316,7 @@
                     <button class="px-4 py-2 text-sm text-white transition duration-200 bg-blue-600 rounded-md hover:bg-blue-700">
                       แชทกับผู้โดยสาร
                     </button>
-                    <button @click.stop="completeTrip(trip)" class="px-4 py-2 text-sm text-white bg-green-600 rounded-md hover:bg-green-700">
-                      เสร็จสิ้นการเดินทาง
-                    </button>
+
                     <template v-if="!hasReportedPassenger(trip.routeId, trip.passenger)">
                       <button @click.stop="openReportModal(trip.routeId, trip.id, trip.passenger.id, trip.passenger.name)" class="px-3 py-1 text-sm text-yellow-700 transition duration-200 border border-yellow-300 rounded-md hover:bg-yellow-50">รายงานผู้โดยสาร</button>
                     </template>
