@@ -627,7 +627,7 @@
                   </div>
                   <div class="flex items-center">
                     <div class="flex text-sm text-yellow-400">
-                    <span>
+                      <span>
                               {{
                                 "★".repeat(
                                   Math.round(
