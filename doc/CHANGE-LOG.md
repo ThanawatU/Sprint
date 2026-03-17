@@ -540,8 +540,6 @@ All notable changes to this project will be documented in this file.
 
 - Fix conflicts on rebasing main branch
 
-<<<<<<< Updated upstream
-=======
 ---
 
 ## [3.0.0] - 2026-03-15 - Yodsanon_0215
@@ -667,7 +665,6 @@ All notable changes to this project will be documented in this file.
 - Fixed bugs affecting trip completion button behavior for drivers.
 - Fixed minor UI and data binding issues in the Trip and Review pages.
 
->>>>>>> Stashed changes
 ---
 
 ## [3.0.0] - 2026-03-17 - Yodsanon_0215
