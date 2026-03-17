@@ -55,5 +55,5 @@ _KKU College of Computing · Software Engineer_
 ---
 
 <div align="center">
-<sub>คณะวิทยาลัยการคอมพิวเตอร์ · มหาวิทยาลัยขอนแก่น</sub>
+<sub>วิทยาลัยการคอมพิวเตอร์ · มหาวิทยาลัยขอนแก่น</sub>
 </div>
