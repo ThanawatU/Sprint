@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.4.1 (Python 3.9.6 on darwin)" generated="2026-03-03T23:38:30.337662" rpa="false" schemaversion="5">
+<suite id="s1" name="Baned User" source="/Users/cherryp/Documents/software en/Sprint/test/Sprint2/TESTCASE/ReportTest/baned_user.robot">
+<test id="s1-t1" name="TC-B1 - Banned User Cannot Login" line="12">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:38:30.398939" level="INFO">Creating Session using : alias=api, url=https://deploy-production-88fa.up.railway.app, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>api</arg>
+<arg>${BASE_URL}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2026-03-03T23:38:30.398826" elapsed="0.000276"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2026-03-03T23:38:30.399547" level="INFO">${payload} = {'username': 'driver2', 'password': 'driver1234'}</msg>
+<var>${payload}</var>
+<arg>username=${BANNED_USER}</arg>
+<arg>password=${BANNED_PASS}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2026-03-03T23:38:30.399203" elapsed="0.000362"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2026-03-03T23:38:31.062626" level="INFO">POST Request : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ path_url=/api/auth/login 
+ headers={'User-Agent': 'python-requests/2.32.5', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '49', 'Content-Type': 'application/json'} 
+ body=b'{"username": "driver2", "password": "driver1234"}' 
+ </msg>
+<msg time="2026-03-03T23:38:31.063198" level="INFO">POST Response : url=https://deploy-production-88fa.up.railway.app/api/auth/login 
+ status=401, reason=Unauthorized 
+ headers={'Connection': 'keep-alive', 'Content-Length': '61', 'Access-Control-Allow-Credentials': 'true', 'Content-Security-Policy': "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests", 'Content-Type': 'application/json; charset=utf-8', 'Cross-Origin-Opener-Policy': 'same-origin', 'Cross-Origin-Resource-Policy': 'same-origin', 'Etag': 'W/"3d-0toiamGqKJ3JkE3ODE9GMUIG1zo"', 'Origin-Agent-Cluster': '?1', 'Referrer-Policy': 'no-referrer', 'Server': 'railway-edge', 'Strict-Transport-Security': 'max-age=15552000; includeSubDomains', 'X-Content-Type-Options': 'nosniff', 'X-Dns-Prefetch-Control': 'off', 'X-Download-Options': 'noopen', 'X-Frame-Options': 'SAMEORIGIN', 'X-Permitted-Cross-Domain-Policies': 'none', 'X-Railway-Edge': 'railway/asia-southeast1-eqsg3a', 'X-Railway-Request-Id': 'B8dNC9-0S--__eKXAXC71g', 'X-Request-Id': '6bd991f9-8ef6-456a-913b-931b3c4409f6', 'X-Xss-Protection': '0', 'Accept-Ranges': 'bytes', 'Date': 'Tue, 03 Mar 2026 16:38:31 GMT', 'Via': '1.1 varnish', 'X-Cache': 'MISS', 'X-Cache-Hits': '0', 'X-Timer': 'S1772555911.521815,VS0,VE572', 'Vary': 'Origin', 'X-Railway-CDN-Edge': 'fastly/cache-bkk2310029-BKK'} 
+ body={"success":false,"message":"Invalid credentials","data":null} 
+ </msg>
+<msg time="2026-03-03T23:38:31.063519" level="INFO">/Users/cherryp/Library/Python/3.9/lib/python/site-packages/urllib3/connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'deploy-production-88fa.up.railway.app'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2026-03-03T23:38:31.064048" level="INFO">${resp} = &lt;Response [401]&gt;</msg>
+<var>${resp}</var>
+<arg>api</arg>
+<arg>${LOGIN_PATH}</arg>
+<arg>json=${payload}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2026-03-03T23:38:30.399648" elapsed="0.664476"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>======================</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-03T23:38:31.064860" elapsed="0.001108"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>LOGIN STATUS: ${resp.status_code}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-03T23:38:31.066195" elapsed="0.001265"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>LOGIN BODY: ${resp.text}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-03T23:38:31.067904" elapsed="0.001664"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>======================</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2026-03-03T23:38:31.069879" elapsed="0.000439"/>
+</kw>
+<kw name="Should Be True" owner="BuiltIn">
+<arg>${resp.status_code} == 401 or ${resp.status_code} == 403</arg>
+<doc>Fails if the given condition is not true.</doc>
+<status status="PASS" start="2026-03-03T23:38:31.070532" elapsed="0.002156"/>
+</kw>
+<status status="PASS" start="2026-03-03T23:38:30.398314" elapsed="0.674634"/>
+</test>
+<status status="PASS" start="2026-03-03T23:38:30.338658" elapsed="0.734939"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Baned User" id="s1" pass="1" fail="0" skip="0">Baned User</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

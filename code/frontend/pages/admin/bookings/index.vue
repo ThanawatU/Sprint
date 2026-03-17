@@ -474,8 +474,11 @@ async function fetchBookings() {
     isLoading.value = true
     loadError.value = ''
     try {
+        const config = useRuntimeConfig()
         const token = useCookie('token').value || (process.client ? localStorage.getItem('token') : '')
-        const res = await fetch('https://deploy-production-88fa.up.railway.app/api/bookings/admin', {
+        
+        // เปลี่ยนมาใช้ API Base จาก Environment
+        const res = await fetch(`${config.public.apiBase}/bookings/admin`, {
             headers: {
                 Accept: 'application/json',
                 ...(token ? { Authorization: `Bearer ${token}` } : {})

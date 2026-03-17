@@ -232,12 +232,10 @@ Verify AccessLog Has At Least 1 Row
 
 Select Export Format
     [Arguments]    ${format}
-
     ${select_xpath}=    Set Variable    xpath=(//select)[last()]
     
     Wait Until Element Is Visible    ${select_xpath}    10s
     Select From List By Label        ${select_xpath}    ${format}
-
     Wait Until Element Is Visible    xpath=//select    10s
     Select From List By Label        xpath=//select    ${format}
 
