@@ -140,7 +140,7 @@
                                 <p class="text-gray-500">สถานที่เกิดเหตุ</p>
 
                                 <p class="font-medium">
-                                {{ incident.location?.address || '-' }}
+                                    {{ formatLocation(incident.location?.address) }}
                                 </p>
 
                                 <div v-if="coordinates" class="mt-4">
@@ -602,6 +602,18 @@ function statusClass(u) {
     'text-yellow-600 font-semibold': s.color === 'yellow',
     'text-gray-500': s.color === 'gray'
   }
+}
+
+function formatLocation(address) {
+  if (!address) return '-'
+
+  const parts = address.split(',')
+
+  if (parts.length >= 3) {
+    return `${parts[1].trim()}, ${parts[2].trim()}`
+  }
+
+  return address
 }
 
 onMounted(() => {
