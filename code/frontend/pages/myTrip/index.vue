@@ -263,8 +263,14 @@
                           <!-- Reviewer info row -->
                           <div class="flex items-center gap-2 mb-2">
                             <img
-                              v-if="review.reviewer?.profileImage || review.user?.profileImage"
-                              :src="review.reviewer?.profileImage || review.user?.profileImage"
+                              v-if="
+                                review.reviewer?.profileImage ||
+                                review.user?.profileImage
+                              "
+                              :src="
+                                review.reviewer?.profileImage ||
+                                review.user?.profileImage
+                              "
                               alt="รูปโปรไฟล์"
                               class="object-cover w-8 h-8 rounded-full border border-gray-200"
                             />
@@ -273,21 +279,35 @@
                               class="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600 text-xs font-semibold border border-gray-200"
                             >
                               {{
-                                ((review.reviewer?.firstName || review.user?.firstName || review.reviewer?.name || review.user?.name || '?')[0] || '?').toUpperCase()
+                                (
+                                  (review.reviewer?.firstName ||
+                                    review.user?.firstName ||
+                                    review.reviewer?.name ||
+                                    review.user?.name ||
+                                    "?")[0] || "?"
+                                ).toUpperCase()
                               }}
                             </div>
                             <div class="flex-1 min-w-0">
-                              <p class="text-sm font-medium text-gray-800 truncate">
+                              <p
+                                class="text-sm font-medium text-gray-800 truncate"
+                              >
                                 {{
                                   review.reviewer
-                                    ? (review.reviewer.firstName && review.reviewer.lastName
-                                        ? `${review.reviewer.firstName} ${review.reviewer.lastName}`
-                                        : review.reviewer.firstName || review.reviewer.name || 'ไม่ระบุชื่อ')
+                                    ? review.reviewer.firstName &&
+                                      review.reviewer.lastName
+                                      ? `${review.reviewer.firstName} ${review.reviewer.lastName}`
+                                      : review.reviewer.firstName ||
+                                        review.reviewer.name ||
+                                        "ไม่ระบุชื่อ"
                                     : review.user
-                                      ? (review.user.firstName && review.user.lastName
-                                          ? `${review.user.firstName} ${review.user.lastName}`
-                                          : review.user.firstName || review.user.name || 'ไม่ระบุชื่อ')
-                                      : 'ไม่ระบุชื่อ'
+                                      ? review.user.firstName &&
+                                        review.user.lastName
+                                        ? `${review.user.firstName} ${review.user.lastName}`
+                                        : review.user.firstName ||
+                                          review.user.name ||
+                                          "ไม่ระบุชื่อ"
+                                      : "ไม่ระบุชื่อ"
                                 }}
                               </p>
                             </div>
@@ -298,7 +318,8 @@
 
                           <!-- Stars -->
                           <div class="text-yellow-400 text-sm mb-1">
-                            {{ "★".repeat(review.rating) }}{{ "☆".repeat(5 - review.rating) }}
+                            {{ "★".repeat(review.rating)
+                            }}{{ "☆".repeat(5 - review.rating) }}
                           </div>
 
                           <p
@@ -914,7 +935,7 @@ const comment = ref("");
 const reviewImages = ref([]);
 const reviewedBookings = ref({});
 const driverReviews = ref({});
-const reviewPage = ref({}); 
+const reviewPage = ref({});
 const REVIEWS_PER_PAGE = 3;
 
 // Lightbox สำหรับรูปรีวิว
@@ -1594,7 +1615,7 @@ async function fetchMyTrips() {
     // map ข้อมูลพื้นฐานก่อน (ตั้งชื่อชั่วคราวเป็นพิกัด แล้วไป reverse geocode ภายหลัง)
     const formatted = bookings.map((b) => {
       const driverData = {
-        id: b.route.driver.id, 
+        id: b.route.driver.id,
         name: `${b.route.driver.firstName} ${b.route.driver.lastName}`.trim(),
         image:
           b.route.driver.profilePicture ||

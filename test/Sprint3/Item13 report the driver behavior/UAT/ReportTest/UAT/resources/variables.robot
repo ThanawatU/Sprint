@@ -20,8 +20,8 @@ ${FRESH_EMAIL_2}          fresh_report_2@test.com
 ${FRESH_PASSWORD_2}       Password1234!
 
 # === Timeouts ===
-${DEFAULT_TIMEOUT}        20s
-${LONG_TIMEOUT}           45s
+${DEFAULT_TIMEOUT}        10s
+${LONG_TIMEOUT}           10s
 ${SHORT_TIMEOUT}          5s
 ${ANIMATION_WAIT}         1s
 
