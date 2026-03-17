@@ -6,9 +6,9 @@ ${MY_TRIPS_URL}       ${BASE_URL}/myTrip
 ${MY_HISTORY_URL}     ${BASE_URL}/myHistory
 
 # === Credentials (main suite) ===
-${PASSENGER_EMAIL}        passenger3
+${PASSENGER_EMAIL}        passenger_1
 ${PASSENGER_PASSWORD}     123456789
-${PASSENGER_EMAIL_2}      passenger4
+${PASSENGER_EMAIL_2}      passenger_2
 ${PASSENGER_PASSWORD_2}   123456789
 
 # === Credentials (fresh users — ไม่เคย report ใครมาก่อน ใช้เฉพาะ TC_Report_HappyPath) ===

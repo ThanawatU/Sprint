@@ -138,7 +138,29 @@
 
                             <div>
                                 <p class="text-gray-500">สถานที่เกิดเหตุ</p>
-                                <p class="font-medium">{{ incident.location || '-' }}</p>
+
+                                <p class="font-medium">
+                                {{ incident.location?.address || '-' }}
+                                </p>
+
+                                <div v-if="coordinates" class="mt-4">
+
+                                <iframe
+                                :src="`https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}&z=15&output=embed`"
+                                class="w-full h-64 rounded border"
+                                loading="lazy"
+                                />
+
+                                <a
+                                :href="`https://www.google.com/maps?q=${coordinates.lat},${coordinates.lng}`"
+                                target="_blank"
+                                class="text-blue-600 text-sm hover:underline mt-2 inline-block"
+                                >
+                                เปิดใน Google Maps
+                                </a>
+
+                                </div>
+
                             </div>
 
                         </div>
@@ -172,10 +194,63 @@
                             </div>
 
                             <div v-if="incident.route.destination">
-                            <p class="text-gray-500">ปลายทาง</p>
-                            <p class="font-medium">
-                                {{ incident.route.destination }}
-                            </p>
+                                <p class="text-gray-500">ปลายทาง</p>
+                                <p class="font-medium">
+                                    {{ incident.route.destination }}
+                                </p>
+                            </div>
+
+                            <div class="mt-6">
+
+                                <p class="font-semibold mb-2">
+                                รายชื่อผู้ขับและผู้โดยสารทั้งหมด
+                                </p>
+
+                                <table class="min-w-full divide-y divide-gray-200 text-sm">
+
+                                <thead class="bg-gray-50">
+                                <tr>
+
+                                <th class="px-4 py-3 text-xs text-left text-gray-500 uppercase">
+                                ชื่อ-นามสกุล
+                                </th>
+
+                                </tr>
+                                </thead>
+
+                                <tbody class="bg-white divide-y divide-gray-200">
+
+                                <tr
+                                v-for="u in tripUsers"
+                                :key="u.id"
+                                >
+
+                                <td class="px-4 py-3">
+
+                                <span
+                                v-if="u.role === 'driver'"
+                                class="inline-flex items-center px-2 py-1 mr-2 text-xs font-medium text-blue-700 bg-blue-100 rounded-full"
+                                >
+                                คนขับ
+                                </span>
+
+                                <span
+                                v-else
+                                class="inline-flex items-center px-2 py-1 mr-2 text-xs font-medium text-green-700 bg-green-100 rounded-full"
+                                >
+                                ผู้โดยสาร
+                                </span>
+
+                                {{ u.firstName }} {{ u.lastName }}
+
+                                </td>
+
+
+                                </tr>
+
+                                </tbody>
+                                </table>
+
                             </div>
 
                         </div>
@@ -235,18 +310,20 @@
                         </div>
 
                         <button
-                        v-if="['PENDING','UNDER_INVESTIGATION'].includes(incident.status)"
-                        class="w-full bg-blue-500 text-white py-2 rounded"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
                         @click="showManageSection = !showManageSection"
                         >
-                        {{ showManageSection ? 'ปิดการจัดการ' : 'จัดการเคส' }}
+                            {{ showManageSection ? 'ปิดการจัดการ' : 'จัดการเคส' }}
                         </button>
 
                     </div>
                 </div>
             </div>
 
-            <div v-if="showManageSection" class="mt-8">
+            <div
+            v-if="showManageSection && ['PENDING','UNDER_INVESTIGATION'].includes(incident.status)"
+            class="mt-8"
+            >
 
                 <div class="bg-white border rounded-lg shadow-sm">
 
@@ -259,25 +336,21 @@
                 <div class="p-6 space-y-6">
 
                 <p v-if="incident.status === 'PENDING'">
-                เคสยังไม่ได้รับการตรวจสอบ
+                    เคสยังไม่ได้รับการตรวจสอบ
                 </p>
 
                 <p v-if="incident.status === 'UNDER_INVESTIGATION'">
-                กำลังตรวจสอบโดยผู้ดูแล
+                    กำลังตรวจสอบโดยผู้ดูแล
                 </p>
-
                 <div v-if="incident.status === 'UNDER_INVESTIGATION'">
-
-                <label class="block mb-2 text-sm font-medium">
-                หมายเหตุจากผู้ดูแล
-                </label>
-
-                <textarea
-                v-model="adminNotes"
-                rows="3"
-                class="w-full border rounded px-3 py-2"
-                />
-
+                    <label class="block mb-2 text-sm font-medium">
+                        หมายเหตุจากผู้ดูแล
+                    </label>
+                    <textarea
+                    v-model="adminNotes"
+                    rows="3"
+                    class="w-full border rounded px-3 py-2"
+                    />
                 </div>
 
                 <div
@@ -286,18 +359,19 @@
                 >
 
                 <button
-                class="px-4 py-2 bg-red-500 text-white rounded"
+                class="px-4 py-2 bg-red-500 text-white rounded disabled:bg-gray-400"
+                :disabled="incident.status !== 'UNDER_INVESTIGATION'"
                 @click="rejectIncident"
                 >
-                ปฏิเสธเคส
+                    ปฏิเสธเคส
                 </button>
 
                 <button
-                :disabled="!adminNotes"
+                :disabled="incident.status !== 'UNDER_INVESTIGATION' || !adminNotes"
                 class="px-4 py-2 bg-green-600 text-white rounded disabled:bg-gray-400"
                 @click="resolveIncident"
                 >
-                ดำเนินการเคส
+                    ดำเนินการเคส
                 </button>
 
                 </div>
@@ -316,6 +390,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRuntimeConfig, useCookie } from '#app'
 import { useToast } from '~/composables/useToast'
+import { computed } from 'vue'
 
 const route = useRoute()
 const { toast } = useToast()
@@ -326,27 +401,77 @@ const isLoading = ref(true)
 const loadError = ref('')
 const showManageSection = ref(false)
 
-async function fetchIncident() {
-  const config = useRuntimeConfig()
-  const token = useCookie('token').value
-  const id = route.params.id
+const tripUsers = computed(() => {
+  if (!incident.value?.route) return []
 
-  isLoading.value = true
-  loadError.value = ''
+  const users = []
 
-  try {
-    incident.value = await $fetch(`/incidents/${id}`, {
-    baseURL: config.public.apiBase,
-    headers: {
-        Authorization: `Bearer ${token}`
-    }
+  // driver
+  if (incident.value.route.driver) {
+    users.push({
+      ...incident.value.route.driver,
+      role: 'driver'
     })
-  } catch (err) {
-    console.error(err)
-    loadError.value = err?.data?.message || 'โหลดข้อมูลไม่ได้'
-  } finally {
-    isLoading.value = false
   }
+
+  // passengers
+  const seen = new Set()
+
+  incident.value.route.bookings?.forEach(b => {
+    const p = b.passenger
+
+    if (p && !seen.has(p.id)) {
+      seen.add(p.id)
+
+      users.push({
+        ...p,
+        role: 'passenger'
+      })
+    }
+  })
+
+  return users
+})
+
+const coordinates = computed(() => {
+  const loc = incident.value?.location
+
+  if (!loc) return null
+
+  if (typeof loc === 'object' && loc.lat && loc.lng) {
+    return {
+      lat: loc.lat,
+      lng: loc.lng
+    }
+  }
+
+  return null
+})
+
+async function fetchIncident() {
+    const config = useRuntimeConfig()
+    const token = useCookie('token').value
+    const id = route.params.id
+
+    isLoading.value = true
+    loadError.value = ''
+
+    try {
+        incident.value = await $fetch(`/incidents/${id}`, {
+        baseURL: config.public.apiBase,
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+        })
+    } catch (err) {
+        console.error(err)
+        loadError.value = err?.data?.message || 'โหลดข้อมูลไม่ได้'
+    } finally {
+        isLoading.value = false
+    }
+
+    console.log("INCIDENT:", incident.value)
+    console.log("LOCATION:", incident.value?.location)
 }
 
 async function assignIncident() {
@@ -375,6 +500,7 @@ async function assignIncident() {
 async function resolveIncident() {
   const config = useRuntimeConfig()
   const token = useCookie('token').value
+  
 
   try {
     await $fetch(`/incidents/admin/${incident.value.id}/resolve`, {
@@ -396,6 +522,8 @@ async function resolveIncident() {
   } catch (err) {
     toast.error(err?.data?.message || 'เกิดข้อผิดพลาด')
   }
+
+  showManageSection.value = false
 }
 
 async function rejectIncident() {
@@ -422,6 +550,9 @@ async function rejectIncident() {
   } catch (err) {
     toast.error(err?.data?.message || 'เกิดข้อผิดพลาด')
   }
+
+  showManageSection.value = false
+
 }
 
 function formatCategory(category) {
@@ -442,6 +573,35 @@ function formatDate(dateStr) {
     dateStyle: 'short',
     timeStyle: 'short'
   })
+}
+
+function getUserStatus(u) {
+
+  const now = new Date()
+
+  if (
+    (u.driverSuspendedUntil && new Date(u.driverSuspendedUntil) > now) ||
+    (u.passengerSuspendedUntil && new Date(u.passengerSuspendedUntil) > now)
+  ) {
+    return { label: 'แดง (ถูกแบน)', color: 'red' }
+  }
+
+  if (u.yellowCardCount > 0) {
+    return { label: `ใบเหลือง ${u.yellowCardCount}`, color: 'yellow' }
+  }
+
+  return { label: 'ไม่มี', color: 'gray' }
+
+}
+
+function statusClass(u) {
+  const s = getUserStatus(u)
+
+  return {
+    'text-red-600 font-semibold': s.color === 'red',
+    'text-yellow-600 font-semibold': s.color === 'yellow',
+    'text-gray-500': s.color === 'gray'
+  }
 }
 
 onMounted(() => {
